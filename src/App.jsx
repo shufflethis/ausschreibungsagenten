@@ -6,6 +6,7 @@ import Impressum from './pages/Impressum'
 import AGB from './pages/AGB'
 import Datenschutz from './pages/Datenschutz'
 import Disclaimer from './pages/Disclaimer'
+import CheckoutSuccess from './pages/CheckoutSuccess'
 
 export default function App() {
     return (
@@ -18,6 +19,7 @@ export default function App() {
                     <Route path="/agb" element={<AGB />} />
                     <Route path="/datenschutz" element={<Datenschutz />} />
                     <Route path="/disclaimer" element={<Disclaimer />} />
+                    <Route path="/checkout-erfolg" element={<CheckoutSuccess />} />
                 </Routes>
             </main>
             <Footer />

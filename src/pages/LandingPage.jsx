@@ -85,6 +85,8 @@ export default function LandingPage() {
     const [profileSending, setProfileSending] = useState(false)
     const [profileResult, setProfileResult] = useState(null)
     const [selectedTender, setSelectedTender] = useState(null)
+    const [checkoutPlan, setCheckoutPlan] = useState(null)
+    const [checkoutError, setCheckoutError] = useState(null)
 
     useEffect(() => {
         const controller = new AbortController()
@@ -193,6 +195,37 @@ export default function LandingPage() {
             setProfileStatus('error')
         }
         setProfileSending(false)
+    }
+
+    const startCheckout = async (plan) => {
+        const email = profileResult?.email
+        if (!email) {
+            setCheckoutError('Bitte zuerst das Agentenprofil mit geschäftlicher E-Mail anlegen.')
+            document.getElementById('profil')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            return
+        }
+
+        setCheckoutPlan(plan)
+        setCheckoutError(null)
+        try {
+            const res = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    plan,
+                    profile_id: profileResult?.profile_id,
+                }),
+            })
+            const data = await res.json().catch(() => null)
+            if (!res.ok || !data?.checkout_url) {
+                throw new Error(data?.detail || data?.error || 'Checkout konnte nicht erstellt werden.')
+            }
+            window.location.href = data.checkout_url
+        } catch (err) {
+            setCheckoutError(err.message || 'Checkout konnte nicht gestartet werden.')
+            setCheckoutPlan(null)
+        }
     }
 
     return (
@@ -522,7 +555,14 @@ export default function LandingPage() {
                                             Alerts, Vollanalyse und Teilnahmeplan laufen über den bezahlten Agenten.
                                         </p>
                                     </div>
-                                    <a className="btn btn--primary" href="#kontakt">Agent-Plan aktivieren</a>
+                                    <button
+                                        type="button"
+                                        className="btn btn--primary"
+                                        onClick={() => startCheckout('agent')}
+                                        disabled={checkoutPlan !== null}
+                                    >
+                                        {checkoutPlan === 'agent' ? 'Stripe wird geöffnet...' : 'Agent-Plan aktivieren'}
+                                    </button>
                                 </div>
 
                                 {profileResult.matches?.length > 0 ? (
@@ -564,18 +604,45 @@ export default function LandingPage() {
                                         <strong>Pro</strong>
                                         <span>149 EUR/Monat</span>
                                         <p>Suchprofil, Alerts, Fulltext-Suche und wöchentliche Trefferliste.</p>
+                                        <button
+                                            type="button"
+                                            className="btn btn--secondary"
+                                            onClick={() => startCheckout('pro')}
+                                            disabled={checkoutPlan !== null}
+                                        >
+                                            {checkoutPlan === 'pro' ? 'Stripe wird geöffnet...' : 'Pro starten'}
+                                        </button>
                                     </article>
                                     <article>
                                         <strong>Agent</strong>
                                         <span>499 EUR/Monat</span>
                                         <p>Teilnahmeplan, Go/No-Go, Agent API, A2A/MCP und Priorisierung.</p>
+                                        <button
+                                            type="button"
+                                            className="btn btn--primary"
+                                            onClick={() => startCheckout('agent')}
+                                            disabled={checkoutPlan !== null}
+                                        >
+                                            {checkoutPlan === 'agent' ? 'Stripe wird geöffnet...' : 'Super Agent starten'}
+                                        </button>
                                     </article>
                                     <article>
                                         <strong>Verfahren</strong>
-                                        <span>ab 1.500 EUR</span>
+                                        <span>1.499 EUR einmalig</span>
                                         <p>Konkrete Ausschreibung prüfen, Anforderungen strukturieren, Angebotsfahrplan bauen.</p>
+                                        <button
+                                            type="button"
+                                            className="btn btn--amber"
+                                            onClick={() => startCheckout('procedure')}
+                                            disabled={checkoutPlan !== null}
+                                        >
+                                            {checkoutPlan === 'procedure' ? 'Stripe wird geöffnet...' : 'Verfahren-Check buchen'}
+                                        </button>
                                     </article>
                                 </div>
+                                {checkoutError && (
+                                    <p className="form-status form-status--error">{checkoutError}</p>
+                                )}
                             </div>
                         )}
                     </div>

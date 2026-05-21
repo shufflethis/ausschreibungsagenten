@@ -924,6 +924,9 @@ img {
     border-radius: 12px;
     background: rgba(15, 23, 42, 0.74);
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .65rem;
 }
 
 .pricing-strip strong,
@@ -936,6 +939,29 @@ img {
     color: #fbbf24;
     font-weight: 800;
     margin-top: 0.25rem;
+}
+
+.pricing-strip .btn {
+    margin-top: auto;
+    width: 100%;
+}
+
+.checkout-success {
+    min-height: 58vh;
+    display: flex;
+    align-items: center;
+}
+
+.checkout-success__inner {
+    max-width: 850px;
+    text-align: center;
+}
+
+.checkout-success__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .source-modal {
