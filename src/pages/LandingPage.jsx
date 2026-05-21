@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 const TOOLS = [
@@ -44,6 +44,23 @@ const FAQS = [
     { q: 'Ist die Nutzung der Vergabeportale kostenlos?', a: 'Die Einsicht in Bekanntmachungen ist auf den meisten offiziellen Portalen kostenlos. Die Teilnahme an elektronischen Vergabeverfahren über das DTVP ist ebenfalls kostenfrei. Erweiterte Funktionen wie Suchprofile, automatische Benachrichtigungen und Export-Funktionen sind bei vielen Portalen premium-pflichtig. Drittanbieter-Tools wie aumass, TenderWolf oder GAEB.ai bieten Mehrwert-Features gegen monatliche Gebühren.' },
 ]
 
+const TENDER_PRESETS = [
+    { label: 'Marketing', value: 'marketing' },
+    { label: 'Webdesign', value: 'website' },
+    { label: 'IT', value: 'software' },
+    { label: 'PR', value: 'öffentlichkeitsarbeit' },
+]
+
+const formatDate = (value) => {
+    if (!value) return 'Keine Frist genannt'
+    return new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(value))
+}
+
+const formatCurrency = (value) => {
+    if (!value) return null
+    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(value))
+}
+
 export default function LandingPage() {
     const [openFaq, setOpenFaq] = useState(null)
     const [formData, setFormData] = useState({ name: '', email: '', company: '', branche: '', message: '' })
@@ -51,6 +68,45 @@ export default function LandingPage() {
     const [sending, setSending] = useState(false)
     const [newsletterEmail, setNewsletterEmail] = useState('')
     const [newsletterStatus, setNewsletterStatus] = useState(null)
+    const [tenderQuery, setTenderQuery] = useState('marketing')
+    const [tenders, setTenders] = useState([])
+    const [tendersLoading, setTendersLoading] = useState(true)
+    const [tendersError, setTendersError] = useState(null)
+
+    useEffect(() => {
+        const controller = new AbortController()
+        const loadTenders = async () => {
+            setTendersLoading(true)
+            setTendersError(null)
+            try {
+                const params = new URLSearchParams({
+                    country: 'DEU',
+                    search: tenderQuery,
+                    min_score: '50',
+                    limit: '6',
+                })
+                const res = await fetch(`/api/tenders-public?${params.toString()}`, {
+                    signal: controller.signal,
+                })
+                if (!res.ok) {
+                    throw new Error('Tender search failed')
+                }
+                const data = await res.json()
+                setTenders(Array.isArray(data) ? data : [])
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    setTendersError('Aktuelle Ausschreibungen konnten gerade nicht geladen werden.')
+                }
+            } finally {
+                if (!controller.signal.aborted) {
+                    setTendersLoading(false)
+                }
+            }
+        }
+
+        loadTenders()
+        return () => controller.abort()
+    }, [tenderQuery])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -225,6 +281,99 @@ export default function LandingPage() {
                                 Eignungskriterien. So können Sie sofort mit der Angebotserstellung beginnen.
                             </p>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ===== LIVE SEARCH ===== */}
+            <section className="section section--alt" id="suche">
+                <div className="container">
+                    <span className="section__label section__label--amber">
+                        <span className="pulse"></span> Live-Suche
+                    </span>
+                    <h2 className="section__title">
+                        Aktuelle <span className="gradient-text--amber">Ausschreibungen</span> aus dem Agenten-Index
+                    </h2>
+                    <p className="section__subtitle">
+                        Diese Treffer kommen direkt aus AgentLeads. Die freie Vorschau zeigt ausgewählte Ergebnisse;
+                        ein Firmenprofil schaltet bessere Filter, Alerts und Teilnahmepläne frei.
+                    </p>
+
+                    <div className="tender-search">
+                        <form className="tender-search__form" onSubmit={(e) => e.preventDefault()}>
+                            <label htmlFor="tender-query">Leistung suchen</label>
+                            <div className="tender-search__input-row">
+                                <input
+                                    id="tender-query"
+                                    type="search"
+                                    value={tenderQuery}
+                                    onChange={(e) => setTenderQuery(e.target.value)}
+                                    placeholder="z. B. Webdesign, Software, PR"
+                                />
+                                <a href="#kontakt" className="btn btn--amber">Profil anlegen</a>
+                            </div>
+                        </form>
+
+                        <div className="tender-search__presets" aria-label="Beispielsuchen">
+                            {TENDER_PRESETS.map((preset) => (
+                                <button
+                                    key={preset.value}
+                                    type="button"
+                                    className={tenderQuery === preset.value ? 'is-active' : ''}
+                                    onClick={() => setTenderQuery(preset.value)}
+                                >
+                                    {preset.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {tendersLoading && (
+                            <div className="tender-state">Aktuelle Ausschreibungen werden geladen...</div>
+                        )}
+                        {tendersError && (
+                            <div className="tender-state tender-state--error">{tendersError}</div>
+                        )}
+                        {!tendersLoading && !tendersError && tenders.length === 0 && (
+                            <div className="tender-state">
+                                Keine passenden Vorschau-Treffer gefunden. Mit einem Firmenprofil kann der Agent breiter suchen.
+                            </div>
+                        )}
+
+                        {!tendersLoading && !tendersError && tenders.length > 0 && (
+                            <div className="tender-grid">
+                                {tenders.map((tender) => {
+                                    const value = formatCurrency(tender.estimated_value_eur)
+                                    return (
+                                        <article className="tender-card" key={tender.id}>
+                                            <div className="tender-card__meta">
+                                                <span>{tender.source.toUpperCase()}</span>
+                                                <span>Score {tender.relevance_score}</span>
+                                            </div>
+                                            <h3>{tender.title}</h3>
+                                            <dl>
+                                                <div>
+                                                    <dt>Auftraggeber</dt>
+                                                    <dd>{tender.buyer_name || 'Nicht angegeben'}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>Frist</dt>
+                                                    <dd>{formatDate(tender.deadline_at)}</dd>
+                                                </div>
+                                                {value && (
+                                                    <div>
+                                                        <dt>Wert</dt>
+                                                        <dd>{value}</dd>
+                                                    </div>
+                                                )}
+                                            </dl>
+                                            <a href={tender.source_url} target="_blank" rel="noopener noreferrer">
+                                                Quelle öffnen
+                                            </a>
+                                        </article>
+                                    )
+                                })}
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>

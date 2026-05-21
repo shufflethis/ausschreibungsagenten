@@ -618,6 +618,148 @@ img {
     box-shadow: 0 0 24px var(--accent-amber-glow);
 }
 
+/* ---------- Live Tender Search ---------- */
+.tender-search {
+    margin-top: 3rem;
+}
+
+.tender-search__form {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.25rem;
+}
+
+.tender-search__form label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.tender-search__input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+}
+
+.tender-search__input-row input {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    background: rgba(10, 14, 26, 0.75);
+    color: var(--text-primary);
+    font: inherit;
+    padding: 0.875rem 1rem;
+}
+
+.tender-search__input-row input:focus {
+    outline: none;
+    border-color: rgba(245, 158, 11, 0.7);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.16);
+}
+
+.tender-search__presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0 1.5rem;
+}
+
+.tender-search__presets button {
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--font-size-sm);
+    padding: 0.5rem 0.9rem;
+    transition: all var(--transition-fast);
+}
+
+.tender-search__presets button:hover,
+.tender-search__presets button.is-active {
+    border-color: rgba(245, 158, 11, 0.55);
+    color: var(--accent-amber-light);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.tender-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.tender-card {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.045);
+    padding: 1.25rem;
+}
+
+.tender-card__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--accent-amber-light);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.tender-card h3 {
+    color: var(--text-heading);
+    font-size: var(--font-size-lg);
+    line-height: 1.35;
+}
+
+.tender-card dl {
+    display: grid;
+    gap: 0.8rem;
+    margin: 0;
+}
+
+.tender-card dt {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.tender-card dd {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin: 0.15rem 0 0;
+}
+
+.tender-card a {
+    margin-top: auto;
+    font-weight: 700;
+}
+
+.tender-state {
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    padding: 1.25rem;
+}
+
+.tender-state--error {
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #fecaca;
+    background: rgba(239, 68, 68, 0.08);
+}
+
 /* ---------- Comparison Table ---------- */
 .comparison-wrapper {
     margin-top: 3rem;
@@ -1026,7 +1168,7 @@ img {
 @media (max-width: 1024px) {
     .hero__title { font-size: var(--font-size-5xl); }
     .section__title { font-size: var(--font-size-3xl); }
-    .grid-3, .features-grid, .problem-grid, .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-3, .features-grid, .problem-grid, .steps-grid, .tender-grid { grid-template-columns: repeat(2, 1fr); }
     .steps-grid::before { display: none; }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1045,10 +1187,12 @@ img {
     .section__title { font-size: var(--font-size-2xl); }
 
     .grid-2, .grid-3, .grid-4,
-    .features-grid, .problem-grid, .steps-grid,
+    .features-grid, .problem-grid, .steps-grid, .tender-grid,
     .contact-grid { grid-template-columns: 1fr; }
 
     .steps-grid::before { display: none; }
+
+    .tender-search__input-row { grid-template-columns: 1fr; }
 
     .header__nav { display: none; }
     .header__nav--open {

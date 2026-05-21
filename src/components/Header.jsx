@@ -28,6 +28,7 @@ export default function Header() {
                 </button>
 
                 <nav className={`header__nav ${menuOpen ? 'header__nav--open' : ''}`} aria-label="Hauptnavigation">
+                    <a href="/#suche" onClick={() => setMenuOpen(false)}>Live-Suche</a>
                     <a href="/#vergleich" onClick={() => setMenuOpen(false)}>Vergleich</a>
                     <a href="/#funktionen" onClick={() => setMenuOpen(false)}>Funktionen</a>
                     <a href="/#branchen" onClick={() => setMenuOpen(false)}>Branchen</a>
