@@ -37,9 +37,31 @@ export default async function handler(req, res) {
             return res.status(profileRes.status).json(profile || { error: 'Failed to store company profile' })
         }
 
+        let matches = []
+        try {
+            const matchesUrl = new URL(`/api/public/company-profiles/${profile.id}/matches`, agentleadsBase)
+            matchesUrl.searchParams.set('limit', '3')
+            const matchesRes = await fetch(matchesUrl.toString(), {
+                headers: { Accept: 'application/json' },
+            })
+            const matchesBody = await matchesRes.json().catch(() => [])
+            if (matchesRes.ok && Array.isArray(matchesBody)) {
+                matches = matchesBody
+            } else {
+                console.error('AgentLeads match API error:', matchesBody)
+            }
+        } catch (matchErr) {
+            console.error('AgentLeads match request failed:', matchErr)
+        }
+
         const token = process.env.SLACK_BOT_TOKEN
         const channel = process.env.SLACK_CHANNEL_ID
         if (token && channel) {
+            const matchText = matches.length
+                ? matches
+                    .map((match, index) => `${index + 1}. ${match.tender?.title || 'Unbenannte Ausschreibung'} – Score ${match.match_score}`)
+                    .join('\n')
+                : 'Noch keine Sofort-Treffer.'
             const blocks = [
                 {
                     type: 'header',
@@ -60,6 +82,10 @@ export default async function handler(req, res) {
                 {
                     type: 'section',
                     text: { type: 'mrkdwn', text: `*Leistungen / Suchprofil:*\n${services}` },
+                },
+                {
+                    type: 'section',
+                    text: { type: 'mrkdwn', text: `*Sofort-Matches:*\n${matchText}` },
                 },
                 {
                     type: 'context',
@@ -87,7 +113,7 @@ export default async function handler(req, res) {
             }
         }
 
-        return res.status(200).json({ success: true, profile_id: profile.id })
+        return res.status(200).json({ success: true, profile_id: profile.id, matches })
     } catch (err) {
         console.error('Profile lead request failed:', err)
         return res.status(502).json({ error: 'AgentLeads API is unavailable' })

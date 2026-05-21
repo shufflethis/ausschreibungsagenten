@@ -83,6 +83,7 @@ export default function LandingPage() {
     })
     const [profileStatus, setProfileStatus] = useState(null)
     const [profileSending, setProfileSending] = useState(false)
+    const [profileResult, setProfileResult] = useState(null)
 
     useEffect(() => {
         const controller = new AbortController()
@@ -164,6 +165,7 @@ export default function LandingPage() {
         e.preventDefault()
         setProfileSending(true)
         setProfileStatus(null)
+        setProfileResult(null)
         try {
             const res = await fetch('/api/profile-lead', {
                 method: 'POST',
@@ -171,7 +173,9 @@ export default function LandingPage() {
                 body: JSON.stringify(profileData),
             })
             if (res.ok) {
+                const data = await res.json()
                 setProfileStatus('success')
+                setProfileResult(data)
                 setProfileData({
                     email: '',
                     company: '',
@@ -491,7 +495,7 @@ export default function LandingPage() {
                                 </button>
                                 {profileStatus === 'success' && (
                                     <p className="form-status form-status--success">
-                                        Profil angekommen. Wir melden uns mit passenden nächsten Schritten.
+                                        Profil angekommen. Ihr Agent hat die ersten Treffer berechnet.
                                     </p>
                                 )}
                                 {profileStatus === 'error' && (
@@ -501,6 +505,70 @@ export default function LandingPage() {
                                 )}
                             </form>
                         </div>
+
+                        {profileResult && (
+                            <div className="agent-offer" aria-live="polite">
+                                <div className="agent-offer__header">
+                                    <div>
+                                        <span className="profile-lead__eyebrow">Sofort-Auswertung</span>
+                                        <h3>Ihr Ausschreibungsagent ist vorbereitet</h3>
+                                        <p>
+                                            Profil-ID {profileResult.profile_id}. Die kostenlose Vorschau zeigt erste Treffer;
+                                            Alerts, Vollanalyse und Teilnahmeplan laufen über den bezahlten Agenten.
+                                        </p>
+                                    </div>
+                                    <a className="btn btn--primary" href="#kontakt">Agent-Plan aktivieren</a>
+                                </div>
+
+                                {profileResult.matches?.length > 0 ? (
+                                    <div className="match-grid">
+                                        {profileResult.matches.map((match) => {
+                                            const tender = match.tender || {}
+                                            return (
+                                                <article className="match-card" key={tender.id || tender.source_url}>
+                                                    <div className="match-card__score">{match.match_score}% Fit</div>
+                                                    <h4>{tender.title}</h4>
+                                                    <p>{tender.buyer_name || 'Auftraggeber nicht angegeben'}</p>
+                                                    <ul>
+                                                        {(match.reasons || []).slice(0, 2).map((reason) => (
+                                                            <li key={reason}>{reason}</li>
+                                                        ))}
+                                                    </ul>
+                                                    {tender.source_url && (
+                                                        <a href={tender.source_url} target="_blank" rel="noopener noreferrer">
+                                                            Ausschreibung öffnen
+                                                        </a>
+                                                    )}
+                                                </article>
+                                            )
+                                        })}
+                                    </div>
+                                ) : (
+                                    <div className="tender-state">
+                                        Noch keine starken Sofort-Treffer. Der bezahlte Agent sucht breiter, überwacht neue Quellen
+                                        und meldet passende Ausschreibungen automatisch.
+                                    </div>
+                                )}
+
+                                <div className="pricing-strip">
+                                    <article>
+                                        <strong>Pro</strong>
+                                        <span>149 EUR/Monat</span>
+                                        <p>Suchprofil, Alerts, Fulltext-Suche und wöchentliche Trefferliste.</p>
+                                    </article>
+                                    <article>
+                                        <strong>Agent</strong>
+                                        <span>499 EUR/Monat</span>
+                                        <p>Teilnahmeplan, Go/No-Go, Agent API, A2A/MCP und Priorisierung.</p>
+                                    </article>
+                                    <article>
+                                        <strong>Verfahren</strong>
+                                        <span>ab 1.500 EUR</span>
+                                        <p>Konkrete Ausschreibung prüfen, Anforderungen strukturieren, Angebotsfahrplan bauen.</p>
+                                    </article>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
