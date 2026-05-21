@@ -72,6 +72,17 @@ export default function LandingPage() {
     const [tenders, setTenders] = useState([])
     const [tendersLoading, setTendersLoading] = useState(true)
     const [tendersError, setTendersError] = useState(null)
+    const [profileData, setProfileData] = useState({
+        email: '',
+        company: '',
+        industry: '',
+        region: '',
+        services: '',
+        budget: '',
+        frequency: '',
+    })
+    const [profileStatus, setProfileStatus] = useState(null)
+    const [profileSending, setProfileSending] = useState(false)
 
     useEffect(() => {
         const controller = new AbortController()
@@ -147,6 +158,36 @@ export default function LandingPage() {
         } catch {
             setNewsletterStatus('error')
         }
+    }
+
+    const handleProfileSubmit = async (e) => {
+        e.preventDefault()
+        setProfileSending(true)
+        setProfileStatus(null)
+        try {
+            const res = await fetch('/api/profile-lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(profileData),
+            })
+            if (res.ok) {
+                setProfileStatus('success')
+                setProfileData({
+                    email: '',
+                    company: '',
+                    industry: '',
+                    region: '',
+                    services: '',
+                    budget: '',
+                    frequency: '',
+                })
+            } else {
+                setProfileStatus('error')
+            }
+        } catch {
+            setProfileStatus('error')
+        }
+        setProfileSending(false)
     }
 
     return (
@@ -374,6 +415,92 @@ export default function LandingPage() {
                                 })}
                             </div>
                         )}
+
+                        <div className="profile-lead" id="profil">
+                            <div>
+                                <span className="profile-lead__eyebrow">Nächster Schritt</span>
+                                <h3>Persönlichen Ausschreibungsagenten vorbereiten</h3>
+                                <p>
+                                    Hinterlegen Sie Ihr Suchprofil. Wir prüfen passende Branchen, Regionen und
+                                    Auftragsgrößen und melden uns mit den nächsten konkreten Treffern.
+                                </p>
+                            </div>
+                            <form className="profile-lead__form" onSubmit={handleProfileSubmit}>
+                                <div className="profile-lead__grid">
+                                    <input
+                                        type="text"
+                                        placeholder="Unternehmen *"
+                                        value={profileData.company}
+                                        onChange={(e) => setProfileData({ ...profileData, company: e.target.value })}
+                                        required
+                                    />
+                                    <input
+                                        type="email"
+                                        placeholder="Geschäftliche E-Mail *"
+                                        value={profileData.email}
+                                        onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                                        required
+                                    />
+                                    <select
+                                        value={profileData.industry}
+                                        onChange={(e) => setProfileData({ ...profileData, industry: e.target.value })}
+                                    >
+                                        <option value="">Branche wählen</option>
+                                        <option value="Handwerk">Handwerk</option>
+                                        <option value="Bau">Bau</option>
+                                        <option value="IT">IT / Software</option>
+                                        <option value="Marketing">Marketing / PR</option>
+                                        <option value="Beratung">Beratung</option>
+                                        <option value="Facility">Facility Management</option>
+                                    </select>
+                                    <input
+                                        type="text"
+                                        placeholder="Region, z. B. NRW, Berlin, DACH"
+                                        value={profileData.region}
+                                        onChange={(e) => setProfileData({ ...profileData, region: e.target.value })}
+                                    />
+                                    <select
+                                        value={profileData.budget}
+                                        onChange={(e) => setProfileData({ ...profileData, budget: e.target.value })}
+                                    >
+                                        <option value="">Ziel-Auftragsvolumen</option>
+                                        <option value="Bis 25.000 EUR">Bis 25.000 EUR</option>
+                                        <option value="25.000-100.000 EUR">25.000-100.000 EUR</option>
+                                        <option value="100.000-500.000 EUR">100.000-500.000 EUR</option>
+                                        <option value="500.000+ EUR">500.000+ EUR</option>
+                                    </select>
+                                    <select
+                                        value={profileData.frequency}
+                                        onChange={(e) => setProfileData({ ...profileData, frequency: e.target.value })}
+                                    >
+                                        <option value="">Teilnahme bisher</option>
+                                        <option value="Noch nie">Noch nie</option>
+                                        <option value="1-3 pro Jahr">1-3 pro Jahr</option>
+                                        <option value="Monatlich">Monatlich</option>
+                                        <option value="Regelmäßig / Team vorhanden">Regelmäßig / Team vorhanden</option>
+                                    </select>
+                                </div>
+                                <textarea
+                                    placeholder="Welche Leistungen sollen Agenten für Sie suchen? *"
+                                    value={profileData.services}
+                                    onChange={(e) => setProfileData({ ...profileData, services: e.target.value })}
+                                    required
+                                />
+                                <button type="submit" className="btn btn--primary" disabled={profileSending}>
+                                    {profileSending ? 'Profil wird gesendet...' : 'Agentenprofil anfragen'}
+                                </button>
+                                {profileStatus === 'success' && (
+                                    <p className="form-status form-status--success">
+                                        Profil angekommen. Wir melden uns mit passenden nächsten Schritten.
+                                    </p>
+                                )}
+                                {profileStatus === 'error' && (
+                                    <p className="form-status form-status--error">
+                                        Das Profil konnte nicht gesendet werden. Bitte nutzen Sie das Kontaktformular unten.
+                                    </p>
+                                )}
+                            </form>
+                        </div>
                     </div>
                 </div>
             </section>

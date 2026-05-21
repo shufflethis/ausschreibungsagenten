@@ -760,6 +760,72 @@ img {
     background: rgba(239, 68, 68, 0.08);
 }
 
+.profile-lead {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 2rem;
+    margin-top: 2rem;
+    border: 1px solid rgba(6, 182, 212, 0.18);
+    border-radius: 16px;
+    background: rgba(6, 182, 212, 0.06);
+    padding: 1.5rem;
+}
+
+.profile-lead__eyebrow {
+    color: var(--accent-cyan-light);
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.profile-lead h3 {
+    color: var(--text-heading);
+    font-size: var(--font-size-2xl);
+    line-height: 1.25;
+    margin: 0.5rem 0 0.75rem;
+}
+
+.profile-lead p {
+    color: var(--text-secondary);
+}
+
+.profile-lead__form {
+    display: grid;
+    gap: 1rem;
+}
+
+.profile-lead__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+.profile-lead input,
+.profile-lead select,
+.profile-lead textarea {
+    width: 100%;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    background: rgba(10, 14, 26, 0.82);
+    color: var(--text-primary);
+    font: inherit;
+    padding: 0.85rem 0.95rem;
+}
+
+.profile-lead textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.profile-lead input:focus,
+.profile-lead select:focus,
+.profile-lead textarea:focus {
+    outline: none;
+    border-color: rgba(6, 182, 212, 0.65);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.14);
+}
+
 /* ---------- Comparison Table ---------- */
 .comparison-wrapper {
     margin-top: 3rem;
@@ -1168,7 +1234,7 @@ img {
 @media (max-width: 1024px) {
     .hero__title { font-size: var(--font-size-5xl); }
     .section__title { font-size: var(--font-size-3xl); }
-    .grid-3, .features-grid, .problem-grid, .steps-grid, .tender-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-3, .features-grid, .problem-grid, .steps-grid, .tender-grid, .profile-lead { grid-template-columns: repeat(2, 1fr); }
     .steps-grid::before { display: none; }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1187,12 +1253,13 @@ img {
     .section__title { font-size: var(--font-size-2xl); }
 
     .grid-2, .grid-3, .grid-4,
-    .features-grid, .problem-grid, .steps-grid, .tender-grid,
+    .features-grid, .problem-grid, .steps-grid, .tender-grid, .profile-lead,
     .contact-grid { grid-template-columns: 1fr; }
 
     .steps-grid::before { display: none; }
 
     .tender-search__input-row { grid-template-columns: 1fr; }
+    .profile-lead__grid { grid-template-columns: 1fr; }
 
     .header__nav { display: none; }
     .header__nav--open {
