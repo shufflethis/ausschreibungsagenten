@@ -84,6 +84,7 @@ export default function LandingPage() {
     const [profileStatus, setProfileStatus] = useState(null)
     const [profileSending, setProfileSending] = useState(false)
     const [profileResult, setProfileResult] = useState(null)
+    const [selectedTender, setSelectedTender] = useState(null)
 
     useEffect(() => {
         const controller = new AbortController()
@@ -411,9 +412,13 @@ export default function LandingPage() {
                                                     </div>
                                                 )}
                                             </dl>
-                                            <a href={tender.source_url} target="_blank" rel="noopener noreferrer">
+                                            <button
+                                                type="button"
+                                                className="source-trigger"
+                                                onClick={() => setSelectedTender(tender)}
+                                            >
                                                 Quelle öffnen
-                                            </a>
+                                            </button>
                                         </article>
                                     )
                                 })}
@@ -535,9 +540,13 @@ export default function LandingPage() {
                                                         ))}
                                                     </ul>
                                                     {tender.source_url && (
-                                                        <a href={tender.source_url} target="_blank" rel="noopener noreferrer">
+                                                        <button
+                                                            type="button"
+                                                            className="source-trigger"
+                                                            onClick={() => setSelectedTender(tender)}
+                                                        >
                                                             Ausschreibung öffnen
-                                                        </a>
+                                                        </button>
                                                     )}
                                                 </article>
                                             )
@@ -572,6 +581,74 @@ export default function LandingPage() {
                     </div>
                 </div>
             </section>
+
+            {selectedTender && (
+                <div className="source-modal" role="dialog" aria-modal="true" aria-labelledby="source-modal-title">
+                    <button
+                        type="button"
+                        className="source-modal__backdrop"
+                        aria-label="Dialog schließen"
+                        onClick={() => setSelectedTender(null)}
+                    />
+                    <div className="source-modal__panel">
+                        <button
+                            type="button"
+                            className="source-modal__close"
+                            aria-label="Dialog schließen"
+                            onClick={() => setSelectedTender(null)}
+                        >
+                            ×
+                        </button>
+                        <span className="profile-lead__eyebrow">Jetzt starten</span>
+                        <h3 id="source-modal-title">{selectedTender.title}</h3>
+                        <dl className="source-modal__facts">
+                            <div>
+                                <dt>Auftraggeber</dt>
+                                <dd>{selectedTender.buyer_name || 'Nicht angegeben'}</dd>
+                            </div>
+                            <div>
+                                <dt>Frist</dt>
+                                <dd>{formatDate(selectedTender.deadline_at)}</dd>
+                            </div>
+                            <div>
+                                <dt>Wert</dt>
+                                <dd>{formatCurrency(selectedTender.estimated_value_eur) || 'Nicht genannt'}</dd>
+                            </div>
+                            <div>
+                                <dt>Score</dt>
+                                <dd>{selectedTender.relevance_score || selectedTender.match_score || 'n/a'}</dd>
+                            </div>
+                        </dl>
+                        <p>
+                            Öffnen Sie die Quelle kostenlos. Wenn Sie daraus systematisch Angebote machen wollen,
+                            legt der Ausschreibungsagent Suchprofil, Alerts und Teilnahmeplan für Sie an.
+                        </p>
+                        <div className="source-modal__actions">
+                            <a
+                                className="btn btn--primary"
+                                href="#profil"
+                                onClick={() => setSelectedTender(null)}
+                            >
+                                Agentenprofil vorbereiten
+                            </a>
+                            <a
+                                className="btn btn--secondary"
+                                href={selectedTender.source_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setSelectedTender(null)}
+                            >
+                                Quelle kostenlos öffnen
+                            </a>
+                        </div>
+                        <div className="source-modal__plans">
+                            <span>Pro: 149 €/Monat für Alerts</span>
+                            <span>Agent: 499 €/Monat für Teilnahmeplan + A2A/MCP</span>
+                            <span>Verfahren: ab 1.500 € einmalig</span>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* ===== COMPARISON TABLE ===== */}
             <section className="section section--alt" id="vergleich">

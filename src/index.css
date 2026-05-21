@@ -746,6 +746,23 @@ img {
     font-weight: 700;
 }
 
+.source-trigger {
+    align-self: flex-start;
+    border: 0;
+    background: transparent;
+    color: var(--accent-cyan-light);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    margin-top: auto;
+    padding: 0;
+    text-align: left;
+}
+
+.source-trigger:hover {
+    color: var(--accent-cyan);
+}
+
 .tender-state {
     border: 1px solid var(--glass-border);
     border-radius: 14px;
@@ -919,6 +936,101 @@ img {
     color: #fbbf24;
     font-weight: 800;
     margin-top: 0.25rem;
+}
+
+.source-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+}
+
+.source-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(2, 6, 23, 0.74);
+    cursor: pointer;
+}
+
+.source-modal__panel {
+    position: relative;
+    z-index: 1;
+    width: min(680px, 100%);
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
+    border: 1px solid rgba(251, 191, 36, 0.28);
+    border-radius: 16px;
+    background: #0a0e1a;
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.45);
+    padding: 1.5rem;
+}
+
+.source-modal__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.source-modal__panel h3 {
+    color: var(--text-heading);
+    font-size: var(--font-size-2xl);
+    line-height: 1.2;
+    margin: 0.5rem 2.5rem 1rem 0;
+}
+
+.source-modal__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin: 1rem 0;
+}
+
+.source-modal__facts div {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.7);
+    padding: 0.75rem;
+}
+
+.source-modal__facts dt {
+    color: var(--text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.source-modal__facts dd {
+    color: var(--text-heading);
+    margin: 0.3rem 0 0;
+}
+
+.source-modal__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.source-modal__plans {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
 }
 
 /* ---------- Comparison Table ---------- */
@@ -1357,6 +1469,8 @@ img {
     .tender-search__input-row { grid-template-columns: 1fr; }
     .profile-lead__grid { grid-template-columns: 1fr; }
     .agent-offer__header { flex-direction: column; }
+    .source-modal__facts { grid-template-columns: 1fr; }
+    .source-modal__actions { flex-direction: column; }
 
     .header__nav { display: none; }
     .header__nav--open {
