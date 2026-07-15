@@ -16,7 +16,7 @@ export default function Header() {
             <div className="container header__inner">
                 <Link to="/" className="header__logo" aria-label="Ausschreibungsagenten Startseite">
                     ausschreibungsagenten<span className="dot">.</span>de
-                    <span className="sub">KI-gestützte Ausschreibungssuche</span>
+                    <span className="sub">Erklärbare Ausschreibungssuche</span>
                 </Link>
 
                 <button

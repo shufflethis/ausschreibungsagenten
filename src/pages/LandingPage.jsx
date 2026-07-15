@@ -13,38 +13,38 @@ const TOOLS = [
 ]
 
 const FEATURES = [
-    { icon: '🔍', title: 'Multi-Portal-Scan', text: 'Ein Agent durchsucht DTVP, TED, Bund.de, eVergabe, Vergabe24 und alle Landesportale gleichzeitig. Kein manuelles Hin-und-Her-Klicken zwischen Dutzenden Plattformen mehr.', color: '' },
-    { icon: '🤖', title: 'KI-Relevanz-Scoring', text: 'Künstliche Intelligenz bewertet jede Ausschreibung nach Passung zu Ihrem Firmenprofil: Gewerk, Region, Auftragsvolumen und Eignungskriterien werden automatisch abgeglichen.', color: '--violet' },
-    { icon: '📱', title: 'Sofort-Benachrichtigung', text: 'Push-Notifications via E-Mail, App oder WhatsApp – in Echtzeit, wenn eine relevante Ausschreibung veröffentlicht wird. Nie wieder eine Frist verpassen.', color: '--amber' },
-    { icon: '📄', title: 'GAEB/LV-Analyse', text: 'Leistungsverzeichnisse im GAEB DA XML, PDF oder Excel-Format werden automatisch ausgewertet. Positionen, Mengen und Anforderungen auf einen Blick erfasst.', color: '--green' },
-    { icon: '📊', title: 'Intelligentes Dashboard', text: 'Fristenkalender, Angebotsübersicht und Wettbewerbsanalyse in einem zentralen Dashboard. Behalten Sie den Überblick über alle laufenden Vergabeverfahren.', color: '' },
-    { icon: '🔗', title: 'ERP-Integration', text: 'Nahtlose Anbindung an gängige Handwerker- und Bau-Software. Gefundene Ausschreibungen direkt in Ihrem ERP-System weiterverarbeiten und Angebote erstellen.', color: '--violet' },
+    { icon: '🔍', title: 'Zwei Live-Quellen', text: 'TED und service.bund.de werden regelmäßig abgefragt. DTVP, eVergabe und Landesportale befinden sich im Ausbau und werden nicht als live ausgegeben.', color: '' },
+    { icon: '🎯', title: 'Erklärbares Matching', text: 'CPV-Codes, Leistungsbegriffe, Ausschlusswörter, Leistungsort, Auftragswert und Frist ergeben einen transparenten Firmen-Fit mit einzelnen Score-Gründen.', color: '--violet' },
+    { icon: '✉️', title: 'E-Mail-Digest', text: 'Im Pilot erhalten Profile neue, noch nicht versendete Treffer täglich oder wöchentlich per E-Mail. WhatsApp und Push sind noch nicht produktiv.', color: '--amber' },
+    { icon: '📄', title: 'GAEB X83/X84 lesen', text: 'GAEB-DA-XML-Dateien der Austauschphasen X83 und X84 werden nur lesend strukturiert: Bereiche, Positionen, Mengen, Einheiten und optionale Preise. Keine Kalkulationsautomatik.', color: '--green' },
+    { icon: '📊', title: 'Pilot-Dashboard', text: 'Aktive Treffer, Fit-Gründe, Fristen, Auftragswerte, Originalquelle, Status und interne Notizen in einer geschützten Profilansicht.', color: '' },
+    { icon: '↗️', title: 'Standardisierter ERP-Export', text: 'Tender lassen sich als versioniertes JSON, CSV oder XLSX exportieren. Ein signierter Webhook ist konfigurierbar; konkrete ERP-Connectoren folgen erst nach Herstellerklärung.', color: '--violet' },
 ]
 
 const BRANCHEN = [
-    { emoji: '🔧', name: 'Handwerk', desc: '580.000 Betriebe in Deutschland – von Elektro über Sanitär bis Maler. Ihr KI-Agent findet die passenden Gewerke-Ausschreibungen in Ihrer Region.' },
-    { emoji: '🏗️', name: 'Bauunternehmen', desc: 'Hoch-, Tief- und Straßenbau. GAEB-Analyse inklusive. Von der kommunalen Kanalsanierung bis zum Bundesstraßen-Neubau.' },
-    { emoji: '💻', name: 'IT-Dienstleister', desc: 'Software-Entwicklung, Cloud-Migration, IT-Sicherheit. Öffentliche IT-Projekte im Wert von Milliarden pro Jahr warten auf Ihre Expertise.' },
-    { emoji: '📋', name: 'Ingenieurbüros', desc: 'Tragwerksplanung, Vermessung, Umweltgutachten. Komplexe Eignungskriterien werden automatisch gegen Ihr Profil geprüft.' },
-    { emoji: '🍽️', name: 'Catering & Services', desc: 'Kantinen-Bewirtschaftung, Reinigung, Facility Management. Kommunale und Bundes-Ausschreibungen für Dienstleistungen.' },
+    { emoji: '🏗️', name: 'Fenster & Fassade', desc: 'Im Pilot aktiv: Fenster, Türen, Fassaden, Verglasung, Metallbau, Sonnenschutz und ausgewählte Brandschutz-Gewerke.' },
+    { emoji: '📣', name: 'Marketing & Digital', desc: 'Weiterhin aktiv: Marketing, Werbung, PR, Webdesign, Grafik und ausgewählte digitale Dienstleistungen.' },
+    { emoji: '🧭', name: 'Weitere Branchen', desc: 'Weitere Branchen werden nach CPV-Katalog und Pilotbedarf konfiguriert. Eine vollständige Abdeckung aller Gewerke behaupten wir derzeit nicht.' },
 ]
 
 const FAQS = [
     { q: 'Was sind öffentliche Ausschreibungen und warum sind sie wichtig?', a: 'Öffentliche Ausschreibungen sind Vergabeverfahren, mit denen Behörden, Kommunen und öffentliche Einrichtungen Aufträge an Unternehmen vergeben. Mit einem jährlichen Volumen von rund 500 Milliarden Euro allein in Deutschland sind sie eine der größten Auftragsquellen für Unternehmen jeder Größe. Öffentliche Aufträge bieten Planungssicherheit, faire Konditionen und regelmäßige Zahlungen.' },
-    { q: 'Welche Vergabeportale gibt es in Deutschland?', a: 'Die wichtigsten Vergabeportale sind das Deutsche Vergabeportal (DTVP), eVergabe.de, Bund.de, sowie die Landesvergabeportale der 16 Bundesländer. Für EU-weite Ausschreibungen ist TED (Tenders Electronic Daily) die zentrale Plattform. Ein KI-Ausschreibungsagent durchsucht all diese Portale automatisch und spart Ihnen die tägliche manuelle Recherche auf Dutzenden unterschiedlichen Plattformen.' },
-    { q: 'Was ist ein KI-Ausschreibungsagent?', a: 'Ein KI-Ausschreibungsagent ist eine Software, die mithilfe Künstlicher Intelligenz automatisch alle relevanten Vergabeportale nach passenden Ausschreibungen durchsucht. Der Agent lernt Ihr Firmenprofil – Gewerke, Region, Auftragsvolumen, Eignungskriterien – und bewertet jede neue Ausschreibung mit einem Relevanz-Score. So erhalten Sie nur die Treffer, die wirklich zu Ihrem Unternehmen passen.' },
+    { q: 'Welche Vergabeportale gibt es in Deutschland?', a: 'Zu den wichtigen Quellen gehören DTVP, eVergabe, service.bund.de, die Landesportale und für EU-Verfahren TED. Unser eigener Pilot indexiert aktuell TED und service.bund.de. Weitere Portale sind im Ausbau.' },
+    { q: 'Was macht der Ausschreibungsagent konkret?', a: 'Der aktuelle Agent ordnet Bekanntmachungen über CPV-Codes und Regeln Branchen zu. Anschließend vergleicht er Firmenprofil, Keywords, Ausschlüsse, Leistungsort, Auftragswert und Frist. Jeder Fit-Score wird mit nachvollziehbaren Einzelgründen angezeigt; semantisches KI-Matching wird nicht als bereits produktiv behauptet.' },
     { q: 'Wie viel kostet ein Ausschreibungsagent?', a: 'Die Preise variieren je nach Anbieter und Funktionsumfang. Einstiegsangebote beginnen bei ca. 39 €/Monat für Basis-Funktionen (z. B. aumass Start). Professionelle Tools mit KI-Features liegen zwischen 80 und 200 €/Monat. Enterprise-Lösungen mit API-Zugang und White-Label-Optionen werden individuell bepreist. Angesichts des Potenzials öffentlicher Aufträge amortisiert sich die Investition oft schon mit einem einzigen gewonnenen Auftrag.' },
     { q: 'Ab welchem Auftragsvolumen lohnt sich die Suche nach öffentlichen Ausschreibungen?', a: 'Grundsätzlich gibt es keine Untergrenze. Bereits Kleinstaufträge ab wenigen tausend Euro werden öffentlich ausgeschrieben, insbesondere auf kommunaler Ebene. Für die meisten Unternehmen lohnt sich der Einstieg ab einem anvisierten Jahresauftragsvolumen von 50.000 €. Die Vergaberechts-Schwellenwerte liegen aktuell bei 143.000 € für Liefer- und Dienstleistungsaufträge und 5.538.000 € für Bauaufträge (EU-weite Vergabe).' },
-    { q: 'Was ist GAEB und warum ist die automatische Analyse wichtig?', a: 'GAEB (Gemeinsamer Ausschuss Elektronik im Bauwesen) ist das Standardformat für elektronische Leistungsverzeichnisse im deutschen Bauwesen. GAEB DA XML-Dateien enthalten strukturierte Positionsdaten, Mengen und Leistungsbeschreibungen. Die automatische Analyse dieser Dateien spart Stunden manueller Arbeit beim Lesen und Kalkulieren von Leistungsverzeichnissen und reduziert Fehlerquellen bei der Angebotserstellung erheblich.' },
+    { q: 'Welche GAEB-Funktion ist verfügbar?', a: 'Der Pilot liest GAEB DA XML X83 und X84 nur lesend ein und zeigt Metadaten, Bereiche, Positionen, Texte, Mengen, Einheiten und vorhandene Preise. CSV- und XLSX-Export sind möglich. Automatische Kalkulation, Preisempfehlung und Angebotsabgabe gehören nicht zum aktuellen Umfang.' },
     { q: 'Wie viele Ausschreibungen werden täglich veröffentlicht?', a: 'In Deutschland werden täglich mehrere tausend neue Ausschreibungen auf den verschiedenen Vergabeportalen veröffentlicht. Allein das DTVP (Deutsches Vergabeportal) verzeichnet über 500.000 Bekanntmachungen pro Jahr. Ohne automatisierte Suche ist es praktisch unmöglich, alle relevanten Ausschreibungen manuell zu erfassen – insbesondere, wenn man mehrere Portale und Bundesländer abdecken möchte.' },
     { q: 'Welche Branchen profitieren am meisten von Ausschreibungsagenten?', a: 'Besonders stark profitieren das Baugewerbe, Handwerksbetriebe, IT-Dienstleister, Ingenieurbüros und Facility-Management-Unternehmen. Aber auch Catering, Reinigung, Beratung, Schulung und viele weitere Branchen finden regelmäßig passende öffentliche Aufträge. Grundsätzlich gilt: Jedes Unternehmen, das Dienstleistungen oder Produkte an den öffentlichen Sektor verkaufen kann, sollte Ausschreibungsagenten nutzen.' },
     { q: 'Kann ich auch als kleines Unternehmen an öffentlichen Ausschreibungen teilnehmen?', a: 'Ja, unbedingt! Das Vergaberecht fördert sogar explizit die Beteiligung kleiner und mittlerer Unternehmen (KMU). Viele Aufträge werden in Lose aufgeteilt, um auch kleineren Betrieben die Teilnahme zu ermöglichen. Kommunale Ausschreibungen sind oft besonders KMU-freundlich. Ein KI-Agent hilft Ihnen, genau die Ausschreibungen zu finden, die zu Ihrer Unternehmensgröße und Ihren Kapazitäten passen.' },
-    { q: 'Wie unterscheidet sich ausschreibungsagenten.de von anderen Plattformen?', a: 'Ausschreibungsagenten.de bietet einen unabhängigen Überblick über alle verfügbaren Tools und Plattformen zur Ausschreibungssuche. Wir vergleichen Funktionen, Preise und KI-Fähigkeiten objektiv und helfen Ihnen, die beste Lösung für Ihre spezifischen Anforderungen zu finden. Dazu liefern wir redaktionelle Inhalte rund um das Thema Vergabe, Tipps zur Angebotserstellung und aktuelle Markt-Insights.' },
+    { q: 'Wie unterscheidet sich ausschreibungsagenten.de von anderen Plattformen?', a: 'Neben dem Marktüberblick erproben wir einen eigenen, transparenten Ausschreibungsagenten. Im aktuellen Pilot sind TED und service.bund.de, erklärbares Profil-Matching, E-Mail-Digests, GAEB X83/X84 und Standardexporte verfügbar. Portale und Hersteller-Connectoren im Ausbau kennzeichnen wir ausdrücklich.' },
     { q: 'Welche Fristen gelten bei öffentlichen Ausschreibungen?', a: 'Die Angebotsfristen variieren je nach Verfahrensart. Bei offenen Verfahren oberhalb der EU-Schwellenwerte beträgt die Mindestfrist 35 Tage (mit elektronischer Bekanntmachung: 30 Tage). Unterhalb der Schwellenwerte und bei nationalen Verfahren gelten oft kürzere Fristen von 10–15 Werktagen. Ein Ausschreibungsagent mit Fristenkalender sorgt dafür, dass Sie keine Deadline verpassen.' },
     { q: 'Ist die Nutzung der Vergabeportale kostenlos?', a: 'Die Einsicht in Bekanntmachungen ist auf den meisten offiziellen Portalen kostenlos. Die Teilnahme an elektronischen Vergabeverfahren über das DTVP ist ebenfalls kostenfrei. Erweiterte Funktionen wie Suchprofile, automatische Benachrichtigungen und Export-Funktionen sind bei vielen Portalen premium-pflichtig. Drittanbieter-Tools wie aumass, TenderWolf oder GAEB.ai bieten Mehrwert-Features gegen monatliche Gebühren.' },
 ]
 
 const TENDER_PRESETS = [
+    { label: 'Fassade', value: 'fassade' },
+    { label: 'Fenster', value: 'fenster' },
     { label: 'Marketing', value: 'marketing' },
     { label: 'Webdesign', value: 'website' },
     { label: 'IT', value: 'software' },
@@ -72,6 +72,7 @@ export default function LandingPage() {
     const [tenders, setTenders] = useState([])
     const [tendersLoading, setTendersLoading] = useState(true)
     const [tendersError, setTendersError] = useState(null)
+    const [sourceStatus, setSourceStatus] = useState([])
     const [profileData, setProfileData] = useState({
         email: '',
         company: '',
@@ -122,6 +123,15 @@ export default function LandingPage() {
         loadTenders()
         return () => controller.abort()
     }, [tenderQuery])
+
+    useEffect(() => {
+        const controller = new AbortController()
+        fetch('/api/source-status', { signal: controller.signal })
+            .then((response) => response.ok ? response.json() : [])
+            .then((data) => setSourceStatus(Array.isArray(data) ? data : []))
+            .catch(() => {})
+        return () => controller.abort()
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -231,8 +241,8 @@ export default function LandingPage() {
     return (
         <>
             <Helmet>
-                <title>Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen | Automatisch finden, filtern, gewinnen</title>
-                <meta name="description" content="Öffentliche Ausschreibungen automatisch finden mit KI-Agenten. Alle Vergabeportale im Blick: DTVP, TED, Bund.de, eVergabe. Tools im Vergleich. Für Handwerk, Bau, IT & Beratung." />
+                <title>Ausschreibungsagenten.de – Ausschreibungen aus TED und bund.de passend filtern</title>
+                <meta name="description" content="Öffentliche Ausschreibungen aus TED und service.bund.de finden. Erklärbares Profil-Matching, Pilot-Dashboard, E-Mail-Digest, GAEB X83/X84 und Standardexport." />
             </Helmet>
 
             {/* ===== HERO ===== */}
@@ -241,7 +251,7 @@ export default function LandingPage() {
                     <div className="hero__content">
                         <div className="hero__badge">
                             <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4', animation: 'pulse 2s ease-in-out infinite' }}></span>
-                            Über 8 Vergabeportale im Blick
+                            TED + service.bund.de live
                         </div>
 
                         <h1 className="hero__title">
@@ -250,9 +260,8 @@ export default function LandingPage() {
                         </h1>
 
                         <p className="hero__description">
-                            KI-Agenten durchsuchen täglich alle deutschen Vergabeportale und liefern Ihnen
-                            nur die öffentlichen Ausschreibungen, die wirklich zu Ihrem Unternehmen passen.
-                            Automatisch. Intelligent. Rund um die Uhr.
+                            Unser Pilot durchsucht TED und service.bund.de und bewertet Ausschreibungen
+                            nachvollziehbar nach Ihrem Firmenprofil. Weitere Portale werden schrittweise angebunden.
                         </p>
 
                         <div className="hero__actions">
@@ -270,8 +279,8 @@ export default function LandingPage() {
                                 <span className="hero__stat-label">Ausschreibungen pro Jahr in DE</span>
                             </div>
                             <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>8+</span>
-                                <span className="hero__stat-label">Vergabeportale automatisch gescannt</span>
+                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>2</span>
+                                <span className="hero__stat-label">Produktive öffentliche Quellen</span>
                             </div>
                         </div>
                     </div>
@@ -346,18 +355,18 @@ export default function LandingPage() {
                             <div className="step-card__number">2</div>
                             <h3 className="glass-card__title">Agent arbeitet</h3>
                             <p className="glass-card__text">
-                                Ihr KI-Agent scannt täglich alle relevanten Vergabeportale – DTVP, TED, Bund.de,
-                                eVergabe und die Landesportale. Jede neue Ausschreibung wird mit Ihrem Profil
-                                abgeglichen und erhält einen Relevanz-Score. Unpassende Treffer werden automatisch ausgefiltert.
+                                Der Agent fragt TED und service.bund.de regelmäßig ab. Jede neue Ausschreibung wird
+                                über CPV, Regeln, Keywords, Region, Wert und Frist mit Ihrem Profil abgeglichen.
+                                DTVP, eVergabe und Landesportale sind als nächste Quellen geplant.
                             </p>
                         </div>
                         <div className="glass-card step-card">
                             <div className="step-card__number">3</div>
                             <h3 className="glass-card__title">Angebot abgeben</h3>
                             <p className="glass-card__text">
-                                Sie erhalten nur die besten Treffer direkt in Ihr Postfach – per E-Mail, Push oder
-                                WhatsApp. Mit allen wichtigen Details: Auftraggeber, Leistungsumfang, Fristen und
-                                Eignungskriterien. So können Sie sofort mit der Angebotserstellung beginnen.
+                                Neue, noch nicht versendete Treffer kommen täglich oder wöchentlich per E-Mail.
+                                Das Pilot-Dashboard zeigt Auftraggeber, Leistungsort, Frist, Wert, Match-Gründe und
+                                Originalquelle. Push und WhatsApp sind noch nicht produktiv.
                             </p>
                         </div>
                     </div>
@@ -375,8 +384,26 @@ export default function LandingPage() {
                     </h2>
                     <p className="section__subtitle">
                         Diese Treffer kommen direkt aus AgentLeads. Die freie Vorschau zeigt ausgewählte Ergebnisse;
-                        ein Firmenprofil schaltet bessere Filter, Alerts und Teilnahmepläne frei.
+                        ein Pilotprofil ergänzt Firmen-Fit, Status, Notizen, Digest, GAEB und Exporte.
                     </p>
+
+                    <div className="glass-card" style={{ marginBottom: '2rem' }}>
+                        <h3 className="glass-card__title">Quellenstatus</h3>
+                        <p className="glass-card__text">
+                            TED und service.bund.de sind live. DTVP, eVergabe sowie die Landesportale Bayern,
+                            Nordrhein-Westfalen und Baden-Württemberg sind noch nicht produktiv angebunden.
+                        </p>
+                        {sourceStatus.length > 0 && (
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem', marginTop: '1rem' }}>
+                                {sourceStatus.map((source) => (
+                                    <span className={`badge ${source.implementation_status === 'live' ? 'badge--yes' : 'badge--no'}`} key={source.source}>
+                                        {source.source.toUpperCase()}: {source.implementation_status === 'live' ? 'live' : 'im Ausbau'}
+                                        {source.last_success_at ? ` · Datenstand ${formatDate(source.last_success_at)}` : ''}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     <div className="tender-search">
                         <form className="tender-search__form" onSubmit={(e) => e.preventDefault()}>
@@ -387,7 +414,7 @@ export default function LandingPage() {
                                     type="search"
                                     value={tenderQuery}
                                     onChange={(e) => setTenderQuery(e.target.value)}
-                                    placeholder="z. B. Webdesign, Software, PR"
+                                    placeholder="z. B. Fassade, Fenster, Webdesign, PR"
                                 />
                                 <a href="#kontakt" className="btn btn--amber">Profil anlegen</a>
                             </div>
@@ -552,8 +579,11 @@ export default function LandingPage() {
                                         <h3>Ihr Ausschreibungsagent ist vorbereitet</h3>
                                         <p>
                                             Profil-ID {profileResult.profile_id}. Die kostenlose Vorschau zeigt erste Treffer;
-                                            Alerts, Vollanalyse und Teilnahmeplan laufen über den bezahlten Agenten.
+                                            im geschützten Pilot-Dashboard können Sie Fit-Gründe, Status, Notizen, GAEB und Exporte prüfen.
                                         </p>
+                                        {profileResult.pilot_url && (
+                                            <a className="btn btn--outline" href={profileResult.pilot_url} rel="noreferrer">Pilot-Dashboard öffnen</a>
+                                        )}
                                     </div>
                                     <button
                                         type="button"
@@ -594,8 +624,8 @@ export default function LandingPage() {
                                     </div>
                                 ) : (
                                     <div className="tender-state">
-                                        Noch keine starken Sofort-Treffer. Der bezahlte Agent sucht breiter, überwacht neue Quellen
-                                        und meldet passende Ausschreibungen automatisch.
+                                        Noch keine starken Sofort-Treffer im aktuellen TED-/bund.de-Index. Wir schärfen mit Ihnen
+                                        CPVs, Begriffe, Ausschlüsse, Regionen und Zielwerte für den Pilot.
                                     </div>
                                 )}
 
@@ -616,7 +646,7 @@ export default function LandingPage() {
                                     <article>
                                         <strong>Agent</strong>
                                         <span>499 EUR/Monat</span>
-                                        <p>Teilnahmeplan, Go/No-Go, Agent API, A2A/MCP und Priorisierung.</p>
+                                        <p>Höhere API-Limits, Volltextsuche, Agent API, A2A/MCP und Priorisierung.</p>
                                         <button
                                             type="button"
                                             className="btn btn--primary"
@@ -688,7 +718,7 @@ export default function LandingPage() {
                         </dl>
                         <p>
                             Öffnen Sie die Quelle kostenlos. Wenn Sie daraus systematisch Angebote machen wollen,
-                            legt der Ausschreibungsagent Suchprofil, Alerts und Teilnahmeplan für Sie an.
+                            legt der Ausschreibungsagent ein strukturiertes Suchprofil mit Fit-Gründen und E-Mail-Digest an.
                         </p>
                         <div className="source-modal__actions">
                             <a
@@ -710,7 +740,7 @@ export default function LandingPage() {
                         </div>
                         <div className="source-modal__plans">
                             <span>Pro: 149 €/Monat für Alerts</span>
-                            <span>Agent: 499 €/Monat für Teilnahmeplan + A2A/MCP</span>
+                            <span>Agent: 499 €/Monat für höhere Limits + A2A/MCP</span>
                             <span>Verfahren: ab 1.500 € einmalig</span>
                         </div>
                     </div>
@@ -779,12 +809,11 @@ export default function LandingPage() {
                         <span className="pulse"></span> Funktionen
                     </span>
                     <h2 className="section__title">
-                        Was ein <span className="gradient-text">KI-Ausschreibungsagent</span> kann
+                        Was unser <span className="gradient-text">Pilot-Agent</span> heute kann
                     </h2>
                     <p className="section__subtitle">
-                        Moderne Ausschreibungsagenten kombinieren Web-Scraping, Natural Language Processing
-                        und maschinelles Lernen, um den gesamten Prozess der Ausschreibungssuche zu
-                        automatisieren und zu optimieren.
+                        Der aktuelle Funktionsumfang ist bewusst konkret: öffentliche Feeds und APIs,
+                        CPV-/Regel-/Keyword-Matching, sichere Dokumentanalyse und standardisierte Exporte.
                     </p>
 
                     <div className="features-grid">
@@ -806,11 +835,11 @@ export default function LandingPage() {
                         <span className="pulse"></span> Branchen
                     </span>
                     <h2 className="section__title">
-                        Öffentliche Aufträge für <span className="gradient-text">jede Branche</span>
+                        Aktive <span className="gradient-text">Pilot-Verticals</span>
                     </h2>
                     <p className="section__subtitle">
-                        Ob Handwerk, Bau, IT oder Beratung – öffentliche Ausschreibungen gibt es in nahezu
-                        jeder Branche. KI-Agenten filtern gezielt nach Ihrem Fachgebiet und Ihrer Region.
+                        Der Index ist konfigurierbar, aber noch nicht universell. Produktiv gepflegt werden
+                        derzeit Fenster/Fassade sowie Marketing/Digital.
                     </p>
 
                     <div className="branchen-grid">
@@ -843,14 +872,14 @@ export default function LandingPage() {
                             Die öffentliche Beschaffung in Deutschland umfasst ein jährliches Volumen von rund 500 Milliarden Euro – das entspricht etwa 15 Prozent des Bruttoinlandsprodukts. Damit ist Deutschland einer der größten öffentlichen Beschaffungsmärkte in Europa. Dieser Markt ist hochgradig dezentralisiert: Rund 58 Prozent aller Vergaben erfolgen auf kommunaler Ebene, 30 Prozent auf Länderebene und nur 12 Prozent auf Bundesebene. Das bedeutet: Die meisten Aufträge werden von Städten, Gemeinden und Landkreisen vergeben – oft ohne dass überregionale Unternehmen davon erfahren.
                         </p>
                         <p>
-                            Genau hier liegt die Chance für Unternehmen, die KI-gestützte Ausschreibungsagenten einsetzen: Statt täglich Dutzende Vergabeportale manuell zu durchsuchen, übernimmt ein intelligenter Agent diese Aufgabe automatisch. Er durchsucht DTVP, TED, Bund.de, eVergabe und sämtliche Landesportale, filtert nach Ihren Kriterien und liefert nur die relevanten Treffer.
+                            Genau hier liegt die Chance für Unternehmen, die Ausschreibungssuche systematisch zu unterstützen: Unser Pilot bündelt aktuell TED und service.bund.de, gleicht Bekanntmachungen mit einem strukturierten Firmenprofil ab und verlinkt immer auf die Originalquelle. DTVP, eVergabe und Landesportale sind ein dokumentierter Ausbaupunkt.
                         </p>
 
                         <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>
                             Vergaberecht verstehen: Schwellenwerte und Verfahrensarten
                         </h3>
                         <p>
-                            Das deutsche Vergaberecht unterscheidet zwischen nationalen und EU-weiten Verfahren. Die EU-Schwellenwerte liegen aktuell bei 143.000 Euro für Liefer- und Dienstleistungsaufträge und 5.538.000 Euro für Bauaufträge. Oberhalb dieser Schwellen müssen Aufträge EU-weit ausgeschrieben werden – unterhalb gelten die nationalen Vergabeordnungen der jeweiligen Bundesländer.
+                            Das deutsche Vergaberecht unterscheidet zwischen nationalen und EU-weiten Verfahren. Die jeweils geltenden EU-Schwellenwerte ändern sich regelmäßig; prüfen Sie deshalb für ein konkretes Verfahren die aktuellen amtlichen Werte und Vergabeunterlagen. Oberhalb der einschlägigen Schwellen werden Aufträge EU-weit bekannt gemacht, darunter gelten die jeweiligen nationalen Regelungen.
                         </p>
                         <p>
                             Die häufigsten Verfahrensarten sind das offene Verfahren (jeder kann ein Angebot abgeben), das nicht offene Verfahren (nur ausgewählte Unternehmen werden zur Angebotsabgabe aufgefordert) und das Verhandlungsverfahren (für besonders komplexe Leistungen). Ein guter Ausschreibungsagent klassifiziert die Verfahrensart automatisch und hilft Ihnen, die Anforderungen des jeweiligen Verfahrens zu verstehen.
@@ -863,7 +892,7 @@ export default function LandingPage() {
                             Traditionelle Ausschreibungstools arbeiten mit Keyword-basierten Suchfiltern – Sie geben Begriffe wie „Sanitärinstallation" oder „IT-Sicherheitsberatung" ein und erhalten eine Liste aller Treffer. Das Problem: Ausschreibungstexte verwenden oft unterschiedliche Formulierungen für die gleiche Leistung. „Sanitärtechnische Anlagen" statt „Sanitärinstallation", „Cyber Security Consulting" statt „IT-Sicherheitsberatung".
                         </p>
                         <p>
-                            KI-gestützte Agenten lösen dieses Problem mit Natural Language Processing (NLP). Sie verstehen den semantischen Kontext einer Ausschreibung und erkennen, dass „Erneuerung der haustechnischen Anlagen – Los 3: Sanitär" für einen Sanitärbetrieb hochrelevant ist, auch wenn das Wort „Sanitärinstallation" im Titel nicht vorkommt. Dieses intelligente Matching erhöht die Trefferquote um bis zu 60 Prozent gegenüber Keyword-Suchen.
+                            Unser aktueller Agent löst das transparent mit CPV-Klassifikation, positiven und negativen Begriffen sowie Regeln für Region, Auftragswert und Frist. Das ist nachvollziehbar und gut prüfbar. Semantische Modelle können später ergänzt werden, werden aber nicht als bereits produktiver Funktionsumfang ausgegeben.
                         </p>
 
                         <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>

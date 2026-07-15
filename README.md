@@ -36,7 +36,7 @@ Produktionsbetrieb:
 
 Die Bindung an `127.0.0.1` ist beabsichtigt: Port 8767 soll nicht direkt aus dem Internet erreichbar sein. Der öffentliche Zugriff erfolgt über den vorgeschalteten Reverse Proxy beziehungsweise die in `AGENTLEADS_API_BASE` konfigurierte HTTPS-Adresse.
 
-Das Backend aggregiert öffentliche Vergabe-Bekanntmachungen für Digital-, Marketing- und Web-Leistungen. Es filtert über CPV-Codes und Keyword-Inferenz und berechnet einen eigenen Relevance-Score von 0 bis 100.
+Das Backend aggregiert öffentliche Vergabe-Bekanntmachungen für zwei aktive Verticals: Digital/Marketing/Web sowie Fenster/Fassade/Glas/Metallbau. Der Quellen-Relevance-Score klassifiziert den Index; ein davon getrennter Firmen-Fit berücksichtigt CPV, Begriffe, Ausschlüsse, Leistungsort, Auftragswert und Frist und erklärt seine Einzelkomponenten.
 
 Quellenstatus:
 
@@ -45,6 +45,8 @@ Quellenstatus:
 - Landesportale Bayern, Nordrhein-Westfalen und Baden-Württemberg: derzeit nur vorbereitet/Stubs; Details und Blocker stehen in `BLOCKERS.md` des privaten Backend-Repositories
 
 Das private Backend enthält außerdem Stripe-Checkout, öffentliche Tender-Matches, Volltextsuche, einen A2A-JSON-RPC-Agent-Endpunkt und Agent-Discovery-Metadaten. Diese Funktionen sind nicht Teil dieses Website-Repositories.
+
+Pilotumfang: geschütztes Profil-Dashboard, täglicher/wöchentlicher E-Mail-Digest, nur lesende GAEB-DA-XML-Analyse für X83/X84 sowie Tender-Export als JSON, CSV, XLSX und optional signierter Webhook. Konkrete ERP-Connectoren, WhatsApp und Push sind nicht produktiv.
 
 ## Betrieb prüfen
 
