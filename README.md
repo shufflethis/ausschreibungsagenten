@@ -1,0 +1,70 @@
+# Ausschreibungsagenten.de
+
+Marketing-Website und öffentliche Vorschau für den privaten AgentLeads-Tender-Index.
+
+## Architektur
+
+Dieses Repository enthält **nicht** den Tender-Scraper und nicht die AgentLeads-Datenbank. Es enthält:
+
+- die React/Vite-Website für [ausschreibungsagenten.de](https://www.ausschreibungsagenten.de/),
+- Vercel Functions für Kontakt-, Newsletter-, Profil- und Checkout-Anfragen,
+- den öffentlichen Tender-Proxy `api/tenders-public.js`.
+
+Der Tender-Proxy liest `AGENTLEADS_API_BASE` aus den Vercel Environment Variables und leitet Anfragen an das private AgentLeads-Backend weiter:
+
+```text
+Browser
+  -> ausschreibungsagenten.de (Vercel)
+  -> /api/tenders-public
+  -> ${AGENTLEADS_API_BASE}/api/public/tenders
+  -> AgentLeads-Datenbank
+```
+
+`AGENTLEADS_API_BASE` und alle Tokens/Secrets dürfen nicht in Git eingecheckt werden.
+
+## Privates AgentLeads-Backend
+
+Produktionsbetrieb:
+
+| Bestandteil | Wert |
+| --- | --- |
+| Host | `152.53.160.189` |
+| Projektpfad auf dem Host | `~/agentleads` |
+| Docker-Container | `agentleads` |
+| Portbindung | `127.0.0.1:8767 -> 8000/tcp` |
+| Anwendung | FastAPI, SQLAlchemy, Jinja2/HTMX |
+
+Die Bindung an `127.0.0.1` ist beabsichtigt: Port 8767 soll nicht direkt aus dem Internet erreichbar sein. Der öffentliche Zugriff erfolgt über den vorgeschalteten Reverse Proxy beziehungsweise die in `AGENTLEADS_API_BASE` konfigurierte HTTPS-Adresse.
+
+Das Backend aggregiert öffentliche Vergabe-Bekanntmachungen für Digital-, Marketing- und Web-Leistungen. Es filtert über CPV-Codes und Keyword-Inferenz und berechnet einen eigenen Relevance-Score von 0 bis 100.
+
+Quellenstatus:
+
+- TED über `api.ted.europa.eu`: aktiv
+- `service.bund.de` RSS: aktiv
+- Landesportale Bayern, Nordrhein-Westfalen und Baden-Württemberg: derzeit nur vorbereitet/Stubs; Details und Blocker stehen in `BLOCKERS.md` des privaten Backend-Repositories
+
+Das private Backend enthält außerdem Stripe-Checkout, öffentliche Tender-Matches, Volltextsuche, einen A2A-JSON-RPC-Agent-Endpunkt und Agent-Discovery-Metadaten. Diese Funktionen sind nicht Teil dieses Website-Repositories.
+
+## Betrieb prüfen
+
+Nach Anmeldung auf dem Backend-Host:
+
+```bash
+cd ~/agentleads
+docker ps --filter name=agentleads
+docker inspect --format '{{json .State.Health}}' agentleads | jq .
+docker logs --tail 200 agentleads
+git log --oneline -10
+```
+
+Für einen vollständigen Datenfluss zusätzlich prüfen:
+
+1. letzten erfolgreichen TED- und Bund-Poll in den Container-Logs,
+2. Anzahl und jüngstes Veröffentlichungsdatum in der AgentLeads-Datenbank,
+3. `AGENTLEADS_API_BASE` im Vercel-Projekt,
+4. öffentliche Vorschau über `/api/tenders-public`.
+
+## Deployment
+
+Die Website wird über das Vercel-Projekt `trackys-projects-6c71603f/ausschreibungsagenten` bereitgestellt. Änderungen am Scraper oder Poll-Zeitplan werden ausschließlich im privaten AgentLeads-Backend vorgenommen; Änderungen an der Darstellung oder am Proxy gehören in dieses Repository.
