@@ -6,7 +6,7 @@ export default function Impressum() {
         <div className="legal-page">
             <Helmet>
                 <title>Impressum | Ausschreibungsagenten.de</title>
-                <meta name="description" content="Impressum von ausschreibungsagenten.de – Ein Service von famefact / track by track GmbH, Berlin." />
+                <meta name="description" content="Impressum von ausschreibungsagenten.de – ein Service von Agentifizierung, Berlin." />
                 <meta name="robots" content="noindex, follow" />
             </Helmet>
             <div className="container">
@@ -15,36 +15,38 @@ export default function Impressum() {
 
                 <h2>Angaben gemäß § 5 DDG</h2>
                 <p>
-                    track by track GmbH<br />
-                    Schliemannstr. 23<br />
-                    10437 Berlin
+                    Agentifizierung UG (haftungsbeschränkt) i.G.<br />
+                    Schliemannstraße 23<br />
+                    10437 Berlin<br />
+                    Deutschland
                 </p>
 
-                <h2>Vertreten durch</h2>
-                <p>Tobias Sander</p>
+                <h2>Geschäftsführer</h2>
+                <p>Tobias Sander, Thilo Jansen und Gorden Wübbe</p>
 
                 <h2>Kontakt</h2>
                 <p>
-                    E-Mail: <a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a>
+                    Telefon: <a href="tel:+4930403665430">030 – 403 665 430</a><br />
+                    E-Mail: <a href="mailto:info@agentifizierung.de">info@agentifizierung.de</a>
                 </p>
 
-                <h2>Registereintrag</h2>
+                <h2>Handelsregister</h2>
                 <p>
-                    Eintragung im Handelsregister.<br />
-                    Registergericht: Amtsgericht Berlin-Charlottenburg<br />
-                    Registernummer: HRB 129805 B
+                    Die Gesellschaft befindet sich in Gründung (i.G.). Die Eintragung in das
+                    Handelsregister beim Amtsgericht Berlin-Charlottenburg ist beantragt; die
+                    Handelsregisternummer wird nach erfolgter Eintragung ergänzt.
                 </p>
 
-                <h2>Umsatzsteuer</h2>
+                <h2>Umsatzsteuer-ID</h2>
                 <p>
-                    Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:<br />
-                    DE814954842
+                    Eine Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG wird nach Erteilung
+                    durch das Finanzamt ergänzt.
                 </p>
 
                 <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
                 <p>
-                    Tobias Sander<br />
-                    Schliemannstr. 23<br />
+                    Thilo Jansen<br />
+                    Schliemannstraße 23<br />
                     10437 Berlin
                 </p>
             </div>

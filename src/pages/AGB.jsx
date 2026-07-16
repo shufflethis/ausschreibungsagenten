@@ -14,7 +14,7 @@ export default function AGB() {
                 <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
 
                 <h2>§ 1 Geltungsbereich</h2>
-                <p>Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung der Webseite ausschreibungsagenten.de, betrieben von der track by track GmbH, Schliemannstr. 23, 10437 Berlin (nachfolgend „Anbieter"). Mit der Nutzung der Webseite erkennt der Nutzer diese AGB an.</p>
+                <p>Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung der Webseite ausschreibungsagenten.de, betrieben von der Agentifizierung UG (haftungsbeschränkt) i.G., Schliemannstraße 23, 10437 Berlin (nachfolgend „Anbieter"). Mit der Nutzung der Webseite erkennt der Nutzer diese AGB an.</p>
 
                 <h2>§ 2 Leistungsbeschreibung</h2>
                 <p>Der Anbieter stellt auf ausschreibungsagenten.de Informationen, Vergleiche und redaktionelle Inhalte zum Thema öffentliche Ausschreibungen und Vergabe-Software zur Verfügung. Die Webseite dient als Informationsportal und kann auf Produkte und Dienstleistungen Dritter verweisen.</p>

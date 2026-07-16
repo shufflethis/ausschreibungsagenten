@@ -19,7 +19,7 @@ export default function Datenschutz() {
 
                 <h3>Datenerfassung auf dieser Webseite</h3>
                 <p><strong>Wer ist verantwortlich für die Datenerfassung auf dieser Webseite?</strong></p>
-                <p>Die Datenverarbeitung auf dieser Webseite erfolgt durch den Webseitenbetreiber: track by track GmbH, Schliemannstr. 23, 10437 Berlin. E-Mail: hi@ausschreibungsagenten.de.</p>
+                <p>Die Datenverarbeitung auf dieser Webseite erfolgt durch den Webseitenbetreiber: Agentifizierung UG (haftungsbeschränkt) i.G., Schliemannstraße 23, 10437 Berlin. E-Mail: info@agentifizierung.de.</p>
 
                 <h2>2. Hosting</h2>
                 <p>Diese Webseite wird bei Vercel Inc. gehostet. Die Server befinden sich in der EU. Vercel verarbeitet Daten im Auftrag und gemäß unseren Weisungen (Auftragsverarbeitung).</p>
@@ -31,10 +31,10 @@ export default function Datenschutz() {
                 <h3>Hinweis zur verantwortlichen Stelle</h3>
                 <p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Webseite ist:</p>
                 <p>
-                    track by track GmbH<br />
-                    Schliemannstr. 23<br />
+                    Agentifizierung UG (haftungsbeschränkt) i.G.<br />
+                    Schliemannstraße 23<br />
                     10437 Berlin<br />
-                    E-Mail: hi@ausschreibungsagenten.de
+                    E-Mail: info@agentifizierung.de
                 </p>
 
                 <h2>4. Datenerfassung auf dieser Webseite</h2>

@@ -6,9 +6,13 @@ export default function Footer() {
             <div className="container">
                 <div className="footer__inner">
                     <div className="footer__brand">
-                        Ein Service von <strong>famefact</strong> | track by track GmbH, Berlin
+                        Ein Service von{' '}
+                        <a href="https://www.agentifizierung.de/" target="_blank" rel="noreferrer">
+                            <strong>Agentifizierung</strong>
+                        </a>
                     </div>
                     <div className="footer__links">
+                        <a href="https://www.agentifizierung.de/ueber-uns" target="_blank" rel="noreferrer">Über uns</a>
                         <Link to="/impressum">Impressum</Link>
                         <Link to="/agb">AGB</Link>
                         <Link to="/datenschutz">Datenschutz</Link>
@@ -16,7 +20,7 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="footer__copy">
-                    © {new Date().getFullYear()} track by track GmbH. Alle Rechte vorbehalten. | Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen
+                    © {new Date().getFullYear()} Agentifizierung UG (haftungsbeschränkt) i.G. Alle Rechte vorbehalten. | Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen
                 </div>
             </div>
         </footer>
