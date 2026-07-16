@@ -2,6 +2,14 @@ function cleanHeader(value) {
     return String(value || '').replace(/[\r\n]+/g, ' ').trim().slice(0, 160)
 }
 
+function clean(value, maxLength) {
+    return String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, maxLength)
+}
+
+function validEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 320
+}
+
 async function sendResendNotification({ name, email, company, branche, message, receivedAt }) {
     const apiKey = process.env.RESEND_API_KEY
     if (!apiKey) return false
@@ -102,7 +110,7 @@ async function sendSlackNotification({ name, email, company, branche, message, r
 }
 
 export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Origin', 'https://www.ausschreibungsagenten.de')
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
@@ -113,8 +121,13 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' })
     }
 
-    const { name, email, company, branche, message } = req.body || {}
-    if (!name || !email || !message) {
+    if (clean(req.body?.website, 100)) return res.status(200).json({ success: true })
+    const name = clean(req.body?.name, 160)
+    const email = clean(req.body?.email, 320).toLowerCase()
+    const company = clean(req.body?.company, 300)
+    const branche = clean(req.body?.branche, 120)
+    const message = clean(req.body?.message, 5000)
+    if (!name || !validEmail(email) || !message) {
         return res.status(400).json({ error: 'Name, E-Mail und Nachricht sind erforderlich.' })
     }
 

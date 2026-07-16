@@ -7,7 +7,7 @@ Marketing-Website und öffentliche Vorschau für den privaten AgentLeads-Tender-
 Dieses Repository enthält **nicht** den Tender-Scraper und nicht die AgentLeads-Datenbank. Es enthält:
 
 - die React/Vite-Website für [ausschreibungsagenten.de](https://www.ausschreibungsagenten.de/),
-- Vercel Functions für Kontakt-, Newsletter-, Profil- und Checkout-Anfragen,
+- Vercel Functions für Kontakt- und Pilotprofil-Anfragen,
 - den öffentlichen Tender-Proxy `api/tenders-public.js`.
 
 Der Tender-Proxy liest `AGENTLEADS_API_BASE` aus den Vercel Environment Variables und leitet Anfragen an das private AgentLeads-Backend weiter:
@@ -30,8 +30,8 @@ Produktionsbetrieb:
 
 | Bestandteil | Wert |
 | --- | --- |
-| Host | `152.53.160.189` |
-| Projektpfad auf dem Host | `~/agentleads` |
+| Host | `159.195.43.209` |
+| Projektpfad auf dem Host | `~/agentleads-account` |
 | Docker-Container | `agentleads` |
 | Portbindung | `127.0.0.1:8767 -> 8000/tcp` |
 | Anwendung | FastAPI, SQLAlchemy, Jinja2/HTMX |
@@ -44,11 +44,12 @@ Quellenstatus:
 
 - TED über `api.ted.europa.eu`: aktiv
 - `service.bund.de` RSS: aktiv
-- Vergabeplattform Baden-Württemberg: live; Landesportale Bayern und Nordrhein-Westfalen derzeit vorbereitet/Stubs; Details und Blocker stehen in `BLOCKERS.md` des privaten Backend-Repositories
+- Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz: angebunden
+- Landesportale Bayern und Nordrhein-Westfalen: vorbereitet/Stubs; Details und Blocker stehen in `BLOCKERS.md` des privaten Backend-Repositories
 
-Das private Backend enthält außerdem Stripe-Checkout, öffentliche Tender-Matches, Volltextsuche, einen A2A-JSON-RPC-Agent-Endpunkt und Agent-Discovery-Metadaten. Diese Funktionen sind nicht Teil dieses Website-Repositories.
+Das private Backend enthält außerdem Stripe-Code, Volltextsuche, einen A2A-JSON-RPC-Agent-Endpunkt und Agent-Discovery-Metadaten. Öffentliche Profilerstellung, Signup, Checkout, MCP und schreibende A2A-Profilaktionen sind im Produktionsbetrieb deaktiviert. Pilotzugänge werden intern vorbereitet und ausschließlich per Magic Link freigegeben.
 
-Pilotumfang: geschütztes Profil-Dashboard, täglicher/wöchentlicher E-Mail-Digest, nur lesende GAEB-DA-XML-Analyse für X83/X84 sowie Tender-Export als JSON, CSV, XLSX und optional signierter Webhook. Konkrete ERP-Connectoren, WhatsApp und Push sind nicht produktiv.
+Pilotumfang: geschütztes Profil-Dashboard, kontrollierter E-Mail-Digest-Test, nur lesende GAEB-DA-XML-Analyse für X83/X84 sowie Tender-Export als JSON, CSV, XLSX und optional signierter Webhook. Der automatische Digest wird erst nach erfolgreichem Pilottest freigeschaltet. Konkrete ERP-Connectoren, WhatsApp und Push sind nicht produktiv.
 
 ## Betrieb prüfen
 
@@ -87,4 +88,4 @@ npm run build
 npm audit --audit-level=high
 ```
 
-Die Checkout-Success-Seite bestätigt bewusst keine Aktivierung. Nur der Stripe-Webhook des Backends ist dafür autoritativ.
+Preise werden auf der Website als Orientierung angezeigt. Ein Checkout wird erst nach vollständiger Stripe-Live-Konfiguration und Webhook-Abnahme wieder freigeschaltet.

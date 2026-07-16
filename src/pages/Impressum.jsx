@@ -43,7 +43,7 @@ export default function Impressum() {
                     durch das Finanzamt ergänzt.
                 </p>
 
-                <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+                <h2>Verantwortlich für journalistisch-redaktionelle Inhalte gemäß § 18 Abs. 2 MStV</h2>
                 <p>
                     Thilo Jansen<br />
                     Schliemannstraße 23<br />

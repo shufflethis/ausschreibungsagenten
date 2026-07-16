@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 const TOOLS = [
-    { name: 'DTVP', url: 'https://www.dtvp.de', price: 'ab €39/Mon.', ai: false, portals: '~100%', focus: 'Offizielles Portal', gaeb: false, alerts: true, free: true },
-    { name: 'aumass', url: 'https://www.aumass.de', price: '€39–79/Mon.', ai: false, portals: 'Alle', focus: 'Breite Abdeckung', gaeb: false, alerts: true, free: true },
-    { name: 'GAEB.ai', url: 'https://gaeb.ai', price: 'Individuell', ai: true, portals: '8+', focus: 'Elektro/Bau', gaeb: true, alerts: true, free: true },
-    { name: 'Vergabe24', url: 'https://www.vergabe24.de', price: '~€50–100/Mon.', ai: false, portals: '500.000+/Jahr', focus: 'Regional', gaeb: false, alerts: true, free: false },
-    { name: 'TenderWolf', url: 'https://www.tenderwolf.com', price: '€80–150/Mon.', ai: true, portals: 'EU-weit', focus: 'Europa', gaeb: false, alerts: true, free: true },
-    { name: 'Jorpex', url: 'https://www.jorpex.com', price: '$49–149/Mon.', ai: true, portals: 'Global', focus: 'International', gaeb: false, alerts: true, free: false },
+    { name: 'DTVP', url: 'https://www.dtvp.de', price: '€49/Mon. Professional', ai: false, portals: 'DTVP', focus: 'Offizielles Portal', gaeb: false, alerts: true, free: true },
+    { name: 'aumass', url: 'https://www.aumass.de', price: 'Anbieterangabe', ai: false, portals: 'Herstellerangabe', focus: 'Breite Abdeckung', gaeb: false, alerts: true, free: true },
+    { name: 'GAEB.ai', url: 'https://gaeb.ai', price: 'Anbieterangabe', ai: true, portals: 'Herstellerangabe', focus: 'Elektro/Bau', gaeb: true, alerts: true, free: true },
+    { name: 'Vergabe24', url: 'https://www.vergabe24.de', price: 'Anbieterangabe', ai: false, portals: 'Herstellerangabe', focus: 'Regional', gaeb: false, alerts: true, free: false },
+    { name: 'TenderWolf', url: 'https://www.tenderwolf.com', price: 'Anbieterangabe', ai: true, portals: 'EU-weit', focus: 'Europa', gaeb: false, alerts: true, free: true },
+    { name: 'Jorpex', url: 'https://www.jorpex.com', price: 'Anbieterangabe', ai: true, portals: 'Global', focus: 'International', gaeb: false, alerts: true, free: false },
     { name: 'Bidfix', url: 'https://bidfix.ai', price: 'k.A.', ai: true, portals: 'DACH', focus: 'DACH-Markt', gaeb: false, alerts: true, free: false },
     { name: 'Hermix', url: 'https://hermix.com', price: 'Enterprise', ai: true, portals: 'EU', focus: 'Öffentl. Sektor', gaeb: false, alerts: true, free: true },
 ]
@@ -15,7 +15,7 @@ const TOOLS = [
 const FEATURES = [
     { icon: '🔍', title: 'Acht Live-Quellen', text: 'TED, service.bund.de sowie Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz werden regelmäßig abgefragt. DTVP, eVergabe, Bayern und NRW befinden sich im Ausbau.', color: '' },
     { icon: '🎯', title: 'Erklärbares Matching', text: 'CPV-Codes, Leistungsbegriffe, Ausschlusswörter, Leistungsort, Auftragswert und Frist ergeben einen transparenten Firmen-Fit mit einzelnen Score-Gründen.', color: '--violet' },
-    { icon: '✉️', title: 'E-Mail-Digest', text: 'Im Pilot erhalten Profile neue, noch nicht versendete Treffer täglich oder wöchentlich per E-Mail. WhatsApp und Push sind noch nicht produktiv.', color: '--amber' },
+    { icon: '✉️', title: 'E-Mail-Digest', text: 'Der E-Mail-Digest wird im begleiteten Pilot gemeinsam getestet und anschließend je Profil täglich oder wöchentlich freigeschaltet. WhatsApp und Push sind nicht produktiv.', color: '--amber' },
     { icon: '📄', title: 'GAEB X83/X84 lesen', text: 'GAEB-DA-XML-Dateien der Austauschphasen X83 und X84 werden nur lesend strukturiert: Bereiche, Positionen, Mengen, Einheiten und optionale Preise. Keine Kalkulationsautomatik.', color: '--green' },
     { icon: '📊', title: 'Pilot-Dashboard', text: 'Aktive Treffer, Fit-Gründe, Fristen, Auftragswerte, Originalquelle, Status und interne Notizen in einer geschützten Profilansicht.', color: '' },
     { icon: '↗️', title: 'Standardisierter ERP-Export', text: 'Tender lassen sich als versioniertes JSON, CSV oder XLSX exportieren. Ein signierter Webhook ist konfigurierbar; konkrete ERP-Connectoren folgen erst nach Herstellerklärung.', color: '--violet' },
@@ -28,16 +28,16 @@ const BRANCHEN = [
 ]
 
 const FAQS = [
-    { q: 'Was sind öffentliche Ausschreibungen und warum sind sie wichtig?', a: 'Öffentliche Ausschreibungen sind Vergabeverfahren, mit denen Behörden, Kommunen und öffentliche Einrichtungen Aufträge an Unternehmen vergeben. Mit einem jährlichen Volumen von rund 500 Milliarden Euro allein in Deutschland sind sie eine der größten Auftragsquellen für Unternehmen jeder Größe. Öffentliche Aufträge bieten Planungssicherheit, faire Konditionen und regelmäßige Zahlungen.' },
+    { q: 'Was sind öffentliche Ausschreibungen und warum sind sie wichtig?', a: 'Öffentliche Ausschreibungen sind Vergabeverfahren, mit denen Behörden, Kommunen und öffentliche Einrichtungen Aufträge an Unternehmen vergeben. Die OECD beziffert die öffentliche Beschaffung in Deutschland in einer häufig zitierten Schätzung auf rund 15 Prozent des Bruttoinlandsprodukts. Die amtliche Vergabestatistik erfasst gemeldete Zuschläge und ist nicht mit einer vollständigen Zahl aller veröffentlichten Verfahren gleichzusetzen.' },
     { q: 'Welche Vergabeportale gibt es in Deutschland?', a: 'Zu den wichtigen Quellen gehören DTVP, eVergabe, service.bund.de, die Landesportale und für EU-Verfahren TED. Unser eigener Pilot indexiert aktuell TED, service.bund.de sowie Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz. Weitere Portale sind im Ausbau.' },
     { q: 'Was macht der Ausschreibungsagent konkret?', a: 'Der aktuelle Agent ordnet Bekanntmachungen über CPV-Codes und Regeln Branchen zu. Anschließend vergleicht er Firmenprofil, Keywords, Ausschlüsse, Leistungsort, Auftragswert und Frist. Jeder Fit-Score wird mit nachvollziehbaren Einzelgründen angezeigt; semantisches KI-Matching wird nicht als bereits produktiv behauptet.' },
-    { q: 'Wie viel kostet ein Ausschreibungsagent?', a: 'Die Preise variieren je nach Anbieter und Funktionsumfang. Einstiegsangebote beginnen bei ca. 39 €/Monat für Basis-Funktionen (z. B. aumass Start). Professionelle Tools mit KI-Features liegen zwischen 80 und 200 €/Monat. Enterprise-Lösungen mit API-Zugang und White-Label-Optionen werden individuell bepreist. Angesichts des Potenzials öffentlicher Aufträge amortisiert sich die Investition oft schon mit einem einzigen gewonnenen Auftrag.' },
-    { q: 'Ab welchem Auftragsvolumen lohnt sich die Suche nach öffentlichen Ausschreibungen?', a: 'Grundsätzlich gibt es keine Untergrenze. Bereits Kleinstaufträge ab wenigen tausend Euro werden öffentlich ausgeschrieben, insbesondere auf kommunaler Ebene. Für die meisten Unternehmen lohnt sich der Einstieg ab einem anvisierten Jahresauftragsvolumen von 50.000 €. Die Vergaberechts-Schwellenwerte liegen aktuell bei 143.000 € für Liefer- und Dienstleistungsaufträge und 5.538.000 € für Bauaufträge (EU-weite Vergabe).' },
+    { q: 'Wie viel kostet ein Ausschreibungsagent?', a: 'Preise hängen von Quellenabdeckung, Nutzerzahl, Suchprofilen, Exporten und Integrationen ab. Unser geplanter Pro-Tarif kostet 149 EUR pro Monat, der Agent-Tarif 499 EUR pro Monat und die Begleitung eines einzelnen Verfahrens 1.499 EUR. Der Online-Checkout ist noch nicht freigeschaltet; Pilot und Vertrag werden persönlich abgestimmt.' },
+    { q: 'Ab welchem Auftragsvolumen lohnt sich die Suche nach öffentlichen Ausschreibungen?', a: 'Eine allgemeingültige Untergrenze gibt es nicht. Entscheidend sind Auftragswert, Angebotsaufwand und Gewinnwahrscheinlichkeit. Für 2026/2027 gelten je nach Auftraggeber unterschiedliche EU-Schwellenwerte; unter anderem 140.000 EUR für Liefer- und Dienstleistungen zentraler Regierungsbehörden, 216.000 EUR für andere öffentliche Auftraggeber und 5.404.000 EUR für Bauaufträge. Maßgeblich sind immer die aktuellen amtlichen Werte und Vergabeunterlagen.' },
     { q: 'Welche GAEB-Funktion ist verfügbar?', a: 'Der Pilot liest GAEB DA XML X83 und X84 nur lesend ein und zeigt Metadaten, Bereiche, Positionen, Texte, Mengen, Einheiten und vorhandene Preise. CSV- und XLSX-Export sind möglich. Automatische Kalkulation, Preisempfehlung und Angebotsabgabe gehören nicht zum aktuellen Umfang.' },
-    { q: 'Wie viele Ausschreibungen werden täglich veröffentlicht?', a: 'In Deutschland werden täglich mehrere tausend neue Ausschreibungen auf den verschiedenen Vergabeportalen veröffentlicht. Allein das DTVP (Deutsches Vergabeportal) verzeichnet über 500.000 Bekanntmachungen pro Jahr. Ohne automatisierte Suche ist es praktisch unmöglich, alle relevanten Ausschreibungen manuell zu erfassen – insbesondere, wenn man mehrere Portale und Bundesländer abdecken möchte.' },
+    { q: 'Wie viele Ausschreibungen werden täglich veröffentlicht?', a: 'Eine vollständige tagesaktuelle Gesamtzahl für alle deutschen Portale existiert nicht. Bekanntmachungen sind auf EU-, Bundes-, Landes- und weiteren Vergabeplattformen verteilt. Genau deshalb weist unser Quellenstatus transparent aus, welche Portale tatsächlich abgefragt werden und wann der letzte erfolgreiche Abruf erfolgte.' },
     { q: 'Welche Branchen profitieren am meisten von Ausschreibungsagenten?', a: 'Besonders stark profitieren das Baugewerbe, Handwerksbetriebe, IT-Dienstleister, Ingenieurbüros und Facility-Management-Unternehmen. Aber auch Catering, Reinigung, Beratung, Schulung und viele weitere Branchen finden regelmäßig passende öffentliche Aufträge. Grundsätzlich gilt: Jedes Unternehmen, das Dienstleistungen oder Produkte an den öffentlichen Sektor verkaufen kann, sollte Ausschreibungsagenten nutzen.' },
     { q: 'Kann ich auch als kleines Unternehmen an öffentlichen Ausschreibungen teilnehmen?', a: 'Ja, unbedingt! Das Vergaberecht fördert sogar explizit die Beteiligung kleiner und mittlerer Unternehmen (KMU). Viele Aufträge werden in Lose aufgeteilt, um auch kleineren Betrieben die Teilnahme zu ermöglichen. Kommunale Ausschreibungen sind oft besonders KMU-freundlich. Ein KI-Agent hilft Ihnen, genau die Ausschreibungen zu finden, die zu Ihrer Unternehmensgröße und Ihren Kapazitäten passen.' },
-    { q: 'Wie unterscheidet sich ausschreibungsagenten.de von anderen Plattformen?', a: 'Neben dem Marktüberblick erproben wir einen eigenen, transparenten Ausschreibungsagenten. Im aktuellen Pilot sind acht öffentliche Quellen, erklärbares Profil-Matching, strukturierte Go/No-Go-Karten, E-Mail-Digests, GAEB X83/X84 und Standardexporte verfügbar. Portale und Hersteller-Connectoren im Ausbau kennzeichnen wir ausdrücklich.' },
+    { q: 'Wie unterscheidet sich ausschreibungsagenten.de von anderen Plattformen?', a: 'Neben dem Marktüberblick erproben wir einen eigenen, transparenten Ausschreibungsagenten. Im aktuellen Pilot sind acht öffentliche Quellen, erklärbares Profil-Matching, strukturierte Go/No-Go-Karten, GAEB X83/X84 und Standardexporte verfügbar. E-Mail-Digests werden im begleiteten Pilot getestet; weitere Portale und Hersteller-Connectoren kennzeichnen wir als Ausbau.' },
     { q: 'Welche Fristen gelten bei öffentlichen Ausschreibungen?', a: 'Die Angebotsfristen variieren je nach Verfahrensart. Bei offenen Verfahren oberhalb der EU-Schwellenwerte beträgt die Mindestfrist 35 Tage (mit elektronischer Bekanntmachung: 30 Tage). Unterhalb der Schwellenwerte und bei nationalen Verfahren gelten oft kürzere Fristen von 10–15 Werktagen. Ein Ausschreibungsagent mit Fristenkalender sorgt dafür, dass Sie keine Deadline verpassen.' },
     { q: 'Ist die Nutzung der Vergabeportale kostenlos?', a: 'Die Einsicht in Bekanntmachungen ist auf den meisten offiziellen Portalen kostenlos. Die Teilnahme an elektronischen Vergabeverfahren über das DTVP ist ebenfalls kostenfrei. Erweiterte Funktionen wie Suchprofile, automatische Benachrichtigungen und Export-Funktionen sind bei vielen Portalen premium-pflichtig. Drittanbieter-Tools wie aumass, TenderWolf oder GAEB.ai bieten Mehrwert-Features gegen monatliche Gebühren.' },
 ]
@@ -63,11 +63,9 @@ const formatCurrency = (value) => {
 
 export default function LandingPage() {
     const [openFaq, setOpenFaq] = useState(null)
-    const [formData, setFormData] = useState({ name: '', email: '', company: '', branche: '', message: '' })
+    const [formData, setFormData] = useState({ name: '', email: '', company: '', branche: '', message: '', website: '' })
     const [formStatus, setFormStatus] = useState(null)
     const [sending, setSending] = useState(false)
-    const [newsletterEmail, setNewsletterEmail] = useState('')
-    const [newsletterStatus, setNewsletterStatus] = useState(null)
     const [tenderQuery, setTenderQuery] = useState('marketing')
     const [tenders, setTenders] = useState([])
     const [tendersLoading, setTendersLoading] = useState(true)
@@ -81,13 +79,12 @@ export default function LandingPage() {
         services: '',
         budget: '',
         frequency: '',
+        website: '',
     })
     const [profileStatus, setProfileStatus] = useState(null)
     const [profileSending, setProfileSending] = useState(false)
     const [profileResult, setProfileResult] = useState(null)
     const [selectedTender, setSelectedTender] = useState(null)
-    const [checkoutPlan, setCheckoutPlan] = useState(null)
-    const [checkoutError, setCheckoutError] = useState(null)
 
     useEffect(() => {
         const controller = new AbortController()
@@ -145,7 +142,7 @@ export default function LandingPage() {
             })
             if (res.ok) {
                 setFormStatus('success')
-                setFormData({ name: '', email: '', company: '', branche: '', message: '' })
+                setFormData({ name: '', email: '', company: '', branche: '', message: '', website: '' })
             } else {
                 setFormStatus('error')
             }
@@ -153,25 +150,6 @@ export default function LandingPage() {
             setFormStatus('error')
         }
         setSending(false)
-    }
-
-    const handleNewsletter = async (e) => {
-        e.preventDefault()
-        try {
-            const res = await fetch('/api/newsletter', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: newsletterEmail }),
-            })
-            if (res.ok) {
-                setNewsletterStatus('success')
-                setNewsletterEmail('')
-            } else {
-                setNewsletterStatus('error')
-            }
-        } catch {
-            setNewsletterStatus('error')
-        }
     }
 
     const handleProfileSubmit = async (e) => {
@@ -197,6 +175,7 @@ export default function LandingPage() {
                     services: '',
                     budget: '',
                     frequency: '',
+                    website: '',
                 })
             } else {
                 setProfileStatus('error')
@@ -205,37 +184,6 @@ export default function LandingPage() {
             setProfileStatus('error')
         }
         setProfileSending(false)
-    }
-
-    const startCheckout = async (plan) => {
-        const email = profileResult?.email
-        if (!email) {
-            setCheckoutError('Bitte zuerst das Agentenprofil mit geschäftlicher E-Mail anlegen.')
-            document.getElementById('profil')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            return
-        }
-
-        setCheckoutPlan(plan)
-        setCheckoutError(null)
-        try {
-            const res = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email,
-                    plan,
-                    profile_id: profileResult?.profile_id,
-                }),
-            })
-            const data = await res.json().catch(() => null)
-            if (!res.ok || !data?.checkout_url) {
-                throw new Error(data?.detail || data?.error || 'Checkout konnte nicht erstellt werden.')
-            }
-            window.location.href = data.checkout_url
-        } catch (err) {
-            setCheckoutError(err.message || 'Checkout konnte nicht gestartet werden.')
-            setCheckoutPlan(null)
-        }
     }
 
     return (
@@ -271,15 +219,15 @@ export default function LandingPage() {
 
                         <div className="hero__stats">
                             <div className="hero__stat">
-                                <span className="hero__stat-value">€500 Mrd.</span>
-                                <span className="hero__stat-label">Öffentliches Beschaffungsvolumen/Jahr</span>
+                                <span className="hero__stat-value">2</span>
+                                <span className="hero__stat-label">Produktiv gepflegte Pilot-Verticals</span>
                             </div>
                             <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#8b5cf6' }}>500.000+</span>
-                                <span className="hero__stat-label">Ausschreibungen pro Jahr in DE</span>
+                                <span className="hero__stat-value" style={{ color: '#8b5cf6' }}>0–100</span>
+                                <span className="hero__stat-label">Erklärbarer Firmen-Fit</span>
                             </div>
                             <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>6</span>
+                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>8</span>
                                 <span className="hero__stat-label">Produktive öffentliche Quellen</span>
                             </div>
                         </div>
@@ -303,24 +251,24 @@ export default function LandingPage() {
 
                     <div className="problem-grid">
                         <div className="glass-card problem-card">
-                            <div className="problem-card__number">73%</div>
+                            <div className="problem-card__number">Viele</div>
                             <h3 className="glass-card__title">Zeitverlust</h3>
                             <p className="glass-card__text">
-                                Durchschnittlich verbringen Unternehmen 5–8 Stunden pro Woche mit der manuellen Suche auf verschiedenen Vergabeportalen. Zeit, die für die Angebotserstellung und Kernarbeit fehlt. Mitarbeiter klicken sich durch DTVP, eVergabe, Bund.de und Landesportale – ohne Garantie, alle relevanten Ausschreibungen zu finden.
+                                Bekanntmachungen sind über EU-, Bundes-, Landes- und weitere Vergabeportale verteilt. Wer mehrere Quellen manuell kontrolliert, bindet Zeit, die für Eignungsprüfung und Angebotserstellung fehlt.
                             </p>
                         </div>
                         <div className="glass-card problem-card">
-                            <div className="problem-card__number">85%</div>
+                            <div className="problem-card__number">Zu viele</div>
                             <h3 className="glass-card__title">Informationsflut</h3>
                             <p className="glass-card__text">
-                                Die meisten Suchergebnisse sind irrelevant. Ohne intelligentes Filtering wühlen Sie sich durch hunderte unpassende Ausschreibungen, um die wenigen relevanten Treffer zu finden. Falsche Region, falsches Gewerk, zu hohes Auftragsvolumen – die Trefferquote manueller Suche liegt unter 15%.
+                                Breite Stichwörter liefern auch unpassende Gewerke, Regionen und Auftragsgrößen. Ein Firmenprofil macht sichtbar, warum ein Treffer passt oder ausgeschlossen wird.
                             </p>
                         </div>
                         <div className="glass-card problem-card">
-                            <div className="problem-card__number">40%</div>
+                            <div className="problem-card__number">Kurz</div>
                             <h3 className="glass-card__title">Verpasste Fristen</h3>
                             <p className="glass-card__text">
-                                Angebotsfristen bei öffentlichen Vergaben sind oft knapp bemessen – zwischen 10 und 35 Tagen. Wer eine Ausschreibung erst nach einer Woche entdeckt, hat kaum noch Zeit für eine qualitativ hochwertige Angebotserstellung. Verspätete Angebote werden ausnahmslos ausgeschlossen.
+                                Angebotsfristen hängen von Verfahrensart und Bekanntmachung ab. Je später ein passendes Verfahren erkannt wird, desto weniger Zeit bleibt für Unterlagen, Partner und Kalkulation.
                             </p>
                         </div>
                     </div>
@@ -364,7 +312,7 @@ export default function LandingPage() {
                             <div className="step-card__number">3</div>
                             <h3 className="glass-card__title">Angebot abgeben</h3>
                             <p className="glass-card__text">
-                                Neue, noch nicht versendete Treffer kommen täglich oder wöchentlich per E-Mail.
+                            Im begleiteten Pilot testen wir den E-Mail-Digest gemeinsam; danach kann er je Profil täglich oder wöchentlich freigeschaltet werden.
                                 Das Pilot-Dashboard zeigt Auftraggeber, Leistungsort, Frist, Wert, Match-Gründe und
                                 Originalquelle. Push und WhatsApp sind noch nicht produktiv.
                             </p>
@@ -499,6 +447,7 @@ export default function LandingPage() {
                                 </p>
                             </div>
                             <form className="profile-lead__form" onSubmit={handleProfileSubmit}>
+                                <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={profileData.website} onChange={(e) => setProfileData({ ...profileData, website: e.target.value })} />
                                 <div className="profile-lead__grid">
                                     <input
                                         type="text"
@@ -564,7 +513,7 @@ export default function LandingPage() {
                                 </button>
                                 {profileStatus === 'success' && (
                                     <p className="form-status form-status--success">
-                                        Profil angekommen. Ihr Agent hat die ersten Treffer berechnet.
+                                        Anfrage angekommen. Ein Zugang wird nach Prüfung ausschließlich per Magic Link freigegeben.
                                     </p>
                                 )}
                                 {profileStatus === 'error' && (
@@ -579,104 +528,36 @@ export default function LandingPage() {
                             <div className="agent-offer" aria-live="polite">
                                 <div className="agent-offer__header">
                                     <div>
-                                        <span className="profile-lead__eyebrow">Sofort-Auswertung</span>
-                                        <h3>Ihr Ausschreibungsagent ist vorbereitet</h3>
+                                        <span className="profile-lead__eyebrow">Pilotanfrage eingegangen</span>
+                                        <h3>Der nächste Schritt ist ein geschützter Magic-Link-Zugang</h3>
                                         <p>
-                                            Profil-ID {profileResult.profile_id}. Die kostenlose Vorschau zeigt erste Treffer;
-                                            im geschützten Pilot-Dashboard können Sie Fit-Gründe, Status, Notizen, GAEB und Exporte prüfen.
+                                            Wir prüfen das Suchprofil für {profileResult.company} und bereiten den passenden Mandanten vor.
+                                            Es wird kein öffentlicher Pilot-Link erzeugt. Nach der Abstimmung erhält die freigegebene
+                                            E-Mail-Adresse einen einmalig verwendbaren Anmeldelink.
                                         </p>
-                                        {profileResult.pilot_url && (
-                                            <a className="btn btn--outline" href={profileResult.pilot_url} rel="noreferrer">Pilot-Dashboard öffnen</a>
-                                        )}
                                     </div>
-                                    <button
-                                        type="button"
-                                        className="btn btn--primary"
-                                        onClick={() => startCheckout('agent')}
-                                        disabled={checkoutPlan !== null}
-                                    >
-                                        {checkoutPlan === 'agent' ? 'Stripe wird geöffnet...' : 'Agent-Plan aktivieren'}
-                                    </button>
                                 </div>
-
-                                {profileResult.matches?.length > 0 ? (
-                                    <div className="match-grid">
-                                        {profileResult.matches.map((match) => {
-                                            const tender = match.tender || {}
-                                            return (
-                                                <article className="match-card" key={tender.id || tender.source_url}>
-                                                    <div className="match-card__score">{match.match_score}% Fit</div>
-                                                    <h4>{tender.title}</h4>
-                                                    <p>{tender.buyer_name || 'Auftraggeber nicht angegeben'}</p>
-                                                    <ul>
-                                                        {(match.reasons || []).slice(0, 2).map((reason) => (
-                                                            <li key={reason}>{reason}</li>
-                                                        ))}
-                                                    </ul>
-                                                    {tender.source_url && (
-                                                        <button
-                                                            type="button"
-                                                            className="source-trigger"
-                                                            onClick={() => setSelectedTender(tender)}
-                                                        >
-                                                            Ausschreibung öffnen
-                                                        </button>
-                                                    )}
-                                                </article>
-                                            )
-                                        })}
-                                    </div>
-                                ) : (
-                                    <div className="tender-state">
-                                        Noch keine starken Sofort-Treffer im aktuellen TED-/bund.de-Index. Wir schärfen mit Ihnen
-                                        CPVs, Begriffe, Ausschlüsse, Regionen und Zielwerte für den Pilot.
-                                    </div>
-                                )}
 
                                 <div className="pricing-strip">
                                     <article>
                                         <strong>Pro</strong>
                                         <span>149 EUR/Monat</span>
                                         <p>Suchprofil, Alerts, Fulltext-Suche und wöchentliche Trefferliste.</p>
-                                        <button
-                                            type="button"
-                                            className="btn btn--secondary"
-                                            onClick={() => startCheckout('pro')}
-                                            disabled={checkoutPlan !== null}
-                                        >
-                                            {checkoutPlan === 'pro' ? 'Stripe wird geöffnet...' : 'Pro starten'}
-                                        </button>
+                                        <small>Checkout folgt nach Pilotabstimmung.</small>
                                     </article>
                                     <article>
                                         <strong>Agent</strong>
                                         <span>499 EUR/Monat</span>
                                         <p>Höhere API-Limits, Volltextsuche, Agent API, A2A/MCP und Priorisierung.</p>
-                                        <button
-                                            type="button"
-                                            className="btn btn--primary"
-                                            onClick={() => startCheckout('agent')}
-                                            disabled={checkoutPlan !== null}
-                                        >
-                                            {checkoutPlan === 'agent' ? 'Stripe wird geöffnet...' : 'Super Agent starten'}
-                                        </button>
+                                        <small>Checkout folgt nach Pilotabstimmung.</small>
                                     </article>
                                     <article>
                                         <strong>Verfahren</strong>
                                         <span>1.499 EUR einmalig</span>
                                         <p>Konkrete Ausschreibung prüfen, Anforderungen strukturieren, Angebotsfahrplan bauen.</p>
-                                        <button
-                                            type="button"
-                                            className="btn btn--amber"
-                                            onClick={() => startCheckout('procedure')}
-                                            disabled={checkoutPlan !== null}
-                                        >
-                                            {checkoutPlan === 'procedure' ? 'Stripe wird geöffnet...' : 'Verfahren-Check buchen'}
-                                        </button>
+                                        <small>Checkout folgt nach Pilotabstimmung.</small>
                                     </article>
                                 </div>
-                                {checkoutError && (
-                                    <p className="form-status form-status--error">{checkoutError}</p>
-                                )}
                             </div>
                         )}
                     </div>
@@ -745,7 +626,7 @@ export default function LandingPage() {
                         <div className="source-modal__plans">
                             <span>Pro: Alerts und strukturierte Suchprofile</span>
                             <span>Agent: höhere Limits sowie A2A/MCP</span>
-                            <span>Der verbindliche Preis wird serverseitig im Stripe-Checkout angezeigt.</span>
+                            <span>Die Preise sind sichtbar; der Checkout wird erst nach erfolgreichem Pilot freigeschaltet.</span>
                         </div>
                     </div>
                 </div>
@@ -761,9 +642,8 @@ export default function LandingPage() {
                         Alle <span className="gradient-text--amber">Ausschreibungstools</span> im Vergleich
                     </h2>
                     <p className="section__subtitle">
-                        Der unabhängige Überblick über die wichtigsten Plattformen und Tools zur automatischen
-                        Ausschreibungssuche in Deutschland und Europa. Finden Sie die Lösung, die zu Ihrem
-                        Unternehmen passt.
+                        Eine redaktionelle Orientierung anhand öffentlich zugänglicher Anbieterangaben. Funktionsumfang,
+                        Editionen und Preise können sich ändern; maßgeblich ist immer die verlinkte Anbieterseite.
                     </p>
 
                     <div className="comparison-wrapper">
@@ -800,7 +680,7 @@ export default function LandingPage() {
                     </div>
 
                     <p style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--text-tertiary)', fontSize: 'var(--font-size-sm)' }}>
-                        Stand: März 2026. Alle Angaben ohne Gewähr. Preise zzgl. MwSt. wo nicht anders angegeben.
+                        Stand: 16. Juli 2026. Anbieterangaben wurden nicht in allen Fällen vertraglich verifiziert.
                         <br />Haben wir ein Tool vergessen? <a href="#kontakt">Schreiben Sie uns</a> – wir ergänzen es gerne.
                     </p>
                 </div>
@@ -870,10 +750,10 @@ export default function LandingPage() {
 
                     <div style={{ marginTop: '2rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
                         <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>
-                            Öffentliche Beschaffung in Deutschland: Ein €500-Milliarden-Markt
+                            Öffentliche Beschaffung in Deutschland: großer, dezentraler Markt
                         </h3>
                         <p>
-                            Die öffentliche Beschaffung in Deutschland umfasst ein jährliches Volumen von rund 500 Milliarden Euro – das entspricht etwa 15 Prozent des Bruttoinlandsprodukts. Damit ist Deutschland einer der größten öffentlichen Beschaffungsmärkte in Europa. Dieser Markt ist hochgradig dezentralisiert: Rund 58 Prozent aller Vergaben erfolgen auf kommunaler Ebene, 30 Prozent auf Länderebene und nur 12 Prozent auf Bundesebene. Das bedeutet: Die meisten Aufträge werden von Städten, Gemeinden und Landkreisen vergeben – oft ohne dass überregionale Unternehmen davon erfahren.
+                            Eine häufig zitierte <a href="https://www.oecd.org/de/publications/offentliche-vergabe-in-deutschland_48df1474-de.html" target="_blank" rel="noopener noreferrer">OECD-Schätzung</a> beziffert die öffentliche Beschaffung in Deutschland auf rund 15 Prozent des Bruttoinlandsprodukts. Die <a href="https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Vergabestatistik/_inhalt.html" target="_blank" rel="noopener noreferrer">amtliche Vergabestatistik von Destatis</a> weist für 2024 199.334 gemeldete Zuschläge mit einem Volumen von 135,2 Milliarden Euro aus. Diese Statistik hat Erfassungs- und Meldegrenzen und ist nicht mit der Zahl aller veröffentlichten Bekanntmachungen gleichzusetzen.
                         </p>
                         <p>
                             Genau hier liegt die Chance für Unternehmen, die Ausschreibungssuche systematisch zu unterstützen: Unser Pilot bündelt aktuell TED, service.bund.de sowie Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz, gleicht Bekanntmachungen mit einem strukturierten Firmenprofil ab und verlinkt immer auf die Originalquelle. DTVP, eVergabe, Bayern und NRW sind dokumentierte Ausbaupunkte.
@@ -883,7 +763,7 @@ export default function LandingPage() {
                             Vergaberecht verstehen: Schwellenwerte und Verfahrensarten
                         </h3>
                         <p>
-                            Das deutsche Vergaberecht unterscheidet zwischen nationalen und EU-weiten Verfahren. Die jeweils geltenden EU-Schwellenwerte ändern sich regelmäßig; prüfen Sie deshalb für ein konkretes Verfahren die aktuellen amtlichen Werte und Vergabeunterlagen. Oberhalb der einschlägigen Schwellen werden Aufträge EU-weit bekannt gemacht, darunter gelten die jeweiligen nationalen Regelungen.
+                            Das deutsche Vergaberecht unterscheidet zwischen nationalen und EU-weiten Verfahren. Für 2026/2027 gelten je nach Auftraggeber unterschiedliche EU-Schwellenwerte, unter anderem 140.000 Euro für Liefer- und Dienstleistungen zentraler Regierungsbehörden, 216.000 Euro für andere öffentliche Auftraggeber und 5.404.000 Euro für Bauaufträge. Maßgeblich sind die <a href="https://eur-lex.europa.eu/eli/reg_del/2025/2152" target="_blank" rel="noopener noreferrer">aktuellen amtlichen EU-Werte</a> und die konkrete Vergabeunterlage.
                         </p>
                         <p>
                             Die häufigsten Verfahrensarten sind das offene Verfahren (jeder kann ein Angebot abgeben), das nicht offene Verfahren (nur ausgewählte Unternehmen werden zur Angebotsabgabe aufgefordert) und das Verhandlungsverfahren (für besonders komplexe Leistungen). Ein guter Ausschreibungsagent klassifiziert die Verfahrensart automatisch und hilft Ihnen, die Anforderungen des jeweiligen Verfahrens zu verstehen.
@@ -954,43 +834,6 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* ===== NEWSLETTER ===== */}
-            <section className="section newsletter-section" id="newsletter">
-                <div className="container">
-                    <span className="section__label section__label--amber">
-                        <span className="pulse"></span> Newsletter
-                    </span>
-                    <h2 className="section__title" style={{ textAlign: 'center' }}>
-                        Wöchentlicher <span className="gradient-text--amber">Ausschreibungs-Report</span>
-                    </h2>
-                    <p className="section__subtitle" style={{ textAlign: 'center', margin: '0 auto 0.5rem' }}>
-                        Erhalten Sie jeden Montag die wichtigsten neuen Ausschreibungen, Tool-Updates
-                        und Vergabe-Tipps direkt in Ihr Postfach. Kostenlos und jederzeit abbestellbar.
-                    </p>
-
-                    <form className="newsletter-form" onSubmit={handleNewsletter}>
-                        <input
-                            type="email"
-                            placeholder="Ihre geschäftliche E-Mail-Adresse"
-                            value={newsletterEmail}
-                            onChange={(e) => setNewsletterEmail(e.target.value)}
-                            required
-                        />
-                        <button type="submit" className="btn btn--amber">Anmelden</button>
-                    </form>
-                    {newsletterStatus === 'success' && (
-                        <p className="form-status form-status--success" style={{ maxWidth: 500, margin: '1rem auto 0' }}>
-                            ✓ Erfolgreich angemeldet! Prüfen Sie Ihr Postfach.
-                        </p>
-                    )}
-                    {newsletterStatus === 'error' && (
-                        <p className="form-status form-status--error" style={{ maxWidth: 500, margin: '1rem auto 0' }}>
-                            Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.
-                        </p>
-                    )}
-                </div>
-            </section>
-
             {/* ===== CONTACT ===== */}
             <section className="section section--alt" id="kontakt">
                 <div className="container">
@@ -1008,6 +851,7 @@ export default function LandingPage() {
 
                     <div className="contact-grid">
                         <form className="contact-form" onSubmit={handleSubmit}>
+                            <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} />
                             <div className="form-row">
                                 <div className="form-group">
                                     <label htmlFor="contact-name">Name *</label>

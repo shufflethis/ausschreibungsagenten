@@ -1287,6 +1287,14 @@ img {
     padding: 5rem 0;
 }
 
+.form-honeypot {
+    position: absolute !important;
+    left: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+}
+
 .newsletter-form {
     display: flex;
     gap: 0.75rem;
