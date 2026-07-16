@@ -12,7 +12,7 @@ export default function Footer() {
                         </a>
                     </div>
                     <div className="footer__links">
-                        <a href="https://www.agentifizierung.de/ueber-uns" target="_blank" rel="noreferrer">Über uns</a>
+                        <Link to="/ueber-uns">Über uns</Link>
                         <Link to="/impressum">Impressum</Link>
                         <Link to="/agb">AGB</Link>
                         <Link to="/datenschutz">Datenschutz</Link>

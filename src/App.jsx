@@ -11,6 +11,7 @@ import Login from './pages/Login'
 import CheckEmail from './pages/CheckEmail'
 import MagicHandoff from './pages/MagicHandoff'
 import AppRedirect from './pages/AppRedirect'
+import UeberUns from './pages/UeberUns'
 
 export default function App() {
     return (
@@ -19,6 +20,7 @@ export default function App() {
             <main>
                 <Routes>
                     <Route path="/" element={<LandingPage />} />
+                    <Route path="/ueber-uns" element={<UeberUns />} />
                     <Route path="/impressum" element={<Impressum />} />
                     <Route path="/agb" element={<AGB />} />
                     <Route path="/datenschutz" element={<Datenschutz />} />

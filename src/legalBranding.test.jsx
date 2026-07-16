@@ -16,7 +16,7 @@ function renderPage(node) {
 }
 
 describe('Betreiberangaben', () => {
-    it('verlinkt Agentifizierung und die Über-uns-Seite im Footer', () => {
+    it('verlinkt Agentifizierung und die eigene Über-uns-Seite im Footer', () => {
         renderPage(<Footer />)
         expect(screen.getByRole('link', { name: 'Agentifizierung' })).toHaveAttribute(
             'href',
@@ -24,7 +24,7 @@ describe('Betreiberangaben', () => {
         )
         expect(screen.getByRole('link', { name: 'Über uns' })).toHaveAttribute(
             'href',
-            'https://www.agentifizierung.de/ueber-uns',
+            '/ueber-uns',
         )
         expect(screen.getByText(/Agentifizierung UG \(haftungsbeschränkt\) i\.G\./)).toBeInTheDocument()
         expect(screen.queryByText(/track by track|famefact/i)).not.toBeInTheDocument()
