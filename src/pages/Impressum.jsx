@@ -25,7 +25,7 @@ export default function Impressum() {
 
                 <h2>Kontakt</h2>
                 <p>
-                    E-Mail: <a href="mailto:info@famefact.com">info@famefact.com</a>
+                    E-Mail: <a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a>
                 </p>
 
                 <h2>Registereintrag</h2>

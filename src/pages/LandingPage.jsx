@@ -1082,7 +1082,7 @@ export default function LandingPage() {
                             )}
                             {formStatus === 'error' && (
                                 <div className="form-status form-status--error">
-                                    Es gab ein Problem beim Senden. Bitte versuchen Sie es erneut oder schreiben Sie an info@famefact.com.
+                                    Es gab ein Problem beim Senden. Bitte versuchen Sie es erneut oder schreiben Sie an hi@ausschreibungsagenten.de.
                                 </div>
                             )}
                         </form>
@@ -1090,7 +1090,7 @@ export default function LandingPage() {
                         <div className="contact-info">
                             <div className="glass-card contact-info__item">
                                 <h4>📧 E-Mail</h4>
-                                <p><a href="mailto:info@famefact.com">info@famefact.com</a></p>
+                                <p><a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a></p>
                             </div>
                             <div className="glass-card contact-info__item">
                                 <h4>📍 Standort</h4>

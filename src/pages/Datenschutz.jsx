@@ -19,7 +19,7 @@ export default function Datenschutz() {
 
                 <h3>Datenerfassung auf dieser Webseite</h3>
                 <p><strong>Wer ist verantwortlich für die Datenerfassung auf dieser Webseite?</strong></p>
-                <p>Die Datenverarbeitung auf dieser Webseite erfolgt durch den Webseitenbetreiber: track by track GmbH, Schliemannstr. 23, 10437 Berlin. E-Mail: info@famefact.com.</p>
+                <p>Die Datenverarbeitung auf dieser Webseite erfolgt durch den Webseitenbetreiber: track by track GmbH, Schliemannstr. 23, 10437 Berlin. E-Mail: hi@ausschreibungsagenten.de.</p>
 
                 <h2>2. Hosting</h2>
                 <p>Diese Webseite wird bei Vercel Inc. gehostet. Die Server befinden sich in der EU. Vercel verarbeitet Daten im Auftrag und gemäß unseren Weisungen (Auftragsverarbeitung).</p>
@@ -34,7 +34,7 @@ export default function Datenschutz() {
                     track by track GmbH<br />
                     Schliemannstr. 23<br />
                     10437 Berlin<br />
-                    E-Mail: info@famefact.com
+                    E-Mail: hi@ausschreibungsagenten.de
                 </p>
 
                 <h2>4. Datenerfassung auf dieser Webseite</h2>
