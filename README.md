@@ -22,6 +22,8 @@ Browser
 
 `AGENTLEADS_API_BASE` und alle Tokens/Secrets dürfen nicht in Git eingecheckt werden.
 
+Der Kundenlogin startet unter `/login`, navigiert dann aber per direktem Browser-POST auf die eindeutige App-Origin aus `VITE_APP_BASE_URL` (empfohlen `https://app.ausschreibungsagenten.de`). Bestätigung, Session, Konto und Abrechnung bleiben vollständig auf dieser Origin. Dadurch sind weder ein Vercel-Auth-Proxy noch Cross-Origin-Cookies notwendig; das Backend sieht den tatsächlichen Client am vertrauenswürdigen Reverse Proxy. `/konto` und `/abrechnung` leiten in den geschützten Appbereich weiter.
+
 ## Privates AgentLeads-Backend
 
 Produktionsbetrieb:
@@ -70,3 +72,19 @@ Für einen vollständigen Datenfluss zusätzlich prüfen:
 ## Deployment
 
 Die Website wird über das Vercel-Projekt `trackys-projects-6c71603f/ausschreibungsagenten` bereitgestellt. Änderungen am Scraper oder Poll-Zeitplan werden ausschließlich im privaten AgentLeads-Backend vorgenommen; Änderungen an der Darstellung oder am Proxy gehören in dieses Repository.
+
+Erforderliche Vercel-Konfiguration:
+
+- `VITE_APP_BASE_URL=https://app.ausschreibungsagenten.de` ist öffentlich und enthält kein Secret.
+- `AGENTLEADS_API_BASE` bleibt eine serverseitige Variable für die vorhandenen Vercel Functions.
+- DNS/TLS und Reverse Proxy der App-Origin werden im Backend-Runbook konfiguriert.
+
+Lokale Abnahme:
+
+```bash
+npm test
+npm run build
+npm audit --audit-level=high
+```
+
+Die Checkout-Success-Seite bestätigt bewusst keine Aktivierung. Nur der Stripe-Webhook des Backends ist dafür autoritativ.

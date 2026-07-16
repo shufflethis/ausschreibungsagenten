@@ -33,6 +33,7 @@ export default function Header() {
                     <a href="/#funktionen" onClick={() => setMenuOpen(false)}>Funktionen</a>
                     <a href="/#branchen" onClick={() => setMenuOpen(false)}>Branchen</a>
                     <a href="/#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
+                    <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
                     <a href="/#kontakt" className="btn btn--primary header__cta" onClick={() => setMenuOpen(false)}>Jetzt starten</a>
                 </nav>
             </div>

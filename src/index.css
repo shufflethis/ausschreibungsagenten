@@ -964,6 +964,42 @@ img {
     flex-wrap: wrap;
 }
 
+.account-entry {
+    min-height: 72vh;
+    display: flex;
+    align-items: center;
+    padding-top: 9rem;
+}
+
+.account-entry__card {
+    width: min(560px, 100%);
+    margin: 0 auto;
+    padding: 2rem;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius-lg);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+}
+
+.account-entry__card .section__subtitle {
+    margin-bottom: 1.5rem;
+}
+
+.account-entry__form {
+    display: grid;
+    gap: 1rem;
+}
+
+.account-entry__form .btn {
+    width: 100%;
+}
+
+.account-entry__note {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+    margin-top: 1.25rem;
+}
+
 .source-modal {
     position: fixed;
     inset: 0;

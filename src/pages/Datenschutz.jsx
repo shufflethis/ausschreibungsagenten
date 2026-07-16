@@ -45,6 +45,12 @@ export default function Datenschutz() {
                 <h3>Newsletter</h3>
                 <p>Wenn Sie den auf der Webseite angebotenen Newsletter beziehen möchten, benötigen wir von Ihnen eine E-Mail-Adresse. Diese Daten verwenden wir ausschließlich für den Versand der angeforderten Informationen. Eine Weitergabe an Dritte erfolgt nicht. Die erteilte Einwilligung zur Speicherung der Daten und ihrer Nutzung zum Newsletterversand können Sie jederzeit widerrufen.</p>
 
+                <h3>Kundenkonto und Magic-Link-Anmeldung</h3>
+                <p>Für Pilot- und Kundenkonten verarbeiten wir die geschäftliche E-Mail-Adresse, Firmen- und Rollenbezug, Anmelde- und Sitzungszeitpunkte sowie die notwendigen Konto- und Abrechnungsdaten. Anmeldelinks sind kurzlebig und nur einmal verwendbar; in der Datenbank werden ausschließlich Hashwerte der Links und Sitzungen gespeichert. Service-E-Mails für Anmeldung, Sicherheit und Vertragsdurchführung werden getrennt von optionalen Marketing-Einwilligungen behandelt.</p>
+
+                <h3>Zahlungsabwicklung</h3>
+                <p>Zahlungen und die Verwaltung von Zahlungsmitteln erfolgen über Stripe. Wir speichern keine Karten- oder Bankdaten. Im Kundenkonto werden nur die für Vertragsstatus, Tarifzuordnung und Rechnungszugriff erforderlichen Stripe-Referenzen und Statusinformationen verarbeitet.</p>
+
                 <h3>Analyse-Tools</h3>
                 <p>Diese Webseite nutzt Plausible Analytics, einen datenschutzfreundlichen Webanalyse-Dienst. Plausible verwendet keine Cookies und erhebt keine personenbezogenen Daten. Es werden keine Daten an Dritte weitergegeben. Die Verarbeitung erfolgt auf der Grundlage von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der statistischen Analyse des Nutzerverhaltens).</p>
 

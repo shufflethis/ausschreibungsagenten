@@ -739,9 +739,9 @@ export default function LandingPage() {
                             </a>
                         </div>
                         <div className="source-modal__plans">
-                            <span>Pro: 149 €/Monat für Alerts</span>
-                            <span>Agent: 499 €/Monat für höhere Limits + A2A/MCP</span>
-                            <span>Verfahren: ab 1.500 € einmalig</span>
+                            <span>Pro: Alerts und strukturierte Suchprofile</span>
+                            <span>Agent: höhere Limits sowie A2A/MCP</span>
+                            <span>Der verbindliche Preis wird serverseitig im Stripe-Checkout angezeigt.</span>
                         </div>
                     </div>
                 </div>
