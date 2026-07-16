@@ -241,7 +241,7 @@ export default function LandingPage() {
     return (
         <>
             <Helmet>
-                <title>Ausschreibungsagenten.de – Ausschreibungen aus TED und bund.de passend filtern</title>
+                <title>Ausschreibungsagenten.de – Ausschreibungen aus TED, Bund und BW passend filtern</title>
                 <meta name="description" content="Öffentliche Ausschreibungen aus TED, service.bund.de und Baden-Württemberg finden. Erklärbares Profil-Matching, Pilot-Dashboard, E-Mail-Digest, GAEB X83/X84 und Standardexport." />
             </Helmet>
 
@@ -251,7 +251,7 @@ export default function LandingPage() {
                     <div className="hero__content">
                         <div className="hero__badge">
                             <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4', animation: 'pulse 2s ease-in-out infinite' }}></span>
-                            TED + service.bund.de live
+                            TED + service.bund.de + Baden-Württemberg live
                         </div>
 
                         <h1 className="hero__title">
@@ -279,7 +279,7 @@ export default function LandingPage() {
                                 <span className="hero__stat-label">Ausschreibungen pro Jahr in DE</span>
                             </div>
                             <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>2</span>
+                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>3</span>
                                 <span className="hero__stat-label">Produktive öffentliche Quellen</span>
                             </div>
                         </div>
