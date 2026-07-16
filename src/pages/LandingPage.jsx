@@ -13,7 +13,7 @@ const TOOLS = [
 ]
 
 const FEATURES = [
-    { icon: '🔍', title: 'Drei Live-Quellen', text: 'TED, service.bund.de und die Vergabeplattform Baden-Württemberg werden regelmäßig abgefragt. DTVP, eVergabe, Bayern und NRW befinden sich im Ausbau.', color: '' },
+    { icon: '🔍', title: 'Sechs Live-Quellen', text: 'TED, service.bund.de sowie die Landesportale Baden-Württemberg, Bremen, Sachsen und Mecklenburg-Vorpommern werden regelmäßig abgefragt. DTVP, eVergabe, Bayern und NRW befinden sich im Ausbau.', color: '' },
     { icon: '🎯', title: 'Erklärbares Matching', text: 'CPV-Codes, Leistungsbegriffe, Ausschlusswörter, Leistungsort, Auftragswert und Frist ergeben einen transparenten Firmen-Fit mit einzelnen Score-Gründen.', color: '--violet' },
     { icon: '✉️', title: 'E-Mail-Digest', text: 'Im Pilot erhalten Profile neue, noch nicht versendete Treffer täglich oder wöchentlich per E-Mail. WhatsApp und Push sind noch nicht produktiv.', color: '--amber' },
     { icon: '📄', title: 'GAEB X83/X84 lesen', text: 'GAEB-DA-XML-Dateien der Austauschphasen X83 und X84 werden nur lesend strukturiert: Bereiche, Positionen, Mengen, Einheiten und optionale Preise. Keine Kalkulationsautomatik.', color: '--green' },
@@ -29,7 +29,7 @@ const BRANCHEN = [
 
 const FAQS = [
     { q: 'Was sind öffentliche Ausschreibungen und warum sind sie wichtig?', a: 'Öffentliche Ausschreibungen sind Vergabeverfahren, mit denen Behörden, Kommunen und öffentliche Einrichtungen Aufträge an Unternehmen vergeben. Mit einem jährlichen Volumen von rund 500 Milliarden Euro allein in Deutschland sind sie eine der größten Auftragsquellen für Unternehmen jeder Größe. Öffentliche Aufträge bieten Planungssicherheit, faire Konditionen und regelmäßige Zahlungen.' },
-    { q: 'Welche Vergabeportale gibt es in Deutschland?', a: 'Zu den wichtigen Quellen gehören DTVP, eVergabe, service.bund.de, die Landesportale und für EU-Verfahren TED. Unser eigener Pilot indexiert aktuell TED, service.bund.de und die Vergabeplattform Baden-Württemberg. Weitere Portale sind im Ausbau.' },
+    { q: 'Welche Vergabeportale gibt es in Deutschland?', a: 'Zu den wichtigen Quellen gehören DTVP, eVergabe, service.bund.de, die Landesportale und für EU-Verfahren TED. Unser eigener Pilot indexiert aktuell TED, service.bund.de sowie Baden-Württemberg, Bremen, Sachsen und Mecklenburg-Vorpommern. Weitere Portale sind im Ausbau.' },
     { q: 'Was macht der Ausschreibungsagent konkret?', a: 'Der aktuelle Agent ordnet Bekanntmachungen über CPV-Codes und Regeln Branchen zu. Anschließend vergleicht er Firmenprofil, Keywords, Ausschlüsse, Leistungsort, Auftragswert und Frist. Jeder Fit-Score wird mit nachvollziehbaren Einzelgründen angezeigt; semantisches KI-Matching wird nicht als bereits produktiv behauptet.' },
     { q: 'Wie viel kostet ein Ausschreibungsagent?', a: 'Die Preise variieren je nach Anbieter und Funktionsumfang. Einstiegsangebote beginnen bei ca. 39 €/Monat für Basis-Funktionen (z. B. aumass Start). Professionelle Tools mit KI-Features liegen zwischen 80 und 200 €/Monat. Enterprise-Lösungen mit API-Zugang und White-Label-Optionen werden individuell bepreist. Angesichts des Potenzials öffentlicher Aufträge amortisiert sich die Investition oft schon mit einem einzigen gewonnenen Auftrag.' },
     { q: 'Ab welchem Auftragsvolumen lohnt sich die Suche nach öffentlichen Ausschreibungen?', a: 'Grundsätzlich gibt es keine Untergrenze. Bereits Kleinstaufträge ab wenigen tausend Euro werden öffentlich ausgeschrieben, insbesondere auf kommunaler Ebene. Für die meisten Unternehmen lohnt sich der Einstieg ab einem anvisierten Jahresauftragsvolumen von 50.000 €. Die Vergaberechts-Schwellenwerte liegen aktuell bei 143.000 € für Liefer- und Dienstleistungsaufträge und 5.538.000 € für Bauaufträge (EU-weite Vergabe).' },
@@ -37,7 +37,7 @@ const FAQS = [
     { q: 'Wie viele Ausschreibungen werden täglich veröffentlicht?', a: 'In Deutschland werden täglich mehrere tausend neue Ausschreibungen auf den verschiedenen Vergabeportalen veröffentlicht. Allein das DTVP (Deutsches Vergabeportal) verzeichnet über 500.000 Bekanntmachungen pro Jahr. Ohne automatisierte Suche ist es praktisch unmöglich, alle relevanten Ausschreibungen manuell zu erfassen – insbesondere, wenn man mehrere Portale und Bundesländer abdecken möchte.' },
     { q: 'Welche Branchen profitieren am meisten von Ausschreibungsagenten?', a: 'Besonders stark profitieren das Baugewerbe, Handwerksbetriebe, IT-Dienstleister, Ingenieurbüros und Facility-Management-Unternehmen. Aber auch Catering, Reinigung, Beratung, Schulung und viele weitere Branchen finden regelmäßig passende öffentliche Aufträge. Grundsätzlich gilt: Jedes Unternehmen, das Dienstleistungen oder Produkte an den öffentlichen Sektor verkaufen kann, sollte Ausschreibungsagenten nutzen.' },
     { q: 'Kann ich auch als kleines Unternehmen an öffentlichen Ausschreibungen teilnehmen?', a: 'Ja, unbedingt! Das Vergaberecht fördert sogar explizit die Beteiligung kleiner und mittlerer Unternehmen (KMU). Viele Aufträge werden in Lose aufgeteilt, um auch kleineren Betrieben die Teilnahme zu ermöglichen. Kommunale Ausschreibungen sind oft besonders KMU-freundlich. Ein KI-Agent hilft Ihnen, genau die Ausschreibungen zu finden, die zu Ihrer Unternehmensgröße und Ihren Kapazitäten passen.' },
-    { q: 'Wie unterscheidet sich ausschreibungsagenten.de von anderen Plattformen?', a: 'Neben dem Marktüberblick erproben wir einen eigenen, transparenten Ausschreibungsagenten. Im aktuellen Pilot sind TED, service.bund.de und Baden-Württemberg, erklärbares Profil-Matching, E-Mail-Digests, GAEB X83/X84 und Standardexporte verfügbar. Portale und Hersteller-Connectoren im Ausbau kennzeichnen wir ausdrücklich.' },
+    { q: 'Wie unterscheidet sich ausschreibungsagenten.de von anderen Plattformen?', a: 'Neben dem Marktüberblick erproben wir einen eigenen, transparenten Ausschreibungsagenten. Im aktuellen Pilot sind sechs öffentliche Quellen, erklärbares Profil-Matching, E-Mail-Digests, GAEB X83/X84 und Standardexporte verfügbar. Portale und Hersteller-Connectoren im Ausbau kennzeichnen wir ausdrücklich.' },
     { q: 'Welche Fristen gelten bei öffentlichen Ausschreibungen?', a: 'Die Angebotsfristen variieren je nach Verfahrensart. Bei offenen Verfahren oberhalb der EU-Schwellenwerte beträgt die Mindestfrist 35 Tage (mit elektronischer Bekanntmachung: 30 Tage). Unterhalb der Schwellenwerte und bei nationalen Verfahren gelten oft kürzere Fristen von 10–15 Werktagen. Ein Ausschreibungsagent mit Fristenkalender sorgt dafür, dass Sie keine Deadline verpassen.' },
     { q: 'Ist die Nutzung der Vergabeportale kostenlos?', a: 'Die Einsicht in Bekanntmachungen ist auf den meisten offiziellen Portalen kostenlos. Die Teilnahme an elektronischen Vergabeverfahren über das DTVP ist ebenfalls kostenfrei. Erweiterte Funktionen wie Suchprofile, automatische Benachrichtigungen und Export-Funktionen sind bei vielen Portalen premium-pflichtig. Drittanbieter-Tools wie aumass, TenderWolf oder GAEB.ai bieten Mehrwert-Features gegen monatliche Gebühren.' },
 ]
@@ -241,8 +241,8 @@ export default function LandingPage() {
     return (
         <>
             <Helmet>
-                <title>Ausschreibungsagenten.de – Ausschreibungen aus TED, Bund und BW passend filtern</title>
-                <meta name="description" content="Öffentliche Ausschreibungen aus TED, service.bund.de und Baden-Württemberg finden. Erklärbares Profil-Matching, Pilot-Dashboard, E-Mail-Digest, GAEB X83/X84 und Standardexport." />
+                <title>Ausschreibungsagenten.de – Ausschreibungen aus TED, Bund und Landesportalen filtern</title>
+                <meta name="description" content="Öffentliche Ausschreibungen aus TED, service.bund.de sowie vier Landesportalen finden. Erklärbares Profil-Matching, Pilot-Dashboard, E-Mail-Digest, GAEB X83/X84 und Standardexport." />
             </Helmet>
 
             {/* ===== HERO ===== */}
@@ -251,7 +251,7 @@ export default function LandingPage() {
                     <div className="hero__content">
                         <div className="hero__badge">
                             <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4', animation: 'pulse 2s ease-in-out infinite' }}></span>
-                            TED + service.bund.de + Baden-Württemberg live
+                            TED + Bund + vier Landesportale live
                         </div>
 
                         <h1 className="hero__title">
@@ -260,7 +260,7 @@ export default function LandingPage() {
                         </h1>
 
                         <p className="hero__description">
-                            Unser Pilot durchsucht TED, service.bund.de und Baden-Württemberg und bewertet Ausschreibungen
+                            Unser Pilot durchsucht TED, service.bund.de sowie vier Landesportale und bewertet Ausschreibungen
                             nachvollziehbar nach Ihrem Firmenprofil. Weitere Portale werden schrittweise angebunden.
                         </p>
 
@@ -279,7 +279,7 @@ export default function LandingPage() {
                                 <span className="hero__stat-label">Ausschreibungen pro Jahr in DE</span>
                             </div>
                             <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>3</span>
+                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>6</span>
                                 <span className="hero__stat-label">Produktive öffentliche Quellen</span>
                             </div>
                         </div>
@@ -355,7 +355,7 @@ export default function LandingPage() {
                             <div className="step-card__number">2</div>
                             <h3 className="glass-card__title">Agent arbeitet</h3>
                             <p className="glass-card__text">
-                                Der Agent fragt TED, service.bund.de und Baden-Württemberg regelmäßig ab. Jede neue Ausschreibung wird
+                                Der Agent fragt TED, service.bund.de, Baden-Württemberg, Bremen, Sachsen und Mecklenburg-Vorpommern regelmäßig ab. Jede neue Ausschreibung wird
                                 über CPV, Regeln, Keywords, Region, Wert und Frist mit Ihrem Profil abgeglichen.
                                 DTVP, eVergabe sowie die Portale Bayern und NRW sind als nächste Quellen geplant.
                             </p>
@@ -390,7 +390,7 @@ export default function LandingPage() {
                     <div className="glass-card" style={{ marginBottom: '2rem' }}>
                         <h3 className="glass-card__title">Quellenstatus</h3>
                         <p className="glass-card__text">
-                            TED, service.bund.de und Baden-Württemberg sind live. DTVP, eVergabe sowie die
+                            TED, service.bund.de, Baden-Württemberg, Bremen, Sachsen und Mecklenburg-Vorpommern sind live. DTVP, eVergabe sowie die
                             Landesportale Bayern und Nordrhein-Westfalen sind noch nicht produktiv angebunden.
                         </p>
                         {sourceStatus.length > 0 && (
@@ -876,7 +876,7 @@ export default function LandingPage() {
                             Die öffentliche Beschaffung in Deutschland umfasst ein jährliches Volumen von rund 500 Milliarden Euro – das entspricht etwa 15 Prozent des Bruttoinlandsprodukts. Damit ist Deutschland einer der größten öffentlichen Beschaffungsmärkte in Europa. Dieser Markt ist hochgradig dezentralisiert: Rund 58 Prozent aller Vergaben erfolgen auf kommunaler Ebene, 30 Prozent auf Länderebene und nur 12 Prozent auf Bundesebene. Das bedeutet: Die meisten Aufträge werden von Städten, Gemeinden und Landkreisen vergeben – oft ohne dass überregionale Unternehmen davon erfahren.
                         </p>
                         <p>
-                            Genau hier liegt die Chance für Unternehmen, die Ausschreibungssuche systematisch zu unterstützen: Unser Pilot bündelt aktuell TED, service.bund.de und Baden-Württemberg, gleicht Bekanntmachungen mit einem strukturierten Firmenprofil ab und verlinkt immer auf die Originalquelle. DTVP, eVergabe, Bayern und NRW sind dokumentierte Ausbaupunkte.
+                            Genau hier liegt die Chance für Unternehmen, die Ausschreibungssuche systematisch zu unterstützen: Unser Pilot bündelt aktuell TED, service.bund.de sowie Baden-Württemberg, Bremen, Sachsen und Mecklenburg-Vorpommern, gleicht Bekanntmachungen mit einem strukturierten Firmenprofil ab und verlinkt immer auf die Originalquelle. DTVP, eVergabe, Bayern und NRW sind dokumentierte Ausbaupunkte.
                         </p>
 
                         <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>
