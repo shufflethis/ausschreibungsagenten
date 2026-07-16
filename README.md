@@ -44,7 +44,7 @@ Quellenstatus:
 
 - TED über `api.ted.europa.eu`: aktiv
 - `service.bund.de` RSS: aktiv
-- Landesportale Bayern, Nordrhein-Westfalen und Baden-Württemberg: derzeit nur vorbereitet/Stubs; Details und Blocker stehen in `BLOCKERS.md` des privaten Backend-Repositories
+- Vergabeplattform Baden-Württemberg: live; Landesportale Bayern und Nordrhein-Westfalen derzeit vorbereitet/Stubs; Details und Blocker stehen in `BLOCKERS.md` des privaten Backend-Repositories
 
 Das private Backend enthält außerdem Stripe-Checkout, öffentliche Tender-Matches, Volltextsuche, einen A2A-JSON-RPC-Agent-Endpunkt und Agent-Discovery-Metadaten. Diese Funktionen sind nicht Teil dieses Website-Repositories.
 
