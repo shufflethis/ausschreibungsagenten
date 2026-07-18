@@ -69,17 +69,15 @@ eines davon einzahlen, sonst ist sie Spielerei.
 *These: TED ist die eine Quelle für alle 27 EU-Länder oberhalb der Schwellen. Der Rollout ist
 seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volumen/Last.*
 
-- [ ] **A1 — Messbasis:** Poll-Dauer, DB-Größe, Tender-Count je Quelle als Kennzahlen in
-      `PROGRESS.md` festhalten (vor jeder Erweiterung). Prüfen, ob TED-Query mit CPV-Filter
-      unter dem 15.000er-Pagination-Deckel bleibt, wenn Länder dazukommen; sonst Poll je
-      Ländergruppe splitten.
-      *Abnahme: Kennzahlen-Snapshot geloggt; Deckel-Analyse dokumentiert.*
-- [ ] **A2 — Welle 1 (Nachbarn/DACH+):** `COUNTRIES=DEU,AUT,CHE?*,NLD,BEL,LUX,POL,CZE,DNK,FRA`
-      — in 2er/3er-Schritten, nach jedem Schritt Poll beobachten (Dauer, stored, Fehler).
-      (*CHE ist nicht EU/TED-vollständig — prüfen, ob TED CHE-Notices führt; sonst simap-Ziel in A5.*)
-      *Abnahme: je Land >0 Tender im Index, Poll <10 Min, keine Lock-Fehler, Kennzahlen geloggt.*
-- [ ] **A3 — Welle 2 (Rest-EU27):** alle übrigen EU-Länder aktivieren.
-      *Abnahme: 27 Länder liefern, Gesamt-Poll stabil, API-Antwortzeiten < 1s bei limit=25.*
+- [x] **A1 — Messbasis** *(2026-07-18)*: Deckel-Analyse ergab EU27 = 19.029 ACTIVE-Notices
+      > 15.000er-TED-Pagination-Deckel → Gruppen-Split zwingend. Kennzahlen in PROGRESS.md.
+      Nebenbei behoben (Vorrang Störung): SQLite-Lock-Inzident — Batch-Commits,
+      Poll-Serialisierung (`_POLL_LOCK`), Scheduler `misfire_grace_time=3600` (`b9fbdf5`).
+- [x] **A2/A3 — EU27 komplett** *(2026-07-18)*: `COUNTRIES` auf alle 27 EU-Länder (Rollout kam
+      parallel aus dem tender-agents-Fenster); TED pollt je 3er-Ländergruppe unter dem Deckel
+      mit Warnung ab 14k/Gruppe (`4c31f1d`). Verifiziert: 12.229 Tender aus 27 Ländern,
+      10/10 Quellen fehlerfrei, FR-Treffer live auf beiden Domains.
+      *Rest offen → A4-Beobachtung: größte Gruppe FRA+DEU+GRC=11.837 wächst Richtung Deckel.*
 - [ ] **A4 — Infrastruktur-Gate:** Wenn DB > 500 MB oder Poll > 15 Min oder Lock-Fehler häufen:
       Migration SQLite → Postgres vorbereiten (Alembic existiert). Entscheidung + Plan als
       NEEDS-HUMAN loggen, nicht eigenmächtig migrieren.

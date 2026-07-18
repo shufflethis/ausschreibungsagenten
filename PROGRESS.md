@@ -39,3 +39,30 @@ englischer Rebrand, EU-Länder-Facetten (DE/FR/ES/IT/NL/PL/AT), eigene llms.txt/
    (api.ausschreibungsagenten.de). NEEDS-HUMAN: api.tender-agents.com als nginx-Alias auf
    dasselbe Backend (Zertifikat/DNS) ODER .com verlinkt die bestehende API-Domain;
    danach deren llms.txt/agent-card korrigieren.
+
+## 2026-07-18 · Ralph-Loop Iteration 1 — Track A: EU27 komplett + Lock-Inzident behoben
+
+**Störung (Vorrang):** bund-Poll scheiterte mit "database is locked".
+Dreistufige Ursache + Fix (Backend `b9fbdf5`):
+1. TED-Full-Scan hielt EINE minutenlange Write-Transaktion → Batch-Commit alle 200 Upserts
+2. Writer-Starvation trotz Batches → Poll-Serialisierung via modul-weitem asyncio-Lock
+3. Landes-Jobs wurden still verworfen (APScheduler misfire_grace_time Default 1s,
+   Event-Loop beim TED-Parsen kurz blockiert) → misfire_grace_time=3600 + coalesce überall
+
+**Track A (A1–A3 erledigt):**
+- A1: EU27 = 19.029 ACTIVE-Notices > 15.000er-TED-Deckel → Split nötig (Messung via TED-API)
+- COUNTRIES=EU27 kam parallel aus dem tender-agents-Fenster (.env.bak-20260718-1515);
+  dadurch lief der Deckel-Verlust bereits live (fetched nur 10.619 von 19.054)
+- A2/A3: TED pollt jetzt je 3er-Ländergruppe (`4c31f1d`), alle 9 Gruppen unter Deckel,
+  Warnlog ab 14k/Gruppe. Ergebnis: fetched 14.599 (+~4.000 zurückgeholt), stored 12.106
+
+**Kennzahlen:** 12.229 Tender / 27 Länder (Top: DEU 5.166, FRA 2.762, POL 697, SWE 659,
+AUT 516). DB ~165 MB + ~70 MB WAL. TED-Gruppen-Scan ~4 Min, alle 10 Quellen seriell OK.
+Tests: Backend 165 (+3 Gruppen-Tests), Site 16. FR-Treffer live auf beiden Domains
+verifiziert — die tender-agents.com-Länderfacetten sind jetzt gefüllt.
+
+**Beobachten (A4-Nähe):** Größte Gruppe FRA+DEU+GRC=11.837 → bei Wachstum COUNTRY_GROUP_SIZE
+auf 2 senken. DB-Größe im Auge behalten (Postgres-Gate bei >500 MB).
+
+**Nächster Schritt:** A5 (Nicht-TED-Quellen scopen) oder A6/D4 (Länder-Doku ausspielen);
+B1 (Sprachfeld) ist der Einstieg in Track B.

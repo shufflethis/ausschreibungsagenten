@@ -12,8 +12,8 @@ Handwerk, Bau, IT, Marketing und Beratung.
 
 ## Datenquellen (produktiv, live gepollt)
 
-1. TED / Tenders Electronic Daily (api.ted.europa.eu) — indexiert Deutschland (DEU) und
-   Österreich (AUT); weitere EU-Länder sind vorbereitet (Parameter `country`)
+1. TED / Tenders Electronic Daily (api.ted.europa.eu) — indexiert alle 27 EU-Länder
+   (ISO-3-Codes über Parameter `country`, z. B. DEU, AUT, FRA, ESP, ITA, NLD, POL)
 2. service.bund.de (RSS)
 3. Landesportal Baden-Württemberg
 4. Landesportal Bremen

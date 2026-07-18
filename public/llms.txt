@@ -1,9 +1,9 @@
 # Ausschreibungsagenten.de
 
-> DACH-Plattform zum Finden und nachvollziehbaren Filtern öffentlicher Ausschreibungen.
-> Acht produktive Live-Quellen: TED (api.ted.europa.eu, indexiert Deutschland und Österreich),
+> Plattform zum Finden und nachvollziehbaren Filtern öffentlicher Ausschreibungen.
+> Acht produktive Live-Quellen: TED (api.ted.europa.eu, indexiert alle 27 EU-Länder),
 > service.bund.de sowie die Landesportale Baden-Württemberg, Bremen, Sachsen,
-> Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz.
+> Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz. Fokus: DACH; EU-weit per `country`-Parameter.
 > Erklärbares Profil-Matching (CPV, Keywords, Ausschlüsse, Leistungsort, Auftragswert, Frist)
 > mit Einzelgründen statt Blackbox-KI. GAEB DA XML X83/X84 wird lesend strukturiert.
 
