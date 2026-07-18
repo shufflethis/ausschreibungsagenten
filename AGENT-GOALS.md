@@ -1,0 +1,173 @@
+# AGENT-GOALS — Autonomes Arbeitsprogramm Richtung 100k MRR
+
+> Stand: 2026-07-18 · Dieses Dokument ist der **Master-Prompt für autonome Sessions**.
+> Es ist selbsttragend: eine frische Claude-Code-Session ohne Chat-Historie kann hiermit
+> sofort produktiv arbeiten. Fortschritt wird HIER (Checkboxen) und in `PROGRESS.md`
+> (Log, append-only) festgehalten.
+
+## Mission
+
+**100.000 € MRR** mit der Tender-Intelligence-Plattform (Marken: ausschreibungsagenten.de
+DACH + tender-agents.com EU/international). Der Weg dahin läuft über **Fähigkeiten**:
+
+1. **Alle relevanten EU-Ausschreibungen im Index** (nicht nur DE/AT)
+2. **Sprachagnostisches Matching-Framework** — die Sprache einer Bekanntmachung ist egal
+3. **Standards verstehen und erfüllen** — eForms, CPV/NUTS, ESPD, OCDS, GAEB/ÖNORM
+4. Distribution über den Agent-Funnel (MCP/A2A/llms.txt) und SEO
+
+MRR-Mathematik als Kompass: 50× Agent (499 €) + 300× Pro (149 €) + Rest über
+Verfahrensbegleitung (1.499 €) und internationale Kunden ≈ 100k. Jede Fähigkeit muss auf
+eines davon einzahlen, sonst ist sie Spielerei.
+
+## Systemzustand (2026-07-18 — bei Abweichung: dieses Dokument aktualisieren!)
+
+- **Site-Repo:** `/home/admin/ausschreibungsagenten-site` (React/Vite, Vercel, master → Auto-Deploy)
+- **Backend-Repo:** `/home/admin/agentleads-account` (FastAPI, Branch `feat/account-platform-mvp`,
+  Container `agentleads` via `docker compose build app && docker compose up -d app`,
+  SQLite `/data/agentleads.db` im Container, Tests: `.venv/bin/python -m pytest -q`)
+- **Live:** 8 Quellen (TED DE+AT, bund, 6 Landesportale), ~5.700 Tender (5.165 DE + 516 AT),
+  MCP + A2A + Agent Card + OpenAPI öffentlich, Self-Serve Free-Keys, Tier-Rate-Limits,
+  Vercel-Proxys auf `www.` (`api/*.js`)
+- **Kunden/Keys:** famefact 2× agent-Tier, Rossmanith (Fassade-Pilot) 1× pro-Tier
+- **Geparkt (NICHT autonom anfassen):** Stripe/Checkout-Freischaltung, Preisänderungen,
+  E-Mail-Kampagnen, Kundenkommunikation
+
+## Regeln für autonome Sessions
+
+1. **Ehrlichkeitsprinzip:** Nichts als live/produktiv behaupten, was es nicht ist — im Code,
+   in Texten, in llms.txt, überall. Das ist Markenkern.
+2. **Verifikation vor Abhaken:** Jedes Ziel hat Abnahmekriterien. Erst grüne Tests + Live-Check
+   (curl gegen Prod), dann Checkbox + `PROGRESS.md`-Eintrag (Datum, was, Beweis/Commit).
+3. **Tests immer:** Backend `pytest` (aktuell 162), Site `npm test && npm run build` (aktuell 16).
+   Neue Features bekommen neue Tests.
+4. **Deploy-Disziplin:** Backend = Container-Rebuild + Health-Check + Smoke-Test. Site = push
+   auf master + Live-Verifikation des neuen Bundles. Bei rotem Zustand: zurückrollen, loggen.
+5. **Kleine Commits** mit aussagekräftigen Messages, Push nach jedem abgeschlossenen Ziel
+   (Site: master; Backend: `feat/account-platform-mvp`).
+6. **Menschliche Freigabe nötig für:** alles unter „Geparkt", DNS/Domain-Änderungen,
+   Löschen von Kundendaten, neue externe Accounts/Registrierungen mit Identität,
+   Ausgaben jeglicher Art. Solche Punkte in `PROGRESS.md` unter „NEEDS-HUMAN" sammeln.
+7. **Secrets:** niemals in Git. Env-Änderungen in `.env` (Backend) dokumentieren in
+   `PROGRESS.md` (Name, nicht Wert).
+8. **Bei Widerspruch zwischen diesem Dokument und der Realität:** Realität prüfen,
+   Dokument korrigieren, weiterarbeiten.
+
+## Session-Protokoll (jede autonome Session)
+
+1. Lies `AGENT-GOALS.md` (dies) + letzte 30 Zeilen `PROGRESS.md`.
+2. Prüfe Systemgesundheit: Container healthy? Letzte Polls ok (`/api/source-status`)?
+   Site live? — Störungen haben Vorrang vor neuen Zielen.
+3. Wähle das **oberste unerledigte Ziel** des am wenigsten fortgeschrittenen aktiven Tracks
+   (Reihenfolge unten). Ein Ziel pro Arbeitszyklus ganz fertig machen statt drei anfangen.
+4. Implementieren → testen → deployen → live verifizieren → abhaken → loggen → committen.
+5. Session-Ende: `PROGRESS.md`-Eintrag mit Stand, nächstem sinnvollen Schritt, offenen Fragen.
+
+---
+
+## Track A — EU-Datenbasis: alle Ausschreibungen der EU
+
+*These: TED ist die eine Quelle für alle 27 EU-Länder oberhalb der Schwellen. Der Rollout ist
+seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volumen/Last.*
+
+- [ ] **A1 — Messbasis:** Poll-Dauer, DB-Größe, Tender-Count je Quelle als Kennzahlen in
+      `PROGRESS.md` festhalten (vor jeder Erweiterung). Prüfen, ob TED-Query mit CPV-Filter
+      unter dem 15.000er-Pagination-Deckel bleibt, wenn Länder dazukommen; sonst Poll je
+      Ländergruppe splitten.
+      *Abnahme: Kennzahlen-Snapshot geloggt; Deckel-Analyse dokumentiert.*
+- [ ] **A2 — Welle 1 (Nachbarn/DACH+):** `COUNTRIES=DEU,AUT,CHE?*,NLD,BEL,LUX,POL,CZE,DNK,FRA`
+      — in 2er/3er-Schritten, nach jedem Schritt Poll beobachten (Dauer, stored, Fehler).
+      (*CHE ist nicht EU/TED-vollständig — prüfen, ob TED CHE-Notices führt; sonst simap-Ziel in A5.*)
+      *Abnahme: je Land >0 Tender im Index, Poll <10 Min, keine Lock-Fehler, Kennzahlen geloggt.*
+- [ ] **A3 — Welle 2 (Rest-EU27):** alle übrigen EU-Länder aktivieren.
+      *Abnahme: 27 Länder liefern, Gesamt-Poll stabil, API-Antwortzeiten < 1s bei limit=25.*
+- [ ] **A4 — Infrastruktur-Gate:** Wenn DB > 500 MB oder Poll > 15 Min oder Lock-Fehler häufen:
+      Migration SQLite → Postgres vorbereiten (Alembic existiert). Entscheidung + Plan als
+      NEEDS-HUMAN loggen, nicht eigenmächtig migrieren.
+- [ ] **A5 — Nicht-TED-Quellen scopen (nur Analyse, kein Bau):** GB Find-a-Tender (OCDS),
+      CH simap, NO Doffin: API-Zugang, Datenmodell, Aufwand je Connector dokumentieren.
+      *Abnahme: Scoping-Doc `docs/SOURCES-INTL.md` im Backend-Repo.*
+- [ ] **A6 — Länder-Facette ausspielen:** `country`-Parameter in /entwickler-Doku + llms.txt
+      mit Liste der tatsächlich indexierten Länder (dynamisch halten oder bei jedem
+      Rollout-Schritt aktualisieren). Agent Card Beschreibung „German and EU" prüfen.
+
+## Track B — Sprachagnostisches Matching-Framework
+
+*These: CPV/NUTS sind die sprachneutrale Wirbelsäule (funktioniert bereits, AT-Beweis).
+Sprache betrifft nur: Keywords, Volltextsuche, Anzeige. Kein ML-Hype: erst deterministisch
+mehrsprachig, semantik später als klar gekennzeichnetes Experiment.*
+
+- [ ] **B1 — Sprachfeld:** Notice-Sprache(n) aus TED-Rohdaten extrahieren und als Spalte/Feld
+      am Tender speichern (`language`), in API/Exports ausgeben.
+      *Abnahme: AT/DE-Tender zeigen `deu`; Test vorhanden.*
+- [ ] **B2 — Mehrsprachige Vertical-Keywords:** Keyword-Sets der Verticals (Fassade, Marketing)
+      als sprachkeyed Struktur (`{deu: [...], eng: [...], fra: [...], ...}`) refaktorieren;
+      Scoring nutzt das Set der Notice-Sprache + eng als Fallback. CPV bleibt Hauptsignal.
+      *Abnahme: Ein französischer Fassaden-Tender (CPV 45443000) scored ohne deutsche Keywords
+      gleichwertig; Tests je Sprache.*
+- [ ] **B3 — Firmen-Fit sprachneutral:** Firmenprofil-Matching (Begriffe/Ausschlüsse) prüfen:
+      wo matchen deutsche Kundenbegriffe gegen fremdsprachige Titel? Lösung dokumentieren und
+      umsetzen: CPV-first, Begriffe nur auf Notices der Profilsprache(n), optional
+      TED-Mehrsprachfelder (TED liefert Titel oft in mehreren Sprachen — nutzen!).
+      *Abnahme: Rossmanith-Profil bekommt AT-Treffer korrekt, keine False-Positives aus FR/PL.*
+- [ ] **B4 — FTS mehrsprachig:** Volltextsuche auf Sprach-Handling prüfen (Stemming/Analyzer);
+      mindestens: Suche findet Original-Titel jeder Sprache; dokumentieren, was (noch) nicht geht.
+- [ ] **B5 — Anzeige-/Digest-Übersetzung (Experiment, klar gelabelt):** Für fremdsprachige
+      Treffer im Digest/Dashboard eine deutsche Kurzzusammenfassung erzeugen (LLM-Aufruf,
+      Kosten prüfen → wenn API-Kosten nötig: NEEDS-HUMAN). Immer mit „maschinell übersetzt"-Label
+      und Link zur Originalquelle.
+      *Das ist das Verkaufsargument: „EU-Aufträge ohne Sprachbarriere".*
+
+## Track C — Standards verstehen & erfüllen
+
+*These: Wer die Vergabestandards maschinenlesbar beherrscht, baut den Moat, den Aggregatoren
+nicht haben. Reihenfolge: erst verstehen (lesen/extrahieren), dann erfüllen (Bieter helfen).*
+
+- [ ] **C1 — eForms-Tiefe:** TED liefert eForms-basierte Felder. Inventarisieren, welche
+      Felder wir NICHT nutzen (Lose, Eignungskriterien, Zuschlagskriterien, Rahmenvereinbarung,
+      GPA-Bezug, Optionen/Verlängerungen). Die 5 wertvollsten für Go/No-Go extrahieren und
+      in Tender-Modell + API aufnehmen.
+      *Abnahme: mind. Lose + Verfahrensart + Zuschlagskriterien am Tender sichtbar; Tests.*
+- [ ] **C2 — Fristen-Vollständigkeit:** deadline_at-Abdeckung messen (wieviel % NULL?);
+      Nachfrist-/Teilnahmefrist-Felder aus eForms ergänzen wo vorhanden.
+- [ ] **C3 — ESPD verstehen:** Analyse: Welche Eignungsnachweise (ESPD-Struktur) lassen sich
+      aus Bekanntmachungen extrahieren? Als strukturiertes „Anforderungen"-Feld am Tender
+      (z. B. Umsatz-Mindestgrenzen, Referenzen, Zertifikate) — das füttert Go/No-Go-Karten.
+      *Abnahme: Scoping-Doc + Extraktion für die häufigsten 3 Anforderungsarten.*
+- [ ] **C4 — OCDS-Kompetenz:** OCDS-Datenmodell (GB, international) dokumentieren und
+      Mapping OCDS→Tender-Modell entwerfen (Vorarbeit für GB-Connector aus A5).
+- [ ] **C5 — GAEB/ÖNORM:** GAEB X83/X84 läuft (DE). ÖNORM A 2063 (AT-Pendant) scopen:
+      Format, Beispieldateien, Aufwand. *Abnahme: Scoping-Abschnitt in `docs/SOURCES-INTL.md`.*
+- [ ] **C6 — „Standards erfüllen"-Produktstory:** Aus C1–C3 eine Go/No-Go-Karte v2 bauen:
+      Anforderungen des Verfahrens vs. Firmenprofil, mit Lückenliste („fehlender Nachweis: X").
+      *Das ist der Kern des 1.499-€-Verfahrens-Produkts — skaliert es, skaliert der Umsatz.*
+
+## Track D — Distribution & Funnel (autonom erlaubte Teile)
+
+- [ ] **D1 — MCP-Discovery:** Prüfen, welche MCP-Registries/Listen Einträge ohne Account-
+      Registrierung erlauben (PR auf GitHub-Listen z. B.). Vorbereitete Einträge/PR-Texte in
+      `docs/DISTRIBUTION.md`; alles, was Accounts/Identität braucht → NEEDS-HUMAN.
+- [ ] **D2 — SEO-Länderseiten (nach A2):** Statische Landingpages je indexiertem Land/Region
+      aus dem Index generieren (setzt Prerender/SSG voraus — zuerst SSG-Ziel aus GOALS.md P3).
+- [ ] **D3 — /status-Seite:** Öffentliche Statusseite aus source-status (Transparenz-Moat,
+      steht schon in GOALS.md P2) — inkl. Länderliste aus Track A.
+- [ ] **D4 — llms.txt/Agent Card aktuell halten:** Nach jedem Track-A/B/C-Meilenstein prüfen.
+
+---
+
+## Kickoff-Prompt für autonome Sessions (kopierfertig)
+
+```text
+Lies /home/admin/ausschreibungsagenten-site/AGENT-GOALS.md vollständig und die letzten
+30 Zeilen von PROGRESS.md (falls vorhanden; sonst anlegen). Folge dem Session-Protokoll:
+Gesundheitscheck, dann das oberste unerledigte Ziel des am wenigsten fortgeschrittenen
+Tracks (A vor B vor C vor D) komplett umsetzen — implementieren, testen, deployen, live
+verifizieren, abhaken, in PROGRESS.md loggen, committen und pushen.
+Halte dich strikt an die Regeln (Ehrlichkeit, Verifikation, Geparktes nicht anfassen,
+NEEDS-HUMAN sammeln statt raten). Arbeite so lange weiter, wie Ziele sauber abschließbar
+sind; brich ein Ziel lieber kontrolliert ab und logge den Stand, statt Halbfertiges zu
+deployen.
+```
+
+*Betriebsarten: einmalig (Prompt in neue Session pasten), wiederkehrend (`/ralph-loop` im
+Site-Repo mit diesem Prompt) oder geplant (Cloud-Routine). Für unbeaufsichtigte Läufe gilt
+Regel 6 besonders streng.*
