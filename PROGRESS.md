@@ -280,3 +280,11 @@ eForms-Felder in raw_data kosten Platz; bei diesem Tempo Gate in Tagen erreicht 
 Postgres-Plan aus A4 zeitnah entscheiden). TED-Poll 4m20s (Gate 15 min) OK.
 
 Keine ungegateten Ziele mehr — Loop wartet auf Entscheidungen (Liste s. Iteration 12/14).
+
+## 2026-07-18 · Ralph-Loop kontrolliert beendet (nach Iteration 22)
+
+Alle ungegateten Ziele erledigt (16/21), Iterationen 15-20 waren Leerlauf-Heartbeats
+(System durchgehend grün). Loop gemäß Protokoll beendet — Neustart jederzeit:
+/ralph-loop:ralph-loop mit dem Kickoff-Prompt aus AGENT-GOALS.md.
+Offene Entscheidungen: siehe NEEDS-HUMAN-Listen (Iteration 12/14/15) —
+Kurzfassung: C6-Freigabe, GB-Entscheid, Postgres (DB-Trend!), SSG, Registry-Submissions.
