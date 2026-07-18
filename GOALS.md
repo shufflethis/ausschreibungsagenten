@@ -57,9 +57,17 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
 - [ ] **Öffentlicher MCP-Server mit Free-Tier** (z. B. 10 Abfragen/Tag, API-Key für mehr):
       Tools `search_tenders`, `get_tender`, `get_source_status`, `explain_fit`.
       Auf npm/PyPI + MCP-Registries listen. Free-Tier = Self-Serve-Funnel in den Agent-Tarif.
-- [ ] **OpenAPI-Spec öffentlich** (`/api/openapi.json`) + Doku-Seite `/entwickler`
-      (zugleich SEO-Seite „Ausschreibungen API Deutschland").
-- [ ] **Rate-Limiting auf `/api/tenders-public`** bevor Agent-Traffic eingeladen wird.
+- [x] **OpenAPI-Spec öffentlich + `/entwickler`-Seite** *(2026-07-18)*: OpenAPI/Swagger waren auf
+      `api.ausschreibungsagenten.de` bereits live; neue Seite `/entwickler` mit Endpunkt-Tabelle,
+      Schnellstart (REST, Agent Card, A2A JSON-RPC) und Fair-Use/Agent-Tarif-Abgrenzung.
+      In Header („API"), Footer, Sitemap und llms.txt verlinkt.
+- [x] **Rate-Limiting** *(2026-07-18)*: `/public/tenders` und `/source-status` 600/h je IP
+      (großzügig, weil die Landingpage über wenige Vercel-Egress-IPs proxied), `/api/a2a`
+      tier-basiert (free: 60/h, per API-Key mehr). Backend-Commit `c6d15d8`, live verifiziert
+      (`x-ratelimit-*`-Header).
+- [x] **Suchtreffer-Dedup** *(2026-07-18)*: syndizierte/berichtigte Bekanntmachungen werden über
+      kanonischen (Titel, Auftraggeber)-Schlüssel kollabiert; jüngste Notice gewinnt.
+      Nebenbefund aus P0 damit erledigt („Leadagentur Thüringen" erschien doppelt).
 - [ ] **JSON-LD ausbauen:** `Dataset` (Tender-Index), `Offer`/`PriceSpecification` (3 Tarife),
       `FAQPage` (FAQ-Sektion).
 - [ ] **Claim:** „Die erste deutsche Ausschreibungsplattform, die Ihr KI-Agent direkt anbinden kann

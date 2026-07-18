@@ -31,6 +31,7 @@ export default function Header() {
                     <a href="/#suche" onClick={() => setMenuOpen(false)}>Live-Suche</a>
                     <a href="/#vergleich" onClick={() => setMenuOpen(false)}>Vergleich</a>
                     <a href="/#preise" onClick={() => setMenuOpen(false)}>Preise</a>
+                    <Link to="/entwickler" onClick={() => setMenuOpen(false)}>API</Link>
                     <a href="/#funktionen" onClick={() => setMenuOpen(false)}>Funktionen</a>
                     <a href="/#branchen" onClick={() => setMenuOpen(false)}>Branchen</a>
                     <a href="/#faq" onClick={() => setMenuOpen(false)}>FAQ</a>

@@ -13,6 +13,7 @@ export default function Footer() {
                     </div>
                     <div className="footer__links">
                         <Link to="/ueber-uns">Über uns</Link>
+                        <Link to="/entwickler">API & Agenten</Link>
                         <Link to="/impressum">Impressum</Link>
                         <Link to="/agb">AGB</Link>
                         <Link to="/datenschutz">Datenschutz</Link>

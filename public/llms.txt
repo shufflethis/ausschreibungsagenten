@@ -23,6 +23,7 @@ Kontakt: hi@ausschreibungsagenten.de
 
 - Startseite mit Live-Suche, Tool-Vergleich, FAQ: https://www.ausschreibungsagenten.de/
 - Über uns: https://www.ausschreibungsagenten.de/ueber-uns
+- API & Agent-Anbindung (Entwicklerseite): https://www.ausschreibungsagenten.de/entwickler
 - Impressum: https://www.ausschreibungsagenten.de/impressum
 - Datenschutz: https://www.ausschreibungsagenten.de/datenschutz
 
