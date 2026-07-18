@@ -106,11 +106,14 @@ mehrsprachig, semantik später als klar gekennzeichnetes Experiment.*
       (FR-Fassaden-Tender Score 100).
       *Beobachtung: Rest-Gap DEU Ø53 vs FRA Ø34 teils strukturell (bund/landes sind
       keyword-klassifiziert); weitere Sprachen nach Bedarf kuratieren.*
-- [ ] **B3 — Firmen-Fit sprachneutral:** Firmenprofil-Matching (Begriffe/Ausschlüsse) prüfen:
-      wo matchen deutsche Kundenbegriffe gegen fremdsprachige Titel? Lösung dokumentieren und
-      umsetzen: CPV-first, Begriffe nur auf Notices der Profilsprache(n), optional
-      TED-Mehrsprachfelder (TED liefert Titel oft in mehreren Sprachen — nutzen!).
-      *Abnahme: Rossmanith-Profil bekommt AT-Treffer korrekt, keine False-Positives aus FR/PL.*
+- [x] **B3 — Firmen-Fit sprachneutral** *(2026-07-18)*: Begriffe/Ausschlüsse nur auf Notices
+      der Profilsprache(n) (`PROFILE_LANGUAGES`, aktuell deu; Profil-Feld folgt mit ersten
+      internationalen Kunden). Fremdsprachige Notices: expliziter Reason statt stiller
+      Fehlwertung; CPV-Ausschlüsse bleiben sprachneutral. Mehrsprachige Notices mit deu
+      voll bewertbar (Titel wird deu-bevorzugt gewählt). Live mit echtem Rossmanith-Profil
+      verifiziert: 8 Matches (85–90), 0 False-Positives. 4 Tests. Backend s. git log.
+      *NEEDS-HUMAN: Rossmanith `target_countries` um AUT erweitern? (Kundenkonfiguration —
+      Gordens Aussage von heute spricht dafür, Profil-Regionen BW/RLP/HE eher dagegen.)*
 - [ ] **B4 — FTS mehrsprachig:** Volltextsuche auf Sprach-Handling prüfen (Stemming/Analyzer);
       mindestens: Suche findet Original-Titel jeder Sprache; dokumentieren, was (noch) nicht geht.
 - [ ] **B5 — Anzeige-/Digest-Übersetzung (Experiment, klar gelabelt):** Für fremdsprachige

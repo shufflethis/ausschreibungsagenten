@@ -193,3 +193,24 @@ mit dem Firmenprofil.
 
 **Track-Stand:** A 3/6 · B 2/5 · C 3/6 · D 2/4 (D2 blockiert auf SSG).
 **Nächster Schritt:** B3 (Firmen-Fit sprachneutral) — dann ist der Weg zu C6 frei.
+
+## 2026-07-18 · Ralph-Loop Iteration 10 — B3: Firmen-Fit sprachneutral
+
+Drei Sprachlecks im Company-Fit behoben (Backend `4c3ee64`): deutsche Ausschlusswörter
+griffen auf fremdsprachigen Texten nicht (stilles Risiko), Leistungsbegriffe verloren
+stumm bis zu 20 Punkte, beides ohne Erklärung. Jetzt: Begriffe/Ausschlüsse nur auf
+Notices der Profilsprache(n) (PROFILE_LANGUAGES=deu als Konstante, Profil-Feld folgt
+bei internationalen Kunden), expliziter Reason auf fremdsprachigen Notices,
+CPV-Ausschlüsse bleiben sprachneutral. Mehrsprachige Notices mit deu voll bewertbar.
+
+Verifiziert: echtes Rossmanith-Profil read-only → 8 Matches (85–90), 0 False-Positives;
+Tests 189 (+4, inkl. AT-Parität und FR-Robustheit gegen Teilwort-Fehlgriffe).
+
+**NEEDS-HUMAN:** Rossmanith target_countries um AUT erweitern? (Kundenkonfig; Gordens
+"Rossmanith kann AT-Tender bekommen" von heute spricht dafür, die gepflegten Regionen
+BW/RLP/HE dagegen — bitte mit Kunde klären.)
+
+**Track-Stand:** A 3/6 · B 3/5 · C 3/6 · D 2/4. Mit B1+B2+B3+C1+C3 ist das Fundament
+für C6 (Go/No-Go-Karte v2 = 1.499-EUR-Produkt) komplett.
+**Nächster Schritt:** C4 (OCDS-Mapping, Vorarbeit GB) oder A5 (GB/CH-Scoping) —
+oder direkt C6, wenn Priorität auf Produkt statt Protokoll-Reihenfolge liegt.
