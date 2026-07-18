@@ -54,9 +54,13 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
 
 ### P1 — Agent-Readiness (Wochen; Uniqueness-Hebel Nr. 1)
 
-- [ ] **Öffentlicher MCP-Server mit Free-Tier** (z. B. 10 Abfragen/Tag, API-Key für mehr):
-      Tools `search_tenders`, `get_tender`, `get_source_status`, `explain_fit`.
-      Auf npm/PyPI + MCP-Registries listen. Free-Tier = Self-Serve-Funnel in den Agent-Tarif.
+- [x] **Öffentlicher MCP-Server mit Free-Tier** *(2026-07-18)*: `api.ausschreibungsagenten.de/mcp`
+      live (`MCP_ENABLED=true`) — `search_tenders` frei (60/h ohne Key), `fulltext_search` nur mit
+      Pro/Agent-Key; tier-basiertes Rate-Limit; Agent Card listet MCP automatisch.
+      Self-Serve-Signup aktiv (`PUBLIC_SIGNUP_ENABLED=true`): Free-Key-Formular auf `/entwickler`
+      (Vercel-Proxy `api/signup.js`, 10/h Limit, Key per Mail via Resend).
+      Bestandskunden eingerichtet: famefact 2× agent-Tier-Key (GEO-Tool + gw), Rossmanith 1× pro-Key.
+      *Offen: MCP-Registry-/npm-Listing für Discovery.*
 - [x] **OpenAPI-Spec öffentlich + `/entwickler`-Seite** *(2026-07-18)*: OpenAPI/Swagger waren auf
       `api.ausschreibungsagenten.de` bereits live; neue Seite `/entwickler` mit Endpunkt-Tabelle,
       Schnellstart (REST, Agent Card, A2A JSON-RPC) und Fair-Use/Agent-Tarif-Abgrenzung.

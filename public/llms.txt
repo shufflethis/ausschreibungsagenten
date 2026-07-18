@@ -14,6 +14,8 @@ Kontakt: hi@ausschreibungsagenten.de
 - Öffentliche Tender-Vorschau (JSON): https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=BEGRIFF&min_score=50&limit=6
 - Live-Quellenstatus (JSON, mit Datenstand je Quelle): https://www.ausschreibungsagenten.de/api/source-status
 - A2A Agent Card: https://www.ausschreibungsagenten.de/.well-known/agent-card.json
+- MCP-Server (search_tenders frei, fulltext ab Pro/Agent): https://api.ausschreibungsagenten.de/mcp
+- Free API-Key (60 req/h): https://www.ausschreibungsagenten.de/entwickler
 - OpenAPI-Spezifikation: https://api.ausschreibungsagenten.de/openapi.json · Interaktive Docs: https://api.ausschreibungsagenten.de/docs
 - Preise: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet; Pilotzugang per Magic Link nach persönlicher Abstimmung.
 - Aktive Pilot-Verticals: Fenster/Fassade/Glas/Metallbau sowie Marketing/Digital. Weitere Branchen nach CPV-Katalog konfigurierbar.

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 const ENDPOINTS = [
@@ -26,6 +27,18 @@ const ENDPOINTS = [
         auth: 'Ohne Key: 60/Stunde · mit API-Key: Tarif-Limit',
     },
     {
+        method: 'POST',
+        path: 'api.ausschreibungsagenten.de/mcp',
+        desc: 'MCP-Server (JSON-RPC): search_tenders frei, fulltext_search ab Pro/Agent-Key.',
+        auth: 'Ohne Key: 60/Stunde · mit API-Key: Tarif-Limit',
+    },
+    {
+        method: 'POST',
+        path: 'www.ausschreibungsagenten.de/api/signup',
+        desc: 'Free API-Key anfordern (wird einmalig angezeigt und per E-Mail zugestellt).',
+        auth: 'Keine · 10 Anfragen/Stunde',
+    },
+    {
         method: 'GET',
         path: 'api.ausschreibungsagenten.de/openapi.json',
         desc: 'Vollständige OpenAPI-Spezifikation der API.',
@@ -51,6 +64,41 @@ const codeStyle = {
 }
 
 export default function Entwickler() {
+    const [signupEmail, setSignupEmail] = useState('')
+    const [signupHoneypot, setSignupHoneypot] = useState('')
+    const [signupStatus, setSignupStatus] = useState(null)
+    const [signupKey, setSignupKey] = useState(null)
+    const [signupSending, setSignupSending] = useState(false)
+
+    const handleSignup = async (e) => {
+        e.preventDefault()
+        setSignupSending(true)
+        setSignupStatus(null)
+        setSignupKey(null)
+        try {
+            const res = await fetch('/api/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: signupEmail, website: signupHoneypot }),
+            })
+            const data = await res.json().catch(() => ({}))
+            if (res.ok && data.api_key) {
+                setSignupStatus('success')
+                setSignupKey(data.api_key)
+                setSignupEmail('')
+            } else if (res.status === 409) {
+                setSignupStatus('exists')
+            } else if (res.status === 429) {
+                setSignupStatus('ratelimited')
+            } else {
+                setSignupStatus('error')
+            }
+        } catch {
+            setSignupStatus('error')
+        }
+        setSignupSending(false)
+    }
+
     return (
         <>
             <Helmet>
@@ -67,7 +115,7 @@ export default function Entwickler() {
                     <div className="hero__content">
                         <div className="hero__badge">
                             <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4', animation: 'pulse 2s ease-in-out infinite' }}></span>
-                            A2A Agent Card + OpenAPI live
+                            MCP + A2A Agent Card + OpenAPI live
                         </div>
                         <h1 className="hero__title">
                             Ausschreibungen für <span className="gradient-text">Ihre Agenten</span>
@@ -171,7 +219,67 @@ export default function Entwickler() {
                 </div>
             </section>
 
-            <section className="section section--alt">
+            <section className="section section--alt" id="api-key">
+                <div className="container" style={{ maxWidth: '900px' }}>
+                    <span className="section__label">
+                        <span className="pulse"></span> Free API-Key
+                    </span>
+                    <h2 className="section__title">
+                        Kostenlosen <span className="gradient-text">API-Key</span> anfordern
+                    </h2>
+                    <p className="section__subtitle">
+                        Der Free-Tier umfasst 60 Anfragen pro Stunde auf die Vorschau-Endpunkte und den
+                        MCP-Server (search_tenders). Der Key wird einmalig angezeigt und zusätzlich per
+                        E-Mail zugestellt.
+                    </p>
+
+                    <div className="glass-card">
+                        <form onSubmit={handleSignup}>
+                            <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={signupHoneypot} onChange={(e) => setSignupHoneypot(e.target.value)} />
+                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                                <input
+                                    type="email"
+                                    placeholder="Geschäftliche E-Mail *"
+                                    value={signupEmail}
+                                    onChange={(e) => setSignupEmail(e.target.value)}
+                                    required
+                                    style={{ flex: '1 1 260px' }}
+                                    aria-label="E-Mail für API-Key"
+                                />
+                                <button type="submit" className="btn btn--primary" disabled={signupSending}>
+                                    {signupSending ? 'Key wird erstellt...' : 'Free API-Key erstellen'}
+                                </button>
+                            </div>
+                            {signupStatus === 'success' && signupKey && (
+                                <div style={{ marginTop: '1.25rem' }}>
+                                    <p className="form-status form-status--success">
+                                        Ihr API-Key — bitte jetzt sicher speichern, er wird nur einmal angezeigt
+                                        (Kopie geht an Ihre E-Mail):
+                                    </p>
+                                    <pre style={codeStyle}>{signupKey}</pre>
+                                </div>
+                            )}
+                            {signupStatus === 'exists' && (
+                                <p className="form-status form-status--error">
+                                    Diese E-Mail ist bereits registriert. Bei Key-Verlust schreiben Sie an hi@ausschreibungsagenten.de.
+                                </p>
+                            )}
+                            {signupStatus === 'ratelimited' && (
+                                <p className="form-status form-status--error">
+                                    Zu viele Anfragen. Bitte versuchen Sie es in einer Stunde erneut.
+                                </p>
+                            )}
+                            {signupStatus === 'error' && (
+                                <p className="form-status form-status--error">
+                                    Der Key konnte nicht erstellt werden. Bitte später erneut versuchen oder an hi@ausschreibungsagenten.de schreiben.
+                                </p>
+                            )}
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section className="section">
                 <div className="container" style={{ maxWidth: '900px' }}>
                     <span className="section__label section__label--amber">
                         <span className="pulse"></span> Fair Use & Ausbau
@@ -183,19 +291,19 @@ export default function Entwickler() {
                         <div className="glass-card">
                             <h3 className="glass-card__title">Frei nutzbar</h3>
                             <p className="glass-card__text">
-                                Vorschau-Suche, Quellenstatus, Agent Card, OpenAPI und die lesenden
-                                A2A-Aktionen — mit transparenten Limits (Header <code>x-ratelimit-*</code>).
-                                Die Daten stammen aus öffentlichen Bekanntmachungen; jeder Treffer
-                                verlinkt auf die kostenlose Originalquelle.
+                                Vorschau-Suche, Quellenstatus, Agent Card, OpenAPI, die lesenden
+                                A2A-Aktionen und die MCP-Tendersuche — mit transparenten Limits
+                                (Header <code>x-ratelimit-*</code>). Die Daten stammen aus öffentlichen
+                                Bekanntmachungen; jeder Treffer verlinkt auf die kostenlose Originalquelle.
                             </p>
                         </div>
                         <div className="glass-card">
                             <h3 className="glass-card__title">Agent-Tarif (499 EUR/Monat)</h3>
                             <p className="glass-card__text">
-                                API-Key mit höheren Limits, Volltextsuche, erklärbarer Firmen-Fit mit
-                                Einzelgründen, Priorisierung sowie A2A-Profilaktionen. MCP ist Bestandteil
-                                des Agent-Tarifs und öffentlich noch nicht freigeschaltet — der Zugang wird
-                                im Pilot gemeinsam eingerichtet.
+                                API-Key mit höheren Limits (3.600/h), MCP-Volltextsuche, erklärbarer
+                                Firmen-Fit mit Einzelgründen, Priorisierung sowie A2A-Profilaktionen.
+                                Der Tarifwechsel wird im Pilot persönlich eingerichtet; ein
+                                Online-Checkout ist noch nicht freigeschaltet.
                             </p>
                             <div style={{ marginTop: '1rem' }}>
                                 <a href="/#profil" className="btn btn--primary">Pilotzugang anfragen</a>

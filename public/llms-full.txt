@@ -49,7 +49,11 @@ Semantisches KI-Matching wird NICHT als produktiv behauptet; es kann später erg
   im Produktionsbetrieb deaktiviert und erst nach Pilotfreigabe verfügbar.
 - OpenAPI-Spezifikation: https://api.ausschreibungsagenten.de/openapi.json
 - Interaktive API-Dokumentation: https://api.ausschreibungsagenten.de/docs
-- MCP: Bestandteil des Agent-Tarifs; öffentlich noch nicht freigeschaltet.
+- MCP-Server (Streamable HTTP, JSON-RPC): https://api.ausschreibungsagenten.de/mcp
+  Tools: agentleads.search_tenders (frei, mit Rate-Limit) und agentleads.fulltext_search
+  (erfordert API-Key mit Pro- oder Agent-Tarif).
+- Free API-Key: Selbstregistrierung unter https://www.ausschreibungsagenten.de/entwickler
+  (Free-Tier: 60 Anfragen/Stunde; Pro: 600/h; Agent: 3.600/h).
 
 ## Öffentliche API-Vorschau
 
