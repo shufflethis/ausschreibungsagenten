@@ -34,18 +34,19 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
 - [ ] **Matching-Bug Backend:** Suche „marketing" liefert „Schreinerarbeiten" (Treffer über
       `buyer_name` „Ahrtal Marketing GmbH"). Volltextsuche auf Titel/CPV/Beschreibung beschränken
       oder Felder gewichten. Sichtbar auf der Startseite → höchste Priorität. *(privates Backend-Repo)*
-- [ ] **Canonical-Fix:** `index.html` canonical zeigt auf Apex, Apex 308-redirected aber auf `www.`
-      → Canonical (und og:url) auf `https://www.ausschreibungsagenten.de/` umstellen.
-- [ ] **`/llms.txt` + `/llms-full.txt`:** Produkt, API-Fähigkeiten, Quellenliste, Preise — damit
-      LLMs/Answer-Engines korrekt zitieren. Statisch in `public/`.
+- [x] **Canonical-Fix** *(2026-07-18)*: canonical, og:url, og:image, twitter:image und JSON-LD-URLs
+      in `index.html` auf `https://www.ausschreibungsagenten.de/` umgestellt (konsistent mit Sitemap).
+- [x] **`/llms.txt` + `/llms-full.txt`** *(2026-07-18)*: in `public/` — Produkt, Quellen, API-Vorschau,
+      Preise, Ehrlichkeitshinweise für KI-Assistenten.
 - [ ] **A2A Agent Card:** `/.well-known/agent-card.json` live schalten (Discovery-Metadaten existieren
       laut README bereits im Backend; ggf. via Vercel-Function proxien oder statisch spiegeln).
-- [ ] **Pricing als permanente Sektion** auf der Landingpage — aktuell erscheint die Pricing-Strip
-      erst nach Profil-Submit (`profileResult`-Conditional in `LandingPage.jsx`).
-- [ ] **Hero-CTA tauschen:** Primär „Live-Suche testen" (Anker `#suche`), sekundär „Beratung anfragen".
-      Vergleichstabelle unter den Fold; Konkurrenzlinks auf `rel="nofollow noopener"`.
-- [ ] **Hero-Stats stärken:** „5.000+ indexierte Ausschreibungen · Datenstand heute" aus der
-      source-status-API statt „2 Pilot-Verticals".
+      *Offen: braucht die öffentliche A2A-Endpoint-URL aus dem Backend — nicht raten.*
+- [x] **Pricing als permanente Sektion** *(2026-07-18)*: neue Sektion `#preise` nach der
+      Vergleichstabelle (Pro/Agent/Verfahren, ehrlicher Checkout-Hinweis), Nav-Link „Preise" im Header.
+- [x] **Hero-CTA getauscht** *(2026-07-18)*: primär „Live-Suche testen" (`#suche`), sekundär Beratung;
+      Konkurrenzlinks in der Vergleichstabelle auf `rel="nofollow noopener noreferrer"`.
+- [x] **Hero-Stats gestärkt** *(2026-07-18)*: dynamisch „N+ Indexierte Ausschreibungen · Datenstand X"
+      aus der source-status-API (Summe `stored`, jüngstes `last_success_at`), Fallback „5.000+".
 - [ ] **„i.G." entfernen**, sobald die UG eingetragen ist (Landingpage, Impressum, AGB, Footer).
 
 ### P1 — Agent-Readiness (Wochen; Uniqueness-Hebel Nr. 1)

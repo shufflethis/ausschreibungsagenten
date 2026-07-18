@@ -86,6 +86,12 @@ export default function LandingPage() {
     const [profileResult, setProfileResult] = useState(null)
     const [selectedTender, setSelectedTender] = useState(null)
 
+    const indexedTotal = sourceStatus.reduce((sum, source) => sum + (Number(source.stored) || 0), 0)
+    const latestSuccessAt = sourceStatus.reduce(
+        (latest, source) => (source.last_success_at && (!latest || source.last_success_at > latest) ? source.last_success_at : latest),
+        null,
+    )
+
     useEffect(() => {
         const controller = new AbortController()
         const loadTenders = async () => {
@@ -213,14 +219,20 @@ export default function LandingPage() {
                         </p>
 
                         <div className="hero__actions">
-                            <a href="#vergleich" className="btn btn--primary btn--lg">Tools vergleichen →</a>
+                            <a href="#suche" className="btn btn--primary btn--lg">Live-Suche testen →</a>
                             <a href="#kontakt" className="btn btn--outline btn--lg">Beratung anfragen</a>
                         </div>
 
                         <div className="hero__stats">
                             <div className="hero__stat">
-                                <span className="hero__stat-value">2</span>
-                                <span className="hero__stat-label">Produktiv gepflegte Pilot-Verticals</span>
+                                <span className="hero__stat-value">
+                                    {indexedTotal > 0 ? `${new Intl.NumberFormat('de-DE').format(indexedTotal)}+` : '5.000+'}
+                                </span>
+                                <span className="hero__stat-label">
+                                    {latestSuccessAt
+                                        ? `Indexierte Ausschreibungen · Datenstand ${formatDate(latestSuccessAt)}`
+                                        : 'Indexierte Ausschreibungen'}
+                                </span>
                             </div>
                             <div className="hero__stat">
                                 <span className="hero__stat-value" style={{ color: '#8b5cf6' }}>0–100</span>
@@ -664,7 +676,7 @@ export default function LandingPage() {
                                 {TOOLS.map((tool, i) => (
                                     <tr key={i}>
                                         <td className="tool-name">
-                                            <a href={tool.url} target="_blank" rel="noopener noreferrer">{tool.name}</a>
+                                            <a href={tool.url} target="_blank" rel="nofollow noopener noreferrer">{tool.name}</a>
                                         </td>
                                         <td>{tool.price}</td>
                                         <td><span className={`badge ${tool.ai ? 'badge--yes' : 'badge--no'}`}>{tool.ai ? '✓ Ja' : '✗ Nein'}</span></td>
@@ -683,6 +695,43 @@ export default function LandingPage() {
                         Stand: 16. Juli 2026. Anbieterangaben wurden nicht in allen Fällen vertraglich verifiziert.
                         <br />Haben wir ein Tool vergessen? <a href="#kontakt">Schreiben Sie uns</a> – wir ergänzen es gerne.
                     </p>
+                </div>
+            </section>
+
+            {/* ===== PREISE ===== */}
+            <section className="section" id="preise">
+                <div className="container">
+                    <span className="section__label section__label--violet">
+                        <span className="pulse"></span> Preise
+                    </span>
+                    <h2 className="section__title">
+                        Transparente <span className="gradient-text">Tarife</span> ohne Kleingedrucktes
+                    </h2>
+                    <p className="section__subtitle">
+                        Die Preise gelten als Orientierung. Der Online-Checkout wird erst nach erfolgreicher
+                        Pilotphase freigeschaltet; Pilot und Vertrag werden persönlich abgestimmt.
+                    </p>
+
+                    <div className="pricing-strip">
+                        <article>
+                            <strong>Pro</strong>
+                            <span>149 EUR/Monat</span>
+                            <p>Suchprofil, Alerts, Volltextsuche und wöchentliche Trefferliste.</p>
+                            <a href="#profil" className="btn btn--outline">Pilotzugang anfragen</a>
+                        </article>
+                        <article>
+                            <strong>Agent</strong>
+                            <span>499 EUR/Monat</span>
+                            <p>Höhere API-Limits, Volltextsuche, Agent API, A2A/MCP und Priorisierung.</p>
+                            <a href="#profil" className="btn btn--outline">Pilotzugang anfragen</a>
+                        </article>
+                        <article>
+                            <strong>Verfahren</strong>
+                            <span>1.499 EUR einmalig</span>
+                            <p>Konkrete Ausschreibung prüfen, Anforderungen strukturieren, Angebotsfahrplan bauen.</p>
+                            <a href="#kontakt" className="btn btn--outline">Beratung anfragen</a>
+                        </article>
+                    </div>
                 </div>
             </section>
 

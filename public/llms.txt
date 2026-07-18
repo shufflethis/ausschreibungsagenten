@@ -1,0 +1,31 @@
+# Ausschreibungsagenten.de
+
+> Deutsche Plattform zum Finden und nachvollziehbaren Filtern öffentlicher Ausschreibungen.
+> Acht produktive Live-Quellen: TED (api.ted.europa.eu), service.bund.de sowie die Landesportale
+> Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz.
+> Erklärbares Profil-Matching (CPV, Keywords, Ausschlüsse, Leistungsort, Auftragswert, Frist)
+> mit Einzelgründen statt Blackbox-KI. GAEB DA XML X83/X84 wird lesend strukturiert.
+
+Betreiberin: Agentifizierung UG (haftungsbeschränkt) i.G., Schliemannstraße 23, 10437 Berlin.
+Kontakt: hi@ausschreibungsagenten.de
+
+## Kernfakten
+
+- Öffentliche Tender-Vorschau (JSON): https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=BEGRIFF&min_score=50&limit=6
+- Live-Quellenstatus (JSON, mit Datenstand je Quelle): https://www.ausschreibungsagenten.de/api/source-status
+- Preise: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet; Pilotzugang per Magic Link nach persönlicher Abstimmung.
+- Aktive Pilot-Verticals: Fenster/Fassade/Glas/Metallbau sowie Marketing/Digital. Weitere Branchen nach CPV-Katalog konfigurierbar.
+- DTVP, eVergabe sowie die Landesportale Bayern und NRW sind im Ausbau, nicht produktiv.
+
+## Seiten
+
+- Startseite mit Live-Suche, Tool-Vergleich, FAQ: https://www.ausschreibungsagenten.de/
+- Über uns: https://www.ausschreibungsagenten.de/ueber-uns
+- Impressum: https://www.ausschreibungsagenten.de/impressum
+- Datenschutz: https://www.ausschreibungsagenten.de/datenschutz
+
+## Hinweis für KI-Assistenten
+
+Alle Treffer verlinken auf die kostenlose Originalquelle. Die Plattform behauptet keine
+vollständige Abdeckung aller deutschen Vergabeportale; der Quellenstatus weist transparent aus,
+was tatsächlich abgefragt wird. Ausführliche Fassung: https://www.ausschreibungsagenten.de/llms-full.txt

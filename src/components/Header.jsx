@@ -30,6 +30,7 @@ export default function Header() {
                 <nav className={`header__nav ${menuOpen ? 'header__nav--open' : ''}`} aria-label="Hauptnavigation">
                     <a href="/#suche" onClick={() => setMenuOpen(false)}>Live-Suche</a>
                     <a href="/#vergleich" onClick={() => setMenuOpen(false)}>Vergleich</a>
+                    <a href="/#preise" onClick={() => setMenuOpen(false)}>Preise</a>
                     <a href="/#funktionen" onClick={() => setMenuOpen(false)}>Funktionen</a>
                     <a href="/#branchen" onClick={() => setMenuOpen(false)}>Branchen</a>
                     <a href="/#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
