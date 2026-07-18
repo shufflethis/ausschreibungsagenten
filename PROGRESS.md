@@ -163,3 +163,17 @@ Fristen"-Pitch der Landingpage hat jetzt 98% Datendeckung.
 
 **Nächster Schritt:** B3 (Firmen-Fit sprachneutral) oder A5/A6; Track-Stand
 A 3/6 · B 2/5 · C 2/6 · D 1/4.
+
+## 2026-07-18 · Ralph-Loop Iteration 8 — D3: /status-Seite live
+
+D2 (SEO-Länderseiten) ist durch die SSG-Voraussetzung blockiert (kein Headless-Chrome
+auf dem VPS für Prerender) — als blockiert markiert, D3 vorgezogen.
+D3 erledigt: /status zeigt live Quellen (letzter Abruf, fetched/stored) und die
+EU-Abdeckung je Land mit echten Zahlen. Neuer öffentlicher Endpunkt
+/api/public/countries (Backend `9e1e86f`) + Vercel-Proxy /api/countries — der
+nützt auch den tender-agents-Facetten. Site `2a235e7`, live verifiziert (200,
+27 Länder). Tests: Backend 180, Site 16.
+
+**Nächster Schritt:** B3 (Firmen-Fit sprachneutral, Rossmanith als Testfall) oder
+A5 (GB/CH-Scoping). D2 wartet auf SSG-Entscheidung (NEEDS-HUMAN: Prerender-Ansatz
+wählen — Build-Zeit-SSG in Vercel statt lokalem Chrome wäre der saubere Weg).

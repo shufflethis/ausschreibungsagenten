@@ -155,8 +155,9 @@ nicht haben. Reihenfolge: erst verstehen (lesen/extrahieren), dann erfüllen (Bi
       öffentlich via nginx. Submissions selbst = NEEDS-HUMAN (DNS-TXT + mcp-publisher, PR).
 - [ ] **D2 — SEO-Länderseiten (nach A2):** Statische Landingpages je indexiertem Land/Region
       aus dem Index generieren (setzt Prerender/SSG voraus — zuerst SSG-Ziel aus GOALS.md P3).
-- [ ] **D3 — /status-Seite:** Öffentliche Statusseite aus source-status (Transparenz-Moat,
-      steht schon in GOALS.md P2) — inkl. Länderliste aus Track A.
+- [x] **D3 — /status-Seite** *(2026-07-18)*: live unter /status — Quellen mit letztem
+      erfolgreichem Abruf + 27-Länder-Abdeckung mit echten Zahlen (neuer Backend-Endpunkt
+      `/api/public/countries` `9e1e86f`, Site `2a235e7`). In Footer/Sitemap/llms.txt verlinkt.
 - [ ] **D4 — llms.txt/Agent Card aktuell halten:** Nach jedem Track-A/B/C-Meilenstein prüfen.
 
 ---
