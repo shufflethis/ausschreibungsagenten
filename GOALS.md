@@ -31,16 +31,19 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
 
 ### P0 — Quick Wins (Tage, teils in diesem Repo umsetzbar)
 
-- [ ] **Matching-Bug Backend:** Suche „marketing" liefert „Schreinerarbeiten" (Treffer über
-      `buyer_name` „Ahrtal Marketing GmbH"). Volltextsuche auf Titel/CPV/Beschreibung beschränken
-      oder Felder gewichten. Sichtbar auf der Startseite → höchste Priorität. *(privates Backend-Repo)*
+- [x] **Matching-Bug Backend** *(2026-07-18)*: `buyer_name` aus der Freitextsuche entfernt und
+      Titel-Treffer vor reine Description-Treffer gerankt (`services/tenders.py`, Backend-Commit
+      `985d265`, Container neu deployt, 161 Tests grün). Live verifiziert: „marketing" liefert
+      keine Schreinerarbeiten mehr in den Top-Treffern.
+      *Nebenbefund offen: „Leadagentur Thüringen" erscheint doppelt (Syndikations-Duplikat).*
 - [x] **Canonical-Fix** *(2026-07-18)*: canonical, og:url, og:image, twitter:image und JSON-LD-URLs
       in `index.html` auf `https://www.ausschreibungsagenten.de/` umgestellt (konsistent mit Sitemap).
 - [x] **`/llms.txt` + `/llms-full.txt`** *(2026-07-18)*: in `public/` — Produkt, Quellen, API-Vorschau,
       Preise, Ehrlichkeitshinweise für KI-Assistenten.
-- [ ] **A2A Agent Card:** `/.well-known/agent-card.json` live schalten (Discovery-Metadaten existieren
-      laut README bereits im Backend; ggf. via Vercel-Function proxien oder statisch spiegeln).
-      *Offen: braucht die öffentliche A2A-Endpoint-URL aus dem Backend — nicht raten.*
+- [x] **A2A Agent Card** *(2026-07-18)*: Backend serviert die Card bereits öffentlich unter
+      `api.ausschreibungsagenten.de/.well-known/agent-card.json` (inkl. A2A JSON-RPC, OpenAPI, Docs).
+      Vercel-Rewrite ergänzt: Hauptdomain `/.well-known/agent-card.json` → API-Subdomain.
+      llms.txt/llms-full.txt um Agent-Anbindung (A2A, OpenAPI, Docs) erweitert.
 - [x] **Pricing als permanente Sektion** *(2026-07-18)*: neue Sektion `#preise` nach der
       Vergleichstabelle (Pro/Agent/Verfahren, ehrlicher Checkout-Hinweis), Nav-Link „Preise" im Header.
 - [x] **Hero-CTA getauscht** *(2026-07-18)*: primär „Live-Suche testen" (`#suche`), sekundär Beratung;

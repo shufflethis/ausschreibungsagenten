@@ -40,6 +40,17 @@ Semantisches KI-Matching wird NICHT als produktiv behauptet; es kann später erg
 - Export: versioniertes JSON, CSV, XLSX; optional signierter Webhook
 - Nicht produktiv: WhatsApp, Push, konkrete ERP-Connectoren, öffentlicher Signup/Checkout, MCP, schreibende A2A-Aktionen
 
+## Agent-Anbindung (A2A / OpenAPI)
+
+- A2A Agent Card (Discovery): https://www.ausschreibungsagenten.de/.well-known/agent-card.json
+  (identisch unter https://api.ausschreibungsagenten.de/.well-known/agent-card.json)
+- A2A JSON-RPC-Endpunkt: https://api.ausschreibungsagenten.de/api/a2a
+  Öffentlich verfügbare Aktionen: status, search_tenders. Schreibende Profilaktionen sind
+  im Produktionsbetrieb deaktiviert und erst nach Pilotfreigabe verfügbar.
+- OpenAPI-Spezifikation: https://api.ausschreibungsagenten.de/openapi.json
+- Interaktive API-Dokumentation: https://api.ausschreibungsagenten.de/docs
+- MCP: Bestandteil des Agent-Tarifs; öffentlich noch nicht freigeschaltet.
+
 ## Öffentliche API-Vorschau
 
 GET https://www.ausschreibungsagenten.de/api/tenders-public

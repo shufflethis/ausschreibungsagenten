@@ -16,6 +16,10 @@
     ],
     "rewrites": [
         {
+            "source": "/.well-known/agent-card.json",
+            "destination": "https://api.ausschreibungsagenten.de/.well-known/agent-card.json"
+        },
+        {
             "source": "/api/(.*)",
             "destination": "/api/$1"
         },
