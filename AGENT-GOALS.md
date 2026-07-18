@@ -99,11 +99,13 @@ mehrsprachig, semantik später als klar gekennzeichnetes Experiment.*
       Alembic-Migration `c4e8f2a91b07` mit raw_data-Backfill: 12.229 Rows, 0 leer
       (deu 5.775, fra 2.890, pol 684 …). In TenderOut/PublicTenderOut ausgegeben,
       live verifiziert (FRA→fra, DEU→deu). Backend `8e7ae87`.
-- [ ] **B2 — Mehrsprachige Vertical-Keywords:** Keyword-Sets der Verticals (Fassade, Marketing)
-      als sprachkeyed Struktur (`{deu: [...], eng: [...], fra: [...], ...}`) refaktorieren;
-      Scoring nutzt das Set der Notice-Sprache + eng als Fallback. CPV bleibt Hauptsignal.
-      *Abnahme: Ein französischer Fassaden-Tender (CPV 45443000) scored ohne deutsche Keywords
-      gleichwertig; Tests je Sprache.*
+- [x] **B2 — Mehrsprachige Vertical-Keywords** *(2026-07-18)*: `keywords_i18n` je Vertical
+      (deu/eng/fra/spa/ita/nld/pol, eng-Fallback), `relevance_score` wählt per Notice-Sprache.
+      Wirkung nach Rescoring: FRA ≥80 von 13→117, NLD 6→31, ESP 0→30; DEU stabil (990).
+      FR/DE-Paritäts-Test + 4 weitere. Backend `0477049`. Live verifiziert
+      (FR-Fassaden-Tender Score 100).
+      *Beobachtung: Rest-Gap DEU Ø53 vs FRA Ø34 teils strukturell (bund/landes sind
+      keyword-klassifiziert); weitere Sprachen nach Bedarf kuratieren.*
 - [ ] **B3 — Firmen-Fit sprachneutral:** Firmenprofil-Matching (Begriffe/Ausschlüsse) prüfen:
       wo matchen deutsche Kundenbegriffe gegen fremdsprachige Titel? Lösung dokumentieren und
       umsetzen: CPV-first, Begriffe nur auf Notices der Profilsprache(n), optional

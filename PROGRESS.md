@@ -129,3 +129,23 @@ Gesundheitscheck grün. D1 erledigt (Site-Commit folgt, Backend `a7357df`):
 
 **Nächster Schritt:** B2 (mehrsprachige Vertical-Keywords) — Track B ist wieder der
 am wenigsten fortgeschrittene (1/5 vs. A 3/6, C 1/6 mit C1, D 1/4).
+
+## 2026-07-18 · Ralph-Loop Iteration 6 — B2: sprachagnostisches Scoring live
+
+Der Keyword-Boost im relevance_score kannte nur deutsche Begriffe — nicht-deutsche
+Tender waren systematisch untergescored (Baseline: FRA Ø26 mit 13 Tendern >=80,
+ITA Ø24 mit 0, gegen DEU Ø52 mit 984). Fix (Backend `0477049`): kuratierte
+keywords_i18n je Vertical (deu/eng/fra/spa/ita/nld/pol, eng-Fallback), Scoring
+wählt per Notice-Sprache (B1-Feld), CPV bleibt Hauptsignal.
+
+**Wirkung nach Rescoring-Scan (14.597 fetched, 0 Fehler):**
+- FRA: Ø26→34, >=80: 13→117 (9x) · NLD: 6→31 · ESP: 0→30 · POL: 0→19 · ITA: 0→3
+- DEU stabil 984→990 (keine Regression)
+- Live: FR-Fassaden-Tender mit Score 100 in der Public-API
+
+Tests: Backend 175 (+5, inkl. FR/DE-Paritätstest). Damit ist die Kern-These des
+sprachagnostischen Frameworks bewiesen: CPV + Sprachfeld + kuratierte Sets je
+Sprache = gleichwertige Treffer-Qualität EU-weit.
+
+**Nächster Schritt:** B3 (Firmen-Fit sprachneutral — Rossmanith-Profil gegen
+AT/FR-Treffer testen) oder C2 (Fristen-Abdeckung); A5/A6 bleiben offen.
