@@ -229,3 +229,16 @@ Live-Probes (Backend-Doc `docs/SOURCES-INTL.md`, Commit `eb7a210`):
 **Track-Stand:** A 4/6 · B 3/5 · C 3/6 · D 2/4.
 **Nächster Schritt:** A6 (Länder-Doku ausspielen) oder C4 formal abhaken via GB-Connector-
 Entscheid; C6 (Go/No-Go v2) ist bereit, sobald Gorden priorisiert.
+
+## 2026-07-18 · Ralph-Loop Iteration 12 — C4: OCDS-Mapping empirisch validiert
+
+Das in A5 entworfene OCDS→Tender-Mapping über 100 echte GB-FTS-Releases geprüft
+(Backend-Doc erweitert): CPV/Titel/Frist/Buyer/Verfahren 100%, NUTS/Lose 99%,
+cpv_additional 85%, Wert 70% (einheitlich GBP — eine Kursquelle genügt).
+GB-Fristen-Abdeckung schlägt sogar TED. Der fts-Connector ist damit bau-fertig
+und die OCDS-Blaupause steht für weitere Publisher (Doffin nach Key).
+
+**Track-Stand:** A 4/6 · B 3/5 · C 4/6 · D 2/4.
+Verbleibende Ziele sind überwiegend gated: B4 (FTS-Analyse), B5 (LLM-Kosten →
+NEEDS-HUMAN), C5 (Normkauf), C6 (Produkt-Build, bereit), D2 (SSG), D4 (laufend),
+A4 (Gate), A6 (Doku-Hygiene). Die Loop nimmt als Nächstes B4 oder A6.

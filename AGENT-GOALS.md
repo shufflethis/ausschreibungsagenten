@@ -144,8 +144,10 @@ nicht haben. Reihenfolge: erst verstehen (lesen/extrahieren), dann erfüllen (Bi
       `Tender.requirements` (JSON) mit Migration-Backfill: 5.255 strukturiert. Scoping-Doc
       `docs/ESPD-SCOPING.md` im Backend (inkl. Nicht-Ziele: Schwellenwert-Parsing, ESPD-XML).
       Backend-Commit s. git log (`feat: structured eligibility requirements`). → C6-ready.
-- [ ] **C4 — OCDS-Kompetenz:** OCDS-Datenmodell (GB, international) dokumentieren und
-      Mapping OCDS→Tender-Modell entwerfen (Vorarbeit für GB-Connector aus A5).
+- [x] **C4 — OCDS-Kompetenz** *(2026-07-18)*: OCDS→Tender-Mapping entworfen (A5-Doc) und
+      **empirisch über 100 echte FTS-Releases validiert**: CPV/Titel/Frist/Buyer 100 %,
+      NUTS/Lose 99 %, Wert 70 % (einheitlich GBP). Bau-fertig; offene Punkte nur
+      GBP→EUR-Kursquelle + Markenentscheid. `docs/SOURCES-INTL.md` im Backend.
 - [ ] **C5 — GAEB/ÖNORM:** GAEB X83/X84 läuft (DE). ÖNORM A 2063 (AT-Pendant) scopen:
       Format, Beispieldateien, Aufwand. *Abnahme: Scoping-Abschnitt in `docs/SOURCES-INTL.md`.*
 - [ ] **C6 — „Standards erfüllen"-Produktstory:** Aus C1–C3 eine Go/No-Go-Karte v2 bauen:
