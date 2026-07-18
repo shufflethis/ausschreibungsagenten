@@ -77,3 +77,19 @@ nld 425, ces 339, eng 291, spa 238. Tests: Backend 167 (+2).
 
 **Nächster Schritt:** B2 (mehrsprachige Vertical-Keywords — languages-Feld ist jetzt da),
 danach B3 (Firmen-Fit sprachneutral absichern, Rossmanith-Profil als Testfall).
+
+## 2026-07-18 · Ralph-Loop Iteration 3 — Störung: Migrations-Race bei Fremd-Restart
+
+Gesundheitscheck fand ted-Fehler "no column named languages": Das ANDERE Fenster hat
+den Container 17:47 neu gestartet, bevor im neuen Prozess die Migration sichergestellt
+war — der Startup-Poll schrieb gegen die alte Spaltenliste. Root-Cause-Fix (Backend
+`docker-compose.yml`): `alembic upgrade head` läuft jetzt VOR uvicorn im Container-
+Command. Verifiziert: Neustart → Migration am Boot → TED-Poll 14.603/12.113 fehlerfrei,
+Quellenstatus sauber.
+
+**Koordinations-Hinweis für beide Fenster:** Der agentleads-Container ist geteilte
+Infrastruktur. Restarts bitte nur mit aktuellem Image-Build aus dem aktuellen Repo-Stand
+(git pull vor docker compose build); Migrationen laufen jetzt automatisch.
+
+**Nächster Schritt:** C1 (eForms-Feldtiefe: Lose, Zuschlagskriterien, Rahmenvereinbarung
+in Modell+API) — Track C ist der am wenigsten fortgeschrittene.
