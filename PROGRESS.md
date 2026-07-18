@@ -373,3 +373,24 @@ A4 Postgres ✓, A7 GB-Connector ✓, B5 Übersetzung ✓ (Flag aus, wartet auf 
 System grün (9 Quellen, 0 Fehler, 28 Länder). Loop beendet — Neustart:
 /ralph-loop:ralph-loop mit Kickoff-Prompt aus AGENT-GOALS.md, idealerweise
 nach neuen Freigaben (C6, SSG, Registry-Keys — Liste s. o.).
+
+## 2026-07-19 · OpenRouter-Umstellung (B5) + globaler Quellen-Katalog
+
+Auf Gordens Wunsch: Übersetzung läuft jetzt standardmäßig über OpenRouter
+(OpenAI-kompatibel, Modell frei wählbar, default google/gemini-2.0-flash-001);
+Anthropic-Direktpfad bleibt als TRANSLATION_PROVIDER=anthropic erhalten.
+Backend `211250d`, 202 Tests grün. WICHTIG: Env gehört in die BACKEND-.env
+(~/agentleads-account/.env), NICHT in Vercel — der Digest läuft im Container.
+
+Gordens kuratierter Welt-Katalog freier Quellen gespeichert:
+~/agentleads-account/docs/SOURCES-GLOBAL.json (Ring 1-3 + Ausschlüsse +
+Build-Hinweise). Abgleich: TED ✓ live, uk_fts ✓ live; die Build-Hinweise
+(Raw-Payload behalten ✓, Dedup nicht über Titel ✓ [wir: Titel+Buyer — Hinweis
+Buyer+Deadline+Wert prüfen!], health_status je Quelle ✓) decken sich mit dem
+Gebauten. Größte Quick-Wins als Vorschläge annotiert:
+- A8 (VORSCHLAG): de_doe Datenservice Öffentlicher Einkauf — OCDS/eForms-DE,
+  CC0, Ober- UND Unterschwelle deutschlandweit → würde die 6 Landesportale
+  massiv ergänzen; höchster DE-Hebel im Katalog
+- A9 (VORSCHLAG): uk_cf Contracts Finder — UK-Unterschwelle, OCDS-Parser
+  vom fts-Connector wiederverwendbar
+Warten auf Freigabe.
