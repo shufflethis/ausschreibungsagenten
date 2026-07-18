@@ -149,3 +149,17 @@ Sprache = gleichwertige Treffer-Qualität EU-weit.
 
 **Nächster Schritt:** B3 (Firmen-Fit sprachneutral — Rossmanith-Profil gegen
 AT/FR-Treffer testen) oder C2 (Fristen-Abdeckung); A5/A6 bleiben offen.
+
+## 2026-07-18 · Ralph-Loop Iteration 7 — C2: Fristen-Abdeckung 32% → 98%
+
+Messung: 68% der TED-Tender ohne deadline_at — Ursache: nur deadline-date-lot wurde
+gelesen; zweistufige Verfahren (nicht offen/Verhandlung) nennen in der Bekanntmachung
+nur die TEILNAHMEfrist. Fix (Backend `fa13f28`): Fallback-Kette Angebotsfrist →
+Teilnahmefrist → Interessensfrist (+ generisches deadline-Feld), bei mehreren Losen
+zählt die früheste. Nach Rescan: 209/12.132 ohne Frist (2%). Tests: Backend 179 (+4).
+
+Fürs Produkt: Fristenkalender/Digest sind damit EU-weit belastbar; der "Verpasste
+Fristen"-Pitch der Landingpage hat jetzt 98% Datendeckung.
+
+**Nächster Schritt:** B3 (Firmen-Fit sprachneutral) oder A5/A6; Track-Stand
+A 3/6 · B 2/5 · C 2/6 · D 1/4.

@@ -130,8 +130,10 @@ nicht haben. Reihenfolge: erst verstehen (lesen/extrahieren), dann erfüllen (Bi
       (Eignungsanforderungen Klartext — nur authentifizierte API, Freemium-Grenze).
       Migration `d7b3e5f80a21`; nach erstem Scan: 11.960/7.174/2.583 befüllt.
       Backend `6fc03e7`; Verfahrensart war bereits vorhanden. → Direktes Futter für C6.
-- [ ] **C2 — Fristen-Vollständigkeit:** deadline_at-Abdeckung messen (wieviel % NULL?);
-      Nachfrist-/Teilnahmefrist-Felder aus eForms ergänzen wo vorhanden.
+- [x] **C2 — Fristen-Vollständigkeit** *(2026-07-18)*: Messung ergab 68 % der TED-Tender ohne
+      `deadline_at` (zweistufige Verfahren nennen nur die Teilnahmefrist). Fallback-Kette über
+      die eForms-Fristenfelder (Angebots- → Teilnahme- → Interessensfrist, früheste je Los).
+      Nach Rescan: **2 % ohne Frist** (209/12.132). Backend `fa13f28`, 4 Tests.
 - [ ] **C3 — ESPD verstehen:** Analyse: Welche Eignungsnachweise (ESPD-Struktur) lassen sich
       aus Bekanntmachungen extrahieren? Als strukturiertes „Anforderungen"-Feld am Tender
       (z. B. Umsatz-Mindestgrenzen, Referenzen, Zertifikate) — das füttert Go/No-Go-Karten.
