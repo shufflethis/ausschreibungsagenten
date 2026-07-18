@@ -16,6 +16,12 @@ const ENDPOINTS = [
     },
     {
         method: 'GET',
+        path: 'www.ausschreibungsagenten.de/api/countries',
+        desc: 'Tatsächlich indexierte Länder (ISO-3) mit Tender-Zahl — alle 27 EU-Länder.',
+        auth: 'Keine · 600 Anfragen/Stunde',
+    },
+    {
+        method: 'GET',
         path: 'www.ausschreibungsagenten.de/.well-known/agent-card.json',
         desc: 'A2A Agent Card: Discovery-Metadaten, Skills und Endpunkte für Agenten.',
         auth: 'Keine',
@@ -186,7 +192,9 @@ export default function Entwickler() {
                             <pre style={codeStyle}>{`curl "https://www.ausschreibungsagenten.de/api/tenders-public?search=fassade&country=DEU&min_score=50&limit=5"`}</pre>
                             <p className="glass-card__text" style={{ marginTop: '.75rem' }}>
                                 Liefert ein JSON-Array mit Titel, Auftraggeber, CPV, Frist, geschätztem Wert,
-                                Vertical, Relevanz-Score und der Originalquelle.
+                                Notice-Sprachen (ISO-639-3), Losen, Zuschlagskriterien, Rahmenvereinbarungs-
+                                und GPA-Kennzeichen, Vertical, Relevanz-Score und der Originalquelle.
+                                <code> country</code> akzeptiert alle 27 EU-Länder (ISO-3, z. B. FRA, ITA, POL).
                             </p>
                         </div>
 

@@ -242,3 +242,15 @@ und die OCDS-Blaupause steht für weitere Publisher (Doffin nach Key).
 Verbleibende Ziele sind überwiegend gated: B4 (FTS-Analyse), B5 (LLM-Kosten →
 NEEDS-HUMAN), C5 (Normkauf), C6 (Produkt-Build, bereit), D2 (SSG), D4 (laufend),
 A4 (Gate), A6 (Doku-Hygiene). Die Loop nimmt als Nächstes B4 oder A6.
+
+## 2026-07-18 · Ralph-Loop Iteration 13 — A6+D4: Doku-Sync (Länder, Felder, Agent Card)
+
+Kombinierter Hygiene-Pass (beide Ziele überlappen): Agent Card + search_tenders-Skill
+präzisiert ("all 27 EU countries", country/CPV-Filter, Backend `6948a2b`);
+llms-full.txt um /api/countries, requirements-Feld und 98%-Fristen-Abdeckung ergänzt;
+/entwickler um countries-Endpunkt und die neuen Response-Felder erweitert.
+Länderliste bleibt via /api/countries dynamisch — kein Doku-Drift möglich.
+
+**Track-Stand: A 5/6 · B 3/5 · C 4/6 · D 3/4 = 15/21.**
+Verbleibend ungegated: B4 (FTS-Mehrsprachigkeit analysieren). Alles andere wartet
+auf NEEDS-HUMAN-Entscheidungen (siehe Liste in Iteration 12) bzw. Gates (A4).

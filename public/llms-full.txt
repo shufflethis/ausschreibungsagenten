@@ -64,11 +64,18 @@ GET https://www.ausschreibungsagenten.de/api/tenders-public
   cpv_main, published_at, deadline_at, estimated_value_eur, languages (ISO-639-3),
   lot_count, award_criteria ({type, weight, name} je Zuschlagskriterium),
   framework_agreement (eForms-Code, z. B. none/fa-wo-rc), gpa_covered,
-  verticals, relevance_score. Eignungsanforderungen (selection_criteria) sind
-  Bestandteil der authentifizierten API (Pro/Agent).
+  verticals, relevance_score. Der authentifizierten API (Pro/Agent) vorbehalten:
+  selection_criteria (Eignungsanforderungen im Klartext) und requirements
+  (strukturierte Anforderungstypen references/turnover/insurance/certificate
+  mit Beleg-Snippet aus der Bekanntmachung). Fristen-Abdeckung: ~98 % der
+  TED-Tender (Angebots-, sonst Teilnahme-/Interessensfrist, früheste je Los).
 
 GET https://www.ausschreibungsagenten.de/api/source-status
   Antwort: JSON-Array je Quelle mit implementation_status, last_success_at, fetched, stored
+
+GET https://www.ausschreibungsagenten.de/api/countries
+  Antwort: JSON-Array [{country: ISO-3, count}] — tatsächlich indexierte Länder mit
+  Tender-Zahl (alle 27 EU-Länder; Stand live abrufbar)
 
 Die Vorschau zeigt ausgewählte Ergebnisse; vollständiger Zugriff, Volltextsuche und
 Agent API sind Bestandteil der bezahlten Tarife nach Pilotfreigabe.

@@ -86,9 +86,10 @@ seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volum
       CPV** → Connector-Aufwand M ohne Mapping-Projekt; OCDS→Tender-Mapping als C4-Entwurf
       enthalten. Doffin: kostenloser Key nötig (NEEDS-HUMAN). simap: Zugang unklar (L).
       ÖNORM A 2063 (C5): Normkauf-Entscheid nötig.
-- [ ] **A6 — Länder-Facette ausspielen:** `country`-Parameter in /entwickler-Doku + llms.txt
-      mit Liste der tatsächlich indexierten Länder (dynamisch halten oder bei jedem
-      Rollout-Schritt aktualisieren). Agent Card Beschreibung „German and EU" prüfen.
+- [x] **A6 — Länder-Facette ausgespielt** *(2026-07-18)*: `/api/countries` liefert die Liste
+      dynamisch (kein Doku-Drift möglich); in /entwickler (Endpunkt-Tabelle + country-Hinweis),
+      llms-full.txt und /status ausgespielt. Agent Card + Skill-Beschreibung auf „all 27 EU
+      countries" präzisiert (Backend `6948a2b`).
 
 ## Track B — Sprachagnostisches Matching-Framework
 
@@ -166,7 +167,9 @@ nicht haben. Reihenfolge: erst verstehen (lesen/extrahieren), dann erfüllen (Bi
 - [x] **D3 — /status-Seite** *(2026-07-18)*: live unter /status — Quellen mit letztem
       erfolgreichem Abruf + 27-Länder-Abdeckung mit echten Zahlen (neuer Backend-Endpunkt
       `/api/public/countries` `9e1e86f`, Site `2a235e7`). In Footer/Sitemap/llms.txt verlinkt.
-- [ ] **D4 — llms.txt/Agent Card aktuell halten:** Nach jedem Track-A/B/C-Meilenstein prüfen.
+- [x] **D4 — llms.txt/Agent Card aktuell** *(2026-07-18, laufende Pflicht)*: Sync-Pass —
+      requirements + /api/countries + Fristen-Abdeckung in llms-full.txt, Agent Card EU27.
+      Bleibt Session-Protokoll-Pflicht nach jedem Meilenstein.
 
 ---
 
