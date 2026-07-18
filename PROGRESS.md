@@ -25,3 +25,17 @@
 - famefact/Rossmanith-Keys sicher verteilen (nur Gorden hat sie im Terminal gesehen)
 
 **Nächster sinnvoller Schritt:** A1 (Messbasis + TED-Pagination-Deckel-Analyse), dann A2 Welle 1.
+
+## 2026-07-18 · Cross-Repo-Sync-Notiz (tender-agents.com)
+
+tender-agents.com ist LIVE (anderes Fenster, Repo `~/tender-agents-site`, Commits bis `57292ea`):
+englischer Rebrand, EU-Länder-Facetten (DE/FR/ES/IT/NL/PL/AT), eigene llms.txt/agent-card.
+
+**Sync-Punkte für kommende Sessions:**
+1. FR/ES/IT/NL/PL-Facetten liefern leer, bis Track A Welle 1/2 die Länder indexiert →
+   Track A ist dadurch noch dringlicher; nach jedem Länder-Rollout auch die
+   tender-agents-Doku (llms.txt „rollout in progress"-Liste) aktualisieren.
+2. tender-agents llms.txt nennt API-Keys/MCP/A2A „planned" — sie sind seit 2026-07-18 LIVE
+   (api.ausschreibungsagenten.de). NEEDS-HUMAN: api.tender-agents.com als nginx-Alias auf
+   dasselbe Backend (Zertifikat/DNS) ODER .com verlinkt die bestehende API-Domain;
+   danach deren llms.txt/agent-card korrigieren.
