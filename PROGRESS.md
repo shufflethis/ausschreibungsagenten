@@ -111,3 +111,21 @@ Go/No-Go-Karte v2 (C6) = Kern des 1.499-EUR-Verfahrens-Produkts und des Agent-Ta
 
 **Nächster Schritt:** B2 (mehrsprachige Vertical-Keywords) oder C2 (Fristen-Abdeckung
 messen); C6 wird greifbar, sobald B3 (Firmen-Fit sprachneutral) steht.
+
+## 2026-07-18 · Ralph-Loop Iteration 5 — D1: MCP-Distribution vorbereitet
+
+Gesundheitscheck grün. D1 erledigt (Site-Commit folgt, Backend `a7357df`):
+- server.json registry-konform umgebaut (Reverse-DNS `de.ausschreibungsagenten/tenders`,
+  remotes streamable-http, Schema-Referenz) und via nginx öffentlich geschaltet
+  (Location ergänzt; Backup: /etc/nginx/sites-available/ausschreibungsagenten.bak-*)
+- docs/DISTRIBUTION.md: Registry-Landschaft mit Prioritäten, wiederverwendbarem
+  Metadaten-Block, fertigem awesome-mcp-servers-PR-Text und Registry-Ablauf
+
+**NEEDS-HUMAN (neu, alles copy-paste-fertig in docs/DISTRIBUTION.md):**
+1. DNS-TXT für Domain-Verifikation + `mcp-publisher publish` (offizielles MCP Registry;
+   PulseMCP etc. crawlen das automatisch)
+2. awesome-mcp-servers-PR abschicken (Text liegt bereit)
+3. mcpservers.org/submit-Formular (~5 Min)
+
+**Nächster Schritt:** B2 (mehrsprachige Vertical-Keywords) — Track B ist wieder der
+am wenigsten fortgeschrittene (1/5 vs. A 3/6, C 1/6 mit C1, D 1/4).

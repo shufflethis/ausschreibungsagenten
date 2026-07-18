@@ -144,9 +144,11 @@ nicht haben. Reihenfolge: erst verstehen (lesen/extrahieren), dann erfüllen (Bi
 
 ## Track D — Distribution & Funnel (autonom erlaubte Teile)
 
-- [ ] **D1 — MCP-Discovery:** Prüfen, welche MCP-Registries/Listen Einträge ohne Account-
-      Registrierung erlauben (PR auf GitHub-Listen z. B.). Vorbereitete Einträge/PR-Texte in
-      `docs/DISTRIBUTION.md`; alles, was Accounts/Identität braucht → NEEDS-HUMAN.
+- [x] **D1 — MCP-Discovery** *(2026-07-18)*: `docs/DISTRIBUTION.md` mit Registry-Landschaft
+      (offizielles Registry, awesome-mcp-servers, mcpservers.org, mcp.so, Smithery, Glama,
+      PulseMCP), fertigen PR-/Submission-Texten und Metadaten-Block. Vorarbeit erledigt:
+      `server.json` registry-konform (Reverse-DNS `de.ausschreibungsagenten/tenders`) und
+      öffentlich via nginx. Submissions selbst = NEEDS-HUMAN (DNS-TXT + mcp-publisher, PR).
 - [ ] **D2 — SEO-Länderseiten (nach A2):** Statische Landingpages je indexiertem Land/Region
       aus dem Index generieren (setzt Prerender/SSG voraus — zuerst SSG-Ziel aus GOALS.md P3).
 - [ ] **D3 — /status-Seite:** Öffentliche Statusseite aus source-status (Transparenz-Moat,
