@@ -93,3 +93,21 @@ Infrastruktur. Restarts bitte nur mit aktuellem Image-Build aus dem aktuellen Re
 
 **Nächster Schritt:** C1 (eForms-Feldtiefe: Lose, Zuschlagskriterien, Rahmenvereinbarung
 in Modell+API) — Track C ist der am wenigsten fortgeschrittene.
+
+## 2026-07-18 · Ralph-Loop Iteration 4 — C1: eForms-Go/No-Go-Felder live
+
+Gesundheitscheck grün. TED-Feldkatalog empirisch inventarisiert (1.830 verfügbare Felder,
+via 400-Response der API). Fünf Felder extrahiert und deployt (Backend `6fc03e7`,
+Migration `d7b3e5f80a21`, läuft seit Iteration 3 automatisch beim Boot):
+- lot_count (11.960 befüllt), award_criteria mit type/weight/name,
+  framework_agreement (none 9.063 / fa-wo-rc 2.035 / fa-w-rc 323 / fa-mix 225),
+  gpa_covered, selection_criteria (7.174 Tender mit Eignungsanforderungen im KLARTEXT)
+- Freemium-Grenze: selection_criteria nur in der authentifizierten API (TenderOut),
+  Public-Preview zeigt Lose/Kriterien/Framework/GPA
+- Tests: Backend 170 (+3). Live verifiziert (Public-API DEU/fassade).
+
+**Produktbedeutung:** selection_criteria + award_criteria sind der Rohstoff für die
+Go/No-Go-Karte v2 (C6) = Kern des 1.499-EUR-Verfahrens-Produkts und des Agent-Tarifs.
+
+**Nächster Schritt:** B2 (mehrsprachige Vertical-Keywords) oder C2 (Fristen-Abdeckung
+messen); C6 wird greifbar, sobald B3 (Firmen-Fit sprachneutral) steht.

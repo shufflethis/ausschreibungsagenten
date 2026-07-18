@@ -62,7 +62,10 @@ GET https://www.ausschreibungsagenten.de/api/tenders-public
   Parameter: country (z. B. DEU), search (Freitext), min_score (0–100), limit
   Antwort: JSON-Array mit id, source, source_url, title, buyer_name, buyer_country,
   cpv_main, published_at, deadline_at, estimated_value_eur, languages (ISO-639-3),
-  verticals, relevance_score
+  lot_count, award_criteria ({type, weight, name} je Zuschlagskriterium),
+  framework_agreement (eForms-Code, z. B. none/fa-wo-rc), gpa_covered,
+  verticals, relevance_score. Eignungsanforderungen (selection_criteria) sind
+  Bestandteil der authentifizierten API (Pro/Agent).
 
 GET https://www.ausschreibungsagenten.de/api/source-status
   Antwort: JSON-Array je Quelle mit implementation_status, last_success_at, fetched, stored

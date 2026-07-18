@@ -122,11 +122,12 @@ mehrsprachig, semantik später als klar gekennzeichnetes Experiment.*
 *These: Wer die Vergabestandards maschinenlesbar beherrscht, baut den Moat, den Aggregatoren
 nicht haben. Reihenfolge: erst verstehen (lesen/extrahieren), dann erfüllen (Bieter helfen).*
 
-- [ ] **C1 — eForms-Tiefe:** TED liefert eForms-basierte Felder. Inventarisieren, welche
-      Felder wir NICHT nutzen (Lose, Eignungskriterien, Zuschlagskriterien, Rahmenvereinbarung,
-      GPA-Bezug, Optionen/Verlängerungen). Die 5 wertvollsten für Go/No-Go extrahieren und
-      in Tender-Modell + API aufnehmen.
-      *Abnahme: mind. Lose + Verfahrensart + Zuschlagskriterien am Tender sichtbar; Tests.*
+- [x] **C1 — eForms-Tiefe** *(2026-07-18)*: TED-Feldkatalog inventarisiert (1.830 Felder,
+      empirisch via API). Fünf Go/No-Go-Felder extrahiert: `lot_count`, `award_criteria`
+      (type/weight/name), `framework_agreement`, `gpa_covered`, `selection_criteria`
+      (Eignungsanforderungen Klartext — nur authentifizierte API, Freemium-Grenze).
+      Migration `d7b3e5f80a21`; nach erstem Scan: 11.960/7.174/2.583 befüllt.
+      Backend `6fc03e7`; Verfahrensart war bereits vorhanden. → Direktes Futter für C6.
 - [ ] **C2 — Fristen-Vollständigkeit:** deadline_at-Abdeckung messen (wieviel % NULL?);
       Nachfrist-/Teilnahmefrist-Felder aus eForms ergänzen wo vorhanden.
 - [ ] **C3 — ESPD verstehen:** Analyse: Welche Eignungsnachweise (ESPD-Struktur) lassen sich
