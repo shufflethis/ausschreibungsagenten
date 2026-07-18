@@ -134,10 +134,11 @@ nicht haben. Reihenfolge: erst verstehen (lesen/extrahieren), dann erfüllen (Bi
       `deadline_at` (zweistufige Verfahren nennen nur die Teilnahmefrist). Fallback-Kette über
       die eForms-Fristenfelder (Angebots- → Teilnahme- → Interessensfrist, früheste je Los).
       Nach Rescan: **2 % ohne Frist** (209/12.132). Backend `fa13f28`, 4 Tests.
-- [ ] **C3 — ESPD verstehen:** Analyse: Welche Eignungsnachweise (ESPD-Struktur) lassen sich
-      aus Bekanntmachungen extrahieren? Als strukturiertes „Anforderungen"-Feld am Tender
-      (z. B. Umsatz-Mindestgrenzen, Referenzen, Zertifikate) — das füttert Go/No-Go-Karten.
-      *Abnahme: Scoping-Doc + Extraktion für die häufigsten 3 Anforderungsarten.*
+- [x] **C3 — ESPD verstehen** *(2026-07-18)*: Korpus-Analyse (7.179 Texte) → 4 häufigste
+      Typen extrahiert (references/turnover/insurance/certificate) mit Beleg-Snippets,
+      `Tender.requirements` (JSON) mit Migration-Backfill: 5.255 strukturiert. Scoping-Doc
+      `docs/ESPD-SCOPING.md` im Backend (inkl. Nicht-Ziele: Schwellenwert-Parsing, ESPD-XML).
+      Backend-Commit s. git log (`feat: structured eligibility requirements`). → C6-ready.
 - [ ] **C4 — OCDS-Kompetenz:** OCDS-Datenmodell (GB, international) dokumentieren und
       Mapping OCDS→Tender-Modell entwerfen (Vorarbeit für GB-Connector aus A5).
 - [ ] **C5 — GAEB/ÖNORM:** GAEB X83/X84 läuft (DE). ÖNORM A 2063 (AT-Pendant) scopen:

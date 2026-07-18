@@ -177,3 +177,19 @@ nützt auch den tender-agents-Facetten. Site `2a235e7`, live verifiziert (200,
 **Nächster Schritt:** B3 (Firmen-Fit sprachneutral, Rossmanith als Testfall) oder
 A5 (GB/CH-Scoping). D2 wartet auf SSG-Entscheidung (NEEDS-HUMAN: Prerender-Ansatz
 wählen — Build-Zeit-SSG in Vercel statt lokalem Chrome wäre der saubere Weg).
+
+## 2026-07-18 · Ralph-Loop Iteration 9 — C3: strukturierte Eignungsanforderungen
+
+Korpus-Analyse über 7.179 selection_criteria-Texte: Referenzen 56%, Umsatz 49%,
+Versicherung 41%, Zertifikate 33%. Deterministischer Extraktor (mehrsprachige Muster
++ Beleg-Snippet, KEIN LLM, kein Schwellenwert-Parsing — bewusste Nicht-Ziele in
+docs/ESPD-SCOPING.md dokumentiert). Tender.requirements (JSON) beim Upsert +
+Migration-Backfill: 5.255 Tender strukturiert. Nur authentifizierte API.
+Backend `de1dfc6`, Tests 185 (+5).
+
+Damit liegt der komplette Rohstoff für die Go/No-Go-Karte v2 (C6) vor:
+Anforderungstyp + Beleg aus der Bekanntmachung, bereit für den Abgleich
+mit dem Firmenprofil.
+
+**Track-Stand:** A 3/6 · B 2/5 · C 3/6 · D 2/4 (D2 blockiert auf SSG).
+**Nächster Schritt:** B3 (Firmen-Fit sprachneutral) — dann ist der Weg zu C6 frei.
