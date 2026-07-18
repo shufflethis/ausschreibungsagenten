@@ -81,9 +81,11 @@ seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volum
 - [ ] **A4 — Infrastruktur-Gate:** Wenn DB > 500 MB oder Poll > 15 Min oder Lock-Fehler häufen:
       Migration SQLite → Postgres vorbereiten (Alembic existiert). Entscheidung + Plan als
       NEEDS-HUMAN loggen, nicht eigenmächtig migrieren.
-- [ ] **A5 — Nicht-TED-Quellen scopen (nur Analyse, kein Bau):** GB Find-a-Tender (OCDS),
-      CH simap, NO Doffin: API-Zugang, Datenmodell, Aufwand je Connector dokumentieren.
-      *Abnahme: Scoping-Doc `docs/SOURCES-INTL.md` im Backend-Repo.*
+- [x] **A5 — Nicht-TED-Quellen gescoped** *(2026-07-18)*: `docs/SOURCES-INTL.md` im Backend
+      mit Live-Probes. Kernbefund: **GB Find a Tender ist offen (kein Key) und nutzt weiter
+      CPV** → Connector-Aufwand M ohne Mapping-Projekt; OCDS→Tender-Mapping als C4-Entwurf
+      enthalten. Doffin: kostenloser Key nötig (NEEDS-HUMAN). simap: Zugang unklar (L).
+      ÖNORM A 2063 (C5): Normkauf-Entscheid nötig.
 - [ ] **A6 — Länder-Facette ausspielen:** `country`-Parameter in /entwickler-Doku + llms.txt
       mit Liste der tatsächlich indexierten Länder (dynamisch halten oder bei jedem
       Rollout-Schritt aktualisieren). Agent Card Beschreibung „German and EU" prüfen.

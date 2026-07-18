@@ -214,3 +214,18 @@ BW/RLP/HE dagegen — bitte mit Kunde klären.)
 für C6 (Go/No-Go-Karte v2 = 1.499-EUR-Produkt) komplett.
 **Nächster Schritt:** C4 (OCDS-Mapping, Vorarbeit GB) oder A5 (GB/CH-Scoping) —
 oder direkt C6, wenn Priorität auf Produkt statt Protokoll-Reihenfolge liegt.
+
+## 2026-07-18 · Ralph-Loop Iteration 11 — A5: GB/NO/CH gescoped
+
+Live-Probes (Backend-Doc `docs/SOURCES-INTL.md`, Commit `eb7a210`):
+- GB Find a Tender: OFFEN (kein Key), OCDS 1.1 mit EU-Profil, **CPV weiterhin in
+  Nutzung**, UK-NUTS-Regionen → Connector-Aufwand M, kein Mapping-Projekt.
+  OCDS→Tender-Feldmapping dokumentiert (erledigt C4 im Entwurf gleich mit).
+  Offen nur GBP→EUR-Umrechnung + Markenentscheid (.com, Nicht-EU).
+- Doffin (NO): 401 — kostenloser API-Key nötig → NEEDS-HUMAN (5-Min-Registrierung).
+- simap (CH): kein offener Endpunkt, Zugang über Betreiber klären → NEEDS-HUMAN.
+- ÖNORM A 2063 (C5-Notiz): GAEB-Pendant, Normkauf nötig → NEEDS-HUMAN, nachfragegetrieben.
+
+**Track-Stand:** A 4/6 · B 3/5 · C 3/6 · D 2/4.
+**Nächster Schritt:** A6 (Länder-Doku ausspielen) oder C4 formal abhaken via GB-Connector-
+Entscheid; C6 (Go/No-Go v2) ist bereit, sobald Gorden priorisiert.
