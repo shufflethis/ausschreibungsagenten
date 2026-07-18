@@ -117,8 +117,11 @@ mehrsprachig, semantik später als klar gekennzeichnetes Experiment.*
       verifiziert: 8 Matches (85–90), 0 False-Positives. 4 Tests. Backend s. git log.
       *NEEDS-HUMAN: Rossmanith `target_countries` um AUT erweitern? (Kundenkonfiguration —
       Gordens Aussage von heute spricht dafür, Profil-Regionen BW/RLP/HE eher dagegen.)*
-- [ ] **B4 — FTS mehrsprachig:** Volltextsuche auf Sprach-Handling prüfen (Stemming/Analyzer);
-      mindestens: Suche findet Original-Titel jeder Sprache; dokumentieren, was (noch) nicht geht.
+- [x] **B4 — FTS mehrsprachig geprüft** *(2026-07-18)*: 100 % Index-Abdeckung; Diakritika-
+      Faltung verifiziert (façade=facade, ślusarka=slusarka) → Original-Titel jeder Sprache
+      auffindbar (Abnahme erfüllt). Grenzen dokumentiert (`docs/FTS-I18N.md`, Backend
+      `3881d28`): deutsche Komposita brauchen Prefix-Syntax (`fassade*` → 1.195 statt 603);
+      Ausbaustufe Query-Expansion über B2-Sets notiert.
 - [ ] **B5 — Anzeige-/Digest-Übersetzung (Experiment, klar gelabelt):** Für fremdsprachige
       Treffer im Digest/Dashboard eine deutsche Kurzzusammenfassung erzeugen (LLM-Aufruf,
       Kosten prüfen → wenn API-Kosten nötig: NEEDS-HUMAN). Immer mit „maschinell übersetzt"-Label

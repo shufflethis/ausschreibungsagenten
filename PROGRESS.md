@@ -254,3 +254,20 @@ Länderliste bleibt via /api/countries dynamisch — kein Doku-Drift möglich.
 **Track-Stand: A 5/6 · B 3/5 · C 4/6 · D 3/4 = 15/21.**
 Verbleibend ungegated: B4 (FTS-Mehrsprachigkeit analysieren). Alles andere wartet
 auf NEEDS-HUMAN-Entscheidungen (siehe Liste in Iteration 12) bzw. Gates (A4).
+
+## 2026-07-18 · Ralph-Loop Iteration 14 — B4: FTS-Mehrsprachigkeit auditiert
+
+Empirischer Audit gegen den Live-Index (Backend-Doc docs/FTS-I18N.md, `3881d28`):
+- 100% Abdeckung (12.231/12.231), Diakritika-Faltung funktioniert quer durch alle
+  Sprachen (façade=facade 169, fenêtre=fenetres 16, ślusarka=slusarka 6) —
+  B4-Abnahme "Original-Titel jeder Sprache auffindbar" erfüllt, ohne Codeänderung.
+- Dokumentierte Grenze: deutsche Komposita/Flexion (fassade 603 / fassaden 224 /
+  fassadenarbeiten 353 getrennt) — Workaround Prefix-Syntax fassade* (1.195 Treffer),
+  in FTS-I18N.md für API-Nutzer ausgewiesen. Ausbaustufe: Query-Expansion über
+  B2-Keyword-Sets (M) statt Tokenizer-Bastelei.
+
+**Track-Stand: A 5/6 · B 4/5 · C 4/6 · D 3/4 = 16/21.**
+**Die Loop hat damit alle ungegateten Ziele abgearbeitet.** Verbleibend: B5 (LLM-Budget),
+C5 (Normkauf), C6 (Produkt-Build — bereit, wartet auf Prio), D2 (SSG-Entscheid),
+A4 (Infrastruktur-Gate, noch nicht ausgelöst) + NEEDS-HUMAN-Liste aus Iteration 12.
+Empfehlung: Loop stoppen oder mit expliziter C6-Freigabe neu füttern.
