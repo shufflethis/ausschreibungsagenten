@@ -10,6 +10,7 @@ const SOURCE_LABELS = {
     mv: 'Landesportal Mecklenburg-Vorpommern',
     hessen: 'Landesportal Hessen',
     rlp: 'Landesportal Rheinland-Pfalz',
+    fts: 'GB Find a Tender (OCDS)',
     bayern: 'Landesportal Bayern',
     nrw: 'Landesportal Nordrhein-Westfalen',
 }
@@ -20,7 +21,7 @@ const COUNTRY_NAMES = {
     LUX: 'Luxemburg', FIN: 'Finnland', IRL: 'Irland', HRV: 'Kroatien', EST: 'Estland',
     DNK: 'Dänemark', GRC: 'Griechenland', BGR: 'Bulgarien', HUN: 'Ungarn', LTU: 'Litauen',
     MLT: 'Malta', ROU: 'Rumänien', SVN: 'Slowenien', SVK: 'Slowakei', LVA: 'Lettland',
-    PRT: 'Portugal', CYP: 'Zypern',
+    PRT: 'Portugal', CYP: 'Zypern', GBR: 'Vereinigtes Königreich',
 }
 
 const formatDateTime = (value) => {

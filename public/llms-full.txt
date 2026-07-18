@@ -21,6 +21,7 @@ Handwerk, Bau, IT, Marketing und Beratung.
 6. Landesportal Mecklenburg-Vorpommern
 7. Landesportal Hessen
 8. Landesportal Rheinland-Pfalz
+9. GB Find a Tender Service (OCDS 1.1, buyer_country=GBR, Werte GBP→EUR umgerechnet)
 
 Im Ausbau (nicht produktiv): DTVP, eVergabe, Landesportale Bayern und Nordrhein-Westfalen.
 Der Live-Status inkl. letztem erfolgreichem Abruf je Quelle ist öffentlich:

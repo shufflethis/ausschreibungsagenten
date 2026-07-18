@@ -347,3 +347,22 @@ B5 komplett implementiert und deployt (Backend `cbad3ec`, Migration a1d5f7c3):
 TRANSLATION_ENABLED=true + docker compose up -d app → Feature live.
 
 **Nächster Schritt:** A7 GB-Connector (letztes freigegebenes Ziel).
+
+## 2026-07-19 · Ralph-Loop (neu) Iteration 4 — A7: GB Find a Tender LIVE 🇬🇧
+
+Letztes freigegebenes Ziel erledigt (Backend `960118e`):
+- OCDS-Connector nach validierter Spezifikation: offene API, Cursor-Pagination,
+  30-Tage-Rolling-Window, CPV nativ, UK-NUTS, GBP→EUR via GBP_EUR_RATE (1.17)
+- Echtwelt-Fix im ersten Lauf: FTS-Daten enthalten Infinity/NaN → _sanitize_json
+  (Postgres-JSON lehnt das ab; TED war davon nie betroffen)
+- Erster voller Poll: 190 Releases, 18 Vertical-Matches, 0 Fehler; GBR-Tender
+  live in Public-API mit B2-Scores (englische Keyword-Sets greifen: 60–75)
+- Quelle als 'live' in Health/source-status; Scheduler 6h; Tests 200 gesamt
+- Doku-Sync: llms.txt/llms-full ("Neun Quellen", GBR), /status (Quelle + Ländername)
+
+**Positionierung jetzt: EU + UK.** Sync-Punkt fürs tender-agents-Fenster:
+llms.txt/Facetten drüben um GBR erweitern ("EU + UK coverage").
+
+**Damit sind ALLE freigegebenen Ziele abgearbeitet** (A4 Postgres ✓, A7 GB ✓,
+B5 Übersetzung ✓ hinter Flag). Verbleibend nur NEEDS-HUMAN: ANTHROPIC_API_KEY,
+MCP-Registry-Submissions, C6-Freigabe, SSG-Entscheid, Doffin-Key, Rossmanith+AUT.
