@@ -288,3 +288,10 @@ Alle ungegateten Ziele erledigt (16/21), Iterationen 15-20 waren Leerlauf-Heartb
 /ralph-loop:ralph-loop mit dem Kickoff-Prompt aus AGENT-GOALS.md.
 Offene Entscheidungen: siehe NEEDS-HUMAN-Listen (Iteration 12/14/15) —
 Kurzfassung: C6-Freigabe, GB-Entscheid, Postgres (DB-Trend!), SSG, Registry-Submissions.
+
+## 2026-07-19 · Freigaben von Gorden — Loop-Neustart
+
+Freigegeben: A4 Postgres-Migration (mit Pflicht-Backup/Verifikations-Reihenfolge),
+A7 GB-Connector fts (inkl. Markenentscheid "EU + UK", GBP_EUR_RATE-Env),
+B5 Digest-Übersetzung (Claude API claude-haiku-4-5, Caching, Flag; Key ggf. NEEDS-HUMAN).
+C6 bleibt bewusst geparkt (Fähigkeiten vor Produkt). Loop neu gestartet.

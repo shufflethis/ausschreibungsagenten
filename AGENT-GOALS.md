@@ -78,9 +78,19 @@ seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volum
       mit Warnung ab 14k/Gruppe (`4c31f1d`). Verifiziert: 12.229 Tender aus 27 Ländern,
       10/10 Quellen fehlerfrei, FR-Treffer live auf beiden Domains.
       *Rest offen → A4-Beobachtung: größte Gruppe FRA+DEU+GRC=11.837 wächst Richtung Deckel.*
-- [ ] **A4 — Infrastruktur-Gate:** Wenn DB > 500 MB oder Poll > 15 Min oder Lock-Fehler häufen:
-      Migration SQLite → Postgres vorbereiten (Alembic existiert). Entscheidung + Plan als
-      NEEDS-HUMAN loggen, nicht eigenmächtig migrieren.
+- [ ] **A4 — Postgres-Migration** *(FREIGEGEBEN von Gorden 2026-07-19)*: SQLite → Postgres
+      (DB-Trend: 165→283 MB an einem Tag). Pflicht-Reihenfolge: (1) verifiziertes Backup
+      der SQLite-DB + Restore-Test, (2) Postgres als Compose-Service (lokal, 127.0.0.1),
+      (3) Alembic-Schema auf Postgres aufbauen, (4) Datenmigration mit Row-Count- und
+      Stichproben-Verifikation je Tabelle, (5) Umschalten via DATABASE_URL, alte SQLite
+      als Fallback behalten (NICHT löschen), (6) alle Smoke-Tests (Polls, API, MCP, Auth).
+      Bei jedem Verifikationsfehler: abbrechen, zurückschalten, loggen.
+- [ ] **A7 — GB-Connector `fts`** *(FREIGEGEBEN von Gorden 2026-07-19, inkl. Markenentscheid
+      „EU + UK")*: Connector nach Mapping in `docs/SOURCES-INTL.md` (OCDS, CPV nativ).
+      GBP→EUR deterministisch über konfigurierbaren Kurs (`GBP_EUR_RATE` Env, dokumentiert)
+      — keine Live-Kurs-Abhängigkeit im Poll-Pfad. `languages=["eng"]`. Quelle in
+      source-status registrieren; nach Launch Doku-Sync (llms, Agent Card, /status,
+      /entwickler, tender-agents-Hinweis „EU + UK").
 - [x] **A5 — Nicht-TED-Quellen gescoped** *(2026-07-18)*: `docs/SOURCES-INTL.md` im Backend
       mit Live-Probes. Kernbefund: **GB Find a Tender ist offen (kein Key) und nutzt weiter
       CPV** → Connector-Aufwand M ohne Mapping-Projekt; OCDS→Tender-Mapping als C4-Entwurf
@@ -122,11 +132,13 @@ mehrsprachig, semantik später als klar gekennzeichnetes Experiment.*
       auffindbar (Abnahme erfüllt). Grenzen dokumentiert (`docs/FTS-I18N.md`, Backend
       `3881d28`): deutsche Komposita brauchen Prefix-Syntax (`fassade*` → 1.195 statt 603);
       Ausbaustufe Query-Expansion über B2-Sets notiert.
-- [ ] **B5 — Anzeige-/Digest-Übersetzung (Experiment, klar gelabelt):** Für fremdsprachige
-      Treffer im Digest/Dashboard eine deutsche Kurzzusammenfassung erzeugen (LLM-Aufruf,
-      Kosten prüfen → wenn API-Kosten nötig: NEEDS-HUMAN). Immer mit „maschinell übersetzt"-Label
-      und Link zur Originalquelle.
-      *Das ist das Verkaufsargument: „EU-Aufträge ohne Sprachbarriere".*
+- [ ] **B5 — Digest-Übersetzung** *(FREIGEGEBEN von Gorden 2026-07-19 inkl. API-Kosten)*:
+      Deutsche Kurzzusammenfassung fremdsprachiger Treffer (Titel + 2-Satz-Summary) im
+      Digest/Dashboard. Umsetzung: Claude API (claude-haiku-4-5, günstigstes Modell),
+      Ergebnis-Caching am Tender (einmal übersetzen, nicht je Digest), Feature-Flag
+      `TRANSLATION_ENABLED`, striktes Label „KI-Übersetzung — Original maßgeblich" + Link.
+      Falls kein `ANTHROPIC_API_KEY` im Backend-Env: Feature komplett bauen + testen
+      (gemockt), Flag aus lassen und Key-Bereitstellung als NEEDS-HUMAN loggen.
 
 ## Track C — Standards verstehen & erfüllen
 
