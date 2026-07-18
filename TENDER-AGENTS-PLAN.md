@@ -13,6 +13,9 @@
 | Zielkunde | KMU/Handwerk/Agenturen, die Aufträge gewinnen wollen | Entwickler, Agent-Builder, Bid-Teams, internationale SaaS-Integrationen |
 | Funnel | Pilot → Magic Link → Pro/Agent | API-Key Self-Serve → Free Tier → Usage-Pricing |
 
+> **Fortschritt 2026-07-18:** Österreich ist live (`COUNTRIES=DEU,AUT`, 516 AT-Tender im ersten
+> Poll, CPV-Klassifikation greift sprachneutral). Der Weg zu EU-weit ist damit validiert.
+
 **Warum das funktioniert:** TED (api.ted.europa.eu) ist bereits die EU-weite Quelle und wird vom
 AgentLeads-Backend schon gepollt — der DEU-Filter ist nur ein Query-Parameter. Der schnellste Weg zu
 „EU-Abdeckung" ist also kein neuer Scraper, sondern das Öffnen des bestehenden TED-Index für alle

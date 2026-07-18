@@ -96,6 +96,17 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
 - [ ] **UI-Zielgruppen-Check:** helles Theme oder Toggle prüfen; Emoji-Icons durch echte Icons
       ersetzen (Zielgruppe Handwerk/Bau erwartet Seriosität).
 
+### P3.5 — DACH/EU-Datenbasis (Zubringer für tender-agents.com)
+
+- [x] **Österreich live** *(2026-07-18)*: `COUNTRIES=DEU,AUT` (TED-Full-Scan backfillt automatisch);
+      erster Poll: 516 AT-Ausschreibungen, Verticals greifen sprachneutral über CPV.
+      Backend-Commit `21fec1b`. API/MCP liefern AT über `country=AUT`.
+- [ ] **CH prüfen** (simap.ch — eigener Connector, nicht auf TED).
+- [ ] **EU-weit auf TED** für tender-agents.com: `COUNTRIES` erweitern; vorher Volumen-Check
+      (~8–10× Daten), Poll-Dauer und SQLite-Last beobachten; Verticals je Sprache um
+      Keywords ergänzen (CPV trägt sprachneutral).
+- [ ] **GB**: Find a Tender Service (OCDS-API) als neuer Connector.
+
 ### P4 — Moat aufbauen (laufend)
 
 - [ ] **Feedback-Datenschatz:** Go/No-Go-Entscheidungen + Gewonnen/Verloren-Status der Kunden
