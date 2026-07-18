@@ -94,9 +94,11 @@ seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volum
 Sprache betrifft nur: Keywords, Volltextsuche, Anzeige. Kein ML-Hype: erst deterministisch
 mehrsprachig, semantik später als klar gekennzeichnetes Experiment.*
 
-- [ ] **B1 — Sprachfeld:** Notice-Sprache(n) aus TED-Rohdaten extrahieren und als Spalte/Feld
-      am Tender speichern (`language`), in API/Exports ausgeben.
-      *Abnahme: AT/DE-Tender zeigen `deu`; Test vorhanden.*
+- [x] **B1 — Sprachfeld** *(2026-07-18)*: `Tender.languages` (JSON, ISO-639-3) aus den
+      Sprachschlüsseln der mehrsprachigen TED-Felder; deutsche Portale → `deu`.
+      Alembic-Migration `c4e8f2a91b07` mit raw_data-Backfill: 12.229 Rows, 0 leer
+      (deu 5.775, fra 2.890, pol 684 …). In TenderOut/PublicTenderOut ausgegeben,
+      live verifiziert (FRA→fra, DEU→deu). Backend `8e7ae87`.
 - [ ] **B2 — Mehrsprachige Vertical-Keywords:** Keyword-Sets der Verticals (Fassade, Marketing)
       als sprachkeyed Struktur (`{deu: [...], eng: [...], fra: [...], ...}`) refaktorieren;
       Scoring nutzt das Set der Notice-Sprache + eng als Fallback. CPV bleibt Hauptsignal.

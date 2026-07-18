@@ -66,3 +66,14 @@ auf 2 senken. DB-Größe im Auge behalten (Postgres-Gate bei >500 MB).
 
 **Nächster Schritt:** A5 (Nicht-TED-Quellen scopen) oder A6/D4 (Länder-Doku ausspielen);
 B1 (Sprachfeld) ist der Einstieg in Track B.
+
+## 2026-07-18 · Ralph-Loop Iteration 2 — B1: Sprachfeld live
+
+Gesundheitscheck: alles grün (Container healthy, 0 Quellen-Fehler, beide Sites 200).
+B1 umgesetzt (Backend `8e7ae87`): Tender.languages (ISO-639-3) aus TED-Sprachschlüsseln,
+deutsche Portale defaulten auf deu, Alembic-Backfill über raw_data (0 leere Werte),
+Feld in beiden API-Schemas. Sprachverteilung: deu 5.775, fra 2.890, pol 684, swe 651,
+nld 425, ces 339, eng 291, spa 238. Tests: Backend 167 (+2).
+
+**Nächster Schritt:** B2 (mehrsprachige Vertical-Keywords — languages-Feld ist jetzt da),
+danach B3 (Firmen-Fit sprachneutral absichern, Rossmanith-Profil als Testfall).
