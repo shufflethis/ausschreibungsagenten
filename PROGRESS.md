@@ -295,3 +295,18 @@ Freigegeben: A4 Postgres-Migration (mit Pflicht-Backup/Verifikations-Reihenfolge
 A7 GB-Connector fts (inkl. Markenentscheid "EU + UK", GBP_EUR_RATE-Env),
 B5 Digest-Übersetzung (Claude API claude-haiku-4-5, Caching, Flag; Key ggf. NEEDS-HUMAN).
 C6 bleibt bewusst geparkt (Fähigkeiten vor Produkt). Loop neu gestartet.
+
+## 2026-07-19 · Ralph-Loop (neu) Iteration 1 — A4 Schritte 1–3: Postgres vorbereitet
+
+Freigegebene A4-Migration begonnen, risikofreie Hälfte fertig (Backend `0a33531`):
+1. Konsistentes Online-Backup (sqlite3.backup) + Restore-Test: integrity ok,
+   12.231 Tender, 26 Tabellen → ~/backups/agentleads-migration/
+2. Code dialekt-portabel: Upserts (sqlite/pg on_conflict), FTS abstrahiert
+   (FTS5 ↔ tsvector 'simple' + unaccent mit immutable-Wrapper), Treiber + alembic-URLs
+3. postgres:16-alpine läuft healthy (127.0.0.1:5433, pgdata-Volume, .env-Passwort)
+4. Migrationsskript mit FK-sicherer Kopie, fts-Rebuild, Count-+Stichproben-Verifikation
+
+App läuft unverändert auf SQLite (Tests 189 grün, healthy). **Nächste Iteration =
+Cutover:** App stoppen → alembic upgrade gegen PG → Migration ausführen →
+DATABASE_URL umstellen → Start → Smoke-Tests (Polls/API/MCP/Auth). Kurze Downtime
+(~2–5 Min) nötig; SQLite bleibt als Fallback unangetastet.
