@@ -85,12 +85,12 @@ seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volum
       SQLite bleibt als Fallback. Befund unterwegs: performance_location → Text (`f2a6c8d9`).
       Backend `0a33531`+`abdd165`. *Follow-up: DB-URL (inkl. Passwort) erscheint im
       db.ready-Log — maskieren.*
-- [ ] **A7 — GB-Connector `fts`** *(FREIGEGEBEN von Gorden 2026-07-19, inkl. Markenentscheid
-      „EU + UK")*: Connector nach Mapping in `docs/SOURCES-INTL.md` (OCDS, CPV nativ).
-      GBP→EUR deterministisch über konfigurierbaren Kurs (`GBP_EUR_RATE` Env, dokumentiert)
-      — keine Live-Kurs-Abhängigkeit im Poll-Pfad. `languages=["eng"]`. Quelle in
-      source-status registrieren; nach Launch Doku-Sync (llms, Agent Card, /status,
-      /entwickler, tender-agents-Hinweis „EU + UK").
+- [x] **A7 — GB-Connector `fts`** *(2026-07-19, LIVE)*: OCDS-Connector nach validierter Spec
+      (Cursor-Pagination, 30-Tage-Fenster, CPV nativ, UK-NUTS, GBP→EUR via `GBP_EUR_RATE`).
+      Echtwelt-Fix: Infinity/NaN-Sanitizer für Postgres-JSON. Erster Poll: 190 Releases,
+      18 Matches, 0 Fehler; GBR live in API mit B2-Scores. Doku-Sync erledigt (llms,
+      /status, „Neun Quellen", EU + UK). Backend `960118e`, Site `f5582e4`, Tests 200.
+      *Sync offen: tender-agents.com-Facetten/llms um GBR („EU + UK") — anderes Fenster.*
 - [x] **A5 — Nicht-TED-Quellen gescoped** *(2026-07-18)*: `docs/SOURCES-INTL.md` im Backend
       mit Live-Probes. Kernbefund: **GB Find a Tender ist offen (kein Key) und nutzt weiter
       CPV** → Connector-Aufwand M ohne Mapping-Projekt; OCDS→Tender-Mapping als C4-Entwurf
