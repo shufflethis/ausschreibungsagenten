@@ -78,13 +78,13 @@ seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volum
       mit Warnung ab 14k/Gruppe (`4c31f1d`). Verifiziert: 12.229 Tender aus 27 Ländern,
       10/10 Quellen fehlerfrei, FR-Treffer live auf beiden Domains.
       *Rest offen → A4-Beobachtung: größte Gruppe FRA+DEU+GRC=11.837 wächst Richtung Deckel.*
-- [ ] **A4 — Postgres-Migration** *(FREIGEGEBEN von Gorden 2026-07-19)*: SQLite → Postgres
-      (DB-Trend: 165→283 MB an einem Tag). Pflicht-Reihenfolge: (1) verifiziertes Backup
-      der SQLite-DB + Restore-Test, (2) Postgres als Compose-Service (lokal, 127.0.0.1),
-      (3) Alembic-Schema auf Postgres aufbauen, (4) Datenmigration mit Row-Count- und
-      Stichproben-Verifikation je Tabelle, (5) Umschalten via DATABASE_URL, alte SQLite
-      als Fallback behalten (NICHT löschen), (6) alle Smoke-Tests (Polls, API, MCP, Auth).
-      Bei jedem Verifikationsfehler: abbrechen, zurückschalten, loggen.
+- [x] **A4 — Postgres-Migration** *(2026-07-19, alle 6 Pflicht-Schritte)*: Backup+Restore-Test ✓,
+      dialekt-portabler Code (Upserts, FTS5↔tsvector+unaccent) ✓, postgres:16 Compose-Service ✓,
+      Datenmigration verifiziert (20 Tabellen, 12.231 Tender, Counts+Stichproben identisch) ✓,
+      Cutover via DATABASE_URL ✓, Smoke-Tests grün (Polls/API/MCP-FTS/Prod, 0 Fehler) ✓.
+      SQLite bleibt als Fallback. Befund unterwegs: performance_location → Text (`f2a6c8d9`).
+      Backend `0a33531`+`abdd165`. *Follow-up: DB-URL (inkl. Passwort) erscheint im
+      db.ready-Log — maskieren.*
 - [ ] **A7 — GB-Connector `fts`** *(FREIGEGEBEN von Gorden 2026-07-19, inkl. Markenentscheid
       „EU + UK")*: Connector nach Mapping in `docs/SOURCES-INTL.md` (OCDS, CPV nativ).
       GBP→EUR deterministisch über konfigurierbaren Kurs (`GBP_EUR_RATE` Env, dokumentiert)

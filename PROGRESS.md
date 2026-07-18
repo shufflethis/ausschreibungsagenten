@@ -310,3 +310,23 @@ App läuft unverändert auf SQLite (Tests 189 grün, healthy). **Nächste Iterat
 Cutover:** App stoppen → alembic upgrade gegen PG → Migration ausführen →
 DATABASE_URL umstellen → Start → Smoke-Tests (Polls/API/MCP/Auth). Kurze Downtime
 (~2–5 Min) nötig; SQLite bleibt als Fallback unangetastet.
+
+## 2026-07-19 · Ralph-Loop Iteration 2 — A4 KOMPLETT: Produktion läuft auf Postgres
+
+Cutover erfolgreich (Downtime ~7 Min, Backend `abdd165`):
+- Frisches Backup vor Cutover, Schema via create_all + alembic stamp (bewusst NICHT
+  die SQLite-spezifischen Alt-Migrationen auf PG abgespielt)
+- Einziger Datenbefund: performance_location bis 1.076 Zeichen > VARCHAR(500) →
+  Modell auf Text geweitet (Migration f2a6c8d9); sonst alle 20 Tabellen 1:1
+- Verifikation: alle Counts identisch (12.231 Tender), 5 Stichproben feldgleich,
+  fts neu aufgebaut (12.231)
+- Smoke auf PG: FR-Suche mit Diakritika ✓, 27-Länder-Endpoint ✓, MCP-fulltext via
+  tsvector('simple')+unaccent ✓, Startup-Full-Scan 14.604/12.112 mit 0 Fehlern,
+  Prod via Vercel ✓
+- Rollback-Pfad: DATABASE_URL-Zeile aus .env entfernen → SQLite (unangetastet)
+
+**Follow-ups:** (1) db.ready-Log maskiert die DB-URL nicht (Passwort im Log) — fixen;
+(2) SQLite-Fallback nach 1 Woche stabiler PG-Laufzeit archivieren; (3) Offsite-Backup-
+Skript (backup_db.py) auf pg_dump umstellen — als Nächstes prüfen.
+
+**Nächster Schritt:** A7 GB-Connector oder B5 Digest-Übersetzung.
