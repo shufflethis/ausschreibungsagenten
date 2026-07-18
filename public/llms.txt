@@ -27,6 +27,8 @@ Kontakt: hi@ausschreibungsagenten.de
 - Startseite mit Live-Suche, Tool-Vergleich, FAQ: https://www.ausschreibungsagenten.de/
 - Über uns: https://www.ausschreibungsagenten.de/ueber-uns
 - API & Agent-Anbindung (Entwicklerseite): https://www.ausschreibungsagenten.de/entwickler
+- Live-Quellenstatus & EU-Abdeckung je Land: https://www.ausschreibungsagenten.de/status
+- Länderliste mit Tender-Zahlen (JSON): https://www.ausschreibungsagenten.de/api/countries
 - Impressum: https://www.ausschreibungsagenten.de/impressum
 - Datenschutz: https://www.ausschreibungsagenten.de/datenschutz
 

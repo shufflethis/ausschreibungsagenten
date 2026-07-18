@@ -13,6 +13,7 @@ import MagicHandoff from './pages/MagicHandoff'
 import AppRedirect from './pages/AppRedirect'
 import UeberUns from './pages/UeberUns'
 import Entwickler from './pages/Entwickler'
+import Status from './pages/Status'
 
 export default function App() {
     return (
@@ -23,6 +24,7 @@ export default function App() {
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/ueber-uns" element={<UeberUns />} />
                     <Route path="/entwickler" element={<Entwickler />} />
+                    <Route path="/status" element={<Status />} />
                     <Route path="/impressum" element={<Impressum />} />
                     <Route path="/agb" element={<AGB />} />
                     <Route path="/datenschutz" element={<Datenschutz />} />
