@@ -366,3 +366,10 @@ llms.txt/Facetten drüben um GBR erweitern ("EU + UK coverage").
 **Damit sind ALLE freigegebenen Ziele abgearbeitet** (A4 Postgres ✓, A7 GB ✓,
 B5 Übersetzung ✓ hinter Flag). Verbleibend nur NEEDS-HUMAN: ANTHROPIC_API_KEY,
 MCP-Registry-Submissions, C6-Freigabe, SSG-Entscheid, Doffin-Key, Rossmanith+AUT.
+
+## 2026-07-19 · Ralph-Loop beendet (alle Freigaben abgearbeitet)
+
+A4 Postgres ✓, A7 GB-Connector ✓, B5 Übersetzung ✓ (Flag aus, wartet auf Key).
+System grün (9 Quellen, 0 Fehler, 28 Länder). Loop beendet — Neustart:
+/ralph-loop:ralph-loop mit Kickoff-Prompt aus AGENT-GOALS.md, idealerweise
+nach neuen Freigaben (C6, SSG, Registry-Keys — Liste s. o.).
