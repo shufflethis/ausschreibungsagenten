@@ -132,13 +132,12 @@ mehrsprachig, semantik später als klar gekennzeichnetes Experiment.*
       auffindbar (Abnahme erfüllt). Grenzen dokumentiert (`docs/FTS-I18N.md`, Backend
       `3881d28`): deutsche Komposita brauchen Prefix-Syntax (`fassade*` → 1.195 statt 603);
       Ausbaustufe Query-Expansion über B2-Sets notiert.
-- [ ] **B5 — Digest-Übersetzung** *(FREIGEGEBEN von Gorden 2026-07-19 inkl. API-Kosten)*:
-      Deutsche Kurzzusammenfassung fremdsprachiger Treffer (Titel + 2-Satz-Summary) im
-      Digest/Dashboard. Umsetzung: Claude API (claude-haiku-4-5, günstigstes Modell),
-      Ergebnis-Caching am Tender (einmal übersetzen, nicht je Digest), Feature-Flag
-      `TRANSLATION_ENABLED`, striktes Label „KI-Übersetzung — Original maßgeblich" + Link.
-      Falls kein `ANTHROPIC_API_KEY` im Backend-Env: Feature komplett bauen + testen
-      (gemockt), Flag aus lassen und Key-Bereitstellung als NEEDS-HUMAN loggen.
+- [x] **B5 — Digest-Übersetzung** *(2026-07-19, gebaut & deployt, Flag AUS)*: `translation_de`
+      am Tender (Migration `a1d5f7c3`), claude-haiku-4-5 via anthropic-SDK mit strukturierter
+      Ausgabe, Caching je Tender, best-effort (Digest nie blockiert), Label
+      „KI-Übersetzung — Original maßgeblich" im Digest, 7 gemockte Tests (196 gesamt).
+      **NEEDS-HUMAN: `ANTHROPIC_API_KEY` in Backend-.env setzen + `TRANSLATION_ENABLED=true`
+      → Feature geht ohne Codeänderung live.** Backend-Commit s. git log.
 
 ## Track C — Standards verstehen & erfüllen
 

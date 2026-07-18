@@ -330,3 +330,20 @@ Cutover erfolgreich (Downtime ~7 Min, Backend `abdd165`):
 Skript (backup_db.py) auf pg_dump umstellen — als Nächstes prüfen.
 
 **Nächster Schritt:** A7 GB-Connector oder B5 Digest-Übersetzung.
+
+## 2026-07-19 · Ralph-Loop (neu) Iteration 3 — B5: Digest-Übersetzung gebaut (Flag aus)
+
+B5 komplett implementiert und deployt (Backend `cbad3ec`, Migration a1d5f7c3):
+- services/translation.py: claude-haiku-4-5 (freigegebenes Modell) via offiziellem
+  anthropic-SDK, strukturierte JSON-Ausgabe (title_de + max. 2-Satz-summary_de)
+- Caching am Tender (translation_de, ein API-Call je Tender), best effort —
+  API-Fehler blockieren den Digest-Versand nie
+- Digest zeigt "Deutsch: … [KI-Übersetzung — Original maßgeblich]" + Kurzfassung
+  NUR bei fremdsprachigen Treffern; deutsche Tender unverändert
+- TRANSLATION_ENABLED default aus; 7 gemockte Tests, Suite 196 grün; Prod healthy,
+  Verhalten unverändert (Flag aus)
+
+**NEEDS-HUMAN (1 Minute):** ANTHROPIC_API_KEY in ~/agentleads-account/.env +
+TRANSLATION_ENABLED=true + docker compose up -d app → Feature live.
+
+**Nächster Schritt:** A7 GB-Connector (letztes freigegebenes Ziel).
