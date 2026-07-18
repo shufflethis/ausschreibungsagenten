@@ -271,3 +271,12 @@ Empirischer Audit gegen den Live-Index (Backend-Doc docs/FTS-I18N.md, `3881d28`)
 C5 (Normkauf), C6 (Produkt-Build — bereit, wartet auf Prio), D2 (SSG-Entscheid),
 A4 (Infrastruktur-Gate, noch nicht ausgelöst) + NEEDS-HUMAN-Liste aus Iteration 12.
 Empfehlung: Loop stoppen oder mit expliziter C6-Freigabe neu füttern.
+
+## 2026-07-18 · Ralph-Loop Iteration 15 — Heartbeat (keine ungegateten Ziele)
+
+Gesundheitscheck: Container healthy, 0 Quellen-Fehler, beide Sites 200, 0 Lock-Fehler.
+A4-Gate-Messung: DB 283 MB (Gate 500 MB — Achtung Trend: mittags 165 MB, die
+eForms-Felder in raw_data kosten Platz; bei diesem Tempo Gate in Tagen erreicht →
+Postgres-Plan aus A4 zeitnah entscheiden). TED-Poll 4m20s (Gate 15 min) OK.
+
+Keine ungegateten Ziele mehr — Loop wartet auf Entscheidungen (Liste s. Iteration 12/14).
