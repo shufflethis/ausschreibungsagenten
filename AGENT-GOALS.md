@@ -91,6 +91,19 @@ seit AT (Env-Variable, CPV trägt sprachneutral) validiert. Risiko ist nur Volum
       18 Matches, 0 Fehler; GBR live in API mit B2-Scores. Doku-Sync erledigt (llms,
       /status, „Neun Quellen", EU + UK). Backend `960118e`, Site `f5582e4`, Tests 200.
       *Sync offen: tender-agents.com-Facetten/llms um GBR („EU + UK") — anderes Fenster.*
+- [x] **A8 — DE-Connector `doe`** *(2026-07-19, LIVE, freigegeben „bau A8 und A9")*: Datenservice
+      Öffentlicher Einkauf (oeffentlichevergabe.de) — zentraler eForms-DE-Kanal, Ober- UND
+      Unterschwelle, CC0, kein Key. Hybrid-Ansatz: OCDS-Tages-ZIP für Struktur + eForms-XML-ZIP
+      nur für die Angebotsfrist (BT-131), die der OCDS-Konverter des Dienstes weglässt
+      (empirisch 0/762). Echtwelt-Fix: Namespace-Präfixe variieren je Kanal (cac: vs ns2:) →
+      prefix-agnostischer Regex, Deadline-Quote 114→370/Tag. Erster Poll: 1.987 fetched,
+      76 gespeichert, 91 % mit Deadline, 0 Fehler. Rollierendes 3-Tage-pubDay-Fenster
+      (Europe/Berlin, Vortag als jüngster Tag — heutige Daten existieren erst nach Mitternacht).
+- [x] **A9 — GB-Connector `cf`** *(2026-07-19, LIVE, freigegeben „bau A8 und A9")*: Contracts
+      Finder (unterschwellige GB-Vergaben ab £12k, England). Erbt den kompletten fts-OCDS-Parser
+      (Hooks `_initial_url`/`_notice_id`); Unterschiede nur publishedFrom/To-Fenster (14 Tage)
+      und Notice-URL (Versions-Suffix „-906885" wird von der Release-ID gestrippt).
+      Erster Poll: 181 fetched, 2 gespeichert, 0 Fehler. GBP→EUR wie fts via `GBP_EUR_RATE`.
 - [x] **A5 — Nicht-TED-Quellen gescoped** *(2026-07-18)*: `docs/SOURCES-INTL.md` im Backend
       mit Live-Probes. Kernbefund: **GB Find a Tender ist offen (kein Key) und nutzt weiter
       CPV** → Connector-Aufwand M ohne Mapping-Projekt; OCDS→Tender-Mapping als C4-Entwurf

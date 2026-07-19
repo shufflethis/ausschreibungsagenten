@@ -394,3 +394,28 @@ Gebauten. Größte Quick-Wins als Vorschläge annotiert:
 - A9 (VORSCHLAG): uk_cf Contracts Finder — UK-Unterschwelle, OCDS-Parser
   vom fts-Connector wiederverwendbar
 Warten auf Freigabe.
+
+## 2026-07-19 · A8 + A9 gebaut (Freigabe „bau A8 und A9")
+
+**A8 `doe` — Datenservice Öffentlicher Einkauf (oeffentlichevergabe.de), LIVE.**
+Ein Endpoint (`/api/notice-exports?pubDay=…`), Tages-ZIPs. Hybrid: OCDS-ZIP
+für Struktur + eForms-XML-ZIP nur für die Angebotsfrist (BT-131), weil der
+OCDS-Konverter des Dienstes tenderPeriod komplett weglässt (0/762 empirisch).
+Stems der Dateinamen verknüpfen beide ZIPs. Echtwelt-Befund: Unterschwellen-
+Notices nutzen andere XML-Namespace-Präfixe (ns2: statt cac:) → prefix-
+agnostischer Regex, Deadline-Map 114→370/Tag. Erster Poll: 1.987 fetched,
+76 gespeichert (Vertical-Match), 91 % mit Deadline, 0 Fehler. Damit ist die
+deutsche UNTERSCHWELLE erstmals drin — genau die KMU-Aufträge (Beispiel aus
+dem ersten Poll: „Innentüren Metall, Kreishaus Lauenburg", Score 100,
+Direktlink subreport.de).
+
+**A9 `cf` — GB Contracts Finder (£12k-Unterschwelle England), LIVE.**
+Erbt den fts-OCDS-Parser komplett (neue Hooks `_initial_url`/`_notice_id`
+in FindTenderSource); nur Fenster-Query (publishedFrom/To, 14 Tage) und
+Notice-URL (Versions-Suffix strippen) sind eigen. Erster Poll: 181 fetched,
+2 gespeichert, 0 Fehler.
+
+Infrastruktur: `request_bytes` in AbstractSource (ZIP-Downloads mit Retry),
+Scheduler-Jobs poll-doe (12 h)/poll-cf (6 h), Registry+/status+llms auf
+**11 Live-Quellen**. Tests 202→213. Backend deployt & verifiziert (beide
+Polls grün in Prod-Postgres). Katalog-Annotationen auf LIVE gestellt.

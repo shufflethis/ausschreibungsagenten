@@ -14,14 +14,17 @@ Handwerk, Bau, IT, Marketing und Beratung.
 
 1. TED / Tenders Electronic Daily (api.ted.europa.eu) — indexiert alle 27 EU-Länder
    (ISO-3-Codes über Parameter `country`, z. B. DEU, AUT, FRA, ESP, ITA, NLD, POL)
-2. service.bund.de (RSS)
-3. Landesportal Baden-Württemberg
-4. Landesportal Bremen
-5. Landesportal Sachsen
-6. Landesportal Mecklenburg-Vorpommern
-7. Landesportal Hessen
-8. Landesportal Rheinland-Pfalz
-9. GB Find a Tender Service (OCDS 1.1, buyer_country=GBR, Werte GBP→EUR umgerechnet)
+2. Datenservice Öffentlicher Einkauf (oeffentlichevergabe.de, eForms-DE/OCDS) — zentraler
+   deutscher Bekanntmachungsservice, Ober- UND Unterschwelle über alle Vergabeplattformen
+3. service.bund.de (RSS)
+4. Landesportal Baden-Württemberg
+5. Landesportal Bremen
+6. Landesportal Sachsen
+7. Landesportal Mecklenburg-Vorpommern
+8. Landesportal Hessen
+9. Landesportal Rheinland-Pfalz
+10. GB Find a Tender Service (OCDS 1.1, buyer_country=GBR, Werte GBP→EUR umgerechnet)
+11. GB Contracts Finder (OCDS 1.1, unterschwellige GB-Vergaben ab £12k, buyer_country=GBR)
 
 Im Ausbau (nicht produktiv): DTVP, eVergabe, Landesportale Bayern und Nordrhein-Westfalen.
 Der Live-Status inkl. letztem erfolgreichem Abruf je Quelle ist öffentlich:

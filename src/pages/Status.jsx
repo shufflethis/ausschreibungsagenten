@@ -11,6 +11,8 @@ const SOURCE_LABELS = {
     hessen: 'Landesportal Hessen',
     rlp: 'Landesportal Rheinland-Pfalz',
     fts: 'GB Find a Tender (OCDS)',
+    cf: 'GB Contracts Finder (unterschwellig, OCDS)',
+    doe: 'Datenservice Öffentlicher Einkauf (eForms-DE, Ober- + Unterschwelle)',
     bayern: 'Landesportal Bayern',
     nrw: 'Landesportal Nordrhein-Westfalen',
 }
