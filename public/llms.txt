@@ -22,7 +22,7 @@ Kontakt: hi@ausschreibungsagenten.de
 - OpenAPI-Spezifikation: https://api.ausschreibungsagenten.de/openapi.json · Interaktive Docs: https://api.ausschreibungsagenten.de/docs
 - Preise: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet; Pilotzugang per Magic Link nach persönlicher Abstimmung.
 - Aktive Pilot-Verticals: Fenster/Fassade/Glas/Metallbau sowie Marketing/Digital. Weitere Branchen nach CPV-Katalog konfigurierbar.
-- DTVP, eVergabe sowie die Landesportale Bayern und NRW sind im Ausbau, nicht produktiv.
+- Alle 17 angebundenen Quellen sind produktiv: TED, service.bund.de, Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar sowie GB Find a Tender und Contracts Finder. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
 
 ## Seiten
 

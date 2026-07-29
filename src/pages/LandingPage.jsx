@@ -315,9 +315,9 @@ export default function LandingPage() {
                             <div className="step-card__number">2</div>
                             <h3 className="glass-card__title">Agent arbeitet</h3>
                             <p className="glass-card__text">
-                                Der Agent fragt TED, service.bund.de, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz regelmäßig ab. Jede neue Ausschreibung wird
+                                Der Agent fragt TED, service.bund.de, den Datenservice Öffentlicher Einkauf, DTVP, RIB sowie die Landesportale Bayern, Nordrhein-Westfalen, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz regelmäßig ab. Jede neue Ausschreibung wird
                                 über CPV, Regeln, Keywords, Region, Wert und Frist mit Ihrem Profil abgeglichen.
-                                DTVP, eVergabe sowie die Portale Bayern und NRW sind als nächste Quellen geplant.
+                                Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
                             </p>
                         </div>
                         <div className="glass-card step-card">
@@ -350,8 +350,10 @@ export default function LandingPage() {
                     <div className="glass-card" style={{ marginBottom: '2rem' }}>
                         <h3 className="glass-card__title">Quellenstatus</h3>
                         <p className="glass-card__text">
-                            TED, service.bund.de, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz sind live. DTVP, eVergabe sowie die
-                            Landesportale Bayern und Nordrhein-Westfalen sind noch nicht produktiv angebunden.
+                            Alle 17 angebundenen Quellen sind live: TED, service.bund.de, der Datenservice Öffentlicher Einkauf, DTVP, RIB,
+                            die Landesportale Bayern, Nordrhein-Westfalen, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen
+                            und Rheinland-Pfalz, die Metropolregion Rhein-Neckar, das Vergabeportal Baden-Württemberg sowie die britischen
+                            Quellen Find a Tender und Contracts Finder. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
                         </p>
                         {sourceStatus.length > 0 && (
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem', marginTop: '1rem' }}>

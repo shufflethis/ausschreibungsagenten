@@ -15,6 +15,10 @@ const SOURCE_LABELS = {
     doe: 'Datenservice Öffentlicher Einkauf (eForms-DE, Ober- + Unterschwelle)',
     bayern: 'Landesportal Bayern',
     nrw: 'Landesportal Nordrhein-Westfalen',
+    mrn: 'Metropolregion Rhein-Neckar',
+    vpbw: 'Vergabeportal Baden-Württemberg',
+    dtvp: 'DTVP Deutsches Vergabeportal',
+    rib: 'RIB / iTWO tender',
 }
 
 const COUNTRY_NAMES = {
@@ -137,8 +141,9 @@ export default function Status() {
                     </h2>
                     <p className="section__subtitle">
                         Oberhalb der EU-Schwellenwerte über TED; deutsche Unterschwellen-Verfahren
-                        zusätzlich über Bund und sechs Landesportale. Die Zahlen sind der aktuelle
-                        Live-Bestand aktiver Verfahren unserer Verticals.
+                        zusätzlich über Bund, den Datenservice Öffentlicher Einkauf, DTVP, RIB und
+                        zehn Landes- und Regionalportale. Die Zahlen sind der aktuelle Live-Bestand
+                        aktiver Verfahren unserer Verticals.
                     </p>
                     {countries.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
