@@ -1,10 +1,11 @@
 # Ausschreibungsagenten.de
 
 > Plattform zum Finden und nachvollziehbaren Filtern öffentlicher Ausschreibungen.
-> Elf produktive Live-Quellen: TED (api.ted.europa.eu, indexiert alle 27 EU-Länder), Datenservice
+> 17 produktive Live-Quellen: TED (api.ted.europa.eu, indexiert alle 27 EU-Länder), Datenservice
 > Öffentlicher Einkauf (oeffentlichevergabe.de — deutsche Ober- UND Unterschwelle), GB Find a Tender
-> und GB Contracts Finder (UK ober- + unterschwellig), service.bund.de sowie die Landesportale
-> Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz.
+> und GB Contracts Finder (UK ober- + unterschwellig), service.bund.de, DTVP, RIB sowie die
+> Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen,
+> Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar.
 > Fokus: DACH; EU-weit + UK per `country`-Parameter (GBR).
 > Erklärbares Profil-Matching (CPV, Keywords, Ausschlüsse, Leistungsort, Auftragswert, Frist)
 > mit Einzelgründen statt Blackbox-KI. GAEB DA XML X83/X84 wird lesend strukturiert.

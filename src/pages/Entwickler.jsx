@@ -111,7 +111,7 @@ export default function Entwickler() {
                 <title>API & Agent-Anbindung | Ausschreibungen API Deutschland – Ausschreibungsagenten.de</title>
                 <meta
                     name="description"
-                    content="Öffentliche Ausschreibungen per API und KI-Agent abfragen: REST-Vorschau, A2A Agent Card, JSON-RPC und OpenAPI. Acht Live-Quellen, erklärbares Matching, transparente Limits."
+                    content="Öffentliche Ausschreibungen per API und KI-Agent abfragen: REST-Vorschau, A2A Agent Card, JSON-RPC und OpenAPI. 17 Live-Quellen, erklärbares Matching, transparente Limits."
                 />
                 <link rel="canonical" href="https://www.ausschreibungsagenten.de/entwickler" />
             </Helmet>
