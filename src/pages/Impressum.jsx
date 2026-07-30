@@ -15,7 +15,7 @@ export default function Impressum() {
 
                 <h2>Angaben gemäß § 5 DDG</h2>
                 <p>
-                    Agentifizierung UG (haftungsbeschränkt) i.G.<br />
+                    Yawusa UG (haftungsbeschränkt) i.G.<br />
                     Schliemannstraße 23<br />
                     10437 Berlin<br />
                     Deutschland

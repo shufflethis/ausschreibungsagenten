@@ -993,7 +993,7 @@ export default function LandingPage() {
                             </div>
                             <div className="glass-card contact-info__item">
                                 <h4>📍 Standort</h4>
-                                <p>Agentifizierung UG (haftungsbeschränkt) i.G.<br />Schliemannstraße 23, 10437 Berlin</p>
+                                <p>Yawusa UG (haftungsbeschränkt) i.G.<br />Schliemannstraße 23, 10437 Berlin</p>
                             </div>
                             <div className="glass-card contact-info__item">
                                 <h4>⚡ Antwortzeit</h4>

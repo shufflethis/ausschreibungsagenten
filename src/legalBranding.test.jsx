@@ -26,7 +26,7 @@ describe('Betreiberangaben', () => {
             'href',
             '/ueber-uns',
         )
-        expect(screen.getByText(/Agentifizierung UG \(haftungsbeschränkt\) i\.G\./)).toBeInTheDocument()
+        expect(screen.getByText(/Yawusa UG \(haftungsbeschränkt\) i\.G\./)).toBeInTheDocument()
         expect(screen.queryByText(/track by track|famefact/i)).not.toBeInTheDocument()
     })
 
@@ -39,9 +39,9 @@ describe('Betreiberangaben', () => {
 
     it('führt Agentifizierung konsistent in Datenschutz und AGB', () => {
         const privacy = renderPage(<Datenschutz />)
-        expect(privacy.container).toHaveTextContent('Agentifizierung UG (haftungsbeschränkt) i.G.')
+        expect(privacy.container).toHaveTextContent('Yawusa UG (haftungsbeschränkt) i.G.')
         privacy.unmount()
         const terms = renderPage(<AGB />)
-        expect(terms.container).toHaveTextContent('Agentifizierung UG (haftungsbeschränkt) i.G.')
+        expect(terms.container).toHaveTextContent('Yawusa UG (haftungsbeschränkt) i.G.')
     })
 })

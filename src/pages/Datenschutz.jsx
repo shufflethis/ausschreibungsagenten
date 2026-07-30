@@ -16,7 +16,7 @@ export default function Datenschutz() {
 
                 <h2>1. Verantwortlicher</h2>
                 <p>
-                    Agentifizierung UG (haftungsbeschränkt) i.G.<br />
+                    Yawusa UG (haftungsbeschränkt) i.G.<br />
                     Schliemannstraße 23, 10437 Berlin<br />
                     E-Mail: <a href="mailto:info@agentifizierung.de">info@agentifizierung.de</a>
                 </p>

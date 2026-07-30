@@ -5,7 +5,7 @@ Nicht Produktives ist ausdrücklich als „im Ausbau" oder „geplant" gekennzei
 
 ## Was die Plattform ist
 
-Ausschreibungsagenten.de ist eine deutsche Pilotplattform der Agentifizierung UG
+Ausschreibungsagenten.de ist eine deutsche Pilotplattform der Yawusa UG
 (haftungsbeschränkt) i.G. (Schliemannstraße 23, 10437 Berlin) zum Finden und nachvollziehbaren
 Filtern öffentlicher Ausschreibungen (Vergabeverfahren) für Unternehmen — insbesondere
 Handwerk, Bau, IT, Marketing und Beratung.
