@@ -14,6 +14,27 @@ import AppRedirect from './pages/AppRedirect'
 import UeberUns from './pages/UeberUns'
 import Entwickler from './pages/Entwickler'
 import Status from './pages/Status'
+import { routes } from './routes'
+
+// Zuordnung Manifest-Schluessel auf Komponente. Der Test in routes.test.js
+// haelt beide Seiten deckungsgleich.
+export const pages = {
+    LandingPage: <LandingPage />,
+    UeberUns: <UeberUns />,
+    Entwickler: <Entwickler />,
+    Status: <Status />,
+    Impressum: <Impressum />,
+    AGB: <AGB />,
+    Datenschutz: <Datenschutz />,
+    Disclaimer: <Disclaimer />,
+    CheckoutSuccess: <CheckoutSuccess />,
+    Login: <Login />,
+    CheckEmail: <CheckEmail />,
+    MagicHandoffExpired: <MagicHandoff expired />,
+    MagicHandoff: <MagicHandoff />,
+    KontoRedirect: <AppRedirect path="/app" title="Kundenkonto öffnen" />,
+    AbrechnungRedirect: <AppRedirect path="/app/billing" title="Abrechnung öffnen" />,
+}
 
 export default function App() {
     return (
@@ -21,21 +42,9 @@ export default function App() {
             <Header />
             <main>
                 <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    <Route path="/ueber-uns" element={<UeberUns />} />
-                    <Route path="/entwickler" element={<Entwickler />} />
-                    <Route path="/status" element={<Status />} />
-                    <Route path="/impressum" element={<Impressum />} />
-                    <Route path="/agb" element={<AGB />} />
-                    <Route path="/datenschutz" element={<Datenschutz />} />
-                    <Route path="/disclaimer" element={<Disclaimer />} />
-                    <Route path="/checkout-erfolg" element={<CheckoutSuccess />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/login/postfach" element={<CheckEmail />} />
-                    <Route path="/login/abgelaufen" element={<MagicHandoff expired />} />
-                    <Route path="/anmeldung-bestaetigen" element={<MagicHandoff />} />
-                    <Route path="/konto" element={<AppRedirect path="/app" title="Kundenkonto öffnen" />} />
-                    <Route path="/abrechnung" element={<AppRedirect path="/app/billing" title="Abrechnung öffnen" />} />
+                    {routes.map((route) => (
+                        <Route key={route.path} path={route.path} element={pages[route.component]} />
+                    ))}
                 </Routes>
             </main>
             <Footer />
