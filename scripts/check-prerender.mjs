@@ -2,9 +2,10 @@
 // wuerde. Genau dieser Zustand war der Ausgangspunkt: alle Routen lieferten
 // dasselbe leere Geruest von 6.392 Byte.
 //
-// Die Pruefung waechst mit den Zusagen: hier nur Vorhandensein und
-// Textmenge. Eindeutige Titel und Descriptions kommen dazu, sobald jede
-// Seite eigene Meta-Daten aus dem Manifest bezieht.
+// Seit jede Seite ihre Meta-Daten aus dem Manifest bezieht, verlangt die
+// Pruefung zusaetzlich einen eindeutigen Titel und eine Description je
+// Route. Doppelte Titel bedeuten in aller Regel: auf einer Seite fehlt
+// der Seo-Aufruf.
 import { readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -14,6 +15,7 @@ const { prerenderRoutes } = await import(join(wurzel, 'src', 'routes.js'))
 
 const MINDEST_TEXTLAENGE = 500
 const fehler = []
+const gesehenerTitel = new Map()
 
 function sichtbarerText(html) {
     const rumpf = html.split('<body')[1] ?? ''
@@ -34,6 +36,19 @@ for (const route of prerenderRoutes) {
         continue
     }
 
+    const titel = inhalt.match(/<title>([\s\S]*?)<\/title>/)?.[1]?.trim()
+    if (!titel) {
+        fehler.push(`${route.path}: kein <title>`)
+    } else if (gesehenerTitel.has(titel)) {
+        fehler.push(`${route.path}: gleicher <title> wie ${gesehenerTitel.get(titel)}`)
+    } else {
+        gesehenerTitel.set(titel, route.path)
+    }
+
+    if (!/<meta name="description"/.test(inhalt)) {
+        fehler.push(`${route.path}: keine Description`)
+    }
+
     const text = sichtbarerText(inhalt)
     if (text.length < MINDEST_TEXTLAENGE) {
         fehler.push(
@@ -48,4 +63,4 @@ if (fehler.length) {
     process.exit(1)
 }
 
-console.log(`Prerender-Pruefung bestanden: ${prerenderRoutes.length} Routen mit Textinhalt.`)
+console.log(`Prerender-Pruefung bestanden: ${prerenderRoutes.length} Routen mit eigenem Titel und Textinhalt.`)

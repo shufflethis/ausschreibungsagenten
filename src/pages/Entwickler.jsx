@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 
 const ENDPOINTS = [
     {
@@ -107,14 +107,7 @@ export default function Entwickler() {
 
     return (
         <>
-            <Helmet>
-                <title>API & Agent-Anbindung | Ausschreibungen API Deutschland – Ausschreibungsagenten.de</title>
-                <meta
-                    name="description"
-                    content="Öffentliche Ausschreibungen per API und KI-Agent abfragen: REST-Vorschau, A2A Agent Card, JSON-RPC und OpenAPI. 17 Live-Quellen, erklärbares Matching, transparente Limits."
-                />
-                <link rel="canonical" href="https://www.ausschreibungsagenten.de/entwickler" />
-            </Helmet>
+            <Seo path="/entwickler" />
 
             <section className="hero" id="api">
                 <div className="container">

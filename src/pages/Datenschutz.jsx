@@ -1,14 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 
 export default function Datenschutz() {
     return (
         <div className="legal-page">
-            <Helmet>
-                <title>Datenschutzerklärung | Ausschreibungsagenten.de</title>
-                <meta name="description" content="Datenschutzerklärung von ausschreibungsagenten.de." />
-                <meta name="robots" content="noindex, follow" />
-            </Helmet>
+            <Seo path="/datenschutz" />
             <div className="container">
                 <Link to="/" className="back-link">← Zurück zur Startseite</Link>
                 <h1>Datenschutzerklärung</h1>

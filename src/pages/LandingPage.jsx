@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 
 const TOOLS = [
     { name: 'DTVP', url: 'https://www.dtvp.de', price: '€49/Mon. Professional', ai: false, portals: 'DTVP', focus: 'Offizielles Portal', gaeb: false, alerts: true, free: true },
@@ -194,10 +194,7 @@ export default function LandingPage() {
 
     return (
         <>
-            <Helmet>
-                <title>Ausschreibungsagenten.de – Ausschreibungen aus TED, Bund und Landesportalen filtern</title>
-                <meta name="description" content="Öffentliche Ausschreibungen aus TED, service.bund.de sowie sechs Landesportalen finden. Erklärbares Profil-Matching, Go/No-Go-Karten, E-Mail-Digest, GAEB X83/X84 und Standardexport." />
-            </Helmet>
+            <Seo path="/" />
 
             {/* ===== HERO ===== */}
             <section className="hero" id="start">

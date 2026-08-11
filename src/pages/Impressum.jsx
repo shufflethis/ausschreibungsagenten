@@ -1,14 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 
 export default function Impressum() {
     return (
         <div className="legal-page">
-            <Helmet>
-                <title>Impressum | Ausschreibungsagenten.de</title>
-                <meta name="description" content="Impressum von ausschreibungsagenten.de – ein Service von Agentifizierung, Berlin." />
-                <meta name="robots" content="noindex, follow" />
-            </Helmet>
+            <Seo path="/impressum" />
             <div className="container">
                 <Link to="/" className="back-link">← Zurück zur Startseite</Link>
                 <h1>Impressum</h1>

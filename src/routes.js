@@ -8,74 +8,76 @@ export const routes = [
     {
         path: '/',
         component: 'LandingPage',
-        title: 'Ausschreibungsagenten.de – KI-Agenten für öffentliche Ausschreibungen',
+        title: 'Ausschreibungsagenten.de – Ausschreibungen aus TED, Bund und Landesportalen filtern',
         description:
-            'Öffentliche Ausschreibungen aus 17 Live-Quellen finden und nachvollziehbar filtern: TED, oeffentlichevergabe.de, service.bund.de, DTVP, RIB und die Landesportale.',
+            'Öffentliche Ausschreibungen aus 17 Live-Quellen finden: TED, oeffentlichevergabe.de, service.bund.de, DTVP, RIB und die Landesportale. Erklärbares Profil-Matching, Go/No-Go-Karten, E-Mail-Digest, GAEB X83/X84 und Standardexport.',
         prerender: true,
         index: true,
     },
     {
         path: '/ueber-uns',
         component: 'UeberUns',
-        title: 'Über uns – die Menschen hinter den Ausschreibungsagenten',
+        title: 'Über uns | Ausschreibungsagenten.de',
         description:
-            'Wer hinter Ausschreibungsagenten.de steht: Team, Haltung und warum Entscheidungen über Ausschreibungen nachvollziehbar bleiben müssen.',
+            'Lernen Sie das Team hinter Ausschreibungsagenten.de kennen und erfahren Sie, wie wir öffentliche Ausschreibungen verständlicher und besser bearbeitbar machen.',
         prerender: true,
         index: true,
     },
     {
         path: '/entwickler',
         component: 'Entwickler',
-        title: 'Entwickler – Agent API, A2A und MCP für Ausschreibungsdaten',
+        title: 'API & Agent-Anbindung | Ausschreibungen API Deutschland – Ausschreibungsagenten.de',
         description:
-            'Schnittstellen für Entwickler: Agent API, A2A Agent Card und MCP-Anbindung an die Ausschreibungssuche über 17 Quellen.',
+            'Öffentliche Ausschreibungen per API und KI-Agent abfragen: REST-Vorschau, A2A Agent Card, JSON-RPC und OpenAPI. 17 Live-Quellen, erklärbares Matching, transparente Limits.',
         prerender: true,
         index: true,
     },
     {
         path: '/status',
         component: 'Status',
-        title: 'Systemstatus – Datenstand aller 17 Ausschreibungsquellen',
+        title: 'Quellenstatus & Abdeckung | Ausschreibungsagenten.de',
         description:
-            'Live-Status jeder angebundenen Quelle mit letztem erfolgreichem Abruf: TED, oeffentlichevergabe.de, service.bund.de, DTVP, RIB und die Landesportale.',
+            'Live-Status aller Datenquellen: welche Vergabeportale wir wann zuletzt erfolgreich abgefragt haben und wie viele Ausschreibungen je EU-Land im Index sind. Volle Transparenz statt Behauptungen.',
         prerender: true,
         index: true,
     },
     {
         path: '/impressum',
         component: 'Impressum',
-        title: 'Impressum – Yawusa UG (haftungsbeschränkt) i.G.',
+        title: 'Impressum | Ausschreibungsagenten.de',
         description:
-            'Anbieterkennzeichnung nach § 5 DDG für Ausschreibungsagenten.de, betrieben von der Yawusa UG (haftungsbeschränkt) i.G. in Berlin.',
+            'Anbieterkennzeichnung für ausschreibungsagenten.de, betrieben von der Yawusa UG (haftungsbeschränkt) i.G. in Berlin.',
         prerender: true,
-        index: true,
+        // Rechtsseiten stehen bewusst auf noindex und gehoeren damit auch
+        // nicht in die Sitemap.
+        index: false,
     },
     {
         path: '/agb',
         component: 'AGB',
-        title: 'Allgemeine Geschäftsbedingungen',
+        title: 'AGB | Ausschreibungsagenten.de',
         description:
-            'Die Geschäftsbedingungen für die Nutzung von Ausschreibungsagenten.de: Leistungsumfang, Laufzeit, Vergütung und Pflichten beider Seiten.',
+            'Allgemeine Geschäftsbedingungen von ausschreibungsagenten.de: Leistungsumfang, Laufzeit, Vergütung und Pflichten beider Seiten.',
         prerender: true,
-        index: true,
+        index: false,
     },
     {
         path: '/datenschutz',
         component: 'Datenschutz',
-        title: 'Datenschutzerklärung',
+        title: 'Datenschutzerklärung | Ausschreibungsagenten.de',
         description:
-            'Welche Daten Ausschreibungsagenten.de verarbeitet, auf welcher Rechtsgrundlage, wie lange sie gespeichert werden und welche Rechte Ihnen zustehen.',
+            'Datenschutzerklärung von ausschreibungsagenten.de: welche Daten wir verarbeiten, auf welcher Rechtsgrundlage und welche Rechte Ihnen zustehen.',
         prerender: true,
-        index: true,
+        index: false,
     },
     {
         path: '/disclaimer',
         component: 'Disclaimer',
-        title: 'Haftungsausschluss',
+        title: 'Disclaimer | Ausschreibungsagenten.de',
         description:
-            'Grenzen der Angaben auf Ausschreibungsagenten.de: Bekanntmachungsdaten stammen aus fremden Quellen und ersetzen keine Rechtsberatung.',
+            'Haftungsausschluss von ausschreibungsagenten.de: Bekanntmachungsdaten stammen aus fremden Quellen und ersetzen keine Rechtsberatung.',
         prerender: true,
-        index: true,
+        index: false,
     },
     {
         path: '/checkout-erfolg',

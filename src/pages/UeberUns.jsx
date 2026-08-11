@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 
 const team = [
     {
@@ -46,14 +46,7 @@ const principles = [
 export default function UeberUns() {
     return (
         <div className="about-page">
-            <Helmet>
-                <title>Über uns | Ausschreibungsagenten.de</title>
-                <meta
-                    name="description"
-                    content="Lernen Sie das Team hinter Ausschreibungsagenten.de kennen und erfahren Sie, wie wir öffentliche Ausschreibungen verständlicher und besser bearbeitbar machen."
-                />
-                <link rel="canonical" href="https://www.ausschreibungsagenten.de/ueber-uns" />
-            </Helmet>
+            <Seo path="/ueber-uns" />
 
             <section className="about-hero">
                 <div className="container about-hero__inner">

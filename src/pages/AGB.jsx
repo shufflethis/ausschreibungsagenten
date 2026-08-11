@@ -1,14 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 
 export default function AGB() {
     return (
         <div className="legal-page">
-            <Helmet>
-                <title>AGB | Ausschreibungsagenten.de</title>
-                <meta name="description" content="Allgemeine Geschäftsbedingungen von ausschreibungsagenten.de." />
-                <meta name="robots" content="noindex, follow" />
-            </Helmet>
+            <Seo path="/agb" />
             <div className="container">
                 <Link to="/" className="back-link">← Zurück zur Startseite</Link>
                 <h1>Allgemeine Geschäftsbedingungen für Pilot- und Geschäftskunden</h1>
