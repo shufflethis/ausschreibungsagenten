@@ -36,22 +36,43 @@ fehlende Auslieferung und fehlende Seiten. Beides wird hier behoben.
 4. **Conversion** — alle Handlungsaufforderungen führen auf das Pilot-Formular, mit dem
    Seitenkontext vorbelegt.
 
-Kennzahl für Phase 2: die Zielanfragen der drei ersten Seiten summieren sich auf rund 1.400
-Impressionen im Messzeitraum bei bestehenden Positionen zwischen 2,0 und 12,2. Wird dieses
-Positionsniveau gehalten und mit einer passenden Seite bedient, liegt ein Korridor von grob 70–110
-Klicks pro Monat im Bereich des Erreichbaren. Das ist eine Annahme auf Basis üblicher
-CTR-Kurven, keine Zusage — gemessen wird an der tatsächlichen Entwicklung in der Search Console.
+Bewusst ohne Klickprognose. Aus Impressionen und Durchschnittsposition lässt sich eine
+Klickzahl nur über angenommene CTR-Kurven herleiten, die für diese Nische nicht belegt sind — eine
+solche Zahl steht in einer Spec-Tabelle schnell als Zusage da, obwohl sie geraten ist. Gemessen
+wird an der tatsächlichen Entwicklung: Klicks, Impressionen und Position je neuer Seite, monatlich
+in der Search Console, Ausgangswert 48 Klicks bei 6.133 Impressionen über 90 Tage.
 
 ## Technisches Fundament
 
-**Prerendering mit `vite-react-ssg`.** Erzeugt zur Build-Zeit statisches HTML je Route und behält
-React, React Router, die bestehenden Vitest-Tests und das Vercel-Setup. Astro oder Next.js wären
-für rund 25 Seiten ein unnötiger Umbau des gesamten Gerüsts.
+**Prerendering über einen eigenen Build-Schritt.** Nach `vite build` rendert ein Node-Skript jede
+Route mit `renderToString`, `StaticRouter` und `HelmetProvider` und schreibt das Ergebnis als
+`dist/<route>/index.html`. React, React Router, die bestehenden Vitest-Tests und das Vercel-Setup
+bleiben unverändert.
+
+Der naheliegende Fertigbaustein `vite-react-ssg` scheidet aus, geprüft am 2026-08-11:
+
+```
+npm view vite-react-ssg version peerDependencies
+→ 0.9.2, react-router-dom: ^6.14.1
+installiert: react-router-dom 7.18.1, react 19.2.4, vite 7.3.6
+```
+
+React 19 und Vite 7 wären abgedeckt, React Router 7 nicht — das Paket ist bei Router 6 stehen
+geblieben, auch in der neuesten Version. Ein Downgrade des Routers wäre ein Rückschritt am
+laufenden Routing, nur um ein Hilfspaket zu bedienen. Die benötigten Bausteine liegen dagegen
+bereits im Projekt: `StaticRouter` ist in der installierten `react-router-dom@7.18.1` vorhanden,
+`react-helmet-async` ist ebenfalls schon Abhängigkeit. Der eigene Build-Schritt kostet damit rund
+fünfzig Zeilen und keine neue Abhängigkeit.
+
+Zweite Möglichkeit, falls sich Komponenten der Server-Ausführung entziehen: ein
+Headless-Browser-Durchlauf über die gebaute Anwendung (`@prerenderer/rollup-plugin`). Der ist
+Router-unabhängig, verlangt aber Chromium im Vercel-Build und verlängert ihn deutlich. Nur als
+Rückfallebene vorgesehen.
 
 Konkret:
 
-- `src/App.jsx` behält seine Routenliste; die Routen werden zusätzlich als Datenliste exportiert,
-  damit Build, Sitemap und interne Navigation dieselbe Quelle nutzen.
+- `src/App.jsx` behält seine Routen; die Routenliste wird zusätzlich als Datei exportiert, damit
+  Build-Schritt, Sitemap und interne Navigation dieselbe Quelle nutzen.
 - `react-helmet-async` bleibt und liefert je Route Title, Description und Canonical — nach dem
   Prerendering landen diese im ausgelieferten HTML statt erst nach dem Rendern im Browser.
 - `public/sitemap.xml` wird nicht mehr von Hand gepflegt, sondern beim Build aus der Routenliste
@@ -71,8 +92,18 @@ https://www.youtube-nocookie.com` ergänzt werden muss.
 
 ## Seitenarchitektur
 
-Priorisiert nach bestehender Position, nicht nach Wunschbegriffen. Seiten, die heute schon auf
-Position 2–13 stehen, gewinnen Klicks am schnellsten.
+Priorisiert nach **Impressionen zuerst, Position als Beschleuniger** — nicht nach Wunschbegriffen.
+
+Wichtig beim Lesen der Tabelle: Eine Durchschnittsposition über wenige Impressionen ist Rauschen.
+`/alternativen/tenderflow` steht auf Position 1,0 — bei **einer** Impression. `/vergleich` zeigt
+Position 2,0 bei 27 Impressionen. Solche Werte begründen keine Reihenfolge. Die Alternativen- und
+Vergleichsseiten werden gebaut, weil die Kaufabsicht dahinter die höchste im gesamten Datensatz
+ist, nicht weil die Positionszahl gut aussieht.
+
+Belastbar ist die Reihenfolge erst ab etwa 200 Impressionen. Danach sind die Volumenträger:
+`/ausschreibungssuche-automatisieren` (~900), `/ki-angebot-ausschreibung` (~600),
+`/ausschreibungen-benachrichtigung` (~400) und `/semantische-suche-ausschreibungen` (292, größte
+Einzelanfrage des Kontos).
 
 | URL | Zielanfragen (Auswahl) | Impressionen | Beste Position |
 |---|---|---|---|
@@ -101,6 +132,15 @@ Position 2–13 stehen, gewinnen Klicks am schnellsten.
 
 Der Pillar `/ki-ausschreibungen` steht bewusst spät: Die zugehörigen Kopfbegriffe stehen auf
 Position 74–90. Er gewinnt seine Kraft aus den internen Verweisen der Spokes, nicht umgekehrt.
+
+**Sonderfall `/semantische-suche-ausschreibungen`.** Mit 292 Impressionen die größte Einzelanfrage
+des Kontos — aber das Produkt betreibt keine semantische Vektorsuche, sondern nachvollziehbares
+Abgleichen über CPV-Codes, Stichwörter, Ausschlüsse, Leistungsort, Auftragswert und Frist mit
+Einzelbegründung je Treffer. Die Seite darf deshalb nichts anderes behaupten. Ihre Leitfrage
+lautet: was „semantische Suche" bei Ausschreibungen bedeutet, wo sie an Vergabesprache scheitert
+und warum hier begründete Einzelkriterien stehen. Diese Kante ist kein Nachteil, sondern der
+Grund, aus dem die Seite überhaupt zitierfähig wird — sie folgt derselben Regel wie
+„Abgrenzung statt Superlative" weiter unten.
 
 ### Seitenschablone
 
