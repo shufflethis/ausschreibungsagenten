@@ -1,4 +1,5 @@
 import { routeByPath, SITE_ORIGIN } from '../routes'
+import StrukturierteDaten from './StrukturierteDaten'
 
 // Kein react-helmet-async: ab React 19 werden title-, meta- und
 // link-Elemente aus dem Baum selbst in den Kopfbereich gehoben. Beim
@@ -21,6 +22,7 @@ export default function Seo({ path, title, description, faq }) {
             <meta property="og:description" content={seitenText} />
             <meta property="og:url" content={adresse} />
             <meta property="og:type" content="website" />
+            <StrukturierteDaten path={path} faq={faq} />
         </>
     )
 }
