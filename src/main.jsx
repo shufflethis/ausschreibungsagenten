@@ -5,12 +5,24 @@ import { HelmetProvider } from 'react-helmet-async'
 import App from './App'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const wurzel = document.getElementById('root')
+
+const baum = (
     <React.StrictMode>
         <HelmetProvider>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
         </HelmetProvider>
-    </React.StrictMode>,
+    </React.StrictMode>
 )
+
+// Vorgerenderte Routen tragen bereits Markup im Wurzelelement; dort wird
+// hydriert statt neu gerendert. Routen ohne Prerendering (Login, Konto,
+// Abrechnung) bekommen weiterhin das leere Geruest und werden normal
+// gerendert.
+if (wurzel.hasChildNodes()) {
+    ReactDOM.hydrateRoot(wurzel, baum)
+} else {
+    ReactDOM.createRoot(wurzel).render(baum)
+}
