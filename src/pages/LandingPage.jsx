@@ -107,6 +107,19 @@ export default function LandingPage() {
         )
     }, [])
 
+    // Der Browser springt beim Laden zum Anker, danach laedt die
+    // Trefferliste nach und schiebt das Formular weiter nach unten - man
+    // landet ueber tausend Pixel darueber. Deshalb nach dem Nachladen
+    // einmal nachfassen, aber nur solange der Anker noch gilt und niemand
+    // selbst gescrollt hat.
+    useEffect(() => {
+        if (tendersLoading || window.location.hash !== '#kontakt') return
+        const ziel = document.getElementById('kontakt')
+        if (!ziel) return
+        const abstand = Math.abs(ziel.getBoundingClientRect().top)
+        if (abstand > 100) ziel.scrollIntoView()
+    }, [tendersLoading])
+
     useEffect(() => {
         const controller = new AbortController()
         const loadTenders = async () => {
