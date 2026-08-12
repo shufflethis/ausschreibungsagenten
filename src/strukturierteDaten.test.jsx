@@ -50,4 +50,10 @@ describe('Strukturierte Daten', () => {
         expect(organisation.legalName).toContain('Yawusa')
         expect(organisation.address.addressLocality).toBe('Berlin')
     })
+
+    it('nennt den eigenen YouTube-Kanal als Profil derselben Entitaet', () => {
+        const daten = jsonLd('/')
+        const organisation = daten['@graph'].find((k) => k['@type'] === 'Organization')
+        expect(organisation.sameAs).toContain('https://www.youtube.com/@ausschreibungsagenten')
+    })
 })

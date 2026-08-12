@@ -53,4 +53,26 @@ describe('Video-Abschnitt', () => {
         expect(daten.transcript).toContain('nennt zu jedem Treffer den Grund')
         expect(daten.contentUrl).toContain('/video/agent.mp4')
     })
+
+    it('verweist auf dieselbe Aufnahme an anderer Stelle', () => {
+        const markup = renderToString(
+            imServer(<VideoAbschnitt
+                titel="So arbeitet der Agent"
+                quelle={{
+                    art: 'datei',
+                    url: '/video/agent.mp4',
+                    dauer: 'PT9M10S',
+                    auchAuf: ['https://www.youtube.com/watch?v=GXD2qj7njVk'],
+                }}
+                transkript={TRANSKRIPT}
+            />),
+        )
+        const daten = JSON.parse(
+            markup
+                .replace(/^[\s\S]*?<script type="application\/ld\+json">/, '')
+                .replace(/<\/script>[\s\S]*$/, ''),
+        )
+        expect(daten.sameAs).toEqual(['https://www.youtube.com/watch?v=GXD2qj7njVk'])
+        expect(daten.duration).toBe('PT9M10S')
+    })
 })

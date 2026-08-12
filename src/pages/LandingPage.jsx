@@ -823,6 +823,10 @@ export default function LandingPage() {
                     art: 'datei',
                     url: '/video/ausschreibungsagenten-erklaervideo.mp4',
                     poster: '/video/ausschreibungsagenten-erklaervideo-poster.jpg',
+                    // Gemessene Laufzeit der Datei: 549,94 Sekunden.
+                    dauer: 'PT9M10S',
+                    // Dieselbe Aufnahme liegt auf dem eigenen Kanal.
+                    auchAuf: ['https://www.youtube.com/watch?v=GXD2qj7njVk'],
                 }}
             />
 

@@ -18,6 +18,9 @@ const ORGANISATION = {
     legalName: 'Yawusa UG (haftungsbeschränkt) i.G.',
     url: `${SITE_ORIGIN}/`,
     email: 'hi@ausschreibungsagenten.de',
+    // Offizielle Profile derselben Entitaet. Verbindet Domain und Kanal
+    // fuer Suchmaschinen zu einem Absender.
+    sameAs: ['https://www.youtube.com/@ausschreibungsagenten'],
     address: {
         '@type': 'PostalAddress',
         streetAddress: 'Schliemannstraße 23',

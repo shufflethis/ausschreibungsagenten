@@ -23,6 +23,12 @@ export default function VideoAbschnitt({ titel, beschreibung, quelle, transkript
         name: titel,
         description: beschreibung ?? volltext.slice(0, 200),
         transcript: volltext,
+        ...(quelle.dauer ? { duration: quelle.dauer } : {}),
+        ...(quelle.hochgeladenAm ? { uploadDate: quelle.hochgeladenAm } : {}),
+        // Dasselbe Video liegt zusaetzlich auf YouTube. Ohne diesen Verweis
+        // halten Suchmaschinen die beiden Kopien fuer unabhaengige Videos,
+        // die gegeneinander laufen, statt fuer eine Aufnahme an zwei Orten.
+        ...(quelle.auchAuf?.length ? { sameAs: quelle.auchAuf } : {}),
         ...(quelle.art === 'datei'
             ? {
                   contentUrl: `${SITE_ORIGIN}${quelle.url}`,
