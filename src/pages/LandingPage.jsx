@@ -95,6 +95,18 @@ export default function LandingPage() {
         null,
     )
 
+    // Die Inhaltsseiten verlinken das Kontaktformular mit "?thema=...".
+    // Damit steht im Nachrichtenfeld schon, worum es geht, und die Anfrage
+    // laesst sich zuordnen. Bewusst nur vorbelegen, wenn das Feld leer ist -
+    // sonst wuerde eine bereits getippte Nachricht ueberschrieben.
+    useEffect(() => {
+        const thema = new URLSearchParams(window.location.search).get('thema')
+        if (!thema) return
+        setFormData((bisher) =>
+            bisher.message ? bisher : { ...bisher, message: `Ich interessiere mich für: ${thema}\n\n` },
+        )
+    }, [])
+
     useEffect(() => {
         const controller = new AbortController()
         const loadTenders = async () => {
@@ -846,22 +858,11 @@ export default function LandingPage() {
                             Tipps für eine erfolgreiche Angebotsabgabe
                         </h3>
                         <p>
-                            Die beste Ausschreibung nützt nichts, wenn das Angebot nicht überzeugt. Hier unsere fünf wichtigsten Tipps für eine erfolgreiche Angebotsabgabe bei öffentlichen Vergaben:
-                        </p>
-                        <p>
-                            <strong>1. Eignungskriterien sorgfältig prüfen:</strong> Prüfen Sie vor der Angebotserstellung, ob Ihr Unternehmen alle formalen Anforderungen erfüllt – Umsatzgröße, Referenzen, Zertifizierungen, Versicherungsnachweise.
-                        </p>
-                        <p>
-                            <strong>2. Leistungsverzeichnis vollständig ausfüllen:</strong> Jede Position muss bepreist werden. Fehlende Positionen führen zum Ausschluss. GAEB-Tools helfen, automatisch alle Positionen zu erfassen und strukturiert zu kalkulieren.
-                        </p>
-                        <p>
-                            <strong>3. Fristen einhalten:</strong> Verspätete Angebote werden ausnahmslos ausgeschlossen. Planen Sie Puffer ein und nutzen Sie den Fristenkalender Ihres Ausschreibungsagenten.
-                        </p>
-                        <p>
-                            <strong>4. Nebenangebote nutzen:</strong> Wenn die Vergabestelle Nebenangebote zulässt, nutzen Sie die Chance, innovative oder kostengünstigere Alternativen anzubieten. Das kann einen Wettbewerbsvorteil verschaffen.
-                        </p>
-                        <p>
-                            <strong>5. Nachfragen stellen:</strong> Bei Unklarheiten im Leistungsverzeichnis nutzen Sie die Bieterfragen. Diese sind über das jeweilige Vergabeportal möglich und werden allen Bietern anonymisiert zur Verfügung gestellt.
+                            Die beste Ausschreibung nützt nichts, wenn das Angebot nicht überzeugt. Die häufigsten
+                            Ausschlussgründe sind formal, nicht inhaltlich: nicht belegte Eignungskriterien, ein
+                            unvollständig bepreistes Leistungsverzeichnis, versäumte Fristen, ungenutzte Nebenangebote
+                            und Unklarheiten, die niemand per Bieterfrage geklärt hat. Ausführlich stehen die fünf
+                            Punkte auf <Link to="/ki-angebot-ausschreibung">KI und Angebot</Link>.
                         </p>
 
                         <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>

@@ -69,11 +69,16 @@ describe('Schablone fuer Inhaltsseiten', () => {
         expect(screen.getByRole('link', { name: 'Quellenstatus ansehen' })).toHaveAttribute('href', '/status')
     })
 
-    it('fuehrt die Handlungsaufforderung mit Seitenkontext auf das Pilot-Formular', () => {
+    it('fuehrt die Handlungsaufforderung auf den Kontaktanker mit Thema als Query', () => {
         zeige()
-        const knopf = screen.getByRole('link', { name: /Pilotzugang anfragen/ })
-        expect(knopf.getAttribute('href')).toContain('/#kontakt')
-        expect(knopf.getAttribute('href')).toContain('thema=')
+        const ziel = new URL(
+            screen.getByRole('link', { name: /Pilotzugang anfragen/ }).getAttribute('href'),
+            'https://www.ausschreibungsagenten.de',
+        )
+        // Reihenfolge ist entscheidend: das Fragment muss "kontakt" allein
+        // sein, sonst springt der Browser nicht ans Formular.
+        expect(ziel.hash).toBe('#kontakt')
+        expect(ziel.searchParams.get('thema')).toBe('Automatisierte Ausschreibungssuche')
     })
 
     it('gibt die FAQ beim Server-Rendern als FAQPage-Schema aus', () => {

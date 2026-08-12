@@ -25,7 +25,10 @@ export default function InhaltsSeite({ seite }) {
     pflichtfeld(seite.h1, 'Ueberschrift')
     pflichtfeld(seite.faq, 'FAQ')
 
-    const kontaktZiel = `/#kontakt?thema=${encodeURIComponent(seite.ctaKontext ?? seite.h1)}`
+    // Query vor Fragment, nicht umgekehrt: "/#kontakt?thema=..." macht die
+    // gesamte Zeichenkette zum Ankernamen, der Browser findet kein Element
+    // mit dieser Id und bleibt oben auf der Startseite stehen.
+    const kontaktZiel = `/?thema=${encodeURIComponent(seite.ctaKontext ?? seite.h1)}#kontakt`
 
     return (
         <>

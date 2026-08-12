@@ -27,7 +27,7 @@ export const kiAngebotAusschreibung = {
             titel: 'Wo maschinelle Unterstützung tatsächlich Zeit spart',
             absaetze: [
                 'Die zeitraubende Arbeit steckt vor dem Schreiben. Vergabeunterlagen umfassen oft mehrere hundert Seiten, verteilt auf Bewerbungsbedingungen, Leistungsbeschreibung, Eignungsnachweise und Formblätter. Daraus die eigentlichen Anforderungen herauszuziehen, ist mühsam, aber gut strukturierbar — und damit maschinell sinnvoll.',
-                'Der zweite Hebel ist der Abgleich mit dem, was Sie ohnehin haben. Wer Referenzen, Umsatzangaben, Versicherungsnachweise und Zertifikate einmal geordnet ablegt, kann jede neue Ausschreibung dagegen halten: Was ist vorhanden, was fehlt, was ist abgelaufen. Aus diesem Vergleich entsteht eine Nachweismatrix mit Belegstellen statt einer Behauptung.',
+                'Der zweite Hebel ist der Abgleich mit dem, was Sie ohnehin haben. Wer Referenzen, Umsatzangaben, Versicherungsnachweise und Zertifikate einmal geordnet ablegt, kann jede neue Ausschreibung dagegen halten: Was ist vorhanden, was fehlt, was ist abgelaufen. Aus diesem Vergleich entsteht eine Nachweismatrix mit Belegstellen statt einer Behauptung — zu jedem Punkt steht, aus welchem Dokument er stammt.',
             ],
         },
         {
@@ -35,7 +35,7 @@ export const kiAngebotAusschreibung = {
             absaetze: ['Der Funktionsumfang ist bewusst eng und überprüfbar:'],
             liste: [
                 'Anforderungen aus den Vergabeunterlagen herauslesen und benennen, aus welcher Datei und welcher Stelle sie stammen.',
-                'Eine Nachweismatrix erzeugen: welche geforderten Nachweise vorliegen, welche fehlen und welche demnächst ablaufen.',
+                'Eine Nachweismatrix erzeugen: welche geforderten Nachweise vorliegen, welche fehlen und welche abgelaufen sind — bei vorhandenen Nachweisen mit dem Gültigkeitsdatum.',
                 'Eine Go/No-Go-Karte nach festen Kriterien: Frist, Auftragswert, Leistungsort, Eignungsanforderungen — nachvollziehbar, nicht als Blackbox-Urteil.',
                 'Einen unverbindlichen Entwurf zum Vorbefüllen wiederkehrender Angaben, der ausdrücklich zu prüfen ist.',
                 'GAEB-Dateien der Austauschphasen X83 und X84 lesend aufschlüsseln: Bereiche, Positionen, Mengen, Einheiten und vorhandene Preise.',
