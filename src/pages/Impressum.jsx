@@ -23,7 +23,7 @@ export default function Impressum() {
                 <h2>Kontakt</h2>
                 <p>
                     Telefon: <a href="tel:+4930403665430">030 – 403 665 430</a><br />
-                    E-Mail: <a href="mailto:info@agentifizierung.de">info@agentifizierung.de</a>
+                    E-Mail: <a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a>
                 </p>
 
                 <h2>Handelsregister</h2>

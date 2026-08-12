@@ -9,7 +9,10 @@ const wurzel = join(dirname(fileURLToPath(import.meta.url)), '..')
 const { indexableRoutes, SITE_ORIGIN } = await import(join(wurzel, 'src', 'routes.js'))
 
 const eintraege = indexableRoutes
-    .map((route) => `  <url><loc>${SITE_ORIGIN}${route.path}</loc></url>`)
+    .map((route) => {
+        const lastmod = route.lastmod ? `<lastmod>${route.lastmod}</lastmod>` : ''
+        return `  <url><loc>${SITE_ORIGIN}${route.path}</loc>${lastmod}</url>`
+    })
     .join('\n')
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>

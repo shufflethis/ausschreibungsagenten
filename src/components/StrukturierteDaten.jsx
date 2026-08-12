@@ -18,6 +18,7 @@ const ORGANISATION = {
     legalName: 'Yawusa UG (haftungsbeschränkt) i.G.',
     url: `${SITE_ORIGIN}/`,
     email: 'hi@ausschreibungsagenten.de',
+    telephone: '+49 30 403665430',
     // Offizielle Profile derselben Entitaet. Verbindet Domain und Kanal
     // fuer Suchmaschinen zu einem Absender.
     sameAs: ['https://www.youtube.com/@ausschreibungsagenten'],
@@ -39,7 +40,9 @@ export default function StrukturierteDaten({ path, faq }) {
         spur.push({
             '@type': 'ListItem',
             position: 2,
-            name: route.title,
+            // Nur der eigentliche Seitenname, nicht der volle SEO-Titel -
+            // die Brotkrume erscheint woertlich im Suchergebnis.
+            name: route.title.split('|')[0].trim(),
             item: `${SITE_ORIGIN}${route.path}`,
         })
     }

@@ -10,9 +10,10 @@ export const routes = [
         component: 'LandingPage',
         title: 'Ausschreibungsagenten.de – Ausschreibungen aus TED, Bund und Landesportalen filtern',
         description:
-            'Öffentliche Ausschreibungen aus 17 Live-Quellen finden: TED, oeffentlichevergabe.de, service.bund.de, DTVP, RIB und die Landesportale. Erklärbares Profil-Matching, Go/No-Go-Karten, E-Mail-Digest, GAEB X83/X84 und Standardexport.',
+            'Öffentliche Ausschreibungen aus 17 Live-Quellen finden: TED, Bund, DTVP und Landesportale. Erklärbares Profil-Matching mit Begründung je Treffer.',
         prerender: true,
         index: true,
+        lastmod: '2026-08-12',
     },
     {
         path: '/ueber-uns',
@@ -22,6 +23,7 @@ export const routes = [
             'Lernen Sie das Team hinter Ausschreibungsagenten.de kennen und erfahren Sie, wie wir öffentliche Ausschreibungen verständlicher und besser bearbeitbar machen.',
         prerender: true,
         index: true,
+        lastmod: '2026-08-12',
     },
     {
         path: '/entwickler',
@@ -31,6 +33,7 @@ export const routes = [
             'Öffentliche Ausschreibungen per API und KI-Agent abfragen: REST-Vorschau, A2A Agent Card, JSON-RPC und OpenAPI. 17 Live-Quellen, erklärbares Matching, transparente Limits.',
         prerender: true,
         index: true,
+        lastmod: '2026-08-12',
     },
     {
         path: '/status',
@@ -40,15 +43,17 @@ export const routes = [
             'Live-Status aller Datenquellen: welche Vergabeportale wir wann zuletzt erfolgreich abgefragt haben und wie viele Ausschreibungen je EU-Land im Index sind. Volle Transparenz statt Behauptungen.',
         prerender: true,
         index: true,
+        lastmod: '2026-08-12',
     },
     {
         path: '/ausschreibungssuche-automatisieren',
         component: 'AusschreibungssucheAutomatisieren',
         title: 'Ausschreibungssuche automatisieren – so funktioniert es | Ausschreibungsagenten.de',
         description:
-            'Wie sich die Suche nach öffentlichen Ausschreibungen automatisieren lässt: 17 Quellen von EU bis Landesportal, Abgleich über CPV, Ausschlusswörter, Ort, Wert und Frist — mit Begründung je Treffer.',
+            'So automatisieren Sie die Ausschreibungssuche: 17 Quellen von EU bis Landesportal, Abgleich über CPV, Ort, Wert und Frist – mit Begründung je Treffer.',
         prerender: true,
         index: true,
+        lastmod: '2026-08-12',
     },
     {
         path: '/ki-angebot-ausschreibung',
@@ -58,6 +63,7 @@ export const routes = [
             'Wobei KI bei öffentlichen Ausschreibungen tatsächlich hilft: Anforderungen aus Vergabeunterlagen herauslesen, Nachweise zuordnen, Go/No-Go einschätzen. Und wo die Grenze liegt: Angebotstext und Kalkulation.',
         prerender: true,
         index: true,
+        lastmod: '2026-08-12',
     },
     {
         path: '/semantische-suche-ausschreibungen',
@@ -67,6 +73,7 @@ export const routes = [
             'Was semantische Suche bei Ausschreibungen bedeutet, warum Ähnlichkeit bei Vergabeunterlagen kein Nachweis ist und wie erklärbares Matching über CPV, Ausschlüsse und harte Regeln stattdessen arbeitet.',
         prerender: true,
         index: true,
+        lastmod: '2026-08-12',
     },
     {
         path: '/impressum',

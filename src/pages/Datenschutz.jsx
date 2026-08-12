@@ -14,7 +14,7 @@ export default function Datenschutz() {
                 <p>
                     Yawusa UG (haftungsbeschränkt) i.G.<br />
                     Schliemannstraße 23, 10437 Berlin<br />
-                    E-Mail: <a href="mailto:info@agentifizierung.de">info@agentifizierung.de</a>
+                    E-Mail: <a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a>
                 </p>
 
                 <h2>2. Hosting und Serverprotokolle</h2>

@@ -1,6 +1,6 @@
 # Ausschreibungsagenten.de — Vollständige Referenz für KI-Assistenten
 
-Stand: Juli 2026. Diese Datei beschreibt den tatsächlichen, produktiven Funktionsumfang.
+Stand: 12. August 2026. Diese Datei beschreibt den tatsächlichen, produktiven Funktionsumfang.
 Nicht Produktives ist ausdrücklich als „im Ausbau" oder „geplant" gekennzeichnet.
 
 ## Was die Plattform ist
@@ -17,16 +17,22 @@ Handwerk, Bau, IT, Marketing und Beratung.
 2. Datenservice Öffentlicher Einkauf (oeffentlichevergabe.de, eForms-DE/OCDS) — zentraler
    deutscher Bekanntmachungsservice, Ober- UND Unterschwelle über alle Vergabeplattformen
 3. service.bund.de (RSS)
-4. Landesportal Baden-Württemberg
-5. Landesportal Bremen
-6. Landesportal Sachsen
-7. Landesportal Mecklenburg-Vorpommern
-8. Landesportal Hessen
-9. Landesportal Rheinland-Pfalz
-10. GB Find a Tender Service (OCDS 1.1, buyer_country=GBR, Werte GBP→EUR umgerechnet)
-11. GB Contracts Finder (OCDS 1.1, unterschwellige GB-Vergaben ab £12k, buyer_country=GBR)
+4. DTVP Deutsches Vergabeportal
+5. RIB / iTWO tender
+6. Landesportal Bayern
+7. Landesportal Nordrhein-Westfalen
+8. Landesportal Baden-Württemberg
+9. Vergabeportal Baden-Württemberg
+10. Landesportal Bremen
+11. Landesportal Sachsen
+12. Landesportal Mecklenburg-Vorpommern
+13. Landesportal Hessen
+14. Landesportal Rheinland-Pfalz
+15. Metropolregion Rhein-Neckar
+16. GB Find a Tender Service (OCDS 1.1, buyer_country=GBR, Werte GBP→EUR umgerechnet)
+17. GB Contracts Finder (OCDS 1.1, unterschwellige GB-Vergaben ab £12k, buyer_country=GBR)
 
-Im Ausbau (nicht produktiv): DTVP, eVergabe, Landesportale Bayern und Nordrhein-Westfalen.
+Im Ausbau (nicht produktiv): Deutsche eVergabe und evergabe.de.
 Der Live-Status inkl. letztem erfolgreichem Abruf je Quelle ist öffentlich:
 https://www.ausschreibungsagenten.de/api/source-status
 
@@ -43,7 +49,7 @@ Semantisches KI-Matching wird NICHT als produktiv behauptet; es kann später erg
 - E-Mail-Digest: wird im begleiteten Pilot getestet, danach je Profil täglich/wöchentlich
 - GAEB DA XML X83/X84: nur lesende Strukturierung (Bereiche, Positionen, Mengen, Einheiten, Preise); keine Kalkulationsautomatik
 - Export: versioniertes JSON, CSV, XLSX; optional signierter Webhook
-- Nicht produktiv: WhatsApp, Push, konkrete ERP-Connectoren, öffentlicher Signup/Checkout, MCP, schreibende A2A-Aktionen
+- Nicht produktiv: WhatsApp, Push, konkrete ERP-Connectoren, Online-Checkout, schreibende A2A-Aktionen
 
 ## Agent-Anbindung (A2A / OpenAPI)
 

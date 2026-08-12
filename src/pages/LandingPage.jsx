@@ -16,7 +16,7 @@ const TOOLS = [
 ]
 
 const FEATURES = [
-    { icon: '🔍', title: '17 Live-Quellen', text: 'TED, service.bund.de, der Datenservice Öffentlicher Einkauf, DTVP, RIB sowie die Landesportale Bayern, NRW, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz werden regelmäßig abgefragt. Deutsche eVergabe und evergabe.de befinden sich im Ausbau.', color: '' },
+    { icon: '🔍', title: '17 Live-Quellen', text: 'TED, service.bund.de, der Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale Bayern, NRW, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz, die Metropolregion Rhein-Neckar, das Vergabeportal Baden-Württemberg sowie die britischen Quellen Find a Tender und Contracts Finder werden regelmäßig abgefragt. Deutsche eVergabe und evergabe.de befinden sich im Ausbau.', color: '' },
     { icon: '🎯', title: 'Erklärbares Matching', text: 'CPV-Codes, Leistungsbegriffe, Ausschlusswörter, Leistungsort, Auftragswert und Frist ergeben einen transparenten Firmen-Fit mit einzelnen Score-Gründen.', color: '--violet' },
     { icon: '✉️', title: 'E-Mail-Digest', text: 'Der E-Mail-Digest wird im begleiteten Pilot gemeinsam getestet und anschließend je Profil täglich oder wöchentlich freigeschaltet. WhatsApp und Push sind nicht produktiv.', color: '--amber' },
     { icon: '📄', title: 'GAEB X83/X84 lesen', text: 'GAEB-DA-XML-Dateien der Austauschphasen X83 und X84 werden nur lesend strukturiert: Bereiche, Positionen, Mengen, Einheiten und optionale Preise. Keine Kalkulationsautomatik.', color: '--green' },
@@ -32,7 +32,7 @@ const BRANCHEN = [
 
 const FAQS = [
     { q: 'Was sind öffentliche Ausschreibungen und warum sind sie wichtig?', a: 'Öffentliche Ausschreibungen sind Vergabeverfahren, mit denen Behörden, Kommunen und öffentliche Einrichtungen Aufträge an Unternehmen vergeben. Die OECD beziffert die öffentliche Beschaffung in Deutschland in einer häufig zitierten Schätzung auf rund 15 Prozent des Bruttoinlandsprodukts. Die amtliche Vergabestatistik erfasst gemeldete Zuschläge und ist nicht mit einer vollständigen Zahl aller veröffentlichten Verfahren gleichzusetzen.' },
-    { q: 'Welche Vergabeportale gibt es in Deutschland?', a: 'Zu den wichtigen Quellen gehören DTVP, eVergabe, service.bund.de, die Landesportale und für EU-Verfahren TED. Unser eigener Pilot indexiert aktuell 17 Quellen: TED, service.bund.de, den Datenservice Öffentlicher Einkauf, DTVP, RIB sowie die Landesportale Bayern, NRW, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz. Deutsche eVergabe und evergabe.de sind im Ausbau.' },
+    { q: 'Welche Vergabeportale gibt es in Deutschland?', a: 'Zu den wichtigen Quellen gehören DTVP, eVergabe, service.bund.de, die Landesportale und für EU-Verfahren TED. Unser eigener Pilot indexiert aktuell 17 Quellen: TED, service.bund.de, den Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale Bayern, NRW, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz, die Metropolregion Rhein-Neckar, das Vergabeportal Baden-Württemberg sowie die britischen Quellen Find a Tender und Contracts Finder. Deutsche eVergabe und evergabe.de sind im Ausbau.' },
     { q: 'Was macht der Ausschreibungsagent konkret?', a: 'Der aktuelle Agent ordnet Bekanntmachungen über CPV-Codes und Regeln Branchen zu. Anschließend vergleicht er Firmenprofil, Keywords, Ausschlüsse, Leistungsort, Auftragswert und Frist. Jeder Fit-Score wird mit nachvollziehbaren Einzelgründen angezeigt; semantisches KI-Matching wird nicht als bereits produktiv behauptet.' },
     { q: 'Wie viel kostet ein Ausschreibungsagent?', a: 'Preise hängen von Quellenabdeckung, Nutzerzahl, Suchprofilen, Exporten und Integrationen ab. Unser geplanter Pro-Tarif kostet 149 EUR pro Monat, der Agent-Tarif 499 EUR pro Monat und die Begleitung eines einzelnen Verfahrens 1.499 EUR. Der Online-Checkout ist noch nicht freigeschaltet; Pilot und Vertrag werden persönlich abgestimmt.' },
     { q: 'Ab welchem Auftragsvolumen lohnt sich die Suche nach öffentlichen Ausschreibungen?', a: 'Eine allgemeingültige Untergrenze gibt es nicht. Entscheidend sind Auftragswert, Angebotsaufwand und Gewinnwahrscheinlichkeit. Für 2026/2027 gelten je nach Auftraggeber unterschiedliche EU-Schwellenwerte; unter anderem 140.000 EUR für Liefer- und Dienstleistungen zentraler Regierungsbehörden, 216.000 EUR für andere öffentliche Auftraggeber und 5.404.000 EUR für Bauaufträge. Maßgeblich sind immer die aktuellen amtlichen Werte und Vergabeunterlagen.' },
@@ -222,7 +222,7 @@ export default function LandingPage() {
 
     return (
         <>
-            <Seo path="/" />
+            <Seo path="/" faq={FAQS.map((eintrag) => ({ frage: eintrag.q, antwort: eintrag.a }))} />
 
             {/* ===== HERO ===== */}
             <section className="hero" id="start">
@@ -230,7 +230,7 @@ export default function LandingPage() {
                     <div className="hero__content">
                         <div className="hero__badge">
                             <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4', animation: 'pulse 2s ease-in-out infinite' }}></span>
-                            TED + Bund + sechs Landesportale live
+                            17 öffentliche Quellen live – von TED bis zu den Landesportalen
                         </div>
 
                         <h1 className="hero__title">
@@ -239,8 +239,9 @@ export default function LandingPage() {
                         </h1>
 
                         <p className="hero__description">
-                            Unser Pilot durchsucht TED, service.bund.de sowie sechs Landesportale und bewertet Ausschreibungen
-                            nachvollziehbar nach Ihrem Firmenprofil. Weitere Portale werden schrittweise angebunden.
+                            Unser Pilot durchsucht 17 öffentliche Quellen – von TED über service.bund.de und den
+                            Datenservice Öffentlicher Einkauf bis zu den Landes- und Regionalportalen – und bewertet
+                            Ausschreibungen nachvollziehbar nach Ihrem Firmenprofil. Weitere Portale werden schrittweise angebunden.
                         </p>
 
                         <div className="hero__actions">
@@ -264,7 +265,9 @@ export default function LandingPage() {
                                 <span className="hero__stat-label">Erklärbarer Firmen-Fit</span>
                             </div>
                             <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>8</span>
+                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>
+                                    {sourceStatus.length > 0 ? sourceStatus.filter((s) => s.implementation_status === 'live').length : 17}
+                                </span>
                                 <span className="hero__stat-label">Produktive öffentliche Quellen</span>
                             </div>
                         </div>
@@ -340,7 +343,9 @@ export default function LandingPage() {
                             <div className="step-card__number">2</div>
                             <h3 className="glass-card__title">Agent arbeitet</h3>
                             <p className="glass-card__text">
-                                Der Agent fragt TED, service.bund.de, den Datenservice Öffentlicher Einkauf, DTVP, RIB sowie die Landesportale Bayern, Nordrhein-Westfalen, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz regelmäßig ab. Jede neue Ausschreibung wird
+                                Der Agent fragt alle 17 Live-Quellen regelmäßig ab – TED, service.bund.de, den Datenservice
+                                Öffentlicher Einkauf, DTVP, RIB, die Landes- und Regionalportale sowie die britischen Quellen
+                                Find a Tender und Contracts Finder. Jede neue Ausschreibung wird
                                 über CPV, Regeln, Keywords, Region, Wert und Frist mit Ihrem Profil abgeglichen.
                                 Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
                             </p>
@@ -851,7 +856,7 @@ export default function LandingPage() {
                             Eine häufig zitierte <a href="https://www.oecd.org/de/publications/offentliche-vergabe-in-deutschland_48df1474-de.html" target="_blank" rel="noopener noreferrer">OECD-Schätzung</a> beziffert die öffentliche Beschaffung in Deutschland auf rund 15 Prozent des Bruttoinlandsprodukts. Die <a href="https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Vergabestatistik/_inhalt.html" target="_blank" rel="noopener noreferrer">amtliche Vergabestatistik von Destatis</a> weist für 2024 199.334 gemeldete Zuschläge mit einem Volumen von 135,2 Milliarden Euro aus. Diese Statistik hat Erfassungs- und Meldegrenzen und ist nicht mit der Zahl aller veröffentlichten Bekanntmachungen gleichzusetzen.
                         </p>
                         <p>
-                            Genau hier liegt die Chance für Unternehmen, die Ausschreibungssuche systematisch zu unterstützen: Unser Pilot bündelt aktuell TED, service.bund.de sowie Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz, gleicht Bekanntmachungen mit einem strukturierten Firmenprofil ab und verlinkt immer auf die Originalquelle. DTVP, eVergabe, Bayern und NRW sind dokumentierte Ausbaupunkte.
+                            Genau hier liegt die Chance für Unternehmen, die Ausschreibungssuche systematisch zu unterstützen: Unser Pilot bündelt aktuell 17 Live-Quellen – von TED und service.bund.de über den Datenservice Öffentlicher Einkauf, DTVP und RIB bis zu den Landes- und Regionalportalen –, gleicht Bekanntmachungen mit einem strukturierten Firmenprofil ab und verlinkt immer auf die Originalquelle. Deutsche eVergabe und evergabe.de sind dokumentierte Ausbaupunkte.
                         </p>
 
                         <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>
@@ -1041,6 +1046,10 @@ export default function LandingPage() {
                             <div className="glass-card contact-info__item">
                                 <h4>📧 E-Mail</h4>
                                 <p><a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a></p>
+                            </div>
+                            <div className="glass-card contact-info__item">
+                                <h4>📞 Telefon</h4>
+                                <p><a href="tel:+4930403665430">030 – 403 665 430</a></p>
                             </div>
                             <div className="glass-card contact-info__item">
                                 <h4>📍 Standort</h4>
