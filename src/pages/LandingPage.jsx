@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import Seo from '../components/Seo'
+import VideoAbschnitt from '../components/VideoAbschnitt'
+import { VIDEO_BESCHREIBUNG, VIDEO_TITEL, VIDEO_TRANSKRIPT } from '../data/videoTranskript'
 
 const TOOLS = [
     { name: 'DTVP', url: 'https://www.dtvp.de', price: '€49/Mon. Professional', ai: false, portals: 'DTVP', focus: 'Offizielles Portal', gaeb: false, alerts: true, free: true },
@@ -785,6 +787,18 @@ export default function LandingPage() {
                     </div>
                 </div>
             </section>
+
+            {/* ===== ERKLAERVIDEO ===== */}
+            <VideoAbschnitt
+                titel={VIDEO_TITEL}
+                beschreibung={VIDEO_BESCHREIBUNG}
+                transkript={VIDEO_TRANSKRIPT}
+                quelle={{
+                    art: 'datei',
+                    url: '/video/ausschreibungsagenten-erklaervideo.mp4',
+                    poster: '/video/ausschreibungsagenten-erklaervideo-poster.jpg',
+                }}
+            />
 
             {/* ===== SEO CONTENT BLOCK ===== */}
             <section className="section" id="wissen">

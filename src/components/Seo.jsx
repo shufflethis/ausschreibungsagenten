@@ -1,10 +1,13 @@
+import { useContext, useEffect } from 'react'
 import { routeByPath, SITE_ORIGIN } from '../routes'
 import StrukturierteDaten from './StrukturierteDaten'
+import { SsrKontext } from './SsrKontext'
 
-// Kein react-helmet-async: ab React 19 werden title-, meta- und
-// link-Elemente aus dem Baum selbst in den Kopfbereich gehoben. Beim
-// Prerendering holt entry-server.jsx sie am Anfang der gerenderten
-// Zeichenkette ab.
+// Kein react-helmet-async: ab React 19 ist die Bibliothek ein Durchreicher
+// (siehe Kommentar in entry-server.jsx). Beim Prerendering gibt diese
+// Komponente die Kopf-Elemente aus, im Browser haelt sie den Titel per
+// Effekt nach - fuer Seitenwechsel innerhalb der Anwendung und fuer den
+// Entwicklungsmodus, in dem nicht vorgerendert wird.
 export default function Seo({ path, title, description, faq }) {
     const route = routeByPath(path)
     if (!route) throw new Error(`Kein Manifest-Eintrag fuer ${path}`)
@@ -12,6 +15,13 @@ export default function Seo({ path, title, description, faq }) {
     const seitenTitel = title ?? route.title
     const seitenText = description ?? route.description
     const adresse = `${SITE_ORIGIN}${route.path}`
+    const beimServerRendern = useContext(SsrKontext)
+
+    useEffect(() => {
+        if (document.title !== seitenTitel) document.title = seitenTitel
+    }, [seitenTitel])
+
+    if (!beimServerRendern) return null
 
     return (
         <>

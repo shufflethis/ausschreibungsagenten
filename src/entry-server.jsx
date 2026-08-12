@@ -13,6 +13,7 @@ import { StaticRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import App from './App'
 import { routeByPath, SITE_ORIGIN } from './routes'
+import { SsrKontext } from './components/SsrKontext'
 
 // title, meta, link und JSON-LD gehoeren in den Kopfbereich, nie in den
 // Rumpf. Im Rumpf gibt es keine gueltige Verwendung dieser Elemente,
@@ -22,11 +23,13 @@ const KOPF_TAGS =
 
 export async function render(url) {
     const markup = renderToString(
-        <HelmetProvider>
-            <StaticRouter location={url}>
-                <App />
-            </StaticRouter>
-        </HelmetProvider>,
+        <SsrKontext.Provider value={true}>
+            <HelmetProvider>
+                <StaticRouter location={url}>
+                    <App />
+                </StaticRouter>
+            </HelmetProvider>
+        </SsrKontext.Provider>,
     )
 
     const kopf = markup.match(KOPF_TAGS) ?? []
