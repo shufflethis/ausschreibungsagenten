@@ -17,8 +17,8 @@ globalThis.IS_REACT_ACT_ENVIRONMENT = true
 // Hydration-Beanstandungen laufen ueber onRecoverableError, nicht ueber
 // console.error. Genau daran ist eine erste Fassung dieses Tests
 // vorbeigelaufen und meldete gruen, obwohl React den Baum verwarf.
-async function hydriere(pfad) {
-    const { html } = await render(pfad)
+async function hydriere(pfad, ausgeliefertesHtml) {
+    const { html } = ausgeliefertesHtml ? { html: ausgeliefertesHtml } : await render(pfad)
 
     window.history.pushState({}, '', pfad)
     const wurzel = document.createElement('div')
@@ -63,6 +63,18 @@ describe('Hydration vorgerenderter Seiten', () => {
     it('behaelt den vorgerenderten Inhalt nach dem Hydrieren', async () => {
         const { wurzel } = await hydriere('/agb')
         expect(wurzel.textContent).toContain('Allgemeine Geschäftsbedingungen')
+    })
+
+    // Warum nicht vorgerenderte Routen ein eigenes leeres Geruest brauchen:
+    // Bekaemen sie ueber den Auffang-Rewrite die dist/index.html, stuende
+    // dort seit dem Prerendering die vollstaendige Startseite - und der
+    // Browser wuerde sie gegen die Login-Seite hydrieren. Dieser Test haelt
+    // den Schaden fest; verhindert wird er in scripts/prerender.mjs, geprueft
+    // in scripts/check-prerender.mjs.
+    it('Startseiten-HTML gegen eine andere Route zu hydrieren geht schief', async () => {
+        const { html: startseite } = await render('/')
+        const { beanstandungen } = await hydriere('/login', startseite)
+        expect(beanstandungen.length).toBeGreaterThan(0)
     })
 
     it('gibt im Browser keine Kopf-Elemente in den Rumpf', async () => {
