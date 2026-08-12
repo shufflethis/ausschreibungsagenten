@@ -42,6 +42,33 @@ export const routes = [
         index: true,
     },
     {
+        path: '/ausschreibungssuche-automatisieren',
+        component: 'AusschreibungssucheAutomatisieren',
+        title: 'Ausschreibungssuche automatisieren – so funktioniert es | Ausschreibungsagenten.de',
+        description:
+            'Wie sich die Suche nach öffentlichen Ausschreibungen automatisieren lässt: 17 Quellen von EU bis Landesportal, Abgleich über CPV, Ausschlusswörter, Ort, Wert und Frist — mit Begründung je Treffer.',
+        prerender: true,
+        index: true,
+    },
+    {
+        path: '/ki-angebot-ausschreibung',
+        component: 'KiAngebotAusschreibung',
+        title: 'KI und Ausschreibungen: was beim Angebot wirklich hilft | Ausschreibungsagenten.de',
+        description:
+            'Wobei KI bei öffentlichen Ausschreibungen tatsächlich hilft: Anforderungen aus Vergabeunterlagen herauslesen, Nachweise zuordnen, Go/No-Go einschätzen. Und wo die Grenze liegt: Angebotstext und Kalkulation.',
+        prerender: true,
+        index: true,
+    },
+    {
+        path: '/semantische-suche-ausschreibungen',
+        component: 'SemantischeSucheAusschreibungen',
+        title: 'Semantische Suche bei Ausschreibungen – Begriff und Grenzen | Ausschreibungsagenten.de',
+        description:
+            'Was semantische Suche bei Ausschreibungen bedeutet, warum Ähnlichkeit bei Vergabeunterlagen kein Nachweis ist und wie erklärbares Matching über CPV, Ausschlüsse und harte Regeln stattdessen arbeitet.',
+        prerender: true,
+        index: true,
+    },
+    {
         path: '/impressum',
         component: 'Impressum',
         title: 'Impressum | Ausschreibungsagenten.de',

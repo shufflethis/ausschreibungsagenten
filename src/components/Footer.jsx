@@ -12,6 +12,9 @@ export default function Footer() {
                         </a>
                     </div>
                     <div className="footer__links">
+                        <Link to="/ausschreibungssuche-automatisieren">Suche automatisieren</Link>
+                        <Link to="/ki-angebot-ausschreibung">KI und Angebot</Link>
+                        <Link to="/semantische-suche-ausschreibungen">Semantische Suche</Link>
                         <Link to="/ueber-uns">Über uns</Link>
                         <Link to="/entwickler">API & Agenten</Link>
                         <Link to="/status">Quellenstatus</Link>
