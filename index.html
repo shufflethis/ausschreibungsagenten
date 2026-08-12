@@ -17,31 +17,21 @@
     <meta name="apple-mobile-web-app-title" content="Ausschreibungsagenten" />
 
     <!-- Primary Meta Tags -->
-    <title>Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen | Automatisch finden, filtern, gewinnen
-    </title>
-    <meta name="description"
-        content="Öffentliche Ausschreibungen aus acht Live-Quellen passend filtern: TED, service.bund.de und sechs Landesportale. Tools im Vergleich. Für Handwerk, Bau, IT & Beratung." />
+    <!-- Titel, Description und Canonical setzt der Prerender-Schritt je Route
+         (scripts/prerender.mjs ersetzt den Marker unten). Im Entwicklungsmodus
+         setzt React 19 sie beim Rendern im Browser. Der Titel hier ist nur die
+         Rueckfallebene fuer das ungerenderte Geruest. -->
+    <title>Ausschreibungsagenten.de – KI-Agenten für öffentliche Ausschreibungen</title>
     <meta name="author" content="Yawusa UG (haftungsbeschränkt) i.G." />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://www.ausschreibungsagenten.de/" />
-    <meta name="keywords"
-        content="Ausschreibungen finden, öffentliche Ausschreibungen, KI Agent, Vergabeportal, DTVP, TED, Ausschreibungssuche, Vergabe Software, Tender Monitoring, GAEB, Leistungsverzeichnis, Handwerk Ausschreibungen, Bau Ausschreibungen" />
+    <!--ssg-head-->
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.ausschreibungsagenten.de/" />
-    <meta property="og:title" content="Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen" />
-    <meta property="og:description"
-        content="Öffentliche Ausschreibungen automatisch finden mit KI-Agenten. Alle Tools im Vergleich. Für Handwerk, Bau, IT & Beratung." />
+    <!-- Open Graph und Twitter: hier stehen nur die seitenweit gleichen
+         Angaben. og:type, og:url, og:title und og:description setzt die
+         Seo-Komponente je Route; Twitter faellt auf die og-Angaben zurueck. -->
     <meta property="og:image" content="https://www.ausschreibungsagenten.de/web-app-manifest-512x512.png" />
     <meta property="og:locale" content="de_DE" />
     <meta property="og:site_name" content="Ausschreibungsagenten.de" />
-
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen" />
-    <meta name="twitter:description"
-        content="Öffentliche Ausschreibungen automatisch finden mit KI-Agenten. Alle Tools im Vergleich." />
     <meta name="twitter:image" content="https://www.ausschreibungsagenten.de/web-app-manifest-512x512.png" />
 
     <!-- Geo -->
@@ -49,78 +39,6 @@
     <meta name="geo.placename" content="Deutschland" />
     <meta name="language" content="German" />
 
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "Organization",
-                "name": "Ausschreibungsagenten.de",
-                "url": "https://www.ausschreibungsagenten.de",
-                "description": "Pilotplattform zum Finden und nachvollziehbaren Filtern öffentlicher Ausschreibungen aus TED, service.bund.de und sechs Landesportalen.",
-                "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "Schliemannstr. 23",
-                    "addressLocality": "Berlin",
-                    "postalCode": "10437",
-                    "addressCountry": "DE"
-                },
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "contactType": "sales",
-                    "email": "hi@ausschreibungsagenten.de",
-                    "url": "https://www.ausschreibungsagenten.de/#kontakt"
-                }
-            },
-            {
-                "@type": "WebPage",
-                "name": "Ausschreibungsagenten.de – Erklärbare Ausschreibungssuche",
-                "url": "https://www.ausschreibungsagenten.de/",
-                "description": "Ausschreibungen aus acht öffentlichen Live-Quellen mit strukturierten Firmenprofilen filtern und Originalquellen öffnen.",
-                "inLanguage": "de-DE",
-                "isPartOf": {
-                    "@type": "WebSite",
-                    "name": "Ausschreibungsagenten.de",
-                    "url": "https://www.ausschreibungsagenten.de"
-                }
-            },
-            {
-                "@type": "SoftwareApplication",
-                "name": "Ausschreibungsagenten",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Web",
-                "description": "Pilot-Agent für TED, service.bund.de und sechs Landesportale mit erklärbarem Profil-Matching, Go/No-Go-Karten, E-Mail-Digest, GAEB X83/X84 und Standardexporten.",
-                "offers": {
-                    "@type": "AggregateOffer",
-                    "lowPrice": "149",
-                    "highPrice": "1499",
-                    "priceCurrency": "EUR",
-                    "offerCount": "3"
-                },
-                "featureList": [
-                    "TED, service.bund.de und sechs Landesportale live",
-                    "Erklärbares CPV-, Regel- und Keyword-Matching",
-                    "Kontrollierter E-Mail-Digest im begleiteten Pilot",
-                    "GAEB DA XML X83/X84 lesen und strukturieren",
-                    "Frist- und Auftragswertfilter",
-                    "JSON-, CSV-, XLSX- und optionaler Webhook-Export"
-                ]
-            },
-            {
-                "@type": "BreadcrumbList",
-                "itemListElement": [
-                    {
-                        "@type": "ListItem",
-                        "position": 1,
-                        "name": "Start",
-                        "item": "https://www.ausschreibungsagenten.de/"
-                    }
-                ]
-            }
-        ]
-    }
-    </script>
 
 </head>
 

@@ -1890,3 +1890,73 @@ img {
     .team-card__content { min-height: 0; }
     .about-origin__card { padding: 1.5rem; }
 }
+
+/* ===== Erklaervideo ===== */
+.video-abschnitt .container {
+    max-width: 900px;
+}
+
+.video-abschnitt__player {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-top: 2rem;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius);
+    box-shadow: var(--glass-shadow);
+    background: #000;
+}
+
+.video-abschnitt__transkript {
+    margin-top: 1.5rem;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius);
+    background: var(--glass-bg);
+}
+
+.video-abschnitt__transkript > summary {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.video-abschnitt__transkript > summary:hover {
+    color: var(--text-heading);
+}
+
+.video-abschnitt__transkript dl {
+    margin: 0;
+    padding: 0 1.5rem 1.5rem;
+}
+
+.video-abschnitt__eintrag + .video-abschnitt__eintrag {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.video-abschnitt__eintrag dt {
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-bottom: 0.5rem;
+}
+
+.video-abschnitt__zeit {
+    display: inline-block;
+    min-width: 3.5rem;
+    color: var(--text-tertiary);
+    font-variant-numeric: tabular-nums;
+}
+
+.video-abschnitt__eintrag dd {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+@media (max-width: 640px) {
+    .video-abschnitt__player { margin-top: 1.5rem; }
+    .video-abschnitt__transkript dl { padding: 0 1rem 1rem; }
+    .video-abschnitt__transkript > summary { padding: 0.875rem 1rem; }
+}

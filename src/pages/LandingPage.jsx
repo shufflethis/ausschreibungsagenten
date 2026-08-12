@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
+import VideoAbschnitt from '../components/VideoAbschnitt'
+import { VIDEO_BESCHREIBUNG, VIDEO_TITEL, VIDEO_TRANSKRIPT } from '../data/videoTranskript'
 
 const TOOLS = [
     { name: 'DTVP', url: 'https://www.dtvp.de', price: '€49/Mon. Professional', ai: false, portals: 'DTVP', focus: 'Offizielles Portal', gaeb: false, alerts: true, free: true },
@@ -194,10 +196,7 @@ export default function LandingPage() {
 
     return (
         <>
-            <Helmet>
-                <title>Ausschreibungsagenten.de – Ausschreibungen aus TED, Bund und Landesportalen filtern</title>
-                <meta name="description" content="Öffentliche Ausschreibungen aus TED, service.bund.de sowie sechs Landesportalen finden. Erklärbares Profil-Matching, Go/No-Go-Karten, E-Mail-Digest, GAEB X83/X84 und Standardexport." />
-            </Helmet>
+            <Seo path="/" />
 
             {/* ===== HERO ===== */}
             <section className="hero" id="start">
@@ -788,6 +787,18 @@ export default function LandingPage() {
                     </div>
                 </div>
             </section>
+
+            {/* ===== ERKLAERVIDEO ===== */}
+            <VideoAbschnitt
+                titel={VIDEO_TITEL}
+                beschreibung={VIDEO_BESCHREIBUNG}
+                transkript={VIDEO_TRANSKRIPT}
+                quelle={{
+                    art: 'datei',
+                    url: '/video/ausschreibungsagenten-erklaervideo.mp4',
+                    poster: '/video/ausschreibungsagenten-erklaervideo-poster.jpg',
+                }}
+            />
 
             {/* ===== SEO CONTENT BLOCK ===== */}
             <section className="section" id="wissen">

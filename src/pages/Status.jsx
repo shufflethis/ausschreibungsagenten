@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 
 const SOURCE_LABELS = {
     ted: 'TED (EU-Amtsblatt, api.ted.europa.eu)',
@@ -59,14 +59,7 @@ export default function Status() {
 
     return (
         <>
-            <Helmet>
-                <title>Quellenstatus & Abdeckung | Ausschreibungsagenten.de</title>
-                <meta
-                    name="description"
-                    content="Live-Status aller Datenquellen: welche Vergabeportale wir wann zuletzt erfolgreich abgefragt haben und wie viele Ausschreibungen je EU-Land im Index sind. Volle Transparenz statt Behauptungen."
-                />
-                <link rel="canonical" href="https://www.ausschreibungsagenten.de/status" />
-            </Helmet>
+            <Seo path="/status" />
 
             <section className="hero">
                 <div className="container">
