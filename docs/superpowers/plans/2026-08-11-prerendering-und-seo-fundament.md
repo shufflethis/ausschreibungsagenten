@@ -1082,7 +1082,21 @@ git commit -m "feat(seo): Video-Abschnitt mit sichtbarem Transkript und VideoObj
 
 ### Task 8: Auslieferung auf einer Vercel-Vorschau prüfen
 
-`vercel.json` enthält den Auffang-Rewrite `/((?!.*\..*).*)` → `/index.html`. Nach Vercels Reihenfolge greift zuerst das Dateisystem, sodass `dist/ueber-uns/index.html` gewinnt — **überprüft ist das aber nicht**. Wäre die Annahme falsch, liefen alle Routen weiter gegen die Startseiten-Datei und die gesamte Phase wäre wirkungslos. Diese Prüfung muss vor jedem Merge nach `master` bestanden sein.
+`vercel.json` enthält den Auffang-Rewrite `/((?!.*\..*).*)` → `/index.html`. Wäre er stärker als das Dateisystem, liefen alle Routen weiter gegen die Startseiten-Datei und die gesamte Phase wäre wirkungslos.
+
+**Stand 2026-08-12 — aus der Dokumentation beantwortet.** Vercel schreibt zu `rewrites`:
+
+> „The `source` property should **NOT** be a file because precedence is given to the filesystem prior to rewrites being applied."
+
+und zur veralteten `routes`-Eigenschaft:
+
+> „`handle`: A special route type (e.g. `"handle": "filesystem"`) … Use `rewrites` instead, which **checks the filesystem by default**."
+
+Der Auffang-Rewrite greift damit nur für Pfade ohne passende Datei. `dist/ueber-uns/index.html` gewinnt. Ein lokaler Server mit Verzeichnis-Index bestätigt das für die erzeugten Dateien: `/ueber-uns/` liefert „Über uns | Ausschreibungsagenten.de", `/` liefert den Startseiten-Titel.
+
+**Offen bleibt die Messung an der echten Auslieferung.** Die Vercel-CLI ist hier als `shufflethis` (Team „Tracky's projects") angemeldet; dieses Projekt liegt unter einem anderen Konto und ist lokal nicht verknüpft. `vercel deploy` würde ein neues, fremdes Projekt anlegen statt eine Vorschau des richtigen zu bauen. Die Schritte unten sind deshalb von der Person auszuführen, die Zugriff auf das Konto hat — vor dem Merge nach `master`.
+
+Ein Hinweis zur Auswertung: `vite preview` taugt für diese Prüfung **nicht**. Sein SPA-Rückfall liefert für jede Route die Startseiten-Datei und erzeugt damit genau das Fehlerbild, das hier ausgeschlossen werden soll.
 
 **Files:**
 - Modify: `docs/superpowers/plans/2026-08-11-prerendering-und-seo-fundament.md` (Ergebnis eintragen)
