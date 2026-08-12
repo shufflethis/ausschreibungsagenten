@@ -12,7 +12,7 @@ export default function Datenschutz() {
 
                 <h2>1. Verantwortlicher</h2>
                 <p>
-                    Yawusa UG (haftungsbeschränkt) i.G.<br />
+                    Yawusa UG (haftungsbeschränkt)<br />
                     Schliemannstraße 23, 10437 Berlin<br />
                     E-Mail: <a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a>
                 </p>

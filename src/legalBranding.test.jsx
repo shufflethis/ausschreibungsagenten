@@ -26,22 +26,25 @@ describe('Betreiberangaben', () => {
             'href',
             '/ueber-uns',
         )
-        expect(screen.getByText(/Yawusa UG \(haftungsbeschränkt\) i\.G\./)).toBeInTheDocument()
+        expect(screen.getByText(/Yawusa UG \(haftungsbeschränkt\)/)).toBeInTheDocument()
         expect(screen.queryByText(/track by track|famefact/i)).not.toBeInTheDocument()
     })
 
-    it('nennt alle drei Geschäftsführer und keine erfundenen Registerdaten', () => {
+    it('nennt alle drei Geschäftsführer und die echten Registerdaten', () => {
         renderPage(<Impressum />)
         expect(screen.getByText('Tobias Sander, Thilo Jansen und Gorden Wübbe')).toBeInTheDocument()
-        expect(screen.getByText(/Handelsregisternummer wird nach erfolgter Eintragung ergänzt/)).toBeInTheDocument()
+        expect(screen.getByText(/HRB 290407 B/)).toBeInTheDocument()
+        expect(screen.getByText(/Amtsgericht Charlottenburg/)).toBeInTheDocument()
+        // Eingetragen ist eingetragen: der Gruendungszusatz darf nirgends mehr auftauchen.
+        expect(screen.queryByText(/i\.G\./)).not.toBeInTheDocument()
         expect(screen.queryByText(/HRB 129805 B|DE814954842/)).not.toBeInTheDocument()
     })
 
     it('führt Agentifizierung konsistent in Datenschutz und AGB', () => {
         const privacy = renderPage(<Datenschutz />)
-        expect(privacy.container).toHaveTextContent('Yawusa UG (haftungsbeschränkt) i.G.')
+        expect(privacy.container).toHaveTextContent('Yawusa UG (haftungsbeschränkt)')
         privacy.unmount()
         const terms = renderPage(<AGB />)
-        expect(terms.container).toHaveTextContent('Yawusa UG (haftungsbeschränkt) i.G.')
+        expect(terms.container).toHaveTextContent('Yawusa UG (haftungsbeschränkt)')
     })
 })

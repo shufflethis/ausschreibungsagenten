@@ -25,7 +25,7 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="footer__copy">
-                    © {new Date().getFullYear()} Yawusa UG (haftungsbeschränkt) i.G. Alle Rechte vorbehalten. | Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen
+                    © {new Date().getFullYear()} Yawusa UG (haftungsbeschränkt) Alle Rechte vorbehalten. | Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen
                 </div>
             </div>
         </footer>

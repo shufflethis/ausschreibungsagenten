@@ -80,7 +80,7 @@ export const routes = [
         component: 'Impressum',
         title: 'Impressum | Ausschreibungsagenten.de',
         description:
-            'Anbieterkennzeichnung für ausschreibungsagenten.de, betrieben von der Yawusa UG (haftungsbeschränkt) i.G. in Berlin.',
+            'Anbieterkennzeichnung für ausschreibungsagenten.de, betrieben von der Yawusa UG (haftungsbeschränkt) in Berlin.',
         prerender: true,
         // Rechtsseiten stehen bewusst auf noindex und gehoeren damit auch
         // nicht in die Sitemap.

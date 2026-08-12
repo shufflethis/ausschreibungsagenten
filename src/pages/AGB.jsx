@@ -12,7 +12,7 @@ export default function AGB() {
 
                 <h2>§ 1 Anbieter, Geltungsbereich und Zielgruppe</h2>
                 <p>
-                    Anbieter ist die Yawusa UG (haftungsbeschränkt) i.G., Schliemannstraße 23,
+                    Anbieter ist die Yawusa UG (haftungsbeschränkt), Schliemannstraße 23,
                     10437 Berlin. Diese Bedingungen gelten für die Website sowie individuell vereinbarte Pilot- und
                     Softwareleistungen von Ausschreibungsagenten.de. Das Angebot richtet sich ausschließlich an
                     Unternehmer, juristische Personen des öffentlichen Rechts und öffentlich-rechtliche Sondervermögen.

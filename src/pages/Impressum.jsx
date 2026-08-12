@@ -11,7 +11,7 @@ export default function Impressum() {
 
                 <h2>Angaben gemäß § 5 DDG</h2>
                 <p>
-                    Yawusa UG (haftungsbeschränkt) i.G.<br />
+                    Yawusa UG (haftungsbeschränkt)<br />
                     Schliemannstraße 23<br />
                     10437 Berlin<br />
                     Deutschland
@@ -28,9 +28,8 @@ export default function Impressum() {
 
                 <h2>Handelsregister</h2>
                 <p>
-                    Die Gesellschaft befindet sich in Gründung (i.G.). Die Eintragung in das
-                    Handelsregister beim Amtsgericht Berlin-Charlottenburg ist beantragt; die
-                    Handelsregisternummer wird nach erfolgter Eintragung ergänzt.
+                    Registergericht: Amtsgericht Charlottenburg (Berlin)<br />
+                    Handelsregisternummer: HRB 290407 B
                 </p>
 
                 <h2>Umsatzsteuer-ID</h2>

@@ -15,7 +15,7 @@ const ORGANISATION = {
     '@type': 'Organization',
     '@id': `${SITE_ORIGIN}/#organisation`,
     name: 'Ausschreibungsagenten.de',
-    legalName: 'Yawusa UG (haftungsbeschränkt) i.G.',
+    legalName: 'Yawusa UG (haftungsbeschränkt)',
     url: `${SITE_ORIGIN}/`,
     email: 'hi@ausschreibungsagenten.de',
     telephone: '+49 30 403665430',
