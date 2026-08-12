@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
 import VideoAbschnitt from '../components/VideoAbschnitt'
 import { VIDEO_BESCHREIBUNG, VIDEO_TITEL, VIDEO_TRANSKRIPT } from '../data/videoTranskript'
@@ -862,6 +863,24 @@ export default function LandingPage() {
                         <p>
                             <strong>5. Nachfragen stellen:</strong> Bei Unklarheiten im Leistungsverzeichnis nutzen Sie die Bieterfragen. Diese sind über das jeweilige Vergabeportal möglich und werden allen Bietern anonymisiert zur Verfügung gestellt.
                         </p>
+
+                        <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>
+                            Zum Weiterlesen
+                        </h3>
+                        <ul className="inhalt__liste">
+                            <li>
+                                <Link to="/ausschreibungssuche-automatisieren">Ausschreibungssuche automatisieren</Link>{' '}
+                                – welche Portalebenen es gibt, was beim Profil zählt und woran sich eine brauchbare Lösung erkennen lässt.
+                            </li>
+                            <li>
+                                <Link to="/ki-angebot-ausschreibung">KI und Angebot</Link>{' '}
+                                – wobei maschinelle Unterstützung beim Angebot tatsächlich hilft und wo die Grenze liegt.
+                            </li>
+                            <li>
+                                <Link to="/semantische-suche-ausschreibungen">Semantische Suche bei Ausschreibungen</Link>{' '}
+                                – was der Begriff meint und warum wir stattdessen mit begründbaren Regeln arbeiten.
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </section>

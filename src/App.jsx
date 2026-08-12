@@ -14,6 +14,11 @@ import AppRedirect from './pages/AppRedirect'
 import UeberUns from './pages/UeberUns'
 import Entwickler from './pages/Entwickler'
 import Status from './pages/Status'
+import {
+    AusschreibungssucheAutomatisieren,
+    KiAngebotAusschreibung,
+    SemantischeSucheAusschreibungen,
+} from './pages/Inhaltsseiten'
 import { routes } from './routes'
 
 // Zuordnung Manifest-Schluessel auf Komponente. Der Test in routes.test.js
@@ -23,6 +28,9 @@ export const pages = {
     UeberUns: <UeberUns />,
     Entwickler: <Entwickler />,
     Status: <Status />,
+    AusschreibungssucheAutomatisieren: <AusschreibungssucheAutomatisieren />,
+    KiAngebotAusschreibung: <KiAngebotAusschreibung />,
+    SemantischeSucheAusschreibungen: <SemantischeSucheAusschreibungen />,
     Impressum: <Impressum />,
     AGB: <AGB />,
     Datenschutz: <Datenschutz />,
