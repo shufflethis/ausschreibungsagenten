@@ -27,6 +27,7 @@ const FEATURES = [
 
 const BRANCHEN = [
     { emoji: 'crane', name: 'Fenster & Fassade', desc: 'Im Pilot aktiv: Fenster, Türen, Fassaden, Verglasung, Metallbau, Sonnenschutz und ausgewählte Brandschutz-Gewerke.' },
+    { emoji: 'target', name: 'Architektur & Ingenieurbüros', desc: 'Neu konfiguriert: Objektplanung, Tragwerksplanung, TGA-Planung, Bauleitung, Vermessung und Bauleitplanung (CPV 71) — nach unserer TED-Auswertung die zweitgrößte Kategorie deutscher EU-Ausschreibungen.' },
     { emoji: 'megaphone', name: 'Marketing & Digital', desc: 'Weiterhin aktiv: Marketing, Werbung, PR, Webdesign, Grafik und ausgewählte digitale Dienstleistungen.' },
     { emoji: 'compass', name: 'Weitere Branchen', desc: 'Weitere Branchen werden nach CPV-Katalog und Pilotbedarf konfiguriert. Eine vollständige Abdeckung aller Gewerke behaupten wir derzeit nicht.' },
 ]
