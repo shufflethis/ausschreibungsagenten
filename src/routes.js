@@ -76,6 +76,16 @@ export const routes = [
         lastmod: '2026-08-14',
     },
     {
+        path: '/brandkit',
+        component: 'Brandkit',
+        title: 'Brandkit – Logo, Farben und Schreibweise | Ausschreibungsagenten.de',
+        description:
+            'Logo-Dateien, Farbpalette, Typografie und Namensschreibweise von Ausschreibungsagenten.de zum Download – für Berichterstattung, Partnerseiten und Integrationen.',
+        prerender: true,
+        index: true,
+        lastmod: '2026-08-14',
+    },
+    {
         path: '/impressum',
         component: 'Impressum',
         title: 'Impressum | Ausschreibungsagenten.de',

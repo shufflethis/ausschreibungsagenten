@@ -15,6 +15,7 @@ import AppRedirect from './pages/AppRedirect'
 import UeberUns from './pages/UeberUns'
 import Entwickler from './pages/Entwickler'
 import Status from './pages/Status'
+import Brandkit from './pages/Brandkit'
 import {
     AusschreibungssucheAutomatisieren,
     KiAngebotAusschreibung,
@@ -29,6 +30,7 @@ export const pages = {
     UeberUns: <UeberUns />,
     Entwickler: <Entwickler />,
     Status: <Status />,
+    Brandkit: <Brandkit />,
     AusschreibungssucheAutomatisieren: <AusschreibungssucheAutomatisieren />,
     KiAngebotAusschreibung: <KiAngebotAusschreibung />,
     SemantischeSucheAusschreibungen: <SemantischeSucheAusschreibungen />,

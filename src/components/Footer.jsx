@@ -18,6 +18,14 @@ export default function Footer() {
                         <Link to="/ueber-uns">Über uns</Link>
                         <Link to="/entwickler">API & Agenten</Link>
                         <Link to="/status">Quellenstatus</Link>
+                        <a
+                            href="https://status.ausschreibungsagenten.de/status/ausschreibungsagenten"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            System-Status
+                        </a>
+                        <Link to="/brandkit">Brandkit</Link>
                         <Link to="/impressum">Impressum</Link>
                         <Link to="/agb">AGB</Link>
                         <Link to="/datenschutz">Datenschutz</Link>
