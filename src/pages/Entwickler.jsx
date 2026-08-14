@@ -113,7 +113,7 @@ export default function Entwickler() {
                 <div className="container">
                     <div className="hero__content">
                         <div className="hero__badge">
-                            <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4', animation: 'pulse 2s ease-in-out infinite' }}></span>
+                            <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', animation: 'pulse 2s ease-in-out infinite' }}></span>
                             MCP + A2A Agent Card + OpenAPI live
                         </div>
                         <h1 className="hero__title">

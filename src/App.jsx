@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ScrollRestoration from './components/ScrollRestoration'
 import LandingPage from './pages/LandingPage'
 import Impressum from './pages/Impressum'
 import AGB from './pages/AGB'
@@ -47,6 +48,7 @@ export const pages = {
 export default function App() {
     return (
         <>
+            <ScrollRestoration />
             <Header />
             <main>
                 <Routes>
