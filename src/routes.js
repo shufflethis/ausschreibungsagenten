@@ -76,6 +76,16 @@ export const routes = [
         lastmod: '2026-08-14',
     },
     {
+        path: '/zahlen',
+        component: 'Zahlen',
+        title: 'Vergabemarkt Deutschland in Zahlen: Volumen, Branchen, Statistik | Ausschreibungsagenten.de',
+        description:
+            'Der deutsche Vergabemarkt in belegten Zahlen: rund 500 Mrd. € öffentliche Beschaffung pro Jahr (OECD), 135,2 Mrd. € gemeldetes Auftragsvolumen 2024 (Destatis) und die Top-20-Branchen nach EU-weiten Ausschreibungen aus eigener TED-Auswertung.',
+        prerender: true,
+        index: true,
+        lastmod: '2026-08-14',
+    },
+    {
         path: '/brandkit',
         component: 'Brandkit',
         title: 'Brandkit – Logo, Farben und Schreibweise | Ausschreibungsagenten.de',
