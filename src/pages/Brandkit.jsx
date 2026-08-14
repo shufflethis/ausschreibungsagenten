@@ -14,20 +14,41 @@ const logoVarianten = [
     {
         titel: 'Neon-A auf Dunkel',
         datei: '/brand/logo-mark.svg',
+        png: '/brand/logo-mark.png',
         hintergrund: '#050b1a',
         farbe: '#60a5fa',
     },
     {
         titel: 'Weiß auf Dunkel',
         datei: '/brand/logo-mark-weiss.svg',
+        png: '/brand/logo-mark-weiss.png',
         hintergrund: '#050b1a',
         farbe: '#ffffff',
     },
     {
         titel: 'Dunkel auf Hell',
         datei: '/brand/logo-mark-dunkel.svg',
+        png: '/brand/logo-mark-dunkel.png',
         hintergrund: '#f1f5f9',
         farbe: '#0a1228',
+    },
+]
+
+const schriftzugVarianten = [
+    {
+        titel: 'Neon-Blau auf Dunkel',
+        datei: '/brand/logo-schriftzug.png',
+        hintergrund: '#050b1a',
+    },
+    {
+        titel: 'Weiß auf Dunkel',
+        datei: '/brand/logo-schriftzug-weiss.png',
+        hintergrund: '#050b1a',
+    },
+    {
+        titel: 'Dunkel auf Hell',
+        datei: '/brand/logo-schriftzug-dunkel.png',
+        hintergrund: '#f1f5f9',
     },
 ]
 
@@ -91,8 +112,51 @@ export default function Brandkit() {
                                     <LogoMark farbe={variante.farbe} />
                                 </div>
                                 <h3 className="glass-card__title" style={{ marginTop: '1rem' }}>{variante.titel}</h3>
+                                <div style={{ display: 'flex', gap: '.5rem', marginTop: '.5rem', flexWrap: 'wrap' }}>
+                                    <a href={variante.datei} download className="btn btn--outline">SVG</a>
+                                    <a href={variante.png} download className="btn btn--outline">PNG (1024 px)</a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="section">
+                <div className="container">
+                    <span className="section__label section__label--violet">
+                        <span className="pulse"></span> Logo mit Schriftzug
+                    </span>
+                    <h2 className="section__title">Die Wortmarke</h2>
+                    <p className="section__subtitle">
+                        Neon-A plus Schriftzug in Inter Bold — für Kooperationsseiten, Präsentationen
+                        und überall dort, wo der Name ausgeschrieben stehen soll. PNG mit transparentem
+                        Hintergrund, 2000 px breit.
+                    </p>
+                    <div style={{ display: 'grid', gap: '1.5rem', marginTop: '2rem' }}>
+                        {schriftzugVarianten.map((variante) => (
+                            <div className="glass-card" key={variante.datei}>
+                                <div
+                                    style={{
+                                        background: variante.hintergrund,
+                                        borderRadius: '12px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: '1.5rem',
+                                        border: '1px solid rgba(96, 165, 250, 0.2)',
+                                    }}
+                                >
+                                    <img
+                                        src={variante.datei}
+                                        alt={`Wortmarke Ausschreibungsagenten.de – ${variante.titel}`}
+                                        style={{ maxWidth: '100%', height: 'auto' }}
+                                        loading="lazy"
+                                    />
+                                </div>
+                                <h3 className="glass-card__title" style={{ marginTop: '1rem' }}>{variante.titel}</h3>
                                 <a href={variante.datei} download className="btn btn--outline" style={{ marginTop: '.5rem' }}>
-                                    SVG herunterladen
+                                    PNG herunterladen
                                 </a>
                             </div>
                         ))}
@@ -164,7 +228,7 @@ export default function Brandkit() {
                         <div className="glass-card">
                             <h3 className="glass-card__title">Fragen zum Brandkit</h3>
                             <p className="glass-card__text">
-                                Weitere Formate (PNG, Druckdaten) oder Freigaben für andere Verwendungen:
+                                Druckdaten, weitere Formate oder Freigaben für andere Verwendungen:
                                 Kontakt über das <a href="/impressum">Impressum</a> — wir antworten schnell.
                             </p>
                         </div>
