@@ -34,7 +34,7 @@ const FAQS = [
     { q: 'Was sind öffentliche Ausschreibungen und warum sind sie wichtig?', a: 'Öffentliche Ausschreibungen sind Vergabeverfahren, mit denen Behörden, Kommunen und öffentliche Einrichtungen Aufträge an Unternehmen vergeben. Die OECD beziffert die öffentliche Beschaffung in Deutschland in einer häufig zitierten Schätzung auf rund 15 Prozent des Bruttoinlandsprodukts. Die amtliche Vergabestatistik erfasst gemeldete Zuschläge und ist nicht mit einer vollständigen Zahl aller veröffentlichten Verfahren gleichzusetzen.' },
     { q: 'Welche Vergabeportale gibt es in Deutschland?', a: 'Zu den wichtigen Quellen gehören DTVP, eVergabe, service.bund.de, die Landesportale und für EU-Verfahren TED. Unser eigener Pilot indexiert aktuell 17 Quellen: TED, service.bund.de, den Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale Bayern, NRW, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz, die Metropolregion Rhein-Neckar, das Vergabeportal Baden-Württemberg sowie die britischen Quellen Find a Tender und Contracts Finder. Deutsche eVergabe und evergabe.de sind im Ausbau.' },
     { q: 'Was macht der Ausschreibungsagent konkret?', a: 'Der aktuelle Agent ordnet Bekanntmachungen über CPV-Codes und Regeln Branchen zu. Anschließend vergleicht er Firmenprofil, Keywords, Ausschlüsse, Leistungsort, Auftragswert und Frist. Jeder Fit-Score wird mit nachvollziehbaren Einzelgründen angezeigt; semantisches KI-Matching wird nicht als bereits produktiv behauptet.' },
-    { q: 'Wie viel kostet ein Ausschreibungsagent?', a: 'Preise hängen von Quellenabdeckung, Nutzerzahl, Suchprofilen, Exporten und Integrationen ab. Unser geplanter Pro-Tarif kostet 149 EUR pro Monat, der Agent-Tarif 499 EUR pro Monat und die Begleitung eines einzelnen Verfahrens 1.499 EUR. Der Online-Checkout ist noch nicht freigeschaltet; Pilot und Vertrag werden persönlich abgestimmt.' },
+    { q: 'Wie viel kostet ein Ausschreibungsagent?', a: 'Aktuell suchen wir weitere Partner für eine kostenfreie Pilotphase — im Pilot fallen keine Kosten an. Als Orientierung für den späteren Regelbetrieb: Der geplante Pro-Tarif liegt bei 149 EUR pro Monat, der Agent-Tarif bei 499 EUR pro Monat und die Begleitung eines einzelnen Verfahrens bei 1.499 EUR. Der Online-Checkout ist noch nicht freigeschaltet; Pilot und Vertrag werden persönlich abgestimmt.' },
     { q: 'Ab welchem Auftragsvolumen lohnt sich die Suche nach öffentlichen Ausschreibungen?', a: 'Eine allgemeingültige Untergrenze gibt es nicht. Entscheidend sind Auftragswert, Angebotsaufwand und Gewinnwahrscheinlichkeit. Für 2026/2027 gelten je nach Auftraggeber unterschiedliche EU-Schwellenwerte; unter anderem 140.000 EUR für Liefer- und Dienstleistungen zentraler Regierungsbehörden, 216.000 EUR für andere öffentliche Auftraggeber und 5.404.000 EUR für Bauaufträge. Maßgeblich sind immer die aktuellen amtlichen Werte und Vergabeunterlagen.' },
     { q: 'Welche GAEB-Funktion ist verfügbar?', a: 'Der Pilot liest GAEB DA XML X83 und X84 nur lesend ein und zeigt Metadaten, Bereiche, Positionen, Texte, Mengen, Einheiten und vorhandene Preise. CSV- und XLSX-Export sind möglich. Automatische Kalkulation, Preisempfehlung und Angebotsabgabe gehören nicht zum aktuellen Umfang.' },
     { q: 'Wie viele Ausschreibungen werden täglich veröffentlicht?', a: 'Eine vollständige tagesaktuelle Gesamtzahl für alle deutschen Portale existiert nicht. Bekanntmachungen sind auf EU-, Bundes-, Landes- und weiteren Vergabeplattformen verteilt. Genau deshalb weist unser Quellenstatus transparent aus, welche Portale tatsächlich abgefragt werden und wann der letzte erfolgreiche Abruf erfolgte.' },
@@ -585,19 +585,19 @@ export default function LandingPage() {
                                 <div className="pricing-strip">
                                     <article>
                                         <strong>Pro</strong>
-                                        <span>149 EUR/Monat</span>
+                                        <span><s>149 EUR/Monat</s> Kostenfrei in der Pilotphase</span>
                                         <p>Suchprofil, Alerts, Fulltext-Suche und wöchentliche Trefferliste.</p>
                                         <small>Checkout folgt nach Pilotabstimmung.</small>
                                     </article>
                                     <article>
                                         <strong>Agent</strong>
-                                        <span>499 EUR/Monat</span>
+                                        <span><s>499 EUR/Monat</s> Kostenfrei in der Pilotphase</span>
                                         <p>Höhere API-Limits, Volltextsuche, Agent API, A2A/MCP und Priorisierung.</p>
                                         <small>Checkout folgt nach Pilotabstimmung.</small>
                                     </article>
                                     <article>
                                         <strong>Verfahren</strong>
-                                        <span>1.499 EUR einmalig</span>
+                                        <span><s>1.499 EUR einmalig</s> Kostenfrei für Pilotpartner</span>
                                         <p>Konkrete Ausschreibung prüfen, Anforderungen strukturieren, Angebotsfahrplan bauen.</p>
                                         <small>Checkout folgt nach Pilotabstimmung.</small>
                                     </article>
@@ -737,29 +737,31 @@ export default function LandingPage() {
                         <span className="pulse"></span> Preise
                     </span>
                     <h2 className="section__title">
-                        Transparente <span className="gradient-text">Tarife</span> ohne Kleingedrucktes
+                        Jetzt <span className="gradient-text">kostenfrei</span> in die Pilotphase
                     </h2>
                     <p className="section__subtitle">
-                        Die Preise gelten als Orientierung. Der Online-Checkout wird erst nach erfolgreicher
+                        Wir suchen aktuell weitere Partner für eine kostenfreie Pilotphase.
+                        Die durchgestrichenen Preise sind eine Orientierung für den späteren Regelbetrieb —
+                        im Pilot zahlen Sie nichts. Der Online-Checkout wird erst nach erfolgreicher
                         Pilotphase freigeschaltet; Pilot und Vertrag werden persönlich abgestimmt.
                     </p>
 
                     <div className="pricing-strip">
                         <article>
                             <strong>Pro</strong>
-                            <span>149 EUR/Monat</span>
+                            <span><s>149 EUR/Monat</s> Kostenfrei in der Pilotphase</span>
                             <p>Suchprofil, Alerts, Volltextsuche und wöchentliche Trefferliste.</p>
                             <a href="#profil" className="btn btn--outline">Pilotzugang anfragen</a>
                         </article>
                         <article>
                             <strong>Agent</strong>
-                            <span>499 EUR/Monat</span>
+                            <span><s>499 EUR/Monat</s> Kostenfrei in der Pilotphase</span>
                             <p>Höhere API-Limits, Volltextsuche, Agent API, A2A/MCP und Priorisierung.</p>
                             <a href="#profil" className="btn btn--outline">Pilotzugang anfragen</a>
                         </article>
                         <article>
                             <strong>Verfahren</strong>
-                            <span>1.499 EUR einmalig</span>
+                            <span><s>1.499 EUR einmalig</s> Kostenfrei für Pilotpartner</span>
                             <p>Konkrete Ausschreibung prüfen, Anforderungen strukturieren, Angebotsfahrplan bauen.</p>
                             <a href="#kontakt" className="btn btn--outline">Beratung anfragen</a>
                         </article>
