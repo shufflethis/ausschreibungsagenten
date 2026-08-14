@@ -229,7 +229,7 @@ export default function LandingPage() {
                 <div className="container">
                     <div className="hero__content">
                         <div className="hero__badge">
-                            <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4', animation: 'pulse 2s ease-in-out infinite' }}></span>
+                            <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', animation: 'pulse 2s ease-in-out infinite' }}></span>
                             17 öffentliche Quellen live – von TED bis zu den Landesportalen
                         </div>
 
@@ -261,11 +261,11 @@ export default function LandingPage() {
                                 </span>
                             </div>
                             <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#8b5cf6' }}>0–100</span>
+                                <span className="hero__stat-value" style={{ color: '#818cf8' }}>0–100</span>
                                 <span className="hero__stat-label">Erklärbarer Firmen-Fit</span>
                             </div>
                             <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#f59e0b' }}>
+                                <span className="hero__stat-value" style={{ color: '#38bdf8' }}>
                                     {sourceStatus.length > 0 ? sourceStatus.filter((s) => s.implementation_status === 'live').length : 17}
                                 </span>
                                 <span className="hero__stat-label">Produktive öffentliche Quellen</span>
