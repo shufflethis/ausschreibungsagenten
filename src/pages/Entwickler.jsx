@@ -299,12 +299,13 @@ export default function Entwickler() {
                             </p>
                         </div>
                         <div className="glass-card">
-                            <h3 className="glass-card__title">Agent-Tarif (499 EUR/Monat)</h3>
+                            <h3 className="glass-card__title">Agent-Tarif — kostenfrei in der Pilotphase</h3>
                             <p className="glass-card__text">
                                 API-Key mit höheren Limits (3.600/h), MCP-Volltextsuche, erklärbarer
                                 Firmen-Fit mit Einzelgründen, Priorisierung sowie A2A-Profilaktionen.
-                                Der Tarifwechsel wird im Pilot persönlich eingerichtet; ein
-                                Online-Checkout ist noch nicht freigeschaltet.
+                                Wir suchen aktuell weitere Pilotpartner; im Pilot fallen keine Kosten an
+                                (später geplant: <s>499 EUR/Monat</s>). Der Zugang wird persönlich
+                                eingerichtet; ein Online-Checkout ist noch nicht freigeschaltet.
                             </p>
                             <div style={{ marginTop: '1rem' }}>
                                 <a href="/#profil" className="btn btn--primary">Pilotzugang anfragen</a>
