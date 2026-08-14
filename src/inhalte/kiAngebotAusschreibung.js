@@ -1,6 +1,10 @@
 export const kiAngebotAusschreibung = {
     path: '/ki-angebot-ausschreibung',
     h1: 'KI und Ausschreibungen: was beim Angebot wirklich hilft — und was nicht',
+    heroBild: {
+        src: '/hero/ki-angebot-ausschreibung-planung.webp',
+        alt: 'Team plant ein Angebot für eine öffentliche Ausschreibung mit Notizen und Laptop',
+    },
     direktantwort:
         'KI hilft bei öffentlichen Ausschreibungen vor allem beim Vorbereiten: Anforderungen aus den Vergabeunterlagen herauslesen, sie gegen vorhandene Nachweise halten und früh sichtbar machen, ob eine Teilnahme überhaupt sinnvoll ist. Das Verfassen des Angebotstexts und die Kalkulation bleiben Ihre Arbeit — dort haftet Ihr Unternehmen für jede Angabe.',
     fakten: {

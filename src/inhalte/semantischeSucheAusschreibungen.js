@@ -1,6 +1,10 @@
 export const semantischeSucheAusschreibungen = {
     path: '/semantische-suche-ausschreibungen',
     h1: 'Semantische Suche bei Ausschreibungen: was der Begriff meint und was wir stattdessen tun',
+    heroBild: {
+        src: '/hero/semantische-suche-ausschreibungen-besprechung.webp',
+        alt: 'Besprechung über die Suche nach passenden Ausschreibungen am Bildschirm',
+    },
     direktantwort:
         'Semantische Suche findet Texte nach Bedeutung statt nach exakten Wörtern, indem sie Sprache in Vektoren übersetzt und nach Ähnlichkeit vergleicht. Bei Vergabeunterlagen hat das einen Haken: Ähnlichkeit ist kein Nachweis. Wir arbeiten deshalb mit CPV-Codes, Stichwörtern, Ausschlüssen und harten Regeln — jeder Treffer bleibt so einzeln begründbar.',
     fakten: {

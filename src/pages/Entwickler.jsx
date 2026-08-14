@@ -110,6 +110,13 @@ export default function Entwickler() {
             <Seo path="/entwickler" />
 
             <section className="hero" id="api">
+                <img
+                    className="hero-foto"
+                    src="/hero/entwickler-arbeitet-an-ausschreibungs-api.webp"
+                    alt="Entwickler bindet die Ausschreibungs-API am Laptop an"
+                    fetchPriority="high"
+                />
+                <div className="hero-foto__schleier" aria-hidden="true"></div>
                 <div className="container">
                     <div className="hero__content">
                         <div className="hero__badge">

@@ -36,7 +36,20 @@ export default function InhaltsSeite({ seite }) {
 
             <article className="section inhalt">
                 <div className="container">
-                    <h1 className="section__title">{seite.h1}</h1>
+                    {seite.heroBild ? (
+                        <header className="inhalt-hero">
+                            <img
+                                className="hero-foto"
+                                src={seite.heroBild.src}
+                                alt={seite.heroBild.alt}
+                                fetchPriority="high"
+                            />
+                            <div className="hero-foto__schleier" aria-hidden="true"></div>
+                            <h1 className="section__title">{seite.h1}</h1>
+                        </header>
+                    ) : (
+                        <h1 className="section__title">{seite.h1}</h1>
+                    )}
 
                     <p className="inhalt__direktantwort">{seite.direktantwort}</p>
 
