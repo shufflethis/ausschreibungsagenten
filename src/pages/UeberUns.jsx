@@ -6,22 +6,31 @@ const team = [
         name: 'Gorden Wübbe',
         role: 'Geschäftsführer · Technologie & KI',
         description: 'Gorden verantwortet die technische Plattform hinter Ausschreibungsagenten.de: Datenquellen, Matching, sichere Infrastruktur und die Automatisierung vom Fund bis zur nächsten Aktion.',
+        longDescription:
+            'Er baut und betreibt die Anbindung der 17 öffentlichen Quellen – von TED über service.bund.de und den Datenservice Öffentlicher Einkauf bis zu den Landesportalen – und legt dabei Wert auf nachvollziehbare Datenpfade: Jede Bekanntmachung bleibt mit Originalquelle, Abrufzeitpunkt und Match-Begründung rekonstruierbar. Datenverarbeitung und KI-Modelle laufen bewusst in der Europäischen Union.',
         image: '/team/gorden-wuebbe.webp',
         accent: 'cyan',
+        focus: ['Quellenanbindung & Datenpipeline', 'Matching-Logik & Firmen-Fit', 'Infrastruktur in der EU'],
     },
     {
         name: 'Tobias Sander',
         role: 'Geschäftsführer · Strategie & Produkt',
         description: 'Tobias verbindet Kundenbedarf, Produktentwicklung und digitale Strategie. Er sorgt dafür, dass aus komplexen Vergabeinformationen ein verständliches und praktisch nutzbares Werkzeug wird.',
+        longDescription:
+            'Er führt die Pilotgespräche mit Unternehmen aus Handwerk, Bau, IT und Marketing und übersetzt deren Vergabealltag in Produktentscheidungen: Welche Angaben braucht eine Go/No-Go-Karte? Welche Exporte landen wirklich im Angebotsprozess? Aus diesen Antworten entstehen Funktionen wie der E-Mail-Digest, das Pilot-Dashboard und der ERP-Export.',
         image: '/team/tobias-sander.webp',
         accent: 'violet',
+        focus: ['Pilotprogramm & Kundenarbeit', 'Produktstrategie', 'Vergabeprozesse im Mittelstand'],
     },
     {
         name: 'Thilo Jansen',
         role: 'Geschäftsführer · Qualität & Prozesse',
         description: 'Thilo bringt die Perspektive aus regulierten und verantwortungsvollen Arbeitsfeldern ein. Sein Fokus liegt auf klaren Abläufen, nachvollziehbaren Ergebnissen und einer Einführung, die zum Team passt.',
+        longDescription:
+            'Er prüft jeden Ablauf auf Nachvollziehbarkeit: Woher stammt ein Treffer, warum wurde er bewertet, wie wird ein Profil eingeführt, ohne den laufenden Betrieb zu stören? Diese Perspektive aus regulierten Arbeitsfeldern sorgt dafür, dass das Werkzeug auch in Unternehmen mit dokumentationspflichtigen Prozessen Vertrauen findet.',
         image: '/team/thilo-jansen.webp',
         accent: 'amber',
+        focus: ['Qualitätssicherung & Nachvollziehbarkeit', 'Einführung in bestehende Teams', 'Prozesse in regulierten Umgebungen'],
     },
 ]
 
@@ -43,10 +52,29 @@ const principles = [
     },
 ]
 
+const aboutFaqs = [
+    {
+        frage: 'Wer steht hinter Ausschreibungsagenten.de?',
+        antwort: 'Ausschreibungsagenten.de wird von der Yawusa UG (haftungsbeschränkt) aus Berlin betrieben. Hinter der Plattform stehen drei Geschäftsführer: Gorden Wübbe (Technologie & KI), Tobias Sander (Strategie & Produkt) und Thilo Jansen (Qualität & Prozesse).',
+    },
+    {
+        frage: 'Wo sitzt Ausschreibungsagenten.de und wo werden Daten verarbeitet?',
+        antwort: 'Der Sitz ist in Berlin, Schliemannstraße 23, 10437 Berlin. Datenverarbeitung und eingesetzte KI-Modelle laufen bewusst in der Europäischen Union – ein entscheidender Punkt für Unternehmen mit hohen Anforderungen an Datenschutz und Compliance.',
+    },
+    {
+        frage: 'Für welche Unternehmen arbeitet das Team?',
+        antwort: 'Im Pilot arbeiten wir mit Unternehmen aus Handwerk, Bau, IT, Marketing und weiteren Dienstleistungsbranchen – vom kleinen Betrieb bis zum etablierten Mittelständler. Entscheidend ist nicht die Größe, sondern der Wunsch, öffentliche Ausschreibungen systematisch statt zufällig zu finden.',
+    },
+    {
+        frage: 'Wie kann ich mit dem Team in Kontakt treten?',
+        antwort: 'Am schnellsten per E-Mail an hi@ausschreibungsagenten.de oder telefonisch unter +49 30 403665430. Im Pilot stimmen wir Suchprofil, Branchen und Regionen persönlich ab – bewusst ohne anonymen Self-Service.',
+    },
+]
+
 export default function UeberUns() {
     return (
         <div className="about-page">
-            <Seo path="/ueber-uns" />
+            <Seo path="/ueber-uns" faq={aboutFaqs} />
 
             <section className="about-hero">
                 <div className="container about-hero__inner">
@@ -114,6 +142,14 @@ export default function UeberUns() {
                                     <span className="team-card__role">{member.role}</span>
                                     <h3>{member.name}</h3>
                                     <p>{member.description}</p>
+                                    {member.longDescription && <p>{member.longDescription}</p>}
+                                    {member.focus && (
+                                        <ul className="team-card__focus">
+                                            {member.focus.map((punkt) => (
+                                                <li key={punkt}>{punkt}</li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
                             </article>
                         ))}
@@ -141,6 +177,29 @@ export default function UeberUns() {
                         >
                             Agentifizierung kennenlernen ↗
                         </a>
+                    </div>
+                </div>
+            </section>
+
+            <section className="section about-faq">
+                <div className="container">
+                    <div className="about-section-heading">
+                        <div>
+                            <div className="section__label"><span className="pulse" /> Häufige Fragen</div>
+                            <h2 className="section__title">Fragen an das Team</h2>
+                        </div>
+                        <p className="section__subtitle">
+                            Die Antworten, die im Pilot am häufigsten nachgefragt werden – kurz und direkt,
+                            wie wir arbeiten.
+                        </p>
+                    </div>
+                    <div className="about-faq__list">
+                        {aboutFaqs.map((eintrag) => (
+                            <details className="about-faq__item" key={eintrag.frage}>
+                                <summary>{eintrag.frage}</summary>
+                                <p>{eintrag.antwort}</p>
+                            </details>
+                        ))}
                     </div>
                 </div>
             </section>
