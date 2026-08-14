@@ -220,10 +220,31 @@ img {
 }
 
 .header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
     font-size: var(--font-size-lg);
     font-weight: 700;
     color: var(--text-heading) !important;
     letter-spacing: -0.02em;
+}
+
+.header__logo-mark {
+    width: 34px;
+    height: 34px;
+    color: var(--accent-cyan-light);
+    filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.85)) drop-shadow(0 0 22px rgba(59, 130, 246, 0.5));
+    flex-shrink: 0;
+    transition: filter var(--transition-base), transform var(--transition-base);
+}
+
+.header__logo:hover .header__logo-mark {
+    filter: drop-shadow(0 0 12px rgba(96, 165, 250, 1)) drop-shadow(0 0 32px rgba(59, 130, 246, 0.7));
+    transform: scale(1.05);
+}
+
+.header__logo-text {
+    display: block;
 }
 
 .header__logo .dot {
@@ -1210,6 +1231,8 @@ img {
     font-size: 3rem;
     margin-bottom: 1rem;
     display: block;
+    color: var(--accent-cyan-light);
+    filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.55));
 }
 
 /* ---------- FAQ Section ---------- */
@@ -1412,6 +1435,15 @@ img {
     font-weight: 700;
     color: var(--text-heading);
     margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact-info__item h4 svg {
+    color: var(--accent-cyan-light);
+    filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.5));
+    flex-shrink: 0;
 }
 
 .contact-info__item p {
