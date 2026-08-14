@@ -16,6 +16,7 @@ import UeberUns from './pages/UeberUns'
 import Entwickler from './pages/Entwickler'
 import Status from './pages/Status'
 import Brandkit from './pages/Brandkit'
+import Zahlen from './pages/Zahlen'
 import {
     AusschreibungssucheAutomatisieren,
     KiAngebotAusschreibung,
@@ -31,6 +32,7 @@ export const pages = {
     Entwickler: <Entwickler />,
     Status: <Status />,
     Brandkit: <Brandkit />,
+    Zahlen: <Zahlen />,
     AusschreibungssucheAutomatisieren: <AusschreibungssucheAutomatisieren />,
     KiAngebotAusschreibung: <KiAngebotAusschreibung />,
     SemantischeSucheAusschreibungen: <SemantischeSucheAusschreibungen />,
