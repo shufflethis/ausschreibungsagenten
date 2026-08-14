@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
+import Icon from '../components/Icon'
 import VideoAbschnitt from '../components/VideoAbschnitt'
 import { VIDEO_BESCHREIBUNG, VIDEO_TITEL, VIDEO_TRANSKRIPT } from '../data/videoTranskript'
 
@@ -16,18 +17,18 @@ const TOOLS = [
 ]
 
 const FEATURES = [
-    { icon: '🔍', title: '17 Live-Quellen', text: 'TED, service.bund.de, der Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale Bayern, NRW, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz, die Metropolregion Rhein-Neckar, das Vergabeportal Baden-Württemberg sowie die britischen Quellen Find a Tender und Contracts Finder werden regelmäßig abgefragt. Deutsche eVergabe und evergabe.de befinden sich im Ausbau.', color: '' },
-    { icon: '🎯', title: 'Erklärbares Matching', text: 'CPV-Codes, Leistungsbegriffe, Ausschlusswörter, Leistungsort, Auftragswert und Frist ergeben einen transparenten Firmen-Fit mit einzelnen Score-Gründen.', color: '--violet' },
-    { icon: '✉️', title: 'E-Mail-Digest', text: 'Der E-Mail-Digest wird im begleiteten Pilot gemeinsam getestet und anschließend je Profil täglich oder wöchentlich freigeschaltet. WhatsApp und Push sind nicht produktiv.', color: '--amber' },
-    { icon: '📄', title: 'GAEB X83/X84 lesen', text: 'GAEB-DA-XML-Dateien der Austauschphasen X83 und X84 werden nur lesend strukturiert: Bereiche, Positionen, Mengen, Einheiten und optionale Preise. Keine Kalkulationsautomatik.', color: '--green' },
-    { icon: '📊', title: 'Pilot-Dashboard', text: 'Aktive Treffer, Fit-Gründe, Fristen, Auftragswerte, Originalquelle, Status und interne Notizen in einer geschützten Profilansicht.', color: '' },
-    { icon: '↗️', title: 'Standardisierter ERP-Export', text: 'Tender lassen sich als versioniertes JSON, CSV oder XLSX exportieren. Ein signierter Webhook ist konfigurierbar; konkrete ERP-Connectoren folgen erst nach Herstellerklärung.', color: '--violet' },
+    { icon: 'search', title: '17 Live-Quellen', text: 'TED, service.bund.de, der Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale Bayern, NRW, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz, die Metropolregion Rhein-Neckar, das Vergabeportal Baden-Württemberg sowie die britischen Quellen Find a Tender und Contracts Finder werden regelmäßig abgefragt. Deutsche eVergabe und evergabe.de befinden sich im Ausbau.', color: '' },
+    { icon: 'target', title: 'Erklärbares Matching', text: 'CPV-Codes, Leistungsbegriffe, Ausschlusswörter, Leistungsort, Auftragswert und Frist ergeben einen transparenten Firmen-Fit mit einzelnen Score-Gründen.', color: '--violet' },
+    { icon: 'mail', title: 'E-Mail-Digest', text: 'Der E-Mail-Digest wird im begleiteten Pilot gemeinsam getestet und anschließend je Profil täglich oder wöchentlich freigeschaltet. WhatsApp und Push sind nicht produktiv.', color: '--amber' },
+    { icon: 'doc', title: 'GAEB X83/X84 lesen', text: 'GAEB-DA-XML-Dateien der Austauschphasen X83 und X84 werden nur lesend strukturiert: Bereiche, Positionen, Mengen, Einheiten und optionale Preise. Keine Kalkulationsautomatik.', color: '--green' },
+    { icon: 'dashboard', title: 'Pilot-Dashboard', text: 'Aktive Treffer, Fit-Gründe, Fristen, Auftragswerte, Originalquelle, Status und interne Notizen in einer geschützten Profilansicht.', color: '' },
+    { icon: 'export', title: 'Standardisierter ERP-Export', text: 'Tender lassen sich als versioniertes JSON, CSV oder XLSX exportieren. Ein signierter Webhook ist konfigurierbar; konkrete ERP-Connectoren folgen erst nach Herstellerklärung.', color: '--violet' },
 ]
 
 const BRANCHEN = [
-    { emoji: '🏗️', name: 'Fenster & Fassade', desc: 'Im Pilot aktiv: Fenster, Türen, Fassaden, Verglasung, Metallbau, Sonnenschutz und ausgewählte Brandschutz-Gewerke.' },
-    { emoji: '📣', name: 'Marketing & Digital', desc: 'Weiterhin aktiv: Marketing, Werbung, PR, Webdesign, Grafik und ausgewählte digitale Dienstleistungen.' },
-    { emoji: '🧭', name: 'Weitere Branchen', desc: 'Weitere Branchen werden nach CPV-Katalog und Pilotbedarf konfiguriert. Eine vollständige Abdeckung aller Gewerke behaupten wir derzeit nicht.' },
+    { emoji: 'crane', name: 'Fenster & Fassade', desc: 'Im Pilot aktiv: Fenster, Türen, Fassaden, Verglasung, Metallbau, Sonnenschutz und ausgewählte Brandschutz-Gewerke.' },
+    { emoji: 'megaphone', name: 'Marketing & Digital', desc: 'Weiterhin aktiv: Marketing, Werbung, PR, Webdesign, Grafik und ausgewählte digitale Dienstleistungen.' },
+    { emoji: 'compass', name: 'Weitere Branchen', desc: 'Weitere Branchen werden nach CPV-Katalog und Pilotbedarf konfiguriert. Eine vollständige Abdeckung aller Gewerke behaupten wir derzeit nicht.' },
 ]
 
 const FAQS = [
@@ -43,6 +44,8 @@ const FAQS = [
     { q: 'Wie unterscheidet sich ausschreibungsagenten.de von anderen Plattformen?', a: 'Neben dem Marktüberblick erproben wir einen eigenen, transparenten Ausschreibungsagenten. Im aktuellen Pilot sind 17 öffentliche Quellen, erklärbares Profil-Matching, strukturierte Go/No-Go-Karten, GAEB X83/X84 und Standardexporte verfügbar. E-Mail-Digests werden im begleiteten Pilot getestet; weitere Portale und Hersteller-Connectoren kennzeichnen wir als Ausbau.' },
     { q: 'Welche Fristen gelten bei öffentlichen Ausschreibungen?', a: 'Die Angebotsfristen variieren je nach Verfahrensart. Bei offenen Verfahren oberhalb der EU-Schwellenwerte beträgt die Mindestfrist 35 Tage (mit elektronischer Bekanntmachung: 30 Tage). Unterhalb der Schwellenwerte und bei nationalen Verfahren gelten oft kürzere Fristen von 10–15 Werktagen. Ein Ausschreibungsagent mit Fristenkalender sorgt dafür, dass Sie keine Deadline verpassen.' },
     { q: 'Ist die Nutzung der Vergabeportale kostenlos?', a: 'Die Einsicht in Bekanntmachungen ist auf den meisten offiziellen Portalen kostenlos. Die Teilnahme an elektronischen Vergabeverfahren über das DTVP ist ebenfalls kostenfrei. Erweiterte Funktionen wie Suchprofile, automatische Benachrichtigungen und Export-Funktionen sind bei vielen Portalen premium-pflichtig. Drittanbieter-Tools wie aumass, TenderWolf oder GAEB.ai bieten Mehrwert-Features gegen monatliche Gebühren.' },
+    { q: 'Wo werden meine Daten verarbeitet – und welche KI steckt dahinter?', a: 'Der Sitz der Yawusa UG ist Berlin, die Plattform wird in Deutschland gehostet und die eingesetzten KI-Modelle laufen bei europäischen Anbietern innerhalb der Europäischen Union (aktuell Mistral AI). Kundendaten verlassen die EU nicht. Verarbeitet wird, was für Suchprofil, Matching und Digest nötig ist; Details stehen in der Datenschutzerklärung.' },
+    { q: 'Kann ich Treffer im Team bearbeiten – Merkliste, Notizen, Status?', a: 'Ja. Das Pilot-Dashboard zeigt je Treffer Auftraggeber, Leistungsort, Frist, Wert, Match-Gründe und Originalquelle und erlaubt Status und interne Notizen im Team. Für Kollegen ohne Zugang oder fürs Archiv lassen sich Treffer als JSON, CSV oder XLSX exportieren; ein signierter Webhook ist konfigurierbar.' },
 ]
 
 const TENDER_PRESETS = [
@@ -784,7 +787,7 @@ export default function LandingPage() {
                     <div className="features-grid">
                         {FEATURES.map((f, i) => (
                             <div className={`glass-card ${i === 0 ? 'glass-card--featured' : ''}`} key={i}>
-                                <div className={`glass-card__icon${f.color ? ' glass-card__icon' + f.color : ''}`}>{f.icon}</div>
+                                <div className={`glass-card__icon${f.color ? ' glass-card__icon' + f.color : ''}`}><Icon name={f.icon} /></div>
                                 <h3 className="glass-card__title">{f.title}</h3>
                                 <p className="glass-card__text">{f.text}</p>
                             </div>
@@ -810,7 +813,7 @@ export default function LandingPage() {
                     <div className="branchen-grid">
                         {BRANCHEN.map((b, i) => (
                             <div className="glass-card branche-card" key={i}>
-                                <span className="branche-card__emoji">{b.emoji}</span>
+                                <span className="branche-card__emoji"><Icon name={b.emoji} size={30} /></span>
                                 <h3 className="glass-card__title">{b.name}</h3>
                                 <p className="glass-card__text">{b.desc}</p>
                             </div>
@@ -877,6 +880,38 @@ export default function LandingPage() {
                         </p>
                         <p>
                             Unser aktueller Agent löst das transparent mit CPV-Klassifikation, positiven und negativen Begriffen sowie Regeln für Region, Auftragswert und Frist. Das ist nachvollziehbar und gut prüfbar. Semantische Modelle können später ergänzt werden, werden aber nicht als bereits produktiver Funktionsumfang ausgegeben.
+                        </p>
+
+                        <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>
+                            Datenschutz und KI: bewusst europäisch
+                        </h3>
+                        <p>
+                            Wer Vergabeunterlagen, Firmenprofile und Angebotsstrategien in ein Werkzeug legt, gibt
+                            mehr preis als eine E-Mail-Adresse. Deshalb gilt bei uns: Die Plattform wird in
+                            Deutschland gehostet, und wo KI-Modelle zum Einsatz kommen, laufen sie bei europäischen
+                            Anbietern innerhalb der Europäischen Union – aktuell Mistral AI. Ihre Daten verlassen
+                            die EU nicht, und es findet keine Verarbeitung bei US-Hyperscalern statt.
+                        </p>
+                        <p>
+                            Das ist nicht nur eine Rechtsfrage nach DSGVO, sondern auch eine Vertrauensfrage:
+                            Suchprofile verraten, welche Aufträge ein Unternehmen sucht und welche es ausschließt.
+                            Diese Information gehört nicht in fremde Jurisdiktionen.
+                        </p>
+
+                        <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>
+                            Vom Treffer zum Team: Merkliste, Notizen und Export
+                        </h3>
+                        <p>
+                            Eine gefundene Ausschreibung ist erst der Anfang. Im Pilot-Dashboard behalten Sie den
+                            Überblick: Jeder Treffer zeigt Auftraggeber, Leistungsort, Frist, geschätzten Wert,
+                            die einzelnen Match-Gründe und die Originalquelle. Status und interne Notizen machen
+                            den Vorgang im Team bearbeitbar – vom ersten Fund bis zur Go/No-Go-Entscheidung.
+                        </p>
+                        <p>
+                            Für Kollegen ohne Zugang, für das Archiv oder für die Übergabe an ein ERP exportieren
+                            Sie Treffer als versioniertes JSON, CSV oder XLSX. Ein signierter Webhook ist
+                            konfigurierbar; konkrete ERP-Connectoren folgen erst nach Herstellerklärung – auch das
+                            kennzeichnen wir bewusst als Ausbau statt als Versprechen.
                         </p>
 
                         <h3 style={{ color: 'var(--text-heading)', fontSize: 'var(--font-size-xl)', marginBottom: '1rem', marginTop: '2rem' }}>
@@ -1044,23 +1079,23 @@ export default function LandingPage() {
 
                         <div className="contact-info">
                             <div className="glass-card contact-info__item">
-                                <h4>📧 E-Mail</h4>
+                                <h4><Icon name="mail" size={18} /> E-Mail</h4>
                                 <p><a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a></p>
                             </div>
                             <div className="glass-card contact-info__item">
-                                <h4>📞 Telefon</h4>
+                                <h4><Icon name="phone" size={18} /> Telefon</h4>
                                 <p><a href="tel:+4930403665430">030 – 403 665 430</a></p>
                             </div>
                             <div className="glass-card contact-info__item">
-                                <h4>📍 Standort</h4>
+                                <h4><Icon name="pin" size={18} /> Standort</h4>
                                 <p>Yawusa UG (haftungsbeschränkt)<br />Schliemannstraße 23, 10437 Berlin</p>
                             </div>
                             <div className="glass-card contact-info__item">
-                                <h4>⚡ Antwortzeit</h4>
+                                <h4><Icon name="zap" size={18} /> Antwortzeit</h4>
                                 <p>In der Regel antworten wir innerhalb von 24 Stunden an Werktagen.</p>
                             </div>
                             <div className="glass-card contact-info__item">
-                                <h4>🎯 Für wen?</h4>
+                                <h4><Icon name="target" size={18} /> Für wen?</h4>
                                 <p>Handwerk, Bau, IT, Beratung, Facility Management und alle Unternehmen, die öffentliche Aufträge gewinnen möchten.</p>
                             </div>
                         </div>
