@@ -77,6 +77,13 @@ export default function UeberUns() {
             <Seo path="/ueber-uns" faq={aboutFaqs} />
 
             <section className="about-hero">
+                <img
+                    className="hero-foto"
+                    src="/hero/team-ausschreibungsagenten-im-austausch.webp"
+                    alt="Das Team hinter Ausschreibungsagenten.de im persönlichen Austausch"
+                    fetchPriority="high"
+                />
+                <div className="hero-foto__schleier" aria-hidden="true"></div>
                 <div className="container about-hero__inner">
                     <div className="section__label"><span className="pulse" /> Über uns</div>
                     <h1>Menschen für Entscheidungen.<br /><span>Agenten für die Suche.</span></h1>

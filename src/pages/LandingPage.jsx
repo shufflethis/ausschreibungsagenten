@@ -229,6 +229,13 @@ export default function LandingPage() {
 
             {/* ===== HERO ===== */}
             <section className="hero" id="start">
+                <img
+                    className="hero-foto"
+                    src="/hero/oeffentliche-ausschreibungen-team-recherche.webp"
+                    alt="Team bespricht öffentliche Ausschreibungen gemeinsam am Laptop im Büro"
+                    fetchPriority="high"
+                />
+                <div className="hero-foto__schleier" aria-hidden="true"></div>
                 <div className="container">
                     <div className="hero__content">
                         <div className="hero__badge">

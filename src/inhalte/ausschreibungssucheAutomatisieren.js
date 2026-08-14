@@ -1,6 +1,10 @@
 export const ausschreibungssucheAutomatisieren = {
     path: '/ausschreibungssuche-automatisieren',
     h1: 'Ausschreibungssuche automatisieren: wie es funktioniert und was es bringt',
+    heroBild: {
+        src: '/hero/ausschreibungssuche-automatisieren-laptop.webp',
+        alt: 'Zwei Kollegen prüfen automatisch gefundene Ausschreibungen am Laptop',
+    },
     direktantwort:
         'Die Suche nach öffentlichen Ausschreibungen automatisiert man, indem ein Dienst alle relevanten Vergabeportale regelmäßig abfragt und jede neue Bekanntmachung gegen ein hinterlegtes Firmenprofil prüft: CPV-Codes, Leistungsbegriffe, Ausschlusswörter, Leistungsort, Auftragswert und Frist. Gemeldet werden nur die Treffer, die zu diesen Kriterien passen, jeweils mit Begründung und Link zur Originalquelle.',
     fakten: {
