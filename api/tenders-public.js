@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const allowedParams = [
         'country', 'search', 'cpv', 'vertical', 'performance_region',
         'minimum_value_eur', 'maximum_value_eur', 'deadline_within_days',
-        'only_active', 'min_score', 'limit', 'offset',
+        'only_active', 'min_score', 'limit', 'offset', 'summary_lang',
     ]
     for (const key of allowedParams) {
         const value = req.query[key]

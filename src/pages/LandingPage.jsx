@@ -135,6 +135,9 @@ export default function LandingPage() {
                     search: tenderQuery,
                     min_score: '50',
                     limit: '6',
+                    // Gecachte KI-Kurzfassung je Treffer (Backend labelt sie,
+                    // das Original bleibt massgeblich).
+                    summary_lang: 'de',
                 })
                 const res = await fetch(`/api/tenders-public?${params.toString()}`, {
                     signal: controller.signal,
@@ -463,6 +466,14 @@ export default function LandingPage() {
                                                 <span>Score {tender.relevance_score}</span>
                                             </div>
                                             <h3>{tender.title}</h3>
+                                            {tender.summary?.summary && (
+                                                <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--text-secondary)', margin: '0 0 .5rem' }}>
+                                                    {tender.summary.summary}
+                                                    <span style={{ display: 'block', color: 'var(--text-tertiary)', fontSize: 'var(--font-size-xs)', marginTop: '.25rem' }}>
+                                                        {tender.summary.label}
+                                                    </span>
+                                                </p>
+                                            )}
                                             <dl>
                                                 <div>
                                                     <dt>Auftraggeber</dt>
