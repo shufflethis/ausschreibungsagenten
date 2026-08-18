@@ -1,6 +1,10 @@
 export const vergabepilotAlternative = {
     path: '/vergabepilot-alternative',
     h1: 'Vergabepilot Alternative: warum Ausschreibungsagenten erklärbar statt semantisch matcht',
+    heroBild: {
+        src: '/hero/vergabepilot-alternative-besprechung.webp',
+        alt: 'Team der Ausschreibungsagenten bei der Arbeit',
+    },
     direktantwort:
         'Vergabepilot positioniert sich als KI-Plattform für deutsche Ausschreibungen mit semantischer Suche, KI-Zusammenfassung der Unterlagen und einem KI-Assistenten. Ausschreibungsagenten wählt bewusst einen anderen Weg: kein Ähnlichkeitswert, sondern erklärbares Matching über CPV-Codes, Regeln und Ausschlüsse — jeder Treffer mit Begründung, jede Quelle mit belegtem Abrufstand.',
     fakten: {

@@ -1,6 +1,10 @@
 export const vergabefixAlternative = {
     path: '/vergabefix-alternative',
     h1: 'Vergabefix Alternative: Software plus Beratung oder erklärbares Matching',
+    heroBild: {
+        src: '/hero/vergabefix-alternative-team.webp',
+        alt: 'Team der Ausschreibungsagenten im Austausch',
+    },
     direktantwort:
         'Vergabefix wirbt mit über 100 Vergabeportalen, mehr als 15.000 aktuellen Ausschreibungen und einem 24/7-Monitoring — Software und Beratung aus einer Hand, gehostet in Deutschland. Ausschreibungsagenten setzt dagegen auf 17 benannte, belegte Quellen und ein erklärbares Matching, bei dem jeder Treffer seine Gründe nennt statt sich hinter einer Gesamtzahl zu verstecken.',
     fakten: {

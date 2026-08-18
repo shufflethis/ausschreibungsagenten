@@ -1,6 +1,10 @@
 export const tenderflowAlternative = {
     path: '/tenderflow-alternative',
     h1: 'Tenderflow Alternative: Begründung je Treffer statt Prozentversprechen',
+    heroBild: {
+        src: '/hero/tenderflow-alternative-laptop.webp',
+        alt: 'Team der Ausschreibungsagenten am Arbeitsplatz',
+    },
     direktantwort:
         'Tenderflow durchsucht nach eigenen Angaben 150 und mehr Vergabeportale, gleicht sie mit einem Kompetenzprofil ab und gibt eine klare Empfehlung, ob Sie mitbieten sollten. Ausschreibungsagenten verfolgt dasselbe Ziel mit einer anderen Methode: 17 benannte Quellen mit belegtem Abrufstand und ein Matching, das zu jedem Treffer die Gründe nennt — ohne pauschale Aufwandsversprechen.',
     fakten: {
