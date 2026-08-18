@@ -8,9 +8,9 @@ export const routes = [
     {
         path: '/',
         component: 'LandingPage',
-        title: 'Ausschreibungsagenten.de – Ausschreibungen aus TED, Bund und Landesportalen filtern',
+        title: 'Ausschreibungsagenten.de – Öffentliche Ausschreibungen automatisch finden',
         description:
-            'Öffentliche Ausschreibungen aus 17 Live-Quellen finden: TED, Bund, DTVP und Landesportale. Erklärbares Profil-Matching mit Begründung je Treffer.',
+            'Öffentliche Ausschreibungen automatisch aus 17 Live-Quellen finden: TED, Bund, DTVP und Landesportale. Erklärbares Profil-Matching mit Begründung je Treffer.',
         prerender: true,
         index: true,
         lastmod: '2026-08-14',

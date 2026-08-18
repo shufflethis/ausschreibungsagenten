@@ -15,6 +15,9 @@ export default function Footer() {
                         <Link to="/ausschreibungssuche-automatisieren">Suche automatisieren</Link>
                         <Link to="/ki-angebot-ausschreibung">KI und Angebot</Link>
                         <Link to="/semantische-suche-ausschreibungen">Semantische Suche</Link>
+                        <Link to="/vergabepilot-alternative">Vergabepilot Alternative</Link>
+                        <Link to="/vergabefix-alternative">Vergabefix Alternative</Link>
+                        <Link to="/tenderflow-alternative">Tenderflow Alternative</Link>
                         <Link to="/ueber-uns">Über uns</Link>
                         <Link to="/entwickler">API & Agenten</Link>
                         <Link to="/zahlen">Zahlen &amp; Statistik</Link>
