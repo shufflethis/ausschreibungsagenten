@@ -21,6 +21,9 @@ import {
     AusschreibungssucheAutomatisieren,
     KiAngebotAusschreibung,
     SemantischeSucheAusschreibungen,
+    VergabepilotAlternative,
+    VergabefixAlternative,
+    TenderflowAlternative,
 } from './pages/Inhaltsseiten'
 import { routes } from './routes'
 
@@ -36,6 +39,9 @@ export const pages = {
     AusschreibungssucheAutomatisieren: <AusschreibungssucheAutomatisieren />,
     KiAngebotAusschreibung: <KiAngebotAusschreibung />,
     SemantischeSucheAusschreibungen: <SemantischeSucheAusschreibungen />,
+    VergabepilotAlternative: <VergabepilotAlternative />,
+    VergabefixAlternative: <VergabefixAlternative />,
+    TenderflowAlternative: <TenderflowAlternative />,
     Impressum: <Impressum />,
     AGB: <AGB />,
     Datenschutz: <Datenschutz />,

@@ -14,3 +14,6 @@ function seite(path) {
 export const AusschreibungssucheAutomatisieren = seite('/ausschreibungssuche-automatisieren')
 export const KiAngebotAusschreibung = seite('/ki-angebot-ausschreibung')
 export const SemantischeSucheAusschreibungen = seite('/semantische-suche-ausschreibungen')
+export const VergabepilotAlternative = seite('/vergabepilot-alternative')
+export const VergabefixAlternative = seite('/vergabefix-alternative')
+export const TenderflowAlternative = seite('/tenderflow-alternative')

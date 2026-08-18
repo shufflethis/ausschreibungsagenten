@@ -76,6 +76,36 @@ export const routes = [
         lastmod: '2026-08-14',
     },
     {
+        path: '/vergabepilot-alternative',
+        component: 'VergabepilotAlternative',
+        title: 'Vergabepilot Alternative: erklärbares Matching statt semantischer KI-Suche | Ausschreibungsagenten.de',
+        description:
+            'Vergabepilot-Alternative gesucht? Ausschreibungsagenten matcht mit CPV-Codes, Regeln und Ausschlüssen statt Ähnlichkeitswert — jeder Treffer mit Begründung, 17 belegte Quellen, EU-Hosting.',
+        prerender: true,
+        index: true,
+        lastmod: '2026-08-18',
+    },
+    {
+        path: '/vergabefix-alternative',
+        component: 'VergabefixAlternative',
+        title: 'Vergabefix Alternative: belegte Quellen statt Gesamtzahlen | Ausschreibungsagenten.de',
+        description:
+            'Vergabefix-Alternative mit erklärbarem Matching: 17 benannte Quellen mit belegtem Abrufstand statt einer unbestimmten Portanzahl, Begründung je Treffer, kostenfreie Pilotphase.',
+        prerender: true,
+        index: true,
+        lastmod: '2026-08-18',
+    },
+    {
+        path: '/tenderflow-alternative',
+        component: 'TenderflowAlternative',
+        title: 'Tenderflow Alternative: Begründung je Treffer statt Prozentversprechen | Ausschreibungsagenten.de',
+        description:
+            'Tenderflow-Alternative gesucht? Ausschreibungsagenten nennt 17 belegte Quellen und begründet jeden Treffer — ohne pauschale Aufwandsversprechen. EU-Hosting, kostenfreie Pilotphase.',
+        prerender: true,
+        index: true,
+        lastmod: '2026-08-18',
+    },
+    {
         path: '/zahlen',
         component: 'Zahlen',
         title: 'Vergabemarkt Deutschland in Zahlen: Volumen, Branchen, Statistik | Ausschreibungsagenten.de',
