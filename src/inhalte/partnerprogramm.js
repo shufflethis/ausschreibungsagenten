@@ -2,12 +2,12 @@ export const partnerprogramm = {
     path: '/partner',
     h1: 'Partnerprogramm: Empfehlungen, die sich rechnen',
     direktantwort:
-        'Das Partnerprogramm von Ausschreibungsagenten vergütet Empfehlungen, die zu einem Vertragsabschluss führen. Sie erhalten einen persönlichen Empfehlungslink, die Zuordnung gilt dreißig Tage ab dem ersten Klick, und die Provision wird auf den Bruttoumsatz berechnet — bei laufenden Abonnements auch auf Folgezahlungen. Voraussetzung ist, dass der Empfohlene der Speicherung zustimmt.',
+        'Das Partnerprogramm von Ausschreibungsagenten vergütet Empfehlungen, die zu einem Vertragsabschluss führen. Sie erhalten einen persönlichen Empfehlungslink, die Zuordnung gilt dreißig Tage ab dem ersten Klick, und die Provision beträgt 25 Prozent des Bruttoumsatzes — bei laufenden Abonnements auch auf jede Folgezahlung. Voraussetzung ist, dass der Empfohlene der Speicherung zustimmt.',
     fakten: {
         datenstand: '20. August 2026',
         kopf: ['Merkmal', 'Regelung'],
         zeilen: [
-            ['Vergütungsmodell', 'Anteil am Bruttoumsatz inklusive Umsatzsteuer'],
+            ['Provision', '25 % vom Bruttoumsatz — dem Rechnungsbetrag einschließlich Umsatzsteuer'],
             ['Wiederkehrend', 'Ja, solange das empfohlene Abonnement läuft'],
             ['Zuordnungsdauer', '30 Tage ab dem ersten Klick auf den Empfehlungslink'],
             ['Zuordnungsmodell', 'First-Touch — der zuerst empfehlende Partner behält die Zuordnung'],
@@ -55,7 +55,7 @@ export const partnerprogramm = {
     faq: [
         {
             frage: 'Wie hoch ist die Provision?',
-            antwort: 'Der Prozentsatz wird je Partner in den Teilnahmebedingungen festgelegt und bezieht sich auf den Bruttoumsatz einschließlich Umsatzsteuer. Bei Abonnements fällt er wiederkehrend an, solange der empfohlene Vertrag läuft. Sprechen Sie uns an, dann nennen wir Ihnen die Konditionen für Ihr Umfeld.',
+            antwort: '25 Prozent vom Bruttoumsatz, also vom Rechnungsbetrag einschließlich Umsatzsteuer. Bei Abonnements fällt sie wiederkehrend an, solange der empfohlene Vertrag läuft — nicht nur im ersten Monat. Beim Pro-Tarif ist das eine Vergütung, die jeden Monat aufs Neue entsteht, ohne dass Sie etwas tun müssen.',
         },
         {
             frage: 'Warum wird nicht jeder Klick gezählt?',
