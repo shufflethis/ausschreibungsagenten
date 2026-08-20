@@ -15,7 +15,7 @@ Abgeleitet aus `PARTNERPROGRAMM-SPEC.md` (2026-08-19). Reihenfolge ist bindend �
 | Numok-Host | eigener neuer VPS |
 | `/admin`-Schutz | IP-Allowlist am nginx |
 | Cookie-Einwilligung | Consent-Gate, Cookie erst nach Einwilligung |
-| Provisionsbasis | brutto, so dokumentiert |
+| Provisionssatz | **25 % vom Nettoumsatz** (korrigiert 20.08.2026, zuvor brutto) — Steuerfalle in Spec D6 beachten |
 
 Offen, aber nicht blockierend: Ablageort der Spec (Frage 1), Klick-Relay (Frage 4, Standard „gesperrt"), provisionsfähige Pläne (Frage 7, Standard „alle drei"). Details in Spec 10.
 
@@ -81,7 +81,9 @@ Täglicher verschlüsselter `mysqldump` off-site; zwei Cron-Jobs für `logs` (30
 
 ### Schritt 1.6 · Programm und Testpartner anlegen
 
-Programm anlegen: `commission_type='percentage'`, `commission_value` nach Wahl, **Bezugsgröße brutto** (Entscheidung 0.1 — Numok rechnet ohnehin so, es muss nur in `terms` stehen), `cookie_days`, `is_recurring`, `reward_days`, `terms` (Entwurf aus 5.2). Testpartner mit `tracking_code = TESTPARTNER1`, `status='active'`, Programm zugewiesen.
+Programm anlegen: `commission_type='percentage'`, `commission_value = 25`, `cookie_days`, `is_recurring = 1`, `reward_days`, `terms` (Entwurf aus 5.2). Testpartner mit `tracking_code = TESTPARTNER1`, `status='active'`, Programm zugewiesen.
+
+**Bezugsgröße ist netto** (Entscheidung 0.1). Das passt zu Numoks Rechnung nur, **solange in Stripe keine Steuer berechnet wird** — siehe die Steuerfalle in Spec D6. Der Durchstich in Phase 4 muss deshalb ohne Steuer laufen, sonst prüft die Abnahme etwas anderes als später die Produktion.
 
 **Abnahme:** `SELECT tracking_code, status FROM partner_programs` liefert die Zeile mit `active`. Login als Testpartner funktioniert.
 
@@ -94,6 +96,14 @@ Programm anlegen: `commission_type='percentage'`, `commission_value` nach Wahl, 
 ### Schritt 2.1 · `?via=`-Erfassung
 
 `src/lib/partnerCode.js`: Query lesen, gegen `/^[A-Za-z0-9_-]{1,50}$/` validieren, **Code zunächst nur im Speicher halten**. Erst nach erteilter Einwilligung (Entscheidung 0.1) Cookie `aa_partner` mit `Domain=.ausschreibungsagenten.de; Path=/; Max-Age=<cookie_days*86400>; SameSite=Lax; Secure` setzen. **First-Touch**: bestehendes Cookie nie überschreiben. SSR-sicher — `entry-server.jsx` rendert dieselben Komponenten, jeder `document`-Zugriff muss geguardet sein.
+
+**Abnahme:** Unit-Test im Stil von `src/routes.test.js`:
+1. gültiger Code **ohne** Einwilligung → **kein** Cookie
+2. gültiger Code **mit** Einwilligung → Cookie gesetzt
+3. ungültiger Code → verworfen, auch mit Einwilligung
+4. zweiter Code → überschreibt nicht
+
+`npm run build` läuft ohne SSR-Fehler durch. Fall 1 ist der, der ohne expliziten Test durchrutscht.
 
 ### Schritt 2.1a · Einwilligung überhaupt erst ermöglichen
 
@@ -109,14 +119,6 @@ Genau deshalb ist ein site-weites Banner hier die falsche Größe. Empfehlung:
 Wächst die Site später auf mehrere einwilligungspflichtige Cookies, wird daraus ein richtiges CMP — dann aber als eigenes Vorhaben.
 
 **Abnahme:** Aufruf ohne `?via=` → kein Hinweis, kein Cookie, `document.cookie` leer. Aufruf mit `?via=` → Hinweis erscheint; Ablehnen setzt kein Cookie; Zustimmen setzt `aa_partner`. Die Entscheidung überlebt einen Reload.
-
-**Abnahme:** Unit-Test im Stil von `src/routes.test.js`:
-1. gültiger Code **ohne** Einwilligung → **kein** Cookie
-2. gültiger Code **mit** Einwilligung → Cookie gesetzt
-3. ungültiger Code → verworfen, auch mit Einwilligung
-4. zweiter Code → überschreibt nicht
-
-`npm run build` läuft ohne SSR-Fehler durch. Fall 1 ist der, der ohne expliziten Test durchrutscht.
 
 ### Schritt 2.2 · Weiterreichung in `api/signup.js`
 
@@ -240,6 +242,7 @@ Eigener Absender `partner@ausschreibungsagenten.de` auf der bereits verifizierte
 | Schritt | Inhalt | Abnahme |
 |---|---|---|
 | 6.1 (D-B3) | Live-Preis-IDs im Backend setzen | `stripe_price_*` zeigen auf Live-Preise |
+| 6.1a | **Umsatzsteuer in Stripe entscheiden** (Spec D6). Wird `automatic_tax` oder ein Steuersatz aktiviert, wird `amount_total` zum Bruttobetrag und Numok zahlt 25 % davon statt vom Netto — ein Fünftel zu viel, ohne Fehlermeldung | Entweder es läuft weiterhin ohne Steuer, oder einer der drei Wege aus D6 ist umgesetzt und mit einem Testkauf belegt |
 | 6.2 (D-B2) | Live-`STRIPE_WEBHOOK_SECRET` setzen | Webhook mit ungültiger Signatur → 400, nicht 503 |
 | 6.3 (D-B1) | Live-Webhook-Endpunkt für Numok anlegen | Testzustellung aus Stripe → 200 |
 | 6.4 | Durchstich (Spec 6.5) im Livemodus mit echter Karte und Kleinbetrag, danach erstattet | Conversion-Zeile entsteht. Die Erstattung ändert in Numok **nichts von selbst** — die Zeile wird in `/admin/conversions` von Hand auf `rejected` gesetzt |
