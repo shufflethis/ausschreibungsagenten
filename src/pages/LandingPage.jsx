@@ -135,10 +135,15 @@ export default function LandingPage() {
                     search: tenderQuery,
                     min_score: '50',
                     limit: '6',
-                    // Gecachte KI-Kurzfassung je Treffer (Backend labelt sie,
-                    // das Original bleibt massgeblich).
-                    summary_lang: 'de',
                 })
+                // Gecachte KI-Kurzfassung je Treffer (Backend labelt sie, das
+                // Original bleibt massgeblich). Erst ab drei Zeichen: kuerzere
+                // Zwischenstaende beim Tippen liefern beliebige Treffer, fuer
+                // die das Backend je Aufruf bis zu fuenf neue Kurzfassungen
+                // erzeugen wuerde.
+                if (tenderQuery.trim().length >= 3) {
+                    params.set('summary_lang', 'de')
+                }
                 const res = await fetch(`/api/tenders-public?${params.toString()}`, {
                     signal: controller.signal,
                 })
@@ -158,8 +163,16 @@ export default function LandingPage() {
             }
         }
 
-        loadTenders()
-        return () => controller.abort()
+        // Erst 350 ms nach dem letzten Tastendruck laden. Ohne diese Wartezeit
+        // ging je Buchstabe ein Request raus; abort() stoppt nur den Browser,
+        // die Vercel Function und das Backend laufen weiter und erzeugten
+        // trotzdem ihre Kurzfassungen — ein getipptes Wort brachte so 30-50
+        // Mistral-Aufrufe und lief in dessen Ratelimit.
+        const timer = setTimeout(loadTenders, 350)
+        return () => {
+            clearTimeout(timer)
+            controller.abort()
+        }
     }, [tenderQuery])
 
     useEffect(() => {
