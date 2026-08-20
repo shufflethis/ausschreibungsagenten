@@ -443,8 +443,9 @@ Beim Lesen gefunden, unabhängig von der Integration:
 | N5 | `impression()` schreibt in Tabelle `impressions`, die im Schema **nicht existiert** | `TrackingController.php:135` | tote Methode; nicht geroutet, daher heute folgenlos |
 | N6 | `TrackingController::script()` liest `$settings['app_url']` — Variable ist in der Methode nie definiert | `TrackingController.php:42` | leerer `NUMOK_BASE_URL`; nicht geroutet, daher folgenlos |
 | N7 | `conversions.amount` ohne Währungsspalte | `0001-basic-schema.sql` | stillschweigend eine Währung; bei EUR-only unkritisch, aber festhalten |
+| N8 | **Kein Handler für Erstattungen oder Rückbuchungen** — verarbeitet werden ausschließlich `checkout.session.completed`, `payment_intent.succeeded`, `invoice.paid` | `WebhookController.php:33-45` | Eine Erstattung storniert die Provision **nicht automatisch**. Auffangmechanismus ist die Sperrfrist (`reward_days`) plus manuelles Setzen auf `rejected` in `/admin/conversions` vor der Auszahlung. Gehört in E2, damit die Zusage „bei Rückerstattung entfällt die Provision" gedeckt ist |
 
-N1–N4 gehören adressiert (N3/N4 durch Sperre am Reverse Proxy, wenn wir Numoks Tracking nicht nutzen). N5–N7 nur dokumentieren.
+N1–N4 gehören adressiert (N3/N4 durch Sperre am Reverse Proxy, wenn wir Numoks Tracking nicht nutzen). N5–N7 nur dokumentieren. **N8 ist kein Fehler, sondern eine Lücke im Funktionsumfang** — sie wird organisatorisch geschlossen (Sperrfrist plus Sichtprüfung vor der Auszahlung), nicht durch Code.
 
 ---
 

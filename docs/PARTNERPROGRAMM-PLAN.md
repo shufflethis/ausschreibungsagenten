@@ -242,7 +242,7 @@ Eigener Absender `partner@ausschreibungsagenten.de` auf der bereits verifizierte
 | 6.1 (D-B3) | Live-Preis-IDs im Backend setzen | `stripe_price_*` zeigen auf Live-Preise |
 | 6.2 (D-B2) | Live-`STRIPE_WEBHOOK_SECRET` setzen | Webhook mit ungültiger Signatur → 400, nicht 503 |
 | 6.3 (D-B1) | Live-Webhook-Endpunkt für Numok anlegen | Testzustellung aus Stripe → 200 |
-| 6.4 | Durchstich (Spec 6.5) im Livemodus mit echter Karte und Kleinbetrag, danach erstattet | Conversion-Zeile entsteht, Erstattung setzt sie auf `rejected` |
+| 6.4 | Durchstich (Spec 6.5) im Livemodus mit echter Karte und Kleinbetrag, danach erstattet | Conversion-Zeile entsteht. Die Erstattung ändert in Numok **nichts von selbst** — die Zeile wird in `/admin/conversions` von Hand auf `rejected` gesetzt |
 | 6.5 (E-B1/E-B2) | Teilnahmebedingungen und Datenschutz veröffentlichen | beide Seiten live, `/partner` verlinkt sie |
 | 6.6 (D-B5) | Programm bewerben, erste echte Partner aufnehmen | mindestens ein Partner auf `status='active'` |
 | 6.7 (D-B4) | Erste Auszahlung nach dem Ablauf aus 5.3 | `conversions.status='paid'`, Beleg erzeugt |
