@@ -365,7 +365,7 @@ Nicht blockiert und sofort machbar: A1–A5, B1–B5, C1–C6, D5 im Testmodus, 
 
 ### D5 · Abnahme — ein Testkauf, der die ganze Kette beweist
 
-**Vorbedingungen:** Numok läuft unter `partner.…` mit Test-Keys; AgentLeads hat Test-`stripe_api_key`, Test-`stripe_webhook_secret` und Test-Preis-IDs; in Numok existieren ein Programm (`is_recurring = 1`, `reward_days = 0`, 20 % `percentage`, `cookie_days = 30`) und ein aktiver Testpartner mit `tracking_code = TESTPARTNER1`.
+**Vorbedingungen:** Numok läuft unter `partner.…` mit Test-Keys; AgentLeads hat Test-`stripe_api_key`, Test-`stripe_webhook_secret` und Test-Preis-IDs; in Numok existieren ein Programm (`is_recurring = 1`, `reward_days = 0`, 20 % `percentage`, `cookie_days = 60`) und ein aktiver Testpartner mit `tracking_code = TESTPARTNER1`.
 
 | # | Schritt | Handlung | Nachweis |
 |---|---|---|---|
@@ -388,17 +388,17 @@ Drei Schritte tragen die eigentliche Beweislast:
 
 ### D6 · Die Steuerfalle: `amount_total` ist heute netto, morgen vielleicht brutto
 
-Zugesagt sind **25 % vom Nettoumsatz**. Numok rechnet aber stur mit `$session->amount_total` (`WebhookController.php:115-116`) — und ob das ein Netto- oder ein Bruttobetrag ist, entscheidet allein die Stripe-Konfiguration.
+Zugesagt sind **20 % vom Nettoumsatz**. Numok rechnet aber stur mit `$session->amount_total` (`WebhookController.php:115-116`) — und ob das ein Netto- oder ein Bruttobetrag ist, entscheidet allein die Stripe-Konfiguration.
 
-**Heute passt es zufällig.** Im Backend ist weder `automatic_tax` noch `tax_rates` noch `tax_behavior` gesetzt (geprüft am 20.08.2026, kein einziger Treffer in `src/`). Stripe berechnet also keine Steuer, `amount_total` ist der reine Preis, und 25 % davon sind exakt die zugesagten 37,25 €.
+**Heute passt es zufällig.** Im Backend ist weder `automatic_tax` noch `tax_rates` noch `tax_behavior` gesetzt (geprüft am 20.08.2026, kein einziger Treffer in `src/`). Stripe berechnet also keine Steuer, `amount_total` ist der reine Preis, und 20 % davon sind exakt die zugesagten 29,80 €.
 
-**Sobald Steuer dazukommt, kippt es still.** Ein deutsches Unternehmen muss deutschen Kunden Umsatzsteuer berechnen. Spätestens beim Livegang wird also `automatic_tax` eingeschaltet oder ein Steuersatz hinterlegt. In dem Moment wird `amount_total` zum Bruttobetrag, und Numok zahlt 25 % von 177,31 € = **44,33 € statt 37,25 €** — ein Fünftel zu viel, ohne dass jemand etwas am Partnerprogramm geändert hätte. Es gibt keine Fehlermeldung; die Zahlen sind einfach falsch.
+**Sobald Steuer dazukommt, kippt es still.** Ein deutsches Unternehmen muss deutschen Kunden Umsatzsteuer berechnen. Spätestens beim Livegang wird also `automatic_tax` eingeschaltet oder ein Steuersatz hinterlegt. In dem Moment wird `amount_total` zum Bruttobetrag, und Numok zahlt 20 % von 177,31 € = **35,46 € statt 29,80 €** — ein Fünftel zu viel, ohne dass jemand etwas am Partnerprogramm geändert hätte. Es gibt keine Fehlermeldung; die Zahlen sind einfach falsch.
 
 Drei Wege, wenn es soweit ist:
 
 | Weg | Bewertung |
 |---|---|
-| **`commission_value` auf 21,008 setzen** | 21,008 % von brutto ≈ 25 % von netto. Kein Fork, aber undurchsichtig und nur bei genau einem Steuersatz richtig — bei Kunden im EU-Ausland mit Reverse Charge falsch. |
+| **`commission_value` auf 16,807 setzen** | 16,807 % von brutto ≈ 20 % von netto. Kein Fork, aber undurchsichtig und nur bei genau einem Steuersatz richtig — bei Kunden im EU-Ausland mit Reverse Charge falsch. |
 | **`calculateCommission()` patchen**, damit es aus `amount_subtotal` statt `amount_total` rechnet | Sauber und für alle Steuersätze richtig. Preis: ein Fork von Numok mit dauerhafter Wartungslast. **Empfehlung, wenn es mehr als eine Handvoll Partner werden.** |
 | **Bezugsgröße auf brutto ändern** | Kein Code, aber die öffentliche Zusage auf `/partner` müsste geändert werden — nachträglich zulasten der Partner. Nur vor dem ersten Partner vertretbar. |
 
@@ -424,7 +424,7 @@ Drei Wege, wenn es soweit ist:
 
 Numok hat dafür ein Feld: `programs.terms` (TEXT), und die Zustimmung wird in `partner_programs.terms_accepted` + `terms_accepted_ip` protokolliert (Migration `0002`). Das ist die richtige Ablage. Inhaltlich zu regeln:
 
-- Provisionshöhe und -art: **25 % vom Nettoumsatz** (entschieden, 10.1). Die Tarifpreise sind Nettopreise — 149 € im Pro-Tarif ergeben 37,25 € Provision, 499 € im Agent-Tarif 124,75 €. Die Bedingungen müssen wörtlich „25 % vom Nettoumsatz, also ohne Umsatzsteuer" sagen; „vom Umsatz" allein ist der klassische Streitfall. Siehe die Steuerfalle in 6.6 — sie entscheidet, ob Numoks Rechnung dazu passt.
+- Provisionshöhe und -art: **20 % vom Nettoumsatz** (entschieden, 10.1). Die Tarifpreise sind Nettopreise — 149 € im Pro-Tarif ergeben 29,80 € Provision, 499 € im Agent-Tarif 99,80 €. Zuordnung 60 Tage, Sperrfrist 30 Tage. Die Bedingungen müssen wörtlich „20 % vom Nettoumsatz, also ohne Umsatzsteuer" sagen; „vom Umsatz" allein ist der klassische Streitfall. Siehe die Steuerfalle in 6.6 — sie entscheidet, ob Numoks Rechnung dazu passt.
 - **Hinweis auf das Consent-Gate** (entschieden, 10.1): die Zuordnung setzt die Einwilligung des Besuchers voraus. Partner müssen wissen, dass nicht jeder Klick zuordenbar wird — sonst rechnen sie mit ihren eigenen Klickzahlen gegen eure Conversion-Zahlen.
 - Wiederkehrend ja/nein (`is_recurring`) und für wie lange
 - Sperrfrist bis zur Auszahlbarkeit (`reward_days` → `status='pending'` statt `'payable'`)
@@ -509,7 +509,7 @@ Alles andere (A, B, C, D5 im Testmodus, E als Entwurf) ist sofort umsetzbar.
 | 2 | Wo läuft Numok? | **Der Arbeitshost `vm21182`** (entschieden 20.08.2026, gegen meine Empfehlung; zuvor stand hier ein eigener neuer VPS) | Aufgesetzt unter `/opt/numok`, Port 8090. Weil der Einbruchsradius hier am größten ist, wurde enger gefasst als geplant: MySQL wird **gar nicht** veröffentlicht, die Anwendung hört nur auf `127.0.0.1`, Speichergrenzen begrenzen die Wirkung auf Nachbardienste, `/admin` liegt hinter einer IP-Allowlist, `/api/tracking` ist gesperrt. Betriebsdoku: `/opt/numok/README.md`. |
 | 3 | Schutz für `/admin`? | **Ja, IP-Allowlist am nginx** | `/admin` und `/admin/*` nur von den Büro-/VPN-IPs. Der Schutz greift **vor** PHP. Das Rotieren des `admin123`-Seeds bleibt trotzdem Pflicht (Schritt 1.3) — Allowlist ersetzt kein Passwort. |
 | 5 | Cookie einwilligungspflichtig? | **Ja, Consent-Gate einbauen** | A1 setzt das Cookie erst nach Einwilligung; bis dahin lebt der Code nur im Speicher. Senkt die Zuschreibungsquote spürbar — **das gehört in die Teilnahmebedingungen** (E2), sonst rechnen Partner mit Klickzahlen, die nie zu Conversions werden. |
-| 6 | Provisionssatz und Bezugsgröße? | **25 % vom Nettoumsatz** (korrigiert am 20.08.2026, zuvor brutto) | Die Tarifpreise sind Nettopreise. Kein Eingriff in `calculateCommission()` nötig, **solange Stripe keine Steuer berechnet** — siehe die Steuerfalle in 6.6. E2 muss „25 % vom Nettoumsatz, ohne Umsatzsteuer" sagen. |
+| 6 | Provisionssatz und Bezugsgröße? | **20 % vom Nettoumsatz** (Stand 20.08.2026; zwischenzeitlich standen 25 % brutto und 25 % netto in dieser Zeile) | Die Tarifpreise sind Nettopreise. Kein Eingriff in `calculateCommission()` nötig, **solange Stripe keine Steuer berechnet** — siehe die Steuerfalle in 6.6. E2 muss „20 % vom Nettoumsatz, ohne Umsatzsteuer" sagen. |
 
 ### 10.2 Weiterhin offen — blockieren den Start nicht
 
