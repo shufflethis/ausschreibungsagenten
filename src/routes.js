@@ -120,7 +120,7 @@ export const routes = [
         component: 'Partnerprogramm',
         title: 'Partnerprogramm: Ausschreibungsagenten empfehlen und mitverdienen | Ausschreibungsagenten.de',
         description:
-            'Empfehlungen vergüten lassen: wiederkehrende Provision auf den Bruttoumsatz, 30 Tage Zuordnung nach First-Touch, keine Vergütung für Klicks oder Bestandskunden. Bedingungen, Grenzen und Auszahlung offen benannt.',
+            'Empfehlungen vergüten lassen: 20 Prozent wiederkehrend auf den Nettoumsatz, 60 Tage Zuordnung nach First-Touch, 30 Tage Sperrfrist. Keine Vergütung für Klicks oder Bestandskunden – Bedingungen, Grenzen und Auszahlung offen benannt.',
         prerender: true,
         index: true,
         lastmod: '2026-08-20',
