@@ -27,7 +27,7 @@ export const CODE_MUSTER = /^[A-Za-z0-9_-]{1,50}$/
 // Entspricht `programs.cookie_days` in Numok. Weichen die Werte
 // auseinander, gewinnt Numok bei der Abrechnung - der Wert hier bestimmt
 // nur, wie lange wir den Code ueberhaupt mitfuehren.
-export const COOKIE_TAGE = 30
+export const COOKIE_TAGE = 60
 
 const EIGENE_DOMAIN = 'ausschreibungsagenten.de'
 
