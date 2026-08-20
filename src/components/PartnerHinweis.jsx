@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
     COOKIE_TAGE,
     codeAusSuche,
@@ -66,7 +66,8 @@ export default function PartnerHinweis() {
                         Mit Ihrem Einverständnis merken wir uns für {COOKIE_TAGE} Tage, wer Sie
                         empfohlen hat, damit dieser Partner bei einem Vertragsabschluss seine
                         Provision erhält. Dafür speichern wir ein Cookie mit der Partnerkennung —
-                        sonst nichts. Ohne Ihr Einverständnis funktioniert die Seite unverändert.
+                        sonst nichts. Ohne Ihr Einverständnis funktioniert die Seite unverändert.{' '}
+                        <Link to="/datenschutz">Mehr dazu in der Datenschutzerklärung</Link>.
                     </p>
                 </div>
                 <div className="partner-hinweis__aktionen">
