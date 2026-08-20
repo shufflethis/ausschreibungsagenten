@@ -12,7 +12,7 @@ Abgeleitet aus `PARTNERPROGRAMM-SPEC.md` (2026-08-19). Reihenfolge ist bindend �
 
 | Frage | Entscheidung |
 |---|---|
-| Numok-Host | eigener neuer VPS |
+| Numok-Host | **Arbeitshost `vm21182`** (20.08.2026, gegen meine Empfehlung entschieden) — kompensiert durch schärfere Härtung, siehe Spec 10.1 |
 | `/admin`-Schutz | IP-Allowlist am nginx |
 | Cookie-Einwilligung | Consent-Gate, Cookie erst nach Einwilligung |
 | Provisionssatz | **25 % vom Nettoumsatz** (korrigiert 20.08.2026, zuvor brutto) — Steuerfalle in Spec D6 beachten |
@@ -53,7 +53,7 @@ Vor dem ersten `docker compose up` in `docker/docker-compose.yml` und `.env`:
 **Abnahme (alle vier müssen halten):**
 1. `ss -tlnp | grep -E '33060|8080'` zeigt ausschließlich `127.0.0.1`-Bindungen, kein `0.0.0.0`.
 2. Von einer **externen** Maschine: `nc -zv <host> 33060` schlägt fehl.
-3. Eine absichtlich fehlerhafte URL liefert `500 - Internal Server Error` ohne Stacktrace.
+3. Debug ist wirklich aus — **nicht** über eine 404 prüfen, die trifft den falschen Zweig. Stattdessen den Wert selbst ansehen: `docker compose exec app php -r 'var_export(filter_var(getenv("APP_DEBUG"), FILTER_VALIDATE_BOOL));'` muss `false` liefern. Siehe Fund N9: mit Numoks eigener `config.example.php` ist das **nie** der Fall.
 4. `RUN_MIGRATIONS` steht nach dem ersten Boot auf `false`.
 
 ### Schritt 1.3 · Erstzugang absichern
