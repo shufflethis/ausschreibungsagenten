@@ -29,4 +29,18 @@ describe('Seo-Komponente', () => {
     it('wirft bei unbekanntem Pfad', () => {
         expect(() => renderToString(imServer(<Seo path="/gibt-es-nicht" />))).toThrow(/gibt-es-nicht/)
     })
+
+    // Partner verlinken auf /?via=CODE und /partner?via=CODE. Der Canonical
+    // wird aus dem Manifest-Pfad gebaut, nicht aus der Browser-Adresse -
+    // sonst entstuenden pro Partner eigene indexierbare Duplikate. Der
+    // Test haelt das fest, damit es beim Umbau nicht verlorengeht.
+    it('laesst Query-Parameter aus dem Canonical heraus', () => {
+        for (const pfad of ['/', '/partner']) {
+            const markup = renderToString(imServer(<Seo path={pfad} />))
+            const canonical = markup.match(/<link rel="canonical" href="([^"]+)"/)?.[1]
+            expect(canonical, `Canonical fehlt fuer ${pfad}`).toBeDefined()
+            expect(canonical).not.toContain('?')
+            expect(canonical).not.toContain('via=')
+        }
+    })
 })

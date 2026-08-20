@@ -29,6 +29,7 @@ export default function Footer() {
                         >
                             System-Status
                         </a>
+                        <Link to="/partner">Partnerprogramm</Link>
                         <Link to="/brandkit">Brandkit</Link>
                         <Link to="/impressum">Impressum</Link>
                         <Link to="/agb">AGB</Link>

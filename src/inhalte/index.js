@@ -4,6 +4,7 @@ import { semantischeSucheAusschreibungen } from './semantischeSucheAusschreibung
 import { vergabepilotAlternative } from './vergabepilotAlternative'
 import { vergabefixAlternative } from './vergabefixAlternative'
 import { tenderflowAlternative } from './tenderflowAlternative'
+import { partnerprogramm } from './partnerprogramm'
 
 // Alle Inhaltsseiten an einer Stelle. src/inhalte.test.js prueft jede
 // davon gegen die Form aus der Spec: Direktantwort in 40-60 Woertern,
@@ -16,6 +17,7 @@ export const inhaltsSeiten = [
     vergabepilotAlternative,
     vergabefixAlternative,
     tenderflowAlternative,
+    partnerprogramm,
 ]
 
 export function inhaltsSeiteFuer(path) {

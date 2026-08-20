@@ -2441,3 +2441,66 @@ img {
 .inhalt__verweise a:hover {
     text-decoration: underline;
 }
+
+/* ---------- Partner-Hinweis ---------- */
+/* Erscheint ausschliesslich, wenn ein `?via=` in der URL steht. Besucher
+   ohne Partnerlink sehen ihn nie und bekommen kein Cookie. */
+.partner-hinweis {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 1100;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--glass-border);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.45);
+}
+
+.partner-hinweis__inhalt {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+}
+
+.partner-hinweis__text {
+    flex: 1 1 22rem;
+    min-width: 0;
+}
+
+.partner-hinweis__text p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+}
+
+.partner-hinweis__titel {
+    color: var(--text-heading);
+    font-weight: 600;
+    margin-bottom: 0.35rem !important;
+}
+
+.partner-hinweis__aktionen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    flex: 0 0 auto;
+}
+
+.partner-hinweis__aktionen .btn {
+    padding: 0.7rem 1.4rem;
+    font-size: var(--font-size-sm);
+}
+
+@media (max-width: 640px) {
+    .partner-hinweis__aktionen {
+        width: 100%;
+    }
+
+    .partner-hinweis__aktionen .btn {
+        flex: 1 1 auto;
+    }
+}
