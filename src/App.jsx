@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollRestoration from './components/ScrollRestoration'
+import PartnerHinweis from './components/PartnerHinweis'
 import LandingPage from './pages/LandingPage'
 import Impressum from './pages/Impressum'
 import AGB from './pages/AGB'
@@ -24,6 +25,7 @@ import {
     VergabepilotAlternative,
     VergabefixAlternative,
     TenderflowAlternative,
+    Partnerprogramm,
 } from './pages/Inhaltsseiten'
 import { routes } from './routes'
 
@@ -42,6 +44,7 @@ export const pages = {
     VergabepilotAlternative: <VergabepilotAlternative />,
     VergabefixAlternative: <VergabefixAlternative />,
     TenderflowAlternative: <TenderflowAlternative />,
+    Partnerprogramm: <Partnerprogramm />,
     Impressum: <Impressum />,
     AGB: <AGB />,
     Datenschutz: <Datenschutz />,
@@ -68,6 +71,7 @@ export default function App() {
                 </Routes>
             </main>
             <Footer />
+            <PartnerHinweis />
         </>
     )
 }

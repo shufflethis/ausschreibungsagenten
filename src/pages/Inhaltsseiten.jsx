@@ -17,3 +17,4 @@ export const SemantischeSucheAusschreibungen = seite('/semantische-suche-ausschr
 export const VergabepilotAlternative = seite('/vergabepilot-alternative')
 export const VergabefixAlternative = seite('/vergabefix-alternative')
 export const TenderflowAlternative = seite('/tenderflow-alternative')
+export const Partnerprogramm = seite('/partner')
