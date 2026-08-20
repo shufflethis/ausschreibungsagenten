@@ -87,7 +87,7 @@ export default function Datenschutz() {
                     Stimmen Sie zu, speichern wir ein Cookie mit dem Namen <code>aa_partner</code>. Es enthält
                     ausschließlich die Partnerkennung — keine Angaben zu Ihrem Verhalten auf der Website. Das
                     Cookie gilt für ausschreibungsagenten.de einschließlich der Unterdomains und wird nach
-                    30 Tagen automatisch ungültig. Ist bereits eine Kennung gespeichert, bleibt diese erhalten
+                    60 Tagen automatisch ungültig. Ist bereits eine Kennung gespeichert, bleibt diese erhalten
                     und wird nicht durch eine spätere ersetzt. Zusätzlich hinterlegen wir Ihre Entscheidung —
                     Zustimmung wie Ablehnung — im lokalen Speicher Ihres Browsers unter dem Schlüssel
                     <code>aa_partner_einwilligung</code>, damit wir Sie nicht erneut fragen.

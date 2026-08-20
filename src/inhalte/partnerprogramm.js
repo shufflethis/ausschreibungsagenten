@@ -2,15 +2,16 @@ export const partnerprogramm = {
     path: '/partner',
     h1: 'Partnerprogramm: Empfehlungen, die sich rechnen',
     direktantwort:
-        'Das Partnerprogramm von Ausschreibungsagenten vergütet Empfehlungen, die zu einem Vertragsabschluss führen. Sie erhalten einen persönlichen Empfehlungslink, die Zuordnung gilt dreißig Tage ab dem ersten Klick, und die Provision beträgt 25 Prozent des Nettoumsatzes — bei laufenden Abonnements auch auf jede Folgezahlung. Voraussetzung ist, dass der Empfohlene der Speicherung zustimmt.',
+        'Das Partnerprogramm von Ausschreibungsagenten vergütet Empfehlungen, die zu einem Vertragsabschluss führen. Sie erhalten einen persönlichen Empfehlungslink, die Zuordnung gilt sechzig Tage ab dem ersten Klick, und die Provision beträgt 20 Prozent des Nettoumsatzes — bei laufenden Abonnements auch auf jede Folgezahlung. Voraussetzung ist, dass der Empfohlene der Speicherung zustimmt.',
     fakten: {
         datenstand: '20. August 2026',
         kopf: ['Merkmal', 'Regelung'],
         zeilen: [
-            ['Provision', '25 % vom Nettoumsatz — dem Rechnungsbetrag ohne Umsatzsteuer'],
-            ['Beispiel Pro-Tarif', '149 € netto im Monat ergeben 37,25 € Provision je Monat'],
+            ['Provision', '20 % vom Nettoumsatz — dem Rechnungsbetrag ohne Umsatzsteuer'],
+            ['Beispiel Pro-Tarif', '149 € netto im Monat ergeben 29,80 € Provision je Monat'],
             ['Wiederkehrend', 'Ja, solange das empfohlene Abonnement läuft'],
-            ['Zuordnungsdauer', '30 Tage ab dem ersten Klick auf den Empfehlungslink'],
+            ['Zuordnungsdauer', '60 Tage ab dem ersten Klick auf den Empfehlungslink'],
+            ['Sperrfrist', '30 Tage ab Zahlungseingang, bevor eine Provision auszahlbar wird'],
             ['Zuordnungsmodell', 'First-Touch — der zuerst empfehlende Partner behält die Zuordnung'],
             ['Bestandskunden', 'Ausgeschlossen: bereits zahlende Konten werden nicht neu zugeordnet'],
             ['Voraussetzung', 'Einwilligung des Empfohlenen in die Speicherung der Partnerkennung'],
@@ -33,7 +34,7 @@ export const partnerprogramm = {
             ],
             liste: [
                 'Klick auf den Empfehlungslink, Einwilligung wird abgefragt',
-                'Kennung wird für 30 Tage gespeichert, First-Touch gilt',
+                'Kennung wird für 60 Tage gespeichert, First-Touch gilt',
                 'Anmeldung und späterer Kauf werden der Kennung zugeordnet',
                 'Provision entsteht mit der Zahlung, wiederkehrend bei Abonnements',
             ],
@@ -56,7 +57,7 @@ export const partnerprogramm = {
     faq: [
         {
             frage: 'Wie hoch ist die Provision?',
-            antwort: '25 Prozent vom Nettoumsatz, also vom Rechnungsbetrag ohne Umsatzsteuer. Beim Pro-Tarif mit 149 Euro netto im Monat sind das 37,25 Euro — und zwar in jedem Monat, in dem der empfohlene Vertrag läuft, nicht nur im ersten. Beim Agent-Tarif mit 499 Euro netto sind es 124,75 Euro monatlich.',
+            antwort: '20 Prozent vom Nettoumsatz, also vom Rechnungsbetrag ohne Umsatzsteuer. Beim Pro-Tarif mit 149 Euro netto im Monat sind das 29,80 Euro — und zwar in jedem Monat, in dem der empfohlene Vertrag läuft, nicht nur im ersten. Beim Agent-Tarif mit 499 Euro netto sind es 99,80 Euro monatlich.',
         },
         {
             frage: 'Warum wird nicht jeder Klick gezählt?',
