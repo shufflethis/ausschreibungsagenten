@@ -88,4 +88,18 @@ npm run build
 npm audit --audit-level=high
 ```
 
+## Partnerprogramm und Tender-Suche — bevor du hier etwas änderst
+
+Zwei Stellen dieser Website hängen an Entscheidungen, die im Backend-Repo dokumentiert sind
+(`docs/HANDOVER-2026-08-20.md`, Merkregeln 3 und 10). Kurz:
+
+- **`/partner`** nennt 20 % netto wiederkehrend, 60 Tage Zuordnung, 30 Tage Sperrfrist. Diese
+  Zahlen stehen identisch in Numok und zusätzlich in der Meta-Beschreibung der Route in
+  `src/routes.js`. Wer sie ändert, muss alle drei Stellen nachziehen — die Meta-Beschreibung
+  lief schon einmal auseinander und versprach im Suchergebnis andere Konditionen als die Seite.
+- **Die Tender-Suche auf der Landingpage ist entprellt** (350 ms, `src/pages/LandingPage.jsx`).
+  Ohne das feuert sie je Tastendruck, und weil das Backend pro Aufruf bis zu fünf KI-Kurzfassungen
+  erzeugt, bringt ein getipptes Wort 30–50 Modellaufrufe und läuft ins Ratelimit. `abort()`
+  genügt nicht: es stoppt nur den Browser, nicht die Vercel Function und nicht das Backend.
+
 Preise werden auf der Website als Orientierung angezeigt. Ein Checkout wird erst nach vollständiger Stripe-Live-Konfiguration und Webhook-Abnahme wieder freigeschaltet.
