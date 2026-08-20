@@ -105,4 +105,20 @@ describe('Tender-Suche auf der Landingpage', () => {
             + 'jeder Zwischenstand beim Tippen neue KI-Kurzfassungen',
         ).not.toContain('summary_lang')
     })
+
+    it('laedt beim Seitenaufruf sofort und mit Kurzfassungen', async () => {
+        // Der haeufigste Zustand der Seite: leere Suche. Hier muessen die
+        // KI-Kurzfassungen kommen - die Standardliste ist stabil und nach dem
+        // ersten Aufruf gecacht, teuer waren nur die Tipp-Zwischenstaende.
+        await rendern()
+
+        const sofort = tenderAufrufe()
+        expect(sofort.length, 'Erstaufruf darf nicht 350 ms warten').toBe(1)
+        expect(sofort[0]).toContain('summary_lang=de')
+
+        await act(async () => {
+            vi.advanceTimersByTime(500)
+        })
+        expect(tenderAufrufe().length, 'kein zweiter Aufruf hinterher').toBe(1)
+    })
 })

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
 import Icon from '../components/Icon'
@@ -74,6 +74,8 @@ export default function LandingPage() {
     const [formStatus, setFormStatus] = useState(null)
     const [sending, setSending] = useState(false)
     const [tenderQuery, setTenderQuery] = useState('marketing')
+    // Der Erstaufruf soll nicht entprellt werden, jede weitere Eingabe schon.
+    const ersterTenderLauf = useRef(true)
     const [tenders, setTenders] = useState([])
     const [tendersLoading, setTendersLoading] = useState(true)
     const [tendersError, setTendersError] = useState(null)
@@ -137,11 +139,14 @@ export default function LandingPage() {
                     limit: '6',
                 })
                 // Gecachte KI-Kurzfassung je Treffer (Backend labelt sie, das
-                // Original bleibt massgeblich). Erst ab drei Zeichen: kuerzere
-                // Zwischenstaende beim Tippen liefern beliebige Treffer, fuer
-                // die das Backend je Aufruf bis zu fuenf neue Kurzfassungen
-                // erzeugen wuerde.
-                if (tenderQuery.trim().length >= 3) {
+                // Original bleibt massgeblich). Ausgelassen wird nur der
+                // Bereich von ein bis zwei Zeichen: solche Zwischenstaende
+                // beim Tippen liefern beliebige Treffer, fuer die das Backend
+                // je Aufruf bis zu fuenf neue Kurzfassungen erzeugen wuerde.
+                // Die leere Suche ist dagegen der haeufigste Zustand der
+                // Seite, stabil und nach dem ersten Aufruf gecacht.
+                const suchbegriff = tenderQuery.trim()
+                if (suchbegriff.length === 0 || suchbegriff.length >= 3) {
                     params.set('summary_lang', 'de')
                 }
                 const res = await fetch(`/api/tenders-public?${params.toString()}`, {
@@ -163,11 +168,20 @@ export default function LandingPage() {
             }
         }
 
-        // Erst 350 ms nach dem letzten Tastendruck laden. Ohne diese Wartezeit
-        // ging je Buchstabe ein Request raus; abort() stoppt nur den Browser,
-        // die Vercel Function und das Backend laufen weiter und erzeugten
-        // trotzdem ihre Kurzfassungen — ein getipptes Wort brachte so 30-50
-        // Mistral-Aufrufe und lief in dessen Ratelimit.
+        // Der Erstaufruf geht sofort raus: er kann nicht Teil einer Tippfolge
+        // sein, und 350 ms Verzoegerung waeren hier reine Wartezeit fuer jeden
+        // Besucher.
+        if (ersterTenderLauf.current) {
+            ersterTenderLauf.current = false
+            loadTenders()
+            return () => controller.abort()
+        }
+
+        // Danach erst 350 ms nach dem letzten Tastendruck laden. Ohne diese
+        // Wartezeit ging je Buchstabe ein Request raus; abort() stoppt nur den
+        // Browser-Fetch, die Vercel Function und das Backend laufen weiter und
+        // erzeugten trotzdem ihre Kurzfassungen — ein getipptes Wort brachte so
+        // 30-50 Mistral-Aufrufe und lief in dessen Ratelimit.
         const timer = setTimeout(loadTenders, 350)
         return () => {
             clearTimeout(timer)
