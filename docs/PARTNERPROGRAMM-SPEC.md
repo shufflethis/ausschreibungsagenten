@@ -302,7 +302,15 @@ Verifiziert aus `docker/docker-compose.yml` und `docker/.env_example`:
 ### C3 · Offene Endpunkte und Missbrauch
 
 - `POST /api/tracking/click` ist **unauthentifiziert und ungedrosselt** (`TrackingController.php:74`). Jeder kann beliebig viele Zeilen in `clicks` schreiben. Bei der empfohlenen Architektur wird der Endpunkt gar nicht genutzt → **am Reverse Proxy sperren** (`location /api/tracking { deny all; }`), oder bei aktivem Relay auf die Vercel-Ausgangs-IPs beschränken plus `limit_req`.
-- `/register` erlaubt Partner-Selbstregistrierung. Entschärft dadurch, dass `partners.status` auf `pending` startet und `PartnerAuthController::login()` pending-Konten abweist — aber die Tabelle ist trotzdem frei beschreibbar. `limit_req` auf `/register` und `/auth/register`.
+- **`/register` erlaubt Selbstregistrierung — und zwar sofort wirksam.** Eine frühere Fassung dieser Spec behauptete, neue Konten starteten auf `pending`. Das ist **falsch**: die Aussage stammte aus dem Datenbank-Standard, aber `PartnerAuthController::store()` überschreibt ihn mit `'status' => 'active'  // Automatically activate partners`. Wer sich registriert, kann sich sofort anmelden.
+
+  Damit war die Kette bis zur Provision offen, solange das Programm `is_private = 0` trug: registrieren → aktiv → öffentliches Programm sehen (`PartnerProgramsController::index` zeigt alles mit `is_private = 0`) → selbst beitreten (`join` verlangt ebenfalls nur `is_private = 0`) → eigener `tracking_code` mit `status='active'` → 20 % wiederkehrend. Ohne jede Prüfung.
+
+  Der teure Fall ist **Selbstempfehlung**: wer das bemerkt, kauft über den eigenen Link und bekommt dauerhaft ein Fünftel zurück.
+
+  **Gegenmaßnahme, umgesetzt am 20.08.2026:** `programs.is_private = 1`. Registrieren kann sich weiterhin jeder, aber niemand sieht das Programm oder tritt bei — die Zuordnung passiert ausschließlich in der Verwaltung. Geprüft mit einer echten Fremdregistrierung: kein Treffer in der Programmliste, kein `tracking_code` nach dem Beitrittsversuch. Zusätzlich `limit_req` auf `/register` und `/auth/register`.
+
+  **Wer das Programm je wieder auf `is_private = 0` setzt, öffnet die Kette erneut.**
 - `/admin` bekommt eine **IP-Allowlist am nginx** (entschieden, 10.1): `location ^~ /admin { allow <IPs>; deny all; … }`. Der Schutz greift vor PHP. Er ersetzt **nicht** das Rotieren des `admin123`-Seeds — beides ist nötig, weil die Allowlist bei einem Umzug oder wechselnder IP schnell wieder aufgeweicht wird.
 
 ### C4 · Backups
@@ -477,6 +485,7 @@ Beim Lesen gefunden, unabhängig von der Integration:
 | N5 | `impression()` schreibt in Tabelle `impressions`, die im Schema **nicht existiert** | `TrackingController.php:135` | tote Methode; nicht geroutet, daher heute folgenlos |
 | N6 | `TrackingController::script()` liest `$settings['app_url']` — Variable ist in der Methode nie definiert | `TrackingController.php:42` | leerer `NUMOK_BASE_URL`; nicht geroutet, daher folgenlos |
 | N7 | `conversions.amount` ohne Währungsspalte | `0001-basic-schema.sql` | stillschweigend eine Währung; bei EUR-only unkritisch, aber festhalten |
+| N10 | **Selbstregistrierung setzt sofort `active`** — `'status' => 'active'` in `PartnerAuthController::store()` überschreibt den Datenbank-Standard `pending` | `PartnerAuthController.php` | Zusammen mit `is_private = 0` kann sich jeder selbst einen Empfehlungscode holen. Entschärft über `is_private = 1`; siehe C3 |
 | N9 | **`APP_DEBUG` lässt sich über die Umgebung nicht abschalten** — `getenv('APP_DEBUG') ?: true`; `"0"` ist in PHP falsy, der Ausdruck fällt auf `true` zurück. Es gibt **keinen** Wert, der Debug ausschaltet (auch `"false"` nicht, das ist eine nicht-leere Zeichenkette) | `config/config.example.php:25` | `public/index.php:122` wirft Ausnahmen weiter statt einer schlichten 500. Behoben durch eine korrigierte `config.php`, die schreibgeschützt in den Container gehängt wird — das Repo bleibt unverändert |
 | N8 | **Kein Handler für Erstattungen oder Rückbuchungen** — verarbeitet werden ausschließlich `checkout.session.completed`, `payment_intent.succeeded`, `invoice.paid` | `WebhookController.php:33-45` | Eine Erstattung storniert die Provision **nicht automatisch**. Auffangmechanismus ist die Sperrfrist (`reward_days`) plus manuelles Setzen auf `rejected` in `/admin/conversions` vor der Auszahlung. Gehört in E2, damit die Zusage „bei Rückerstattung entfällt die Provision" gedeckt ist |
 
