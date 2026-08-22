@@ -14,6 +14,34 @@
             ]
         },
         {
+            "source": "/",
+            "headers": [
+                { "key": "Vary", "value": "Accept, Accept-Encoding, User-Agent" },
+                { "key": "Link", "value": "</index.md>; rel=\"alternate\"; type=\"text/markdown\", </sitemap.xml>; rel=\"sitemap\"; type=\"application/xml\", </openapi.json>; rel=\"service-desc\"; type=\"application/vnd.oai.openapi+json\", </.well-known/api-catalog>; rel=\"api-catalog\"" }
+            ]
+        },
+        {
+            "source": "/.well-known/api-catalog",
+            "headers": [
+                { "key": "Content-Type", "value": "application/linkset+json; profile=\"https://www.rfc-editor.org/info/rfc9727\"" },
+                { "key": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+        },
+        {
+            "source": "/(agents.md|pricing.md|auth.md|api-policy.md|skills/(.*)/SKILL.md)",
+            "headers": [
+                { "key": "Content-Type", "value": "text/markdown; charset=utf-8" }
+            ]
+        },
+        {
+            "source": "/(openapi.json|mcp|api/(.*))",
+            "headers": [
+                { "key": "RateLimit-Limit", "value": "600" },
+                { "key": "RateLimit-Remaining", "value": "599" },
+                { "key": "RateLimit-Reset", "value": "3600" }
+            ]
+        },
+        {
             "source": "/assets/(.*)",
             "headers": [
                 { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
@@ -69,6 +97,43 @@
         }
     ],
     "rewrites": [
+        {
+            "source": "/",
+            "has": [
+                { "type": "header", "key": "Accept", "value": ".*text/markdown.*" }
+            ],
+            "destination": "/api/agent-view"
+        },
+        {
+            "source": "/",
+            "has": [
+                { "type": "header", "key": "User-Agent", "value": ".*(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot).*" }
+            ],
+            "destination": "/api/agent-view"
+        },
+        {
+            "source": "/",
+            "has": [
+                { "type": "query", "key": "mode", "value": "agent" }
+            ],
+            "destination": "/api/agent-view"
+        },
+        {
+            "source": "/index.md",
+            "destination": "/api/agent-view"
+        },
+        {
+            "source": "/openapi.json",
+            "destination": "/api/openapi-proxy"
+        },
+        {
+            "source": "/mcp",
+            "destination": "https://api.ausschreibungsagenten.de/mcp"
+        },
+        {
+            "source": "/api/a2a",
+            "destination": "https://api.ausschreibungsagenten.de/api/a2a"
+        },
         {
             "source": "/.well-known/agent-card.json",
             "destination": "https://api.ausschreibungsagenten.de/.well-known/agent-card.json"

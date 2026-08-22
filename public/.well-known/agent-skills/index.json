@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "version": "0.2.0",
+  "name": "Ausschreibungsagenten.de",
+  "description": "Machine-readable skills for explainable public tender search.",
+  "skills": [
+    {
+      "name": "tender-search",
+      "type": "skill-md",
+      "description": "When to use this skill: find current public tenders by keyword, CPV, country, value or deadline; not for bid submission or legal advice.",
+      "url": "https://www.ausschreibungsagenten.de/skills/tender-search/SKILL.md",
+      "digest": "sha256:50a7e9b0ae2ab3ea53250b71c67cbbae7877af06368c7e98861fc322625de401"
+    }
+  ]
+}

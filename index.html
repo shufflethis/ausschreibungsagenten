@@ -43,12 +43,38 @@
 
     <!-- Bing Webmaster Tools Verifizierung -->
     <meta name="msvalidate.01" content="24EA9F9600F1A74E29DADDC501567FBA" />
+    <link rel="alternate" type="text/markdown" href="/index.md" title="Ausschreibungsagenten.de Agent View" />
+    <link rel="service-desc" type="application/vnd.oai.openapi+json" href="/openapi.json" />
 
 </head>
 
 <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+        // WebMCP draft API: read-only tender search for supporting browsers and agents.
+        if (document.modelContext?.registerTool) {
+            document.modelContext.registerTool({
+                name: 'search_public_tenders',
+                description: 'Search current public procurement notices by keyword, country and CPV code.',
+                inputSchema: {
+                    type: 'object',
+                    properties: {
+                        search: { type: 'string', description: 'Tender keyword or trade' },
+                        country: { type: 'string', description: 'ISO-3 country code such as DEU or GBR' },
+                        cpv: { type: 'string', description: 'Optional CPV prefix' }
+                    },
+                    required: ['search']
+                },
+                execute: async ({ search, country = 'DEU', cpv = '' }) => {
+                    const query = new URLSearchParams({ search, country, limit: '6' });
+                    if (cpv) query.set('cpv', cpv);
+                    const response = await fetch('/api/tenders-public?' + query.toString());
+                    return await response.json();
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

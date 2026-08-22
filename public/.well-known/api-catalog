@@ -1,0 +1,31 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://www.ausschreibungsagenten.de/.well-known/api-catalog",
+      "item": [
+        {
+          "href": "https://www.ausschreibungsagenten.de/openapi.json",
+          "type": "application/vnd.oai.openapi+json;version=3.0",
+          "title": "Ausschreibungsagenten Public API"
+        },
+        {
+          "href": "https://www.ausschreibungsagenten.de/.well-known/mcp/server-card.json",
+          "type": "application/mcp-server-card+json",
+          "title": "Ausschreibungsagenten MCP Server"
+        }
+      ],
+      "service-desc": [
+        {
+          "href": "https://www.ausschreibungsagenten.de/openapi.json",
+          "type": "application/vnd.oai.openapi+json;version=3.0"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://www.ausschreibungsagenten.de/entwickler",
+          "type": "text/html"
+        }
+      ]
+    }
+  ]
+}

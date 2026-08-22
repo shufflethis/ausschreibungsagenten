@@ -20,6 +20,11 @@ export default function Footer() {
                         <Link to="/tenderflow-alternative">Tenderflow Alternative</Link>
                         <Link to="/ueber-uns">Über uns</Link>
                         <Link to="/entwickler">API & Agenten</Link>
+                        <a href="/openapi.json">OpenAPI</a>
+                        <a href="/agents.md">Agent Instructions</a>
+                        <a href="/.well-known/api-catalog">API Catalog</a>
+                        <a href="/.well-known/mcp/server-card.json">MCP Server Card</a>
+                        <a href="/pricing.md">Preise (Markdown)</a>
                         {/* Direkt auf die Spezifikation, nicht nur auf die Erklaerseite:
                             Agenten und Entwickler suchen die Referenz, und von der
                             Startseite aus war sie bisher gar nicht erreichbar. */}

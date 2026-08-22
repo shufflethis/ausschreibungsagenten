@@ -1,0 +1,42 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Ausschreibungsagenten.de",
+    "identifier": "did:web:ausschreibungsagenten.de",
+    "documentationUrl": "https://www.ausschreibungsagenten.de/entwickler"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:ausschreibungsagenten.de:mcp:tender-search",
+      "displayName": "Ausschreibungsagenten MCP Tender Search",
+      "type": "application/mcp-server-card+json",
+      "url": "https://www.ausschreibungsagenten.de/.well-known/mcp/server-card.json",
+      "description": "Search current public procurement notices through MCP.",
+      "trustManifest": { "identity": "did:web:ausschreibungsagenten.de", "identityType": "did" }
+    },
+    {
+      "identifier": "urn:air:ausschreibungsagenten.de:a2a:tender-agent",
+      "displayName": "Ausschreibungsagenten A2A Agent",
+      "type": "application/a2a-agent-card+json",
+      "url": "https://www.ausschreibungsagenten.de/.well-known/agent-card.json",
+      "description": "A2A discovery and JSON-RPC tender search.",
+      "trustManifest": { "identity": "did:web:ausschreibungsagenten.de", "identityType": "did" }
+    },
+    {
+      "identifier": "urn:air:ausschreibungsagenten.de:api:public",
+      "displayName": "Ausschreibungsagenten Public API",
+      "type": "application/vnd.oai.openapi+json;version=3.0",
+      "url": "https://www.ausschreibungsagenten.de/openapi.json",
+      "description": "Typed REST contract for tender search, status and API-key registration.",
+      "trustManifest": { "identity": "did:web:ausschreibungsagenten.de", "identityType": "did" }
+    },
+    {
+      "identifier": "urn:air:ausschreibungsagenten.de:skill:tender-search",
+      "displayName": "Tender Search Skill",
+      "type": "text/markdown",
+      "url": "https://www.ausschreibungsagenten.de/skills/tender-search/SKILL.md",
+      "description": "When-to-use and safe invocation guidance for public tender search.",
+      "trustManifest": { "identity": "did:web:ausschreibungsagenten.de", "identityType": "did" }
+    }
+  ]
+}
