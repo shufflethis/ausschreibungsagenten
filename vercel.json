@@ -28,13 +28,23 @@
             ]
         },
         {
-            "source": "/(agents.md|pricing.md|auth.md|api-policy.md|skills/(.*)/SKILL.md)",
+            "source": "/openapi.json",
             "headers": [
-                { "key": "Content-Type", "value": "text/markdown; charset=utf-8" }
+                { "key": "RateLimit-Limit", "value": "600" },
+                { "key": "RateLimit-Remaining", "value": "599" },
+                { "key": "RateLimit-Reset", "value": "3600" }
             ]
         },
         {
-            "source": "/(openapi.json|mcp|api/(.*))",
+            "source": "/mcp",
+            "headers": [
+                { "key": "RateLimit-Limit", "value": "600" },
+                { "key": "RateLimit-Remaining", "value": "599" },
+                { "key": "RateLimit-Reset", "value": "3600" }
+            ]
+        },
+        {
+            "source": "/api/(.*)",
             "headers": [
                 { "key": "RateLimit-Limit", "value": "600" },
                 { "key": "RateLimit-Remaining", "value": "599" },
