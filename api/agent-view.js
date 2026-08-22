@@ -1,6 +1,10 @@
 const body = `---
 mode: agent
 authentication: anonymous_or_api_key
+auth: /auth.md
+pricing: /pricing.md
+rate_limits: response_headers
+sandbox: anonymous_public_preview
 openapi: /openapi.json
 mcp: /mcp
 a2a: /api/a2a

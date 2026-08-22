@@ -118,6 +118,18 @@
             "destination": "/api/agent-view"
         },
         {
+            "source": "/.well-known/mcp.json",
+            "destination": "/.well-known/mcp/server-card.json"
+        },
+        {
+            "source": "/.well-known/mcp/server.json",
+            "destination": "/.well-known/mcp/server-card.json"
+        },
+        {
+            "source": "/server.json",
+            "destination": "/.well-known/mcp/server-card.json"
+        },
+        {
             "source": "/openapi.json",
             "destination": "/api/openapi-proxy"
         },
