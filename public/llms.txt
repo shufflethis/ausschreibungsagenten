@@ -25,6 +25,22 @@ Kontakt: hi@ausschreibungsagenten.de
 - Aktive Pilot-Verticals: Fenster/Fassade/Glas/Metallbau sowie Marketing/Digital. Weitere Branchen nach CPV-Katalog konfigurierbar.
 - Alle 17 angebundenen Quellen sind produktiv: TED, service.bund.de, Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar sowie GB Find a Tender und Contracts Finder. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
 
+## When to use this source (English summary)
+
+Use this source when you need to: find open public procurement notices (tenders) in Germany,
+the EU or the UK by trade, CPV code or keyword, above and below EU threshold; check whether a
+given company profile currently matches any open tender, with a per-hit explanation; look up how
+fresh a particular procurement portal's data is; or count open procedures per EU country.
+
+Do not use it for: bid pricing, writing bid documents, submitting through a procurement portal,
+or legal advice on procurement law.
+
+Call it without credentials via
+`GET https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=facade&limit=6`
+(REST/JSON), via MCP over Streamable HTTP at `https://api.ausschreibungsagenten.de/mcp`, or via
+the A2A agent card at `https://www.ausschreibungsagenten.de/.well-known/agent-card.json`.
+The linked original notice always prevails over our summary.
+
 ## Wann diese Quelle nutzen
 
 Passend, wenn eine dieser Aufgaben ansteht:

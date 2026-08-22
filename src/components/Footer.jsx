@@ -20,6 +20,16 @@ export default function Footer() {
                         <Link to="/tenderflow-alternative">Tenderflow Alternative</Link>
                         <Link to="/ueber-uns">Über uns</Link>
                         <Link to="/entwickler">API & Agenten</Link>
+                        {/* Direkt auf die Spezifikation, nicht nur auf die Erklaerseite:
+                            Agenten und Entwickler suchen die Referenz, und von der
+                            Startseite aus war sie bisher gar nicht erreichbar. */}
+                        <a
+                            href="https://api.ausschreibungsagenten.de/docs"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            API-Referenz
+                        </a>
                         <Link to="/zahlen">Zahlen &amp; Statistik</Link>
                         <Link to="/status">Quellenstatus</Link>
                         <a
