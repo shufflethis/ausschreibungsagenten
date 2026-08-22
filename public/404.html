@@ -48,6 +48,18 @@
         }
 
         a.plain { color: #06b6d4; text-decoration: none; }
+
+        nav { margin-top: 2rem; text-align: left; }
+
+        nav h2 { font-size: .95rem; color: #e2e8f0; margin: 0 0 .6rem; }
+
+        nav ul { list-style: none; padding: 0; margin: 0; }
+
+        nav li { margin: 0 0 .4rem; }
+
+        nav a { color: #06b6d4; text-decoration: none; }
+
+        nav span { color: #64748b; }
     </style>
 </head>
 
@@ -60,6 +72,23 @@
             der Live-Suche weiter – oder der <a class="plain" href="/status">Quellenstatus</a>.
         </p>
         <a class="btn" href="/">Zur Startseite</a>
+
+        <!-- Die Linkliste steht bewusst im 404-Rumpf: ein Agent, der eine
+             geratene Adresse aufruft, braucht hier eine Landkarte, sonst
+             endet seine Recherche an dieser Stelle. -->
+        <nav>
+            <h2>Wo es weitergeht</h2>
+            <ul>
+                <li><a href="/">Startseite</a> <span>– Live-Suche über 17 Vergabequellen</span></li>
+                <li><a href="/status">Quellenstatus</a> <span>– Datenstand je Portal</span></li>
+                <li><a href="/entwickler">API und Agent-Anbindung</a> <span>– REST, OpenAPI, MCP, A2A</span></li>
+                <li><a href="/ueber-uns">Über uns</a> <span>– Team und Betreiberin</span></li>
+                <li><a href="/partner">Partnerprogramm</a></li>
+                <li><a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a> · <a href="/agb">AGB</a></li>
+                <li><a href="/llms.txt">llms.txt</a> <span>– Kurzfassung dieser Website für KI-Agenten</span></li>
+                <li><a href="/sitemap.xml">sitemap.xml</a> <span>– alle indexierten Adressen</span></li>
+            </ul>
+        </nav>
     </main>
 </body>
 

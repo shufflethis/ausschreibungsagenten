@@ -26,6 +26,48 @@
             ]
         }
     ],
+    "redirects": [
+        {
+            "source": "/about",
+            "destination": "/ueber-uns",
+            "permanent": true
+        },
+        {
+            "source": "/privacy",
+            "destination": "/datenschutz",
+            "permanent": true
+        },
+        {
+            "source": "/contact",
+            "destination": "/#kontakt",
+            "permanent": true
+        },
+        {
+            "source": "/kontakt",
+            "destination": "/#kontakt",
+            "permanent": true
+        },
+        {
+            "source": "/imprint",
+            "destination": "/impressum",
+            "permanent": true
+        },
+        {
+            "source": "/developers",
+            "destination": "/entwickler",
+            "permanent": true
+        },
+        {
+            "source": "/developer",
+            "destination": "/entwickler",
+            "permanent": true
+        },
+        {
+            "source": "/docs",
+            "destination": "https://api.ausschreibungsagenten.de/docs",
+            "permanent": false
+        }
+    ],
     "rewrites": [
         {
             "source": "/.well-known/agent-card.json",

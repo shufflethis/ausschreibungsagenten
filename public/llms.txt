@@ -25,6 +25,33 @@ Kontakt: hi@ausschreibungsagenten.de
 - Aktive Pilot-Verticals: Fenster/Fassade/Glas/Metallbau sowie Marketing/Digital. Weitere Branchen nach CPV-Katalog konfigurierbar.
 - Alle 17 angebundenen Quellen sind produktiv: TED, service.bund.de, Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar sowie GB Find a Tender und Contracts Finder. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
 
+## Wann diese Quelle nutzen
+
+Passend, wenn eine dieser Aufgaben ansteht:
+
+- Öffentliche Ausschreibungen zu einem Gewerk, CPV-Code oder Suchbegriff finden — deutschlandweit,
+  EU-weit oder in UK, ober- wie unterschwellig.
+- Prüfen, ob zu einem Unternehmensprofil (Leistungen, Region, Auftragswert, Frist) aktuell etwas
+  Passendes ausgeschrieben ist, samt Begründung je Treffer.
+- Den Datenstand einer bestimmten Vergabequelle nachsehen, bevor man sich auf Vollständigkeit beruft.
+- Zahl und Verteilung offener Verfahren je EU-Land abfragen.
+
+Nicht passend für: Angebotskalkulation, das Erstellen von Angebotstexten, die Abgabe über ein
+Vergabeportal und Rechtsberatung zum Vergaberecht. Dafür ist diese Quelle nicht gebaut.
+
+So rufen Agenten sie auf, ohne Zugangsdaten:
+
+- REST, JSON, keine Anmeldung:
+  `GET https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=Fassade&min_score=50&limit=6`
+  Parameter: `country` (ISO-3, z. B. DEU/AUT/GBR), `search`, `cpv`, `min_score`, `limit`, `offset`,
+  `summary_lang` (`de`/`en`, hängt eine gekennzeichnete KI-Kurzfassung an).
+- MCP über Streamable HTTP: `https://api.ausschreibungsagenten.de/mcp` — Werkzeug `search_tenders`
+  ist frei, Volltextsuche ab Tarif Pro.
+- A2A Agent Card: `https://www.ausschreibungsagenten.de/.well-known/agent-card.json`
+- OpenAPI: `https://api.ausschreibungsagenten.de/openapi.json`
+
+Maßgeblich ist immer die verlinkte Originalbekanntmachung, nicht unsere Aufbereitung.
+
 ## Seiten
 
 - Startseite mit Live-Suche, Tool-Vergleich, FAQ: https://www.ausschreibungsagenten.de/
@@ -32,6 +59,7 @@ Kontakt: hi@ausschreibungsagenten.de
 - API & Agent-Anbindung (Entwicklerseite): https://www.ausschreibungsagenten.de/entwickler
 - Live-Quellenstatus & EU-Abdeckung je Land: https://www.ausschreibungsagenten.de/status
 - Länderliste mit Tender-Zahlen (JSON): https://www.ausschreibungsagenten.de/api/countries
+- Partnerprogramm (Empfehlungen gegen Provision): https://www.ausschreibungsagenten.de/partner
 - Impressum: https://www.ausschreibungsagenten.de/impressum
 - Datenschutz: https://www.ausschreibungsagenten.de/datenschutz
 

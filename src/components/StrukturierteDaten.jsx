@@ -19,6 +19,19 @@ const ORGANISATION = {
     url: `${SITE_ORIGIN}/`,
     email: 'hi@ausschreibungsagenten.de',
     telephone: '+49 30 403665430',
+    logo: `${SITE_ORIGIN}/brand/logo-mark.png`,
+    // Dieselben Daten wie oben, zusaetzlich als contactPoint: KI-Assistenten
+    // lesen bei "wie erreiche ich ..." diese Struktur aus, nicht die losen
+    // Felder. Doppelt gefuehrt statt ersetzt, weil aeltere Auswerter
+    // weiterhin email/telephone direkt am Organization-Objekt erwarten.
+    contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: 'hi@ausschreibungsagenten.de',
+        telephone: '+49 30 403665430',
+        areaServed: 'DE',
+        availableLanguage: ['de', 'en'],
+    },
     // Offizielle Profile derselben Entitaet. Verbindet Domain und Kanal
     // fuer Suchmaschinen zu einem Absender.
     sameAs: ['https://www.youtube.com/@ausschreibungsagenten'],
