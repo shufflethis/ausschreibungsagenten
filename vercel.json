@@ -108,27 +108,6 @@
     ],
     "rewrites": [
         {
-            "source": "/",
-            "has": [
-                { "type": "header", "key": "Accept", "value": ".*text/markdown.*" }
-            ],
-            "destination": "/api/agent-view"
-        },
-        {
-            "source": "/",
-            "has": [
-                { "type": "header", "key": "User-Agent", "value": ".*(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot).*" }
-            ],
-            "destination": "/api/agent-view"
-        },
-        {
-            "source": "/",
-            "has": [
-                { "type": "query", "key": "mode", "value": "agent" }
-            ],
-            "destination": "/api/agent-view"
-        },
-        {
             "source": "/index.md",
             "destination": "/api/agent-view"
         },

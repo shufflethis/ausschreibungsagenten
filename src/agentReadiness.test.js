@@ -50,10 +50,10 @@ describe('Agent-Readiness machine contracts', () => {
             expect.objectContaining({ source: '/openapi.json', destination: '/api/openapi-proxy' }),
             expect.objectContaining({ source: '/mcp', destination: 'https://api.ausschreibungsagenten.de/mcp' }),
         ]))
-        const markdownRewrite = config.rewrites.find((route) => route.source === '/' && route.destination === '/api/agent-view')
-        expect(markdownRewrite?.has).toEqual(expect.arrayContaining([
-            expect.objectContaining({ type: 'header', key: 'Accept' }),
-        ]))
+        const middleware = await text('middleware.js')
+        expect(middleware).toMatch(/accept\.includes\('text\/markdown'\)/)
+        expect(middleware).toMatch(/mode'\) === 'agent'/)
+        expect(middleware).toMatch(/AGENT_USER_AGENT/)
     })
 
     it('advertises WebMCP and machine endpoints from rendered HTML', async () => {
