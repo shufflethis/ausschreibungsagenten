@@ -19,7 +19,7 @@ Find current public procurement notices from 17 connected sources across Germany
 ## Authentication
 
 Public preview search is anonymous. Higher limits and protected tools use HTTP Bearer authentication:
-send `Authorization: Bearer <key>`. Keys start with sk_ and are documented in /auth.md.
+send \`Authorization: Bearer <key>\`. Keys start with sk_ and are documented in /auth.md.
 
 ## Capabilities
 

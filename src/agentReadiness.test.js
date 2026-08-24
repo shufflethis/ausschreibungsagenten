@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import agentAnsicht from '../api/agent-view.js'
 import nichtGefunden from '../api/not-found.js'
 import { willAgentAnsicht } from '../lib/agentenErkennung.js'
 import { readFile } from 'node:fs/promises'
@@ -79,6 +80,29 @@ describe('Agent-Readiness machine contracts', () => {
         expect(willAgentAnsicht({ modus: 'agent' })).toBe(true)
         expect(willAgentAnsicht({ userAgent: 'Mozilla/5.0 (compatible; ClaudeBot/1.0)' })).toBe(true)
         expect(willAgentAnsicht({ accept: 'text/html', userAgent: 'Mozilla/5.0' })).toBe(false)
+    })
+
+    it('liefert die Agent-Ansicht als Markdown, ohne beim Laden zu brechen', () => {
+        // Diese Datei ist ein einziges Template-Literal. Ein Backtick im
+        // Text beendet es und macht aus der Function einen 500 - genau das
+        // ist passiert, als der Bearer-Header in Backticks gesetzt wurde.
+        // Der Import hier faellt schon beim Parsen um, wenn es wieder
+        // passiert; der Rest prueft die Antwort.
+        const gesammelt = { header: {}, status: null, body: '' }
+        const res = {
+            setHeader: (k, v) => { gesammelt.header[k] = v },
+            status: (c) => { gesammelt.status = c; return res },
+            send: (b) => { gesammelt.body = b; return res },
+            end: () => res,
+        }
+        agentAnsicht({ method: 'GET', url: '/index.md', headers: {} }, res)
+
+        expect(gesammelt.status).toBe(200)
+        expect(gesammelt.header['Content-Type']).toBe('text/markdown; charset=utf-8')
+        expect(gesammelt.header.Vary).toContain('Accept')
+        expect(gesammelt.body).toContain('# Ausschreibungsagenten.de')
+        expect(gesammelt.body).toContain('Authorization: Bearer')
+        expect(gesammelt.body).not.toContain('X-API-Key')
     })
 
     it('faengt geratene Adressen mit echtem 404 und Markdown-Rumpf ab', async () => {
