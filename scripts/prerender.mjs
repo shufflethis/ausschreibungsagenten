@@ -48,4 +48,11 @@ for (const route of routes) {
     }
 }
 
+// Die 404-Seite kommt aus derselben Quelle wie die Antwort der
+// Auffang-Function: die HTML-Fassung steht in api/not-found.js. Die Datei
+// hier ist nur das Netz fuer den Fall, dass die Function ausfaellt - dann
+// liefert Vercel wenigstens die gestaltete Seite statt seiner eigenen.
+const { HTML: seiteNichtGefunden } = await import(join(wurzel, 'api', 'not-found.js'))
+await writeFile(join(distVerzeichnis, '404.html'), seiteNichtGefunden, 'utf8')
+
 console.log(`${vorgerendert} Routen vorgerendert, ${geruest} Geruest-Seiten geschrieben.`)

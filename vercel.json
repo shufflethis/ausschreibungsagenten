@@ -110,6 +110,56 @@
             "source": "/docs",
             "destination": "https://api.ausschreibungsagenten.de/docs",
             "permanent": false
+        },
+        {
+            "source": "/preise",
+            "destination": "/#preise",
+            "permanent": true
+        },
+        {
+            "source": "/pricing",
+            "destination": "/#preise",
+            "permanent": true
+        },
+        {
+            "source": "/tarife",
+            "destination": "/#preise",
+            "permanent": true
+        },
+        {
+            "source": "/funktionen",
+            "destination": "/#funktionen",
+            "permanent": true
+        },
+        {
+            "source": "/features",
+            "destination": "/#funktionen",
+            "permanent": true
+        },
+        {
+            "source": "/wie-es-funktioniert",
+            "destination": "/#prozess",
+            "permanent": true
+        },
+        {
+            "source": "/how-it-works",
+            "destination": "/#prozess",
+            "permanent": true
+        },
+        {
+            "source": "/faq",
+            "destination": "/#faq",
+            "permanent": true
+        },
+        {
+            "source": "/branchen",
+            "destination": "/#branchen",
+            "permanent": true
+        },
+        {
+            "source": "/api",
+            "destination": "/entwickler",
+            "permanent": true
         }
     ],
     "rewrites": [
@@ -176,6 +226,10 @@
         {
             "source": "/abrechnung",
             "destination": "/index.html"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/api/not-found"
         }
     ]
 }

@@ -1,4 +1,46 @@
-<!DOCTYPE html>
+import { willAgentAnsicht } from '../lib/agentenErkennung.js'
+
+// Vercel prueft in dieser Reihenfolge: Redirects, Header, Dateisystem,
+// Rewrites. Der Auffang-Rewrite "/(.*)" steht als letzter Eintrag der
+// vercel.json und greift deshalb nur, wenn weder eine vorgerenderte
+// Seite noch eine statische Datei noch eine andere Function gepasst hat.
+//
+// Der Statuscode allein genuegt Agenten nicht: wer eine Adresse geraten
+// hat, braucht im Rumpf eine Landkarte, sonst endet die Recherche hier.
+// Deshalb verhandelt diese Function zwischen Markdown fuer Agenten und
+// der gestalteten Seite fuer Menschen. Die aufgerufene Adresse wird
+// bewusst nicht in die Antwort gespiegelt: sie ist dem Aufrufer bekannt,
+// und ungespiegelter Inhalt kann nicht ausbrechen.
+
+const ZIELE = [
+    ['Startseite mit Live-Suche über 17 Vergabequellen', '/'],
+    ['llms.txt — Kurzfassung dieser Website für KI-Agenten', '/llms.txt'],
+    ['agents.md — wann und wie Agenten diese Quelle nutzen', '/agents.md'],
+    ['sitemap.xml — alle indexierten Adressen', '/sitemap.xml'],
+    ['OpenAPI-Spezifikation', '/openapi.json'],
+    ['API- und Agent-Anbindung (REST, MCP, A2A)', '/entwickler'],
+    ['Quellenstatus — Datenstand je Vergabeportal', '/status'],
+    ['Über uns', '/ueber-uns'],
+]
+
+const ORIGIN = 'https://www.ausschreibungsagenten.de'
+
+const MARKDOWN = `# 404 — Seite nicht gefunden
+
+Diese Adresse gibt es auf ausschreibungsagenten.de nicht. Die Recherche muss
+hier nicht enden — die folgenden Einstiege sind stabil.
+
+## Wo es weitergeht
+
+${ZIELE.map(([titel, pfad]) => `- [${titel}](${ORIGIN}${pfad})`).join('\n')}
+
+## Hinweis
+
+Geratene Adressen liefern hier immer HTTP 404, nie eine 200 mit der
+Startseite. Wer alle gueltigen Adressen sucht, liest \`${ORIGIN}/sitemap.xml\`.
+`
+
+const HTML = `<!DOCTYPE html>
 <html lang="de">
 
 <head>
@@ -73,9 +115,6 @@
         </p>
         <a class="btn" href="/">Zur Startseite</a>
 
-        <!-- Die Linkliste steht bewusst im 404-Rumpf: ein Agent, der eine
-             geratene Adresse aufruft, braucht hier eine Landkarte, sonst
-             endet seine Recherche an dieser Stelle. -->
         <nav>
             <h2>Wo es weitergeht</h2>
             <ul>
@@ -93,3 +132,30 @@
 </body>
 
 </html>
+`
+
+export { MARKDOWN, HTML }
+
+export default function handler(req, res) {
+    const modus = new URL(req.url ?? '/', ORIGIN).searchParams.get('mode')
+    const agent = willAgentAnsicht({
+        accept: req.headers?.accept ?? '',
+        userAgent: req.headers?.['user-agent'] ?? '',
+        modus,
+    })
+
+    res.setHeader('Content-Type', agent ? 'text/markdown; charset=utf-8' : 'text/html; charset=utf-8')
+    res.setHeader('Vary', 'Accept, Accept-Encoding, User-Agent')
+    res.setHeader('X-Robots-Tag', 'noindex')
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate')
+    res.setHeader(
+        'Link',
+        '</sitemap.xml>; rel="sitemap"; type="application/xml", ' +
+            '</llms.txt>; rel="help"; type="text/plain", ' +
+            '</openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json", ' +
+            '</.well-known/api-catalog>; rel="api-catalog"',
+    )
+
+    if (req.method === 'HEAD') return res.status(404).end()
+    return res.status(404).send(agent ? MARKDOWN : HTML)
+}

@@ -88,6 +88,31 @@ npm run build
 npm audit --audit-level=high
 ```
 
+## 404-Seite und Auffang-Rewrite
+
+Der letzte Eintrag unter `rewrites` in der `vercel.json` fängt jede Adresse ab,
+die weder eine Datei noch eine andere Function trifft, und leitet sie an
+`api/not-found.js`. Diese Function antwortet immer mit HTTP 404 und verhandelt
+den Rumpf: Markdown mit Linkliste für Agenten (`Accept: text/markdown`,
+`?mode=agent` oder bekannter Bot-User-Agent), sonst die gestaltete HTML-Seite.
+Die Erkennung teilt sie sich mit der `middleware.js` über
+`lib/agentenErkennung.js`.
+
+Zwei Folgen davon:
+
+- `public/404.html` gibt es nicht mehr. Die HTML-Fassung steht als Konstante in
+  `api/not-found.js`; `scripts/prerender.mjs` schreibt daraus beim Build
+  `dist/404.html`. Diese Datei greift, wenn der Auffang-Rewrite oder die
+  Function einmal fehlt — nicht bei einem Laufzeitfehler der Function, der
+  liefert 500.
+- Jeder 404 ist jetzt ein Function-Aufruf statt einer statischen Datei. Bei
+  diesem Traffic-Volumen unkritisch, bei einem Bot-Sturm auf geratene Adressen
+  im Blick behalten.
+
+Neue Routen brauchen weiterhin eine eigene Datei im `dist` — `check-prerender`
+erzwingt das. Ohne sie liefert der Auffang-Rewrite jetzt 404 statt der
+Startseite.
+
 ## Partnerprogramm und Tender-Suche — bevor du hier etwas änderst
 
 Zwei Stellen dieser Website hängen an Entscheidungen, die im Backend-Repo dokumentiert sind
