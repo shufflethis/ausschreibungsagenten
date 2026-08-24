@@ -275,7 +275,7 @@ Navigation 2/2.
 punktestärkste Einzelposten des ganzen Plans, weil Essential-Checks rund 7,3
 Punkte pro Check wiegen gegenüber rund 0,9 bei Recommended.
 
-**Sprint 3 (Entscheidung nötig):** C1 Variante wählen, A5 Rest, A6, C2.
+**Sprint 3 (Entscheidung nötig):** C1 Variante wählen, A5 Rest, A6. ~~C2~~ ist erledigt.
 
 ## Punkteerwartung
 
