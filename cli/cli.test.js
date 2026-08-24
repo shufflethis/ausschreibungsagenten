@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ApiFehler, basis } from './api.js'
 import { laenderZeilen, quellenZeilen, tenderZeilen } from './ausgabe.js'
@@ -12,9 +14,11 @@ function lauf(argv) {
         .then((code) => ({ code, aus: aus.join('\n'), fehler: fehler.join('\n') }))
 }
 
+const VERSION_ERWARTET = '0.1.1'
+
 describe('CLI', () => {
     it('nennt Version und Hilfe auf stdout', async () => {
-        expect((await lauf(['--version'])).aus).toMatch(/^\d+\.\d+\.\d+$/)
+        expect((await lauf(['--version'])).aus).toBe(VERSION_ERWARTET)
         const hilfe = await lauf(['--help'])
         expect(hilfe.code).toBe(0)
         expect(hilfe.aus).toContain('ausschreibungsagenten suche')
@@ -33,6 +37,20 @@ describe('CLI', () => {
 
     it('unterscheidet unbekannten Befehl von API-Fehler', async () => {
         expect((await lauf(['quatsch'])).code).toBe(2)
+    })
+
+    it('startet ueber den bin-Einstiegspunkt, nicht ueber eine Namenspruefung', async () => {
+        // npm legt fuer bin einen Symlink an; jede Pruefung auf den
+        // Dateinamen scheitert dort. Die erste Fassung tat genau das und
+        // lieferte ueber npx wortlos Exit 0.
+        const bin = await readFile(resolve(process.cwd(), 'cli/bin.js'), 'utf8')
+        expect(bin).toContain('fuehreAus(process.argv.slice(2))')
+        const paket = JSON.parse(await readFile(resolve(process.cwd(), 'cli/package.json'), 'utf8'))
+        expect(paket.bin.ausschreibungsagenten).toBe('bin.js')
+        expect(paket.files).toContain('bin.js')
+        expect(paket.version).toBe(VERSION_ERWARTET)
+        const modul = await readFile(resolve(process.cwd(), 'cli/index.js'), 'utf8')
+        expect(modul).not.toContain('import.meta.url.endsWith')
     })
 
     it('nimmt die Basis-Adresse aus der Umgebung', () => {

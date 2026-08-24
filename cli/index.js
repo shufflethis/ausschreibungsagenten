@@ -1,9 +1,8 @@
-#!/usr/bin/env node
 import { parseArgs } from 'node:util'
 import { ApiFehler, basis, laender, quellenStatus, sucheTender } from './api.js'
 import { laenderZeilen, quellenZeilen, tenderZeilen } from './ausgabe.js'
 
-const VERSION = '0.1.0'
+const VERSION = '0.1.1'
 
 const HILFE = `ausschreibungsagenten ${VERSION}
 Oeffentliche Ausschreibungen aus 17 Vergabequellen in Deutschland, der EU und UK.
@@ -121,10 +120,4 @@ export async function fuehreAus(argv, schreibe = console.log, fehlerAus = consol
         fehlerAus(`Netzwerkfehler: ${fehler.message}`)
         return 1
     }
-}
-
-// Nur ausfuehren, wenn die Datei als Programm gestartet wurde - beim
-// Import aus dem Test bleibt sie still.
-if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop())) {
-    process.exitCode = await fuehreAus(process.argv.slice(2))
 }

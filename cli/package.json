@@ -1,6 +1,6 @@
 {
     "name": "ausschreibungsagenten",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "CLI für öffentliche Ausschreibungen aus 17 Vergabequellen in Deutschland, der EU und UK — Suche, Quellenstatus und Länderabdeckung ohne Anmeldung.",
     "keywords": [
         "ausschreibungen",
@@ -26,9 +26,10 @@
     "license": "MIT",
     "type": "module",
     "bin": {
-        "ausschreibungsagenten": "index.js"
+        "ausschreibungsagenten": "bin.js"
     },
     "files": [
+        "bin.js",
         "index.js",
         "api.js",
         "ausgabe.js",
