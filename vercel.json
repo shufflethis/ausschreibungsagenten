@@ -228,7 +228,7 @@
             "destination": "/index.html"
         },
         {
-            "source": "/(.*)",
+            "source": "/((?!api/).*)",
             "destination": "/api/not-found"
         }
     ]

@@ -92,7 +92,9 @@ npm audit --audit-level=high
 
 Der letzte Eintrag unter `rewrites` in der `vercel.json` fängt jede Adresse ab,
 die weder eine Datei noch eine andere Function trifft, und leitet sie an
-`api/not-found.js`. Diese Function antwortet immer mit HTTP 404 und verhandelt
+`api/not-found.js`. `/api/…` ist per Negativ-Lookahead ausgenommen: dort
+antwortet `api/[...path].js` mit `application/problem+json`, und diese Function
+würde der Auffang sonst überholen. Diese Function antwortet immer mit HTTP 404 und verhandelt
 den Rumpf: Markdown mit Linkliste für Agenten (`Accept: text/markdown`,
 `?mode=agent` oder bekannter Bot-User-Agent), sonst die gestaltete HTML-Seite.
 Die Erkennung teilt sie sich mit der `middleware.js` über

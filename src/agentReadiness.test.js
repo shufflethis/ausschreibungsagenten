@@ -86,7 +86,11 @@ describe('Agent-Readiness machine contracts', () => {
         // Der Auffang-Rewrite muss der letzte sein: Vercel arbeitet die
         // Liste der Reihe nach ab, davor stehende Regeln wuerden sonst
         // nie greifen.
-        expect(config.rewrites.at(-1)).toEqual({ source: '/(.*)', destination: '/api/not-found' })
+        // Der Auffang nimmt /api/ ausdruecklich aus: dort antwortet
+        // api/[...path].js mit application/problem+json. Ohne die
+        // Ausnahme ueberholt der Auffang diese Function und Agenten
+        // bekommen auf eine falsche API-Adresse HTML statt JSON.
+        expect(config.rewrites.at(-1)).toEqual({ source: '/((?!api/).*)', destination: '/api/not-found' })
 
         const agent = antwort({ accept: 'text/markdown', 'user-agent': 'ClaudeBot/1.0' })
         expect(agent.status).toBe(404)
