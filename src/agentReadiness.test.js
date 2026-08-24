@@ -123,6 +123,18 @@ describe('Agent-Readiness machine contracts', () => {
         }
     })
 
+    it('loest die versionierte API-Flaeche auch auf der Website-Origin ein', async () => {
+        // Die openapi.json nennt www als zweiten Server. Ohne diese Regel
+        // laeuft dort jede dokumentierte Operation ins 404 - die Spec
+        // verspraeche etwas, das der Server nicht kann.
+        const config = JSON.parse(await text('vercel.json'))
+        const quellen = config.rewrites.map((r) => r.source)
+        const v1 = config.rewrites.find((r) => r.source === '/api/v1/(.*)')
+        expect(v1?.destination).toBe('https://api.ausschreibungsagenten.de/api/v1/$1')
+        // Muss vor der allgemeinen /api-Regel stehen, sonst greift die zuerst.
+        expect(quellen.indexOf('/api/v1/(.*)')).toBeLessThan(quellen.indexOf('/api/(.*)'))
+    })
+
     it('formatiert die llms.txt als Navigationsindex mit Markdown-Links', async () => {
         const llms = await text('public/llms.txt')
         expect(llms.startsWith('# ')).toBe(true)
