@@ -1,0 +1,44 @@
+{
+    "name": "ausschreibungsagenten",
+    "version": "0.1.0",
+    "description": "CLI für öffentliche Ausschreibungen aus 17 Vergabequellen in Deutschland, der EU und UK — Suche, Quellenstatus und Länderabdeckung ohne Anmeldung.",
+    "keywords": [
+        "ausschreibungen",
+        "vergabe",
+        "oeffentliche-auftraege",
+        "tender",
+        "procurement",
+        "ted",
+        "cpv",
+        "cli",
+        "agent"
+    ],
+    "homepage": "https://www.ausschreibungsagenten.de/entwickler",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/shufflethis/ausschreibungsagenten.git",
+        "directory": "cli"
+    },
+    "bugs": {
+        "url": "https://github.com/shufflethis/ausschreibungsagenten/issues"
+    },
+    "author": "Yawusa UG (haftungsbeschränkt) <hi@ausschreibungsagenten.de>",
+    "license": "MIT",
+    "type": "module",
+    "bin": {
+        "ausschreibungsagenten": "index.js"
+    },
+    "files": [
+        "index.js",
+        "api.js",
+        "ausgabe.js",
+        "README.md",
+        "LICENSE"
+    ],
+    "engines": {
+        "node": ">=20"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
