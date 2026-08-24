@@ -51,6 +51,23 @@ describe('Strukturierte Daten', () => {
         expect(organisation.address.addressLocality).toBe('Berlin')
     })
 
+    it('beschreibt die Entitaet, nicht nur ihren Namen', () => {
+        const organisation = jsonLd('/')['@graph'].find((k) => k['@type'] === 'Organization')
+        expect(organisation.description).toContain('17 Vergabequellen')
+        expect(organisation.url).toBe('https://www.ausschreibungsagenten.de/')
+        expect(organisation.logo).toContain('/brand/logo-mark.png')
+    })
+
+    it('fuehrt den Dienst nur auf der Startseite und ohne buchbare Offer', () => {
+        const start = jsonLd('/')['@graph'].find((k) => k['@type'] === 'Service')
+        expect(start.provider['@id']).toBe('https://www.ausschreibungsagenten.de/#organisation')
+        expect(start.areaServed.length).toBeGreaterThan(1)
+        // Solange der Online-Checkout aus ist, waere eine Offer eine
+        // Zusage, die die Website nicht einloest.
+        expect(start.offers).toBeUndefined()
+        expect(jsonLd('/entwickler')['@graph'].some((k) => k['@type'] === 'Service')).toBe(false)
+    })
+
     it('nennt den eigenen YouTube-Kanal als Profil derselben Entitaet', () => {
         const daten = jsonLd('/')
         const organisation = daten['@graph'].find((k) => k['@type'] === 'Organization')

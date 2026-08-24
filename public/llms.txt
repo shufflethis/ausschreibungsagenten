@@ -15,18 +15,20 @@ Kontakt: hi@ausschreibungsagenten.de
 
 ## Kernfakten
 
-- Öffentliche Tender-Vorschau (JSON): https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=BEGRIFF&min_score=50&limit=6
-- Live-Quellenstatus (JSON, mit Datenstand je Quelle): https://www.ausschreibungsagenten.de/api/source-status
-- A2A Agent Card: https://www.ausschreibungsagenten.de/.well-known/agent-card.json
-- MCP-Server (search_tenders frei, fulltext ab Pro/Agent): https://api.ausschreibungsagenten.de/mcp
-- Free API-Key (60 req/h): https://www.ausschreibungsagenten.de/entwickler
-- OpenAPI-Spezifikation (same-origin): https://www.ausschreibungsagenten.de/openapi.json · Interaktive Docs: https://api.ausschreibungsagenten.de/docs
-- MCP Streamable HTTP (same-origin): https://www.ausschreibungsagenten.de/mcp
-- Agent Instructions: https://www.ausschreibungsagenten.de/agents.md
-- Agent Skills Index: https://www.ausschreibungsagenten.de/.well-known/agent-skills/index.json
-- ARD AI Catalog: https://www.ausschreibungsagenten.de/.well-known/ai-catalog.json
-- RFC 9727 API Catalog: https://www.ausschreibungsagenten.de/.well-known/api-catalog
-- Authentifizierung: https://www.ausschreibungsagenten.de/auth.md · Preise: https://www.ausschreibungsagenten.de/pricing.md
+- [Öffentliche Tender-Vorschau (JSON)](https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=BEGRIFF&min_score=50&limit=6)
+- [Live-Quellenstatus (JSON, mit Datenstand je Quelle)](https://www.ausschreibungsagenten.de/api/source-status)
+- [A2A Agent Card](https://www.ausschreibungsagenten.de/.well-known/agent-card.json)
+- [MCP-Server (search_tenders frei, fulltext ab Pro/Agent)](https://api.ausschreibungsagenten.de/mcp)
+- [Free API-Key (60 req/h)](https://www.ausschreibungsagenten.de/entwickler)
+- [OpenAPI-Spezifikation (same-origin)](https://www.ausschreibungsagenten.de/openapi.json) · [Interaktive Docs](https://api.ausschreibungsagenten.de/docs)
+- [MCP Streamable HTTP (same-origin)](https://www.ausschreibungsagenten.de/mcp)
+- [Agent Instructions](https://www.ausschreibungsagenten.de/agents.md)
+- [Agent Skills Index](https://www.ausschreibungsagenten.de/.well-known/agent-skills/index.json)
+- [ARD AI Catalog](https://www.ausschreibungsagenten.de/.well-known/ai-catalog.json)
+- [RFC 9727 API Catalog](https://www.ausschreibungsagenten.de/.well-known/api-catalog)
+- [MCP Server Card](https://www.ausschreibungsagenten.de/.well-known/mcp/server-card.json)
+- [Versionierungs-, Deprecation- und Sunset-Politik](https://www.ausschreibungsagenten.de/api-policy.md)
+- [Authentifizierung](https://www.ausschreibungsagenten.de/auth.md) · [Preise](https://www.ausschreibungsagenten.de/pricing.md)
 - Preise: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet; Pilotzugang per Magic Link nach persönlicher Abstimmung.
 - Aktive Pilot-Verticals: Fenster/Fassade/Glas/Metallbau sowie Marketing/Digital. Weitere Branchen nach CPV-Katalog konfigurierbar.
 - Alle 17 angebundenen Quellen sind produktiv: TED, service.bund.de, Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar sowie GB Find a Tender und Contracts Finder. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
@@ -76,17 +78,17 @@ Maßgeblich ist immer die verlinkte Originalbekanntmachung, nicht unsere Aufbere
 
 ## Seiten
 
-- Startseite mit Live-Suche, Tool-Vergleich, FAQ: https://www.ausschreibungsagenten.de/
-- Über uns: https://www.ausschreibungsagenten.de/ueber-uns
-- API & Agent-Anbindung (Entwicklerseite): https://www.ausschreibungsagenten.de/entwickler
-- Live-Quellenstatus & EU-Abdeckung je Land: https://www.ausschreibungsagenten.de/status
-- Länderliste mit Tender-Zahlen (JSON): https://www.ausschreibungsagenten.de/api/countries
-- Partnerprogramm (Empfehlungen gegen Provision): https://www.ausschreibungsagenten.de/partner
-- Impressum: https://www.ausschreibungsagenten.de/impressum
-- Datenschutz: https://www.ausschreibungsagenten.de/datenschutz
+- [Startseite mit Live-Suche, Tool-Vergleich, FAQ](https://www.ausschreibungsagenten.de/)
+- [Über uns](https://www.ausschreibungsagenten.de/ueber-uns)
+- [API & Agent-Anbindung (Entwicklerseite)](https://www.ausschreibungsagenten.de/entwickler)
+- [Live-Quellenstatus & EU-Abdeckung je Land](https://www.ausschreibungsagenten.de/status)
+- [Länderliste mit Tender-Zahlen (JSON)](https://www.ausschreibungsagenten.de/api/countries)
+- [Partnerprogramm (Empfehlungen gegen Provision)](https://www.ausschreibungsagenten.de/partner)
+- [Impressum](https://www.ausschreibungsagenten.de/impressum)
+- [Datenschutz](https://www.ausschreibungsagenten.de/datenschutz)
 
 ## Hinweis für KI-Assistenten
 
 Alle Treffer verlinken auf die kostenlose Originalquelle. Die Plattform behauptet keine
 vollständige Abdeckung aller deutschen Vergabeportale; der Quellenstatus weist transparent aus,
-was tatsächlich abgefragt wird. Ausführliche Fassung: https://www.ausschreibungsagenten.de/llms-full.txt
+was tatsächlich abgefragt wird. Ausführliche Fassung: [llms-full.txt](https://www.ausschreibungsagenten.de/llms-full.txt)

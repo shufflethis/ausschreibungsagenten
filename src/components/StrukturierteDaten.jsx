@@ -16,6 +16,13 @@ const ORGANISATION = {
     '@id': `${SITE_ORIGIN}/#organisation`,
     name: 'Ausschreibungsagenten.de',
     legalName: 'Yawusa UG (haftungsbeschränkt)',
+    // Ohne description bleibt der Identitaetsknoten fuer Auswerter
+    // unvollstaendig: Name und Adresse sagen, wer wir sind, aber nicht,
+    // wofuer. Genau danach fragen Agenten bei der Entitaetsaufloesung.
+    description:
+        'Ausschreibungsagenten.de findet öffentliche Ausschreibungen aus 17 Vergabequellen in '
+        + 'Deutschland, der EU und dem Vereinigten Königreich und begründet jeden Treffer '
+        + 'nachvollziehbar über CPV, Suchbegriffe, Ausschlüsse, Leistungsort, Auftragswert und Frist.',
     url: `${SITE_ORIGIN}/`,
     email: 'hi@ausschreibungsagenten.de',
     telephone: '+49 30 403665430',
@@ -42,6 +49,35 @@ const ORGANISATION = {
         addressLocality: 'Berlin',
         addressCountry: 'DE',
     },
+}
+
+// Organization sagt, wer wir sind; Service sagt, was wir tun. Auswerter
+// suchen den zweiten Knoten, wenn sie Leistung, Gebiet und Anbieter
+// zusammenfuehren wollen. Bewusst ohne offers: solange der Online-
+// Checkout aus ist, waere eine buchbare Offer eine Zusage, die die
+// Website nicht einloest. Die Preise stehen in /pricing.md.
+const DIENST = {
+    '@type': 'Service',
+    '@id': `${SITE_ORIGIN}/#dienst`,
+    name: 'Ausschreibungs-Monitoring mit erklärbarem Profil-Matching',
+    serviceType: 'Recherche und Überwachung öffentlicher Ausschreibungen',
+    description:
+        'Tägliche Auswertung von 17 Vergabequellen (TED, service.bund.de, Datenservice Öffentlicher '
+        + 'Einkauf, DTVP, RIB, Landes- und Regionalportale, GB Find a Tender und Contracts Finder) '
+        + 'mit erklärbarem Abgleich gegen das Firmenprofil und Zugriff über REST, MCP und A2A.',
+    provider: { '@id': `${SITE_ORIGIN}/#organisation` },
+    url: `${SITE_ORIGIN}/`,
+    areaServed: [
+        { '@type': 'Country', name: 'Deutschland' },
+        { '@type': 'Country', name: 'Österreich' },
+        { '@type': 'Country', name: 'Vereinigtes Königreich' },
+        { '@type': 'AdministrativeArea', name: 'Europäische Union' },
+    ],
+    audience: {
+        '@type': 'BusinessAudience',
+        audienceType: 'Kleine und mittlere Unternehmen, die sich an öffentlichen Vergaben beteiligen',
+    },
+    termsOfService: `${SITE_ORIGIN}/agb`,
 }
 
 export default function StrukturierteDaten({ path, faq }) {
@@ -72,6 +108,12 @@ export default function StrukturierteDaten({ path, faq }) {
             isPartOf: { '@id': `${SITE_ORIGIN}/#organisation` },
         },
     ]
+
+    // Nur auf der Startseite: der Dienst ist einer, und ihn auf jeder
+    // Unterseite zu wiederholen macht ihn nicht deutlicher.
+    if (route.path === '/') {
+        graph.push(DIENST)
+    }
 
     if (faq?.length) {
         graph.push({

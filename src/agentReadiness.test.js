@@ -1,9 +1,25 @@
 import { createHash } from 'node:crypto'
+import nichtGefunden from '../api/not-found.js'
+import { willAgentAnsicht } from '../lib/agentenErkennung.js'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 const text = (path) => readFile(resolve(process.cwd(), path), 'utf8')
+
+// Minimaler Ersatz fuer das Antwortobjekt der Vercel-Function, damit die
+// Aushandlung ohne laufenden Server pruefbar bleibt.
+function antwort(headers) {
+    const gesammelt = { header: {}, status: null, body: '' }
+    const res = {
+        setHeader: (schluessel, wert) => { gesammelt.header[schluessel] = wert },
+        status: (code) => { gesammelt.status = code; return res },
+        send: (rumpf) => { gesammelt.body = rumpf; return res },
+        end: () => res,
+    }
+    nichtGefunden({ method: 'GET', url: '/gibt-es-nicht', headers }, res)
+    return gesammelt
+}
 
 describe('Agent-Readiness machine contracts', () => {
     it('publishes discovery, instructions, pricing and auth documents', async () => {
@@ -53,10 +69,61 @@ describe('Agent-Readiness machine contracts', () => {
             expect.objectContaining({ source: '/openapi.json', destination: '/api/openapi-proxy' }),
             expect.objectContaining({ source: '/mcp', destination: 'https://api.ausschreibungsagenten.de/mcp' }),
         ]))
+        // Die Erkennung steht in lib/agentenErkennung.js, weil middleware
+        // und 404-Function dieselbe Entscheidung treffen muessen. Geprueft
+        // wird deshalb das Verhalten, nicht der Wortlaut der middleware.
         const middleware = await text('middleware.js')
-        expect(middleware).toMatch(/accept\.includes\('text\/markdown'\)/)
-        expect(middleware).toMatch(/mode'\) === 'agent'/)
-        expect(middleware).toMatch(/AGENT_USER_AGENT/)
+        expect(middleware).toMatch(/willAgentAnsicht/)
+        expect(middleware).toMatch(/'\/api\/agent-view'/)
+        expect(willAgentAnsicht({ accept: 'text/markdown' })).toBe(true)
+        expect(willAgentAnsicht({ modus: 'agent' })).toBe(true)
+        expect(willAgentAnsicht({ userAgent: 'Mozilla/5.0 (compatible; ClaudeBot/1.0)' })).toBe(true)
+        expect(willAgentAnsicht({ accept: 'text/html', userAgent: 'Mozilla/5.0' })).toBe(false)
+    })
+
+    it('faengt geratene Adressen mit echtem 404 und Markdown-Rumpf ab', async () => {
+        const config = JSON.parse(await text('vercel.json'))
+        // Der Auffang-Rewrite muss der letzte sein: Vercel arbeitet die
+        // Liste der Reihe nach ab, davor stehende Regeln wuerden sonst
+        // nie greifen.
+        expect(config.rewrites.at(-1)).toEqual({ source: '/(.*)', destination: '/api/not-found' })
+
+        const agent = antwort({ accept: 'text/markdown', 'user-agent': 'ClaudeBot/1.0' })
+        expect(agent.status).toBe(404)
+        expect(agent.header['Content-Type']).toBe('text/markdown; charset=utf-8')
+        expect(agent.header.Vary).toContain('Accept')
+        expect(agent.header['X-Robots-Tag']).toBe('noindex')
+        expect(agent.body.startsWith('# ')).toBe(true)
+        for (const ziel of ['/llms.txt', '/sitemap.xml', '/agents.md', '/openapi.json', '/entwickler']) {
+            expect(agent.body, ziel).toContain(`](https://www.ausschreibungsagenten.de${ziel})`)
+        }
+
+        const mensch = antwort({ accept: 'text/html', 'user-agent': 'Mozilla/5.0' })
+        expect(mensch.status).toBe(404)
+        expect(mensch.header['Content-Type']).toBe('text/html; charset=utf-8')
+        expect(mensch.body).toContain('<title>Seite nicht gefunden')
+    })
+
+    it('fuehrt geratene Navigationspfade auf vorhandene Anker', async () => {
+        const config = JSON.parse(await text('vercel.json'))
+        const landingpage = await text('src/pages/LandingPage.jsx')
+
+        for (const quelle of ['/preise', '/funktionen', '/wie-es-funktioniert', '/faq', '/api']) {
+            const regel = config.redirects.find((r) => r.source === quelle)
+            expect(regel, quelle).toBeTruthy()
+            const anker = regel.destination.split('#')[1]
+            // Ein Redirect auf einen Anker, den es nicht gibt, sieht wie
+            // eine Loesung aus und ist keine: der Aufrufer landet oben
+            // auf der Startseite und sucht weiter.
+            if (anker) expect(landingpage, `${quelle} -> #${anker}`).toContain(`id="${anker}"`)
+        }
+    })
+
+    it('formatiert die llms.txt als Navigationsindex mit Markdown-Links', async () => {
+        const llms = await text('public/llms.txt')
+        expect(llms.startsWith('# ')).toBe(true)
+        expect(llms.match(/\]\(https:\/\//g).length).toBeGreaterThanOrEqual(20)
+        expect(llms.length).toBeLessThan(30000)
     })
 
     it('advertises WebMCP and machine endpoints from rendered HTML', async () => {
