@@ -107,6 +107,8 @@ describe('Agent-Readiness machine contracts', () => {
         const registry = JSON.parse(await text('public/server.json'))
         expect(registry.$schema).toContain('server.schema.json')
         expect(registry.name).toBe('de.ausschreibungsagenten/tender-search')
+        // Die offizielle Registry weist alles ueber 100 Zeichen mit 422 ab.
+        expect(registry.description.length).toBeLessThanOrEqual(100)
         expect(registry.remotes[0]).toEqual({
             type: 'streamable-http',
             url: 'https://api.ausschreibungsagenten.de/mcp',
