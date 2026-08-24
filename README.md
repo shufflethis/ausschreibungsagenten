@@ -88,6 +88,27 @@ npm run build
 npm audit --audit-level=high
 ```
 
+## CLI-Paket unter `cli/`
+
+`cli/` ist ein eigenes npm-Paket (`ausschreibungsagenten`, MIT, publiziert vom
+npm-Account `agentification`). Es liest ausschließlich die öffentlichen,
+anonymen Endpunkte und hat keine Abhängigkeiten.
+
+```bash
+node cli/bin.js suche Fassade --limit 3   # lokal
+npx ausschreibungsagenten laender          # aus dem Registry
+cd cli && npm version patch && npm publish # neue Fassung
+```
+
+Die Tests liegen unter `cli/cli.test.js` und laufen im normalen `npm test` mit.
+Der Einstiegspunkt ist `cli/bin.js` — `cli/index.js` ist ein reines Modul und
+darf nie selbst entscheiden, ob es "als Programm" läuft: npm legt für `bin`
+einen Symlink an, und jede Namensprüfung scheitert dort still.
+
+Der MCP-Server ist zusätzlich bei Smithery gelistet:
+`@agentifizierung/ausschreibungsagenten` (externer Release, zeigt auf
+`https://api.ausschreibungsagenten.de/mcp` — Smithery hostet nichts).
+
 ## 404-Seite und Auffang-Rewrite
 
 Der letzte Eintrag unter `rewrites` in der `vercel.json` fängt jede Adresse ab,

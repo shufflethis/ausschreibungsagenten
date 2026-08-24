@@ -13,3 +13,15 @@ Use these resources to integrate current public tender search, source freshness,
 - Pricing: https://www.ausschreibungsagenten.de/pricing.md
 
 The linked original procurement notice always prevails over a platform summary.
+
+## CLI
+
+```bash
+npx ausschreibungsagenten suche Fassade --land DEU --limit 5
+npx ausschreibungsagenten quellen
+npx ausschreibungsagenten laender --json
+```
+
+Read-only, ohne Abhängigkeiten, `--json` liefert die Rohantwort der API.
+Exit-Codes: 0 erfolgreich, 1 die API hat abgelehnt, 2 falscher Aufruf.
+Paket: https://www.npmjs.com/package/ausschreibungsagenten

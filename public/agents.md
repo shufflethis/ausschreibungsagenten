@@ -14,6 +14,7 @@ Do not use it for bid submission, legal advice, binding deadline calculations or
 4. Use `/mcp` for MCP Streamable HTTP tools.
 5. Use `/.well-known/agent-card.json` for A2A discovery.
 6. Use `/entwickler` for API keys, limits and examples.
+7. Use the npm CLI `npx ausschreibungsagenten suche <keyword> --json` for shell access without writing HTTP code.
 
 ## Recovery and trust
 
@@ -23,3 +24,5 @@ Do not use it for bid submission, legal advice, binding deadline calculations or
 - Contact: `/contact`
 - Privacy: `/datenschutz`
 - Pricing: `/pricing.md`
+- CLI: `https://www.npmjs.com/package/ausschreibungsagenten`
+- MCP listing: `https://smithery.ai/servers/@agentifizierung/ausschreibungsagenten`

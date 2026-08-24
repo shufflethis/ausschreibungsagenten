@@ -12,7 +12,10 @@
       "type": "application/mcp-server-card+json",
       "url": "https://www.ausschreibungsagenten.de/.well-known/mcp/server-card.json",
       "description": "Search current public procurement notices through MCP.",
-      "trustManifest": { "identity": "did:web:ausschreibungsagenten.de", "identityType": "did" }
+      "trustManifest": {
+        "identity": "did:web:ausschreibungsagenten.de",
+        "identityType": "did"
+      }
     },
     {
       "identifier": "urn:air:ausschreibungsagenten.de:a2a:tender-agent",
@@ -20,7 +23,10 @@
       "type": "application/a2a-agent-card+json",
       "url": "https://www.ausschreibungsagenten.de/.well-known/agent-card.json",
       "description": "A2A discovery and JSON-RPC tender search.",
-      "trustManifest": { "identity": "did:web:ausschreibungsagenten.de", "identityType": "did" }
+      "trustManifest": {
+        "identity": "did:web:ausschreibungsagenten.de",
+        "identityType": "did"
+      }
     },
     {
       "identifier": "urn:air:ausschreibungsagenten.de:api:public",
@@ -28,7 +34,10 @@
       "type": "application/vnd.oai.openapi+json;version=3.0",
       "url": "https://www.ausschreibungsagenten.de/openapi.json",
       "description": "Typed REST contract for tender search, status and API-key registration.",
-      "trustManifest": { "identity": "did:web:ausschreibungsagenten.de", "identityType": "did" }
+      "trustManifest": {
+        "identity": "did:web:ausschreibungsagenten.de",
+        "identityType": "did"
+      }
     },
     {
       "identifier": "urn:air:ausschreibungsagenten.de:skill:tender-search",
@@ -36,7 +45,21 @@
       "type": "text/markdown",
       "url": "https://www.ausschreibungsagenten.de/skills/tender-search/SKILL.md",
       "description": "When-to-use and safe invocation guidance for public tender search.",
-      "trustManifest": { "identity": "did:web:ausschreibungsagenten.de", "identityType": "did" }
+      "trustManifest": {
+        "identity": "did:web:ausschreibungsagenten.de",
+        "identityType": "did"
+      }
+    },
+    {
+      "identifier": "urn:air:ausschreibungsagenten.de:cli:npm",
+      "displayName": "Ausschreibungsagenten CLI",
+      "type": "application/vnd.npm+json",
+      "url": "https://registry.npmjs.org/ausschreibungsagenten",
+      "description": "Read-only command line client for the public tender API: npx ausschreibungsagenten suche <keyword>.",
+      "trustManifest": {
+        "identity": "did:web:ausschreibungsagenten.de",
+        "identityType": "did"
+      }
     }
   ]
 }

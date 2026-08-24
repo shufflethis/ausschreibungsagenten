@@ -39,6 +39,12 @@ const ENDPOINTS = [
         auth: 'Ohne Key: 60/Stunde · mit API-Key: Tarif-Limit',
     },
     {
+        method: 'CLI',
+        path: 'npx ausschreibungsagenten suche <begriff>',
+        desc: 'Kommandozeilen-Client für Suche, Quellenstatus und Länderabdeckung; --json liefert die Rohantwort.',
+        auth: 'Keine · optionaler Key hebt das Limit',
+    },
+    {
         method: 'POST',
         path: 'www.ausschreibungsagenten.de/api/signup',
         desc: 'Free API-Key anfordern (wird einmalig angezeigt und per E-Mail zugestellt).',
@@ -188,7 +194,23 @@ export default function Entwickler() {
 
                     <div style={{ display: 'grid', gap: '2rem', marginTop: '2rem' }}>
                         <div className="glass-card">
-                            <h3 className="glass-card__title">1 · Tender-Vorschau per REST</h3>
+                            <h3 className="glass-card__title">1 · Ohne eine Zeile Code: die CLI</h3>
+                            <pre style={codeStyle}>{`npx ausschreibungsagenten suche Fassade --land DEU --limit 5
+npx ausschreibungsagenten quellen
+npx ausschreibungsagenten laender --json`}</pre>
+                            <p className="glass-card__text" style={{ marginTop: '.75rem' }}>
+                                Das npm-Paket <code>ausschreibungsagenten</code> liest dieselbe öffentliche API,
+                                ohne Anmeldung und ohne Abhängigkeiten. <code>--json</code> gibt die Rohantwort
+                                aus; die Exit-Codes trennen abgelehnte Anfrage (1) von falschem Aufruf (2),
+                                damit Skripte und Agenten die Fälle unterscheiden können.{' '}
+                                <a href="https://www.npmjs.com/package/ausschreibungsagenten" rel="noopener">
+                                    Paket auf npm
+                                </a>
+                            </p>
+                        </div>
+
+                        <div className="glass-card">
+                            <h3 className="glass-card__title">2 · Tender-Vorschau per REST</h3>
                             <pre style={codeStyle}>{`curl "https://www.ausschreibungsagenten.de/api/tenders-public?search=fassade&country=DEU&min_score=50&limit=5"`}</pre>
                             <p className="glass-card__text" style={{ marginTop: '.75rem' }}>
                                 Liefert ein JSON-Array mit Titel, Auftraggeber, CPV, Frist, geschätztem Wert,
@@ -199,7 +221,7 @@ export default function Entwickler() {
                         </div>
 
                         <div className="glass-card">
-                            <h3 className="glass-card__title">2 · Agent Card entdecken (A2A)</h3>
+                            <h3 className="glass-card__title">3 · Agent Card entdecken (A2A)</h3>
                             <pre style={codeStyle}>{`curl https://www.ausschreibungsagenten.de/.well-known/agent-card.json`}</pre>
                             <p className="glass-card__text" style={{ marginTop: '.75rem' }}>
                                 Die Card beschreibt Skills, Protokoll-Bindings und Endpunkte maschinenlesbar —
@@ -208,7 +230,7 @@ export default function Entwickler() {
                         </div>
 
                         <div className="glass-card">
-                            <h3 className="glass-card__title">3 · Suche per A2A JSON-RPC</h3>
+                            <h3 className="glass-card__title">4 · Suche per A2A JSON-RPC</h3>
                             <pre style={codeStyle}>{`curl -X POST https://api.ausschreibungsagenten.de/api/a2a \\
   -H "Content-Type: application/json" \\
   -d '{
