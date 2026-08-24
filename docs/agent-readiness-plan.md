@@ -52,9 +52,10 @@ kommen. Der Plan trennt deshalb sauber:
 
 ## Bahn A — dieses Repo (sofort)
 
-> **Stand 24.08.2026: A1 bis A4 umgesetzt**, noch nicht committet und nicht
-> deployt. Abweichungen von der Planung sind unten je Aufgabe vermerkt. Offen
-> aus dieser Bahn bleiben A5 (Rest) und A6.
+> **Stand 24.08.2026: A1 bis A4 umgesetzt, deployt und live geprüft.**
+> Abweichungen von der Planung sind unten je Aufgabe vermerkt. Offen aus dieser
+> Bahn bleiben A5 (Rest) und A6. Aus Bahn C sind C2 (CLI) und C3
+> (Smithery-Listing) erledigt.
 
 ### A1 · Markdown-404 (Critical access, 50 % → 100 %) — erledigt
 
