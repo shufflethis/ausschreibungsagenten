@@ -45,7 +45,7 @@ lösen, weil OpenAPI-Spec und MCP-Server aus dem privaten AgentLeads-Backend
 kommen. Der Plan trennt deshalb sauber:
 
 - **Bahn A** — dieses Repo, sofort umsetzbar
-- **Bahn B** — privates Backend (`~/agentleads-account`), Spec und MCP
+- **Bahn B** — privates Backend (`~/agentleads-account`), Spec und MCP. **Der Website-Host ist zugleich der Backend-Host**: der Container `agentleads` läuft auf 159.195.43.209, der Klon liegt in `~/agentleads-account`, der Code steckt im Image (nur `./data` ist gemountet). Deploy nach `DEPLOYMENT.md`.
 - **Bahn C** — Produktentscheidungen, nicht durch Doku heilbar
 
 ---
@@ -170,7 +170,7 @@ Spec aufführen (Bahn B) und in `agents.md` verlinken.
 
 ## Bahn B — privates Backend (Spec, MCP)
 
-### B1 · `securitySchemes` deklarieren (Essential, Failed)
+### B1 · `securitySchemes` deklarieren (Essential, Failed) — erledigt und deployt
 
 Scanner-Evidenz: *"No declared OAuth scopes, security schemes, or
 scoped-permission documentation found."* Gemessen bestätigt: die ausgelieferte
@@ -186,7 +186,7 @@ Der Weg über `api/openapi-proxy.js` (Scheme nachträglich injizieren) wäre
 schneller, erzeugt aber Drift zwischen Spec und Backend. Nur als
 Notfall-Stopgap, nicht als Lösung.
 
-### B2 · Versionierung `/api/v1` (Recommended, Failed)
+### B2 · Versionierung `/api/v1` (Recommended, Failed) — erledigt und deployt
 
 Scanner-Evidenz: *"No API versioning strategy found — add URL path versioning
 (/v1/, /v2/) or a versioned header parameter in your OpenAPI spec."* Der
@@ -203,7 +203,7 @@ RateLimit-Header gemessen und daraus "live API" abgeleitet. Das war unsere
 404-Catch-all-Funktion. Der Rate-Limit-Check ist also aus dem falschen Grund
 grün.
 
-### B3 · MCP-Handshake (Partial, Ursache identifiziert)
+### B3 · MCP-Handshake (Partial) — Aushandlung repariert und deployt
 
 Scanner-Evidenz: *"MCP manifest found at /.well-known/mcp.json but protocol
 handshake failed."* Eigener Test: der Handshake funktioniert über beide Hosts,
@@ -334,3 +334,41 @@ curl -s https://www.ausschreibungsagenten.de/openapi.json |
   eine `id` zeigt, die es in `LandingPage.jsx` wirklich gibt, und dass die
   llms.txt Markdown-Links enthält. `npm test`: 144 Tests grün, `npm run build`
   läuft durch.
+
+---
+
+## Umsetzungsnotizen Bahn B (24.08.2026, deployt)
+
+**B1 — `securitySchemes`.** `components.securitySchemes.apiKeyBearer`
+(`type: http`, `scheme: bearer`) plus `security` an 12 von 34 Operationen. Die
+Zuordnung wird aus den tatsächlichen Abhängigkeiten der Routen abgeleitet, nicht
+von Hand gepflegt — eine handgepflegte Liste läuft beim nächsten Endpunkt
+auseinander, ohne dass es jemand merkt. Stolperstein: seit **FastAPI 0.139**
+liegen eingebundene Router nicht mehr flach in `app.routes`, sondern als
+`_IncludedRouter`; die Auflösung läuft deshalb über `iter_route_contexts`,
+dieselbe, die auch `get_openapi` benutzt.
+
+**B2 — `/api/v1`.** Die öffentlichen Router hängen zweimal: kanonisch unter
+`/api/v1`, unverändert unter `/api`. In der Spec steht nur `/api/v1`. Die alten
+Adressen sind ein dauerhafter Alias und ausdrücklich **nicht** deprecated — eine
+Abkündigung wäre eine Produktentscheidung mit Sunset-Frist. Dass der Alias
+trägt, zeigt die Suite selbst: alle 583 bestehenden Tests rufen unverändert
+`/api/…` auf und bleiben grün.
+
+**B3 — MCP-Protokollversion.** `initialize` gibt die angefragte Fassung zurück,
+sofern sie in `SUPPORTED_PROTOCOL_VERSIONS` steht, sonst die neueste. Live
+geprüft: `2025-06-18 → 2025-06-18`, `2025-03-26 → 2025-03-26`,
+`2099-01-01 → 2025-11-25`.
+
+**Nebenbefund, wichtiger als jeder Punkt:** `/auth.md`, die Agent-Ansicht und
+der CLI-Client nannten `X-API-Key`. Die API wertet ausschließlich
+`Authorization: Bearer` aus und ignoriert den anderen Header — ein Agent, der
+unserer eigenen Dokumentation folgte, lief unbemerkt im anonymen Limit.
+Korrigiert in Website, Agent-Ansicht, CLI (0.1.2) und im Beschreibungstext des
+Sicherheitsschemas.
+
+**Offen aus Bahn B:** B4 (`inputSchema` für `source_status` und `countries`).
+Beide Werkzeuge haben ein Schema, es ist nur leer — sie nehmen keine Argumente.
+Der Scanner zählt das als fehlend. Erfundene Parameter wären die falsche
+Antwort; echte optionale Filter (`source`, `min_count`) wären eine kleine,
+sinnvolle Erweiterung. Entscheidung steht aus.

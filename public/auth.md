@@ -21,7 +21,7 @@ No identity assertion or ID-JAG flow is required. Possession of the delivered AP
 Send `Authorization: Bearer <key>` over HTTPS:
 
 ```bash
-curl -H "Authorization: Bearer sk_..." https://api.ausschreibungsagenten.de/api/tenders?limit=5
+curl -H "Authorization: Bearer sk_..." https://api.ausschreibungsagenten.de/api/v1/tenders?limit=5
 ```
 
 Never put the key in a query string, URL, public issue or prompt transcript. Public preview requests may omit the header entirely.

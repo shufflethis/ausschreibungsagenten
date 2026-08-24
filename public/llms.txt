@@ -20,6 +20,7 @@ Kontakt: hi@ausschreibungsagenten.de
 - [A2A Agent Card](https://www.ausschreibungsagenten.de/.well-known/agent-card.json)
 - [MCP-Server (search_tenders frei, fulltext ab Pro/Agent)](https://api.ausschreibungsagenten.de/mcp)
 - [Free API-Key (60 req/h)](https://www.ausschreibungsagenten.de/entwickler)
+- [REST-API v1 (kanonisch, Bearer-Auth)](https://api.ausschreibungsagenten.de/api/v1/public/tenders?limit=5)
 - [OpenAPI-Spezifikation (same-origin)](https://www.ausschreibungsagenten.de/openapi.json) · [Interaktive Docs](https://api.ausschreibungsagenten.de/docs)
 - [MCP Streamable HTTP (same-origin)](https://www.ausschreibungsagenten.de/mcp)
 - [Agent Instructions](https://www.ausschreibungsagenten.de/agents.md)

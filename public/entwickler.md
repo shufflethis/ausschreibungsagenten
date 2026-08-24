@@ -25,3 +25,13 @@ npx ausschreibungsagenten laender --json
 Read-only, ohne Abhängigkeiten, `--json` liefert die Rohantwort der API.
 Exit-Codes: 0 erfolgreich, 1 die API hat abgelehnt, 2 falscher Aufruf.
 Paket: https://www.npmjs.com/package/ausschreibungsagenten
+
+## Versionierung
+
+Die kanonische REST-Fläche ist `https://api.ausschreibungsagenten.de/api/v1/…`
+und die einzige, die in der OpenAPI-Beschreibung steht. Die unversionierten
+`/api/…`-Adressen bleiben ein dauerhafter Alias derselben Operationen; sie sind
+nicht abgekündigt. Protokolladressen (`/mcp`, `/api/a2a`,
+`/.well-known/agent-card.json`) tragen keine eigene Version.
+
+Vollständig: https://www.ausschreibungsagenten.de/api-policy.md
