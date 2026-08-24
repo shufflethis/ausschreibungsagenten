@@ -82,6 +82,23 @@ describe('Agent-Readiness machine contracts', () => {
         expect(willAgentAnsicht({ accept: 'text/html', userAgent: 'Mozilla/5.0' })).toBe(false)
     })
 
+    it('liest den Accept-Kopf nach q-Werten statt nach Teilzeichenkette', () => {
+        // Wer Markdown nur als Notnagel nennt, will die Seite. Ein blosses
+        // includes('text/markdown') hat genau das falsch beantwortet.
+        expect(willAgentAnsicht({ accept: 'text/html,text/markdown;q=0.1' })).toBe(false)
+        expect(willAgentAnsicht({ accept: 'text/html;q=0.9,text/markdown;q=0.8' })).toBe(false)
+        expect(willAgentAnsicht({ accept: 'text/markdown;q=0.9,text/html;q=0.8' })).toBe(true)
+        expect(willAgentAnsicht({ accept: 'text/markdown,text/html' })).toBe(true)
+        expect(willAgentAnsicht({ accept: 'text/markdown;q=0' })).toBe(false)
+
+        // Wildcards sind kein Markdown-Wunsch: das schicken curl, fetch und
+        // die halbe Crawler-Landschaft, und die wollen die normale Seite.
+        expect(willAgentAnsicht({ accept: '*/*' })).toBe(false)
+        expect(willAgentAnsicht({ accept: 'text/*' })).toBe(false)
+        // ... aber sie zaehlen als HTML-Wunsch, wenn Markdown daneben steht.
+        expect(willAgentAnsicht({ accept: 'text/markdown;q=0.5,*/*' })).toBe(false)
+    })
+
     it('liefert die Agent-Ansicht als Markdown, ohne beim Laden zu brechen', () => {
         // Diese Datei ist ein einziges Template-Literal. Ein Backtick im
         // Text beendet es und macht aus der Function einen 500 - genau das

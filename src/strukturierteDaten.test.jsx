@@ -55,7 +55,9 @@ describe('Strukturierte Daten', () => {
         const organisation = jsonLd('/')['@graph'].find((k) => k['@type'] === 'Organization')
         expect(organisation.description).toContain('17 Vergabequellen')
         expect(organisation.url).toBe('https://www.ausschreibungsagenten.de/')
-        expect(organisation.logo).toContain('/brand/logo-mark.png')
+        expect(organisation.logo['@type']).toBe('ImageObject')
+        expect(organisation.logo.url).toContain('/brand/logo-mark.png')
+        expect(organisation.logo.width).toBe(1024)
     })
 
     it('fuehrt den Dienst nur auf der Startseite und ohne buchbare Offer', () => {

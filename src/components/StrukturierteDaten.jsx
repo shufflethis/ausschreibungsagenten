@@ -26,7 +26,15 @@ const ORGANISATION = {
     url: `${SITE_ORIGIN}/`,
     email: 'hi@ausschreibungsagenten.de',
     telephone: '+49 30 403665430',
-    logo: `${SITE_ORIGIN}/brand/logo-mark.png`,
+    // Als ImageObject mit Massen, nicht als blosse URL: Auswerter, die das
+    // Logo weiterverwenden wollen, muessen sonst erst laden, um zu wissen,
+    // was sie bekommen.
+    logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_ORIGIN}/brand/logo-mark.png`,
+        width: 1024,
+        height: 1024,
+    },
     // Dieselben Daten wie oben, zusaetzlich als contactPoint: KI-Assistenten
     // lesen bei "wie erreiche ich ..." diese Struktur aus, nicht die losen
     // Felder. Doppelt gefuehrt statt ersetzt, weil aeltere Auswerter
