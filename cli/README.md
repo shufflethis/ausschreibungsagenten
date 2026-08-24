@@ -41,9 +41,12 @@ Anonym sind 60 Anfragen pro Stunde frei. Ein Key hebt das Limit und wird über
 die Umgebung gesetzt:
 
 ```bash
-export AUSSCHREIBUNGSAGENTEN_API_KEY=...   # kostenlos unter /entwickler
-export AUSSCHREIBUNGSAGENTEN_API_BASE=...  # optional, andere Basis-Adresse
+export AUSSCHREIBUNGSAGENTEN_API_KEY=sk_...  # kostenlos unter /entwickler
+export AUSSCHREIBUNGSAGENTEN_API_BASE=...    # optional, andere Basis-Adresse
 ```
+
+Der Key geht als `Authorization: Bearer <key>` an die API — das ist der einzige
+Header, den sie auswertet.
 
 ## Andere Zugänge
 

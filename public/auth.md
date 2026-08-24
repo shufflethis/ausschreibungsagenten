@@ -6,7 +6,7 @@ Read `/openapi.json`, `/.well-known/api-catalog` and `/entwickler`. Anonymous pr
 
 ## Pick a method
 
-Use anonymous access for public previews. Use the documented `X-API-Key` header for authenticated REST, A2A and MCP operations. OAuth is not currently advertised.
+Use anonymous access for public previews. Use HTTP Bearer authentication for authenticated REST, A2A and MCP operations: `Authorization: Bearer <key>`. Keys are prefixed `sk_`. OAuth is not currently advertised, and no other header is accepted — a request sent with `X-API-Key` is treated as unauthenticated.
 
 ## Register
 
@@ -18,11 +18,17 @@ No identity assertion or ID-JAG flow is required. Possession of the delivered AP
 
 ## Use the credential
 
-Send `X-API-Key: <key>` over HTTPS. Never put the key in a query string, URL, public issue or prompt transcript. Public preview requests may omit the header.
+Send `Authorization: Bearer <key>` over HTTPS:
+
+```bash
+curl -H "Authorization: Bearer sk_..." https://api.ausschreibungsagenten.de/api/tenders?limit=5
+```
+
+Never put the key in a query string, URL, public issue or prompt transcript. Public preview requests may omit the header entirely.
 
 ## Errors
 
-401 means a key is missing or invalid. 403 means the plan does not permit the operation. 429 means the rate limit is exhausted. Responses include machine-readable JSON errors and rate-limit headers.
+401 means a key is missing or invalid; the body names the expected header. 400 on a malformed request. 403 means the plan does not permit the operation. 429 means the rate limit is exhausted. Responses include machine-readable JSON errors and rate-limit headers.
 
 ## Revocation
 

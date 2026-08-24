@@ -27,9 +27,12 @@ async function hole(pfad, parameter = {}, { fetchImpl = fetch } = {}) {
         if (wert !== undefined && wert !== null && wert !== '') url.searchParams.set(schluessel, String(wert))
     }
 
+    // Die API kennt ausschliesslich HTTP Bearer. Ein X-API-Key-Header
+    // wird nicht etwa abgelehnt, sondern ignoriert: die Anfrage gilt als
+    // nicht angemeldet und laeuft ins anonyme Limit.
     const kopf = { Accept: 'application/json' }
     if (process.env.AUSSCHREIBUNGSAGENTEN_API_KEY) {
-        kopf['X-API-Key'] = process.env.AUSSCHREIBUNGSAGENTEN_API_KEY
+        kopf.Authorization = `Bearer ${process.env.AUSSCHREIBUNGSAGENTEN_API_KEY}`
     }
 
     const antwort = await fetchImpl(url, { headers: kopf })

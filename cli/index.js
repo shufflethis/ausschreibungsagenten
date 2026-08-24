@@ -2,7 +2,7 @@ import { parseArgs } from 'node:util'
 import { ApiFehler, basis, laender, quellenStatus, sucheTender } from './api.js'
 import { laenderZeilen, quellenZeilen, tenderZeilen } from './ausgabe.js'
 
-const VERSION = '0.1.1'
+const VERSION = '0.1.2'
 
 const HILFE = `ausschreibungsagenten ${VERSION}
 Oeffentliche Ausschreibungen aus 17 Vergabequellen in Deutschland, der EU und UK.

@@ -14,7 +14,7 @@ function lauf(argv) {
         .then((code) => ({ code, aus: aus.join('\n'), fehler: fehler.join('\n') }))
 }
 
-const VERSION_ERWARTET = '0.1.1'
+const VERSION_ERWARTET = '0.1.2'
 
 describe('CLI', () => {
     it('nennt Version und Hilfe auf stdout', async () => {
@@ -55,6 +55,14 @@ describe('CLI', () => {
 
     it('nimmt die Basis-Adresse aus der Umgebung', () => {
         expect(basis()).toBe('https://www.ausschreibungsagenten.de')
+    })
+
+    it('schickt den Key als Bearer, nicht als X-API-Key', async () => {
+        // Die API ignoriert X-API-Key stillschweigend: die Anfrage laeuft
+        // dann im anonymen Limit, ohne dass jemand einen Fehler sieht.
+        const quelle = await readFile(resolve(process.cwd(), 'cli/api.js'), 'utf8')
+        expect(quelle).toContain('kopf.Authorization = `Bearer ${')
+        expect(quelle).not.toContain("kopf['X-API-Key']")
     })
 
     it('gibt code, message und resolution der API weiter', () => {

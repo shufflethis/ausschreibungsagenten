@@ -1,6 +1,6 @@
 {
     "name": "ausschreibungsagenten",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "CLI für öffentliche Ausschreibungen aus 17 Vergabequellen in Deutschland, der EU und UK — Suche, Quellenstatus und Länderabdeckung ohne Anmeldung.",
     "keywords": [
         "ausschreibungen",
