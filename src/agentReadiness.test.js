@@ -99,6 +99,30 @@ describe('Agent-Readiness machine contracts', () => {
         expect(willAgentAnsicht({ accept: 'text/markdown;q=0.5,*/*' })).toBe(false)
     })
 
+    it('liefert unter server.json das Registry-Format, unter der Card die Card', async () => {
+        // /server.json meint im MCP-Umfeld das Format der offiziellen
+        // Registry (remotes[]), nicht die Server Card. Beide unter
+        // demselben Namen auszuliefern, hiess: der Scanner findet ein
+        // Manifest und kann damit nichts anfangen.
+        const registry = JSON.parse(await text('public/server.json'))
+        expect(registry.$schema).toContain('server.schema.json')
+        expect(registry.name).toBe('de.ausschreibungsagenten/tender-search')
+        expect(registry.remotes[0]).toEqual({
+            type: 'streamable-http',
+            url: 'https://api.ausschreibungsagenten.de/mcp',
+        })
+
+        const card = JSON.parse(await text('public/.well-known/mcp/server-card.json'))
+        expect(card.serverUrl).toBe('https://api.ausschreibungsagenten.de/mcp')
+        expect(card.tools.length).toBeGreaterThan(0)
+
+        const config = JSON.parse(await text('vercel.json'))
+        for (const quelle of ['/.well-known/mcp.json', '/.well-known/mcp/server.json']) {
+            const regel = config.rewrites.find((r) => r.source === quelle)
+            expect(regel?.destination, quelle).toBe('/server.json')
+        }
+    })
+
     it('liefert die Agent-Ansicht als Markdown, ohne beim Laden zu brechen', () => {
         // Diese Datei ist ein einziges Template-Literal. Ein Backtick im
         // Text beendet es und macht aus der Function einen 500 - genau das
