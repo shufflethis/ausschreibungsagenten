@@ -3,12 +3,16 @@
   "name": "de.ausschreibungsagenten/tender-search",
   "title": "Ausschreibungsagenten Tender Search",
   "description": "Search public procurement notices from 17 sources across Germany, the EU and the UK. Read-only.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "websiteUrl": "https://www.ausschreibungsagenten.de/entwickler",
   "remotes": [
     {
       "type": "streamable-http",
       "url": "https://api.ausschreibungsagenten.de/mcp"
+    },
+    {
+      "type": "streamable-http",
+      "url": "https://api.tender-agents.com/mcp"
     }
   ],
   "repository": {

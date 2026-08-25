@@ -120,10 +120,14 @@ describe('Agent-Readiness machine contracts', () => {
         expect(registry.name).toBe('de.ausschreibungsagenten/tender-search')
         // Die offizielle Registry weist alles ueber 100 Zeichen mit 422 ab.
         expect(registry.description.length).toBeLessThanOrEqual(100)
-        expect(registry.remotes[0]).toEqual({
-            type: 'streamable-http',
-            url: 'https://api.ausschreibungsagenten.de/mcp',
-        })
+        // Ein Server, zwei Tueren: die deutsche und die englische Domain
+        // liegen hinter demselben Container. Zwei Remotes in einem Eintrag,
+        // nicht zwei Eintraege - sonst haelt ein Verzeichnis ein Produkt
+        // fuer zwei.
+        expect(registry.remotes).toEqual([
+            { type: 'streamable-http', url: 'https://api.ausschreibungsagenten.de/mcp' },
+            { type: 'streamable-http', url: 'https://api.tender-agents.com/mcp' },
+        ])
 
         const card = JSON.parse(await text('public/.well-known/mcp/server-card.json'))
         expect(card.serverUrl).toBe('https://api.ausschreibungsagenten.de/mcp')
