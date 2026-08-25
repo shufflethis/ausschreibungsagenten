@@ -372,3 +372,37 @@ Beide Werkzeuge haben ein Schema, es ist nur leer — sie nehmen keine Argumente
 Der Scanner zählt das als fehlend. Erfundene Parameter wären die falsche
 Antwort; echte optionale Filter (`source`, `min_count`) wären eine kleine,
 sinnvolle Erweiterung. Entscheidung steht aus.
+
+---
+
+## Verteilung des MCP-Servers (Stand 25.08.2026)
+
+| Ort | Stand | Weg |
+| --- | --- | --- |
+| Offizielle MCP-Registry | `de.ausschreibungsagenten/tender-search` v1.0.1, active | `mcp-publisher`, DNS-Auth über TXT am Apex |
+| Glama | gelistet als **Connector**, Status „Not tested" | automatisch aus der Registry |
+| Smithery | gelistet, 6 Werkzeuge, Icon | Platform-API |
+| awesome-mcp-servers | PR #12815 offen | Agenten-PR mit 🤖-Marker |
+| mcp.so | **nicht** gelistet | Formular hinter Login |
+| PulseMCP | **nicht** gelistet | Formular hinter Login |
+
+**Der Fehler, den man hier einmal macht:** Glama führt zwei getrennte Indizes.
+`/mcp/servers` sind repo-basierte Server, `/mcp/connectors` sind gehostete
+Remote-Endpunkte. Eine Suche im Server-Index findet einen Connector **nicht** —
+das sah zwei Runden lang so aus, als hätte Glama uns nicht. Die Connector-URL
+folgt dem Registry-Namen:
+`glama.ai/mcp/connectors/de.ausschreibungsagenten/tender-search`. Ein erfundener
+Name liefert dort 404, ein echter 200 — so prüft man es.
+
+Gegenprobe für die Frage „zieht ein Verzeichnis aus der Registry?": einen
+fremden, kürzlich registrierten Server nehmen und dort suchen. `mcp.so` und
+PulseMCP haben auch die Kontrollserver nicht — sie ziehen also nicht, und
+Warten hilft dort nicht.
+
+Ein Score-Badge gibt es für Connectors nicht (`/badges/score.svg` → 404). Der
+Bot von awesome-mcp-servers verlangt eines; die Antwort darauf ist der
+Connector-Link, wie ihn der Nachbareintrag `Pactlio-ai/pactlio-mcp` führt.
+
+Der private Registry-Schlüssel liegt unter
+`~/.config/mcp-publisher/ausschreibungsagenten.key.pem`. Das Registry-JWT läuft
+nach wenigen Minuten ab — vor jedem `publish` neu einloggen.
