@@ -34,7 +34,6 @@ describe('Agent-Readiness machine contracts', () => {
             'public/.well-known/api-catalog.md',
             'public/.well-known/ai-catalog.json',
             'public/.well-known/api-catalog',
-            'public/.well-known/mcp/server-card.json',
             'public/.well-known/agent-skills/index.json',
             'public/skills/tender-search/SKILL.md',
         ]) {
@@ -129,11 +128,16 @@ describe('Agent-Readiness machine contracts', () => {
             { type: 'streamable-http', url: 'https://api.tender-agents.com/mcp' },
         ])
 
-        const card = JSON.parse(await text('public/.well-known/mcp/server-card.json'))
-        expect(card.serverUrl).toBe('https://api.ausschreibungsagenten.de/mcp')
-        expect(card.tools.length).toBeGreaterThan(0)
-
         const config = JSON.parse(await text('vercel.json'))
+
+        // Die Server Card ist keine Datei mehr: sie kommt aus der
+        // Werkzeugliste des laufenden Servers, damit Karte und Server nicht
+        // auseinanderlaufen koennen.
+        const karte = config.rewrites.find((r) => r.source === '/.well-known/mcp/server-card.json')
+        expect(karte?.destination).toBe(
+            'https://api.ausschreibungsagenten.de/.well-known/mcp/server-card.json',
+        )
+
         for (const quelle of ['/.well-known/mcp.json', '/.well-known/mcp/server.json']) {
             const regel = config.rewrites.find((r) => r.source === quelle)
             expect(regel?.destination, quelle).toBe('/server.json')
