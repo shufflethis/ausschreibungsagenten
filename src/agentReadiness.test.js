@@ -99,6 +99,17 @@ describe('Agent-Readiness machine contracts', () => {
         expect(willAgentAnsicht({ accept: 'text/markdown;q=0.5,*/*' })).toBe(false)
     })
 
+    it('loest die OAuth-Metadaten auch auf der Website-Origin ein', async () => {
+        // Wer die Domain prueft, prueft www - dort liegen die Dokumente aber
+        // nicht, sie gehoeren zum API-Host. Ohne diese Regeln liefe die
+        // Entdeckung des Ausstellers in die Markdown-404.
+        const config = JSON.parse(await text('vercel.json'))
+        for (const pfad of ['/.well-known/oauth-authorization-server', '/.well-known/oauth-protected-resource']) {
+            const regel = config.rewrites.find((r) => r.source === pfad)
+            expect(regel?.destination, pfad).toBe(`https://api.ausschreibungsagenten.de${pfad}`)
+        }
+    })
+
     it('liefert unter server.json das Registry-Format, unter der Card die Card', async () => {
         // /server.json meint im MCP-Umfeld das Format der offiziellen
         // Registry (remotes[]), nicht die Server Card. Beide unter
