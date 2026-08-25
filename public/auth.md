@@ -6,7 +6,16 @@ Read `/openapi.json`, `/.well-known/api-catalog` and `/entwickler`. Anonymous pr
 
 ## Pick a method
 
-Use anonymous access for public previews. Use HTTP Bearer authentication for authenticated REST, A2A and MCP operations: `Authorization: Bearer <key>`. Keys are prefixed `sk_`. OAuth is not currently advertised, and no other header is accepted — a request sent with `X-API-Key` is treated as unauthenticated.
+Three methods, in increasing order of control:
+
+1. **Anonymous** — public preview endpoints, no credential, 60 requests per hour.
+2. **API key as bearer** — `Authorization: Bearer sk_...`. Simplest for a fixed integration.
+3. **OAuth 2.0 client credentials** — exchange the key for a short-lived token that
+   names its own scope. Preferred for agents: the token expires after an hour and
+   states what it may do.
+
+No other header is accepted — a request sent with `X-API-Key` is treated as
+unauthenticated and silently runs in the anonymous limit.
 
 ## Register
 
@@ -14,7 +23,39 @@ Request a free key through `POST /api/signup` or the form on `/entwickler`. The 
 
 ## Claim
 
-No identity assertion or ID-JAG flow is required. Possession of the delivered API key is the current credential proof.
+Possession of the delivered API key is the credential proof. For scoped access,
+exchange it at the token endpoint — `client_id` is the key's id (from
+`GET /api/v1/me/keys`), `client_secret` is the key itself:
+
+```bash
+curl -s -X POST https://api.ausschreibungsagenten.de/oauth/token \
+  -d grant_type=client_credentials \
+  -d client_id=<key id> \
+  -d client_secret=sk_... \
+  -d scope="tenders:read"
+```
+
+```json
+{ "access_token": "...", "token_type": "Bearer", "expires_in": 3600, "scope": "tenders:read" }
+```
+
+Discovery without asking anyone:
+
+- [`/.well-known/oauth-protected-resource`](https://api.ausschreibungsagenten.de/.well-known/oauth-protected-resource) (RFC 9728) — what the resource is and which scopes exist
+- [`/.well-known/oauth-authorization-server`](https://api.ausschreibungsagenten.de/.well-known/oauth-authorization-server) (RFC 8414) — where to get a token
+
+### Scopes
+
+| Scope | Grants | Plan |
+| --- | --- | --- |
+| `tenders:read` | tender search, detail, source status, country coverage | all |
+| `profiles:read` | company profiles and their explained matches | all |
+| `fulltext:read` | full text across indexed notices | Pro and above |
+| `webhooks:write` | manage delivery webhooks | Pro and above |
+
+Asking for a scope the plan does not include returns `invalid_scope` rather
+than a token that would fail later. Omit `scope` to receive everything the plan
+allows.
 
 ## Use the credential
 
@@ -32,4 +73,7 @@ Never put the key in a query string, URL, public issue or prompt transcript. Pub
 
 ## Revocation
 
-For key loss or revocation contact hi@ausschreibungsagenten.de. A replacement invalidates the previous credential. Never send the old key by email.
+Delete a key with `DELETE /api/v1/me/keys/{id}`, or contact
+hi@ausschreibungsagenten.de. Revoking a key **immediately** invalidates every
+token issued against it — there is no grace period until the token expires.
+Never send the old key by email.

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/connector.json",
+  "maintainers": [
+    { "email": "hi@ausschreibungsagenten.de" },
+    { "email": "gw@famefact.com" }
+  ]
+}

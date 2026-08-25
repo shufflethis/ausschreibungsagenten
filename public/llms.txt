@@ -33,6 +33,7 @@ Kontakt: hi@ausschreibungsagenten.de
 - [Eintrag in der offiziellen MCP-Registry](https://registry.modelcontextprotocol.io/v0/servers?search=ausschreibung) — `de.ausschreibungsagenten/tender-search`
 - [MCP-Server: Endpunkt, Werkzeuge, Einbindung](https://github.com/shufflethis/ausschreibungsagenten-mcp)
 - [Versionierungs-, Deprecation- und Sunset-Politik](https://www.ausschreibungsagenten.de/api-policy.md)
+- [OAuth 2.0 Token-Endpunkt (client_credentials, benannte Scopes)](https://api.ausschreibungsagenten.de/oauth/token)
 - [Authentifizierung](https://www.ausschreibungsagenten.de/auth.md) · [Preise](https://www.ausschreibungsagenten.de/pricing.md)
 - Preise: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet; Pilotzugang per Magic Link nach persönlicher Abstimmung.
 - Aktive Pilot-Verticals: Fenster/Fassade/Glas/Metallbau sowie Marketing/Digital. Weitere Branchen nach CPV-Katalog konfigurierbar.

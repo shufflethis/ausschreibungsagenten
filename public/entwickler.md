@@ -35,3 +35,19 @@ nicht abgekündigt. Protokolladressen (`/mcp`, `/api/a2a`,
 `/.well-known/agent-card.json`) tragen keine eigene Version.
 
 Vollständig: https://www.ausschreibungsagenten.de/api-policy.md
+
+## OAuth 2.0
+
+```bash
+curl -s -X POST https://api.ausschreibungsagenten.de/oauth/token \
+  -d grant_type=client_credentials -d client_id=<key id> -d client_secret=sk_...
+```
+
+`client_id` ist die Kennung des Schlüssels aus `GET /api/v1/me/keys`,
+`client_secret` der Schlüssel selbst. Das Token gilt eine Stunde und nennt
+seinen Umfang. Scopes: `tenders:read`, `profiles:read`, `fulltext:read` (ab
+Pro), `webhooks:write` (ab Pro). Wird der Schlüssel widerrufen, tragen seine
+Tokens sofort nicht mehr.
+
+Metadaten: `/.well-known/oauth-protected-resource` (RFC 9728) und
+`/.well-known/oauth-authorization-server` (RFC 8414).
