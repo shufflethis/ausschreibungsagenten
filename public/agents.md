@@ -27,3 +27,4 @@ Do not use it for bid submission, legal advice, binding deadline calculations or
 - CLI: `https://www.npmjs.com/package/ausschreibungsagenten`
 - MCP listing: `https://smithery.ai/servers/@agentifizierung/ausschreibungsagenten`
 - Official MCP registry: `de.ausschreibungsagenten/tender-search`
+- MCP docs: `https://github.com/shufflethis/ausschreibungsagenten-mcp`

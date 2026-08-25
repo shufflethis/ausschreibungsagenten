@@ -31,6 +31,7 @@ Kontakt: hi@ausschreibungsagenten.de
 - [CLI auf npm](https://www.npmjs.com/package/ausschreibungsagenten) — `npx ausschreibungsagenten suche Fassade --land DEU`
 - [MCP-Listing auf Smithery](https://smithery.ai/servers/@agentifizierung/ausschreibungsagenten)
 - [Eintrag in der offiziellen MCP-Registry](https://registry.modelcontextprotocol.io/v0/servers?search=ausschreibung) — `de.ausschreibungsagenten/tender-search`
+- [MCP-Server: Endpunkt, Werkzeuge, Einbindung](https://github.com/shufflethis/ausschreibungsagenten-mcp)
 - [Versionierungs-, Deprecation- und Sunset-Politik](https://www.ausschreibungsagenten.de/api-policy.md)
 - [Authentifizierung](https://www.ausschreibungsagenten.de/auth.md) · [Preise](https://www.ausschreibungsagenten.de/pricing.md)
 - Preise: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet; Pilotzugang per Magic Link nach persönlicher Abstimmung.
