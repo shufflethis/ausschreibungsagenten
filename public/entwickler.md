@@ -51,3 +51,14 @@ Tokens sofort nicht mehr.
 
 Metadaten: `/.well-known/oauth-protected-resource` (RFC 9728) und
 `/.well-known/oauth-authorization-server` (RFC 8414).
+
+## Zwei MCP-Flächen
+
+`https://api.ausschreibungsagenten.de/mcp` — alle 17 Quellen.
+
+`https://api.ausschreibungsagenten.de/mcp/open-data` — dieselben Werkzeuge,
+aber nur die fünf Quellen mit einer vom Betreiber dafür bereitgestellten
+Schnittstelle: TED, service.bund.de, Datenservice Öffentlicher Einkauf, GB Find
+a Tender, GB Contracts Finder. Gedacht für Umgebungen, die sich fremden
+Nutzungsbedingungen stellen müssen. Der Quellenstatus meldet dort nur diese
+fünf — die Fläche behauptet keine Abdeckung, die sie nicht hat.

@@ -11,7 +11,7 @@ Do not use it for bid submission, legal advice, binding deadline calculations or
 1. Read `/llms.txt` for scope and limitations.
 2. Read `/openapi.json` before calling the REST API. The canonical REST surface is `https://api.ausschreibungsagenten.de/api/v1/...`. Authenticate with `Authorization: Bearer sk_...`, or exchange the key for a scoped token at `/oauth/token` — see `/.well-known/oauth-protected-resource`.
 3. Use `/api/tenders-public` for anonymous preview searches.
-4. Use `/mcp` for MCP Streamable HTTP tools.
+4. Use `/mcp` for MCP Streamable HTTP tools, or `/mcp/open-data` for the same tools restricted to sources with an official machine interface (TED, service.bund.de, Datenservice Öffentlicher Einkauf, Find a Tender, Contracts Finder).
 5. Use `/.well-known/agent-card.json` for A2A discovery.
 6. Use `/entwickler` for API keys, limits and examples.
 7. Use the npm CLI `npx ausschreibungsagenten suche <keyword> --json` for shell access without writing HTTP code.

@@ -23,6 +23,7 @@ Kontakt: hi@ausschreibungsagenten.de
 - [REST-API v1 (kanonisch, Bearer-Auth)](https://api.ausschreibungsagenten.de/api/v1/public/tenders?limit=5)
 - [OpenAPI-Spezifikation (same-origin)](https://www.ausschreibungsagenten.de/openapi.json) · [Interaktive Docs](https://api.ausschreibungsagenten.de/docs)
 - [MCP Streamable HTTP (same-origin)](https://www.ausschreibungsagenten.de/mcp)
+- [MCP nur auf Quellen mit offizieller Schnittstelle](https://api.ausschreibungsagenten.de/mcp/open-data) — TED, service.bund.de, Datenservice Öffentlicher Einkauf, Find a Tender, Contracts Finder
 - [Agent Instructions](https://www.ausschreibungsagenten.de/agents.md)
 - [Agent Skills Index](https://www.ausschreibungsagenten.de/.well-known/agent-skills/index.json)
 - [ARD AI Catalog](https://www.ausschreibungsagenten.de/.well-known/ai-catalog.json)
