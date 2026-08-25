@@ -11,7 +11,7 @@ describe('Seo-Komponente', () => {
     it('setzt Titel und Description aus dem Manifest', () => {
         const markup = renderToString(imServer(<Seo path="/entwickler" />))
         expect(markup).toContain('<title>')
-        expect(markup).toContain('Agent-Anbindung')
+        expect(markup).toContain('API-Dokumentation')
         expect(markup).toContain('A2A Agent Card')
     })
 

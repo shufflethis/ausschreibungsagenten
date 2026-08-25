@@ -15,6 +15,7 @@ Do not use it for bid submission, legal advice, binding deadline calculations or
 5. Use `/.well-known/agent-card.json` for A2A discovery.
 6. Use `/entwickler` for API keys, limits and examples.
 7. Use the npm CLI `npx ausschreibungsagenten suche <keyword> --json` for shell access without writing HTTP code.
+8. Need higher limits? Register yourself: `POST https://api.ausschreibungsagenten.de/api/v1/signup` with `{"email": "...", "tier": "free"}` returns a key in the response. No form, no confirmation step.
 
 ## Recovery and trust
 

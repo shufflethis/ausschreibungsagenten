@@ -221,6 +221,30 @@ describe('Agent-Readiness machine contracts', () => {
         expect(quellen.indexOf('/api/v1/(.*)')).toBeLessThan(quellen.indexOf('/api/(.*)'))
     })
 
+    it('macht die Entwicklerdokumente unter vorhersagbaren Adressen auffindbar', async () => {
+        // Der Check dazu ist ein Websuche-Check. Was er braucht: eine
+        // indexierbare Adresse auf der eigenen Domain statt eines 307 auf
+        // einen fremden Host, und die Dokumente in der Sitemap.
+        const config = JSON.parse(await text('vercel.json'))
+        expect(config.redirects.find((r) => r.source === '/docs')).toBeUndefined()
+        for (const quelle of ['/docs', '/api-docs']) {
+            const regel = config.rewrites.find((r) => r.source === quelle)
+            expect(regel?.destination, quelle).toBe('/entwickler/index.html')
+        }
+
+        const sitemap = await text('scripts/sitemap.mjs')
+        for (const dokument of ['/entwickler.md', '/agents.md', '/auth.md', '/pricing.md', '/api-policy.md']) {
+            expect(sitemap, dokument).toContain(dokument)
+        }
+
+        // Der Produktname gehoert in Titel und Ueberschrift - danach sucht,
+        // wer die Doku ueber eine Suchmaschine finden soll.
+        const routen = await text('src/routes.js')
+        expect(routen).toContain('Ausschreibungsagenten API-Dokumentation')
+        const seite = await text('src/pages/Entwickler.jsx')
+        expect(seite).toContain('API-Dokumentation')
+    })
+
     it('formatiert die llms.txt als Navigationsindex mit Markdown-Links', async () => {
         const llms = await text('public/llms.txt')
         expect(llms.startsWith('# ')).toBe(true)

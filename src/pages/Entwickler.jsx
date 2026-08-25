@@ -130,7 +130,7 @@ export default function Entwickler() {
                             MCP + A2A Agent Card + OpenAPI live
                         </div>
                         <h1 className="hero__title">
-                            Ausschreibungen für <span className="gradient-text">Ihre Agenten</span>
+                            Ausschreibungsagenten <span className="gradient-text">API-Dokumentation</span>
                         </h1>
                         <p className="hero__description">
                             17 öffentliche Live-Quellen, erklärbares Matching und eine Agent-Anbindung, die

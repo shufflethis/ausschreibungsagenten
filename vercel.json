@@ -107,11 +107,6 @@
             "permanent": true
         },
         {
-            "source": "/docs",
-            "destination": "https://api.ausschreibungsagenten.de/docs",
-            "permanent": false
-        },
-        {
             "source": "/preise",
             "destination": "/#preise",
             "permanent": true
@@ -190,6 +185,14 @@
         {
             "source": "/api/v1/(.*)",
             "destination": "https://api.ausschreibungsagenten.de/api/v1/$1"
+        },
+        {
+            "source": "/docs",
+            "destination": "/entwickler/index.html"
+        },
+        {
+            "source": "/api-docs",
+            "destination": "/entwickler/index.html"
         },
         {
             "source": "/.well-known/mcp/server-card.json",

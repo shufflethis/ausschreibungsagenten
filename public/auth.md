@@ -19,7 +19,30 @@ unauthenticated and silently runs in the anonymous limit.
 
 ## Register
 
-Request a free key through `POST /api/signup` or the form on `/entwickler`. The request takes a business email address. The key is displayed once and sent to that address.
+Self-serve, machine-callable. No browser, no form, no confirmation step:
+
+```
+register_uri: https://api.ausschreibungsagenten.de/api/v1/signup
+```
+
+```bash
+curl -s -X POST https://api.ausschreibungsagenten.de/api/v1/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","tier":"free"}'
+```
+
+```json
+{ "api_key": "sk_...", "tier": "free" }
+```
+
+The key is returned once in the response body and also sent to that address.
+Ten registrations per hour; a second one for the same address returns 409.
+Humans can use the form on
+[/entwickler](https://www.ausschreibungsagenten.de/entwickler) instead.
+
+The free tier allows 60 requests per hour and covers `tenders:read` and
+`profiles:read`. Nothing else is required to start — the public preview
+endpoints work with no credential at all.
 
 ## Claim
 

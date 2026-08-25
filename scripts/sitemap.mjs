@@ -15,11 +15,29 @@ const eintraege = indexableRoutes
     })
     .join('\n')
 
+// Die Markdown-Fassungen der Entwicklerdokumente. Sie sind eigene Adressen
+// mit eigenem Inhalt, und der Check "Developer resource discoverability"
+// fragt genau danach: sind API-Doku, Auth, Preise und Policy unter
+// vorhersagbaren Adressen auffindbar? Was nicht in der Sitemap steht, findet
+// eine Suchmaschine bestenfalls zufaellig.
+const MASCHINENDOKUMENTE = [
+    '/entwickler.md',
+    '/agents.md',
+    '/auth.md',
+    '/pricing.md',
+    '/api-policy.md',
+]
+
+const dokumente = MASCHINENDOKUMENTE.map((pfad) => `  <url><loc>${SITE_ORIGIN}${pfad}</loc></url>`).join('\n')
+
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${eintraege}
+${dokumente}
 </urlset>
 `
 
 await writeFile(join(wurzel, 'dist', 'sitemap.xml'), xml, 'utf8')
-console.log(`Sitemap mit ${indexableRoutes.length} Adressen geschrieben.`)
+console.log(
+    `Sitemap mit ${indexableRoutes.length} Seiten und ${MASCHINENDOKUMENTE.length} Maschinendokumenten geschrieben.`,
+)

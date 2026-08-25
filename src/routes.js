@@ -28,7 +28,7 @@ export const routes = [
     {
         path: '/entwickler',
         component: 'Entwickler',
-        title: 'API & Agent-Anbindung | Ausschreibungen API Deutschland – Ausschreibungsagenten.de',
+        title: 'Ausschreibungsagenten API-Dokumentation | REST, MCP, A2A für Entwickler und Agenten',
         description:
             'Öffentliche Ausschreibungen per API und KI-Agent abfragen: REST-Vorschau, A2A Agent Card, JSON-RPC und OpenAPI. 17 Live-Quellen, erklärbares Matching, transparente Limits.',
         prerender: true,
