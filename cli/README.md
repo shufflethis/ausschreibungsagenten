@@ -18,8 +18,8 @@ npx ausschreibungsagenten suche Fassade --land DEU --limit 5
 | `laender` | Zahl offener Verfahren je Land im Index |
 
 Optionen für `suche`: `--land <ISO-3>` (Standard `DEU`), `--cpv <code>`,
-`--min-score <0-100>`, `--limit`, `--offset`, `--sprache <de|en>` (hängt eine
-gekennzeichnete KI-Kurzfassung an). `--json` gibt bei jedem Befehl die
+`--min-score <0-100>`, `--limit`, `--offset`, `--sprache <de|en>` (hängt gecachte,
+gekennzeichnete KI-Kurzfassungen an). `--json` gibt bei jedem Befehl die
 Rohantwort der API aus.
 
 ## Für Agenten

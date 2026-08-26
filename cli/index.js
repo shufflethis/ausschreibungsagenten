@@ -17,7 +17,7 @@ Optionen fuer "suche":
       --min-score <zahl>  Mindest-Relevanz der Quelle (0-100)
       --limit <zahl>      Anzahl Treffer (Standard: 10)
       --offset <zahl>     Treffer ueberspringen
-      --sprache <de|en>   haengt eine gekennzeichnete KI-Kurzfassung an
+      --sprache <de|en>   haengt gecachte, gekennzeichnete KI-Kurzfassungen an
 
 Allgemein:
       --json              Rohantwort der API ausgeben

@@ -97,6 +97,7 @@ export default function Status() {
                                 <thead>
                                     <tr>
                                         <th>Quelle</th>
+                                        <th>Anbindung</th>
                                         <th>Status</th>
                                         <th>Letzter erfolgreicher Abruf</th>
                                         <th>Zuletzt geholt / gespeichert</th>
@@ -106,6 +107,11 @@ export default function Status() {
                                     {sources.map((s) => (
                                         <tr key={s.source}>
                                             <td>{SOURCE_LABELS[s.source] || s.source.toUpperCase()}</td>
+                                            {/* official_api: vom Betreiber fuer Maschinen bereitgestellt
+                                                (API/RSS/OCDS). portal: aus dem HTML des Portals gelesen.
+                                                Der Unterschied gehoert auf die Seite, die Transparenz
+                                                verspricht - nicht nur in die API-Antwort. */}
+                                            <td>{s.interface === 'official_api' ? 'Offizielle Schnittstelle' : 'Portal-Auslese'}</td>
                                             <td>
                                                 <span className={`badge ${s.implementation_status === 'live' ? 'badge--yes' : 'badge--no'}`}>
                                                     {s.implementation_status === 'live' ? (s.last_error ? 'live · Fehler beim letzten Lauf' : 'live') : 'im Ausbau'}
