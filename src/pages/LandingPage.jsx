@@ -7,6 +7,8 @@ import { VIDEO_BESCHREIBUNG, VIDEO_TITEL, VIDEO_TRANSKRIPT } from '../data/video
 import { stelleWerkzeugeBereit, warteAuf, werkzeugAntwort, werkzeugFehler } from '../lib/webmcp'
 import { eintragAnlegen, MERKLISTE_GRENZE, merklisteLesen, merklisteSchreiben } from '../lib/merkliste'
 import { artAusCpv, EU_SCHWELLENWERTE, fitGruende, gruendeBilanz, schwellenwertPruefung } from '../lib/vergabe'
+import { spracheErmitteln, STANDARDSPRACHE } from '../lib/sprache'
+import { tafelTexte } from '../lib/tafelTexte'
 
 const TOOLS = [
     { name: 'DTVP', url: 'https://www.dtvp.de', price: '€49/Mon. Professional', ai: false, portals: 'DTVP', focus: 'Offizielles Portal', gaeb: false, alerts: true, free: true },
@@ -61,9 +63,13 @@ const TENDER_PRESETS = [
     { label: 'PR', value: 'öffentlichkeitsarbeit' },
 ]
 
-const formatDate = (value) => {
-    if (!value) return 'Keine Frist genannt'
-    return new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(value))
+const formatDate = (value, sprache = 'de') => {
+    if (!value) return sprache === 'en' ? 'No deadline stated' : 'Keine Frist genannt'
+    return new Intl.DateTimeFormat(sprache === 'en' ? 'en-GB' : 'de-DE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    }).format(new Date(value))
 }
 
 const formatCurrency = (value) => {
@@ -107,6 +113,12 @@ export default function LandingPage() {
     // darauf, Agenten ueber die WebMCP-Werkzeuge - beide arbeiten auf
     // derselben Liste, und beide sehen, was die andere Seite getan hat.
     const [merkliste, setMerkliste] = useState([])
+    // Die Tafel folgt der Browsersprache. Serverseitig steht kein
+    // `navigator` zur Verfuegung, deshalb startet sie deutsch und wird
+    // nach dem Mounten nachgezogen - ein Wechsel danach ist folgenlos,
+    // weil zu dem Zeitpunkt noch nichts darauf liegt.
+    const [sprache, setSprache] = useState(STANDARDSPRACHE)
+    const texte = tafelTexte(sprache)
 
     const indexedTotal = sourceStatus.reduce((sum, source) => sum + (Number(source.stored) || 0), 0)
     const latestSuccessAt = sourceStatus.reduce(
@@ -212,10 +224,31 @@ export default function LandingPage() {
     }, [])
 
     useEffect(() => {
+        setSprache(spracheErmitteln())
+    }, [])
+
+    useEffect(() => {
         const gespeichert = merklisteLesen()
         if (gespeichert.length === 0) return
-        setMerkliste(gespeichert.map((eintrag) => ({ ...eintrag, gruende: fitGruende(eintrag.tender, {}) })))
+        setMerkliste(gespeichert.map((eintrag) => ({ ...eintrag, gruende: fitGruende(eintrag.tender, { sprache }) })))
+        // Absichtlich nur beim Mounten: der Sprachwechsel weiter unten
+        // rechnet die Gruende ohnehin neu.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    // Wechselt die Sprache, werden die Gruende neu erzeugt. Sie liegen als
+    // fertige Saetze im Zustand, nicht als Schluessel - eine halb deutsche,
+    // halb englische Tafel waere schlimmer als gar keine Uebersetzung.
+    useEffect(() => {
+        setMerkliste((bisher) =>
+            bisher.length === 0
+                ? bisher
+                : bisher.map((eintrag) => ({
+                      ...eintrag,
+                      gruende: fitGruende(eintrag.tender, { suchbegriff: eintrag.suchbegriff, sprache }),
+                  })),
+        )
+    }, [sprache])
 
     // Geschrieben wird in der Aenderung selbst statt in einem Effekt auf
     // `merkliste`. Ein Effekt liefe beim ersten Rendern mit der noch
@@ -234,18 +267,18 @@ export default function LandingPage() {
     // vorhandene Eintraege werden aktualisiert statt verdoppelt - sonst
     // haette eine zweite Agentenrunde die Liste verdoppelt.
     const merklisteAufnehmen = (tender, { notiz, suchbegriff } = {}) => {
-        const gruende = fitGruende(tender, { suchbegriff })
+        const gruende = fitGruende(tender, { suchbegriff, sprache })
         merklisteAendern((bisher) => {
             const vorhanden = bisher.find((eintrag) => eintrag.id === String(tender.id))
             if (vorhanden) {
                 return bisher.map((eintrag) =>
                     eintrag.id === vorhanden.id
-                        ? { ...eintrag, tender, gruende, notiz: notiz ?? eintrag.notiz }
+                        ? { ...eintrag, tender, gruende, suchbegriff, notiz: notiz ?? eintrag.notiz }
                         : eintrag,
                 )
             }
             if (bisher.length >= MERKLISTE_GRENZE) return bisher
-            return [...bisher, { ...eintragAnlegen(tender, { notiz: notiz ?? '' }), gruende }]
+            return [...bisher, { ...eintragAnlegen(tender, { notiz: notiz ?? '' }), gruende, suchbegriff }]
         })
         return gruende
     }
@@ -294,6 +327,7 @@ export default function LandingPage() {
             tenderAnzahl,
             sourceStatus,
             merkliste,
+            sprache,
             merklisteAufnehmen,
             merklisteEntfernen,
             entscheidungSetzen,
@@ -599,7 +633,10 @@ export default function LandingPage() {
                     if (!tender) {
                         return werkzeugFehler(`No tender with id "${id}" is displayed or on the board. Call search_tenders first.`)
                     }
-                    const gruende = fitGruende(tender, { suchbegriff: zustand.current.tenderQuery })
+                    const gruende = fitGruende(tender, {
+                        suchbegriff: zustand.current.tenderQuery,
+                        sprache: zustand.current.sprache,
+                    })
                     const bilanz = gruendeBilanz(gruende)
                     return werkzeugAntwort(
                         `${bilanz.dafuer} argument(s) in favour, ${bilanz.dagegen} against, ${bilanz.neutral} neutral. These are arguments, not a recommendation - the go/no-go call is the user's.`,
@@ -714,7 +751,7 @@ export default function LandingPage() {
                         return werkzeugFehler('value_eur must be a positive number in euro.')
                     }
                     const gewaehlt = art || (cpv ? artAusCpv(cpv) : 'oeffentlicher_auftraggeber')
-                    const pruefung = schwellenwertPruefung(wert, gewaehlt)
+                    const pruefung = schwellenwertPruefung(wert, gewaehlt, 'en')
                     return werkzeugAntwort(
                         `${Number(wert)} EUR is ${pruefung.oberhalb ? 'at or above' : 'below'} the ${pruefung.schwelle} EUR threshold for ${pruefung.text}. The official values and the procurement documents prevail.`,
                         {
@@ -1062,14 +1099,14 @@ export default function LandingPage() {
                                                     className="source-trigger"
                                                     onClick={() => setSelectedTender(tender)}
                                                 >
-                                                    Quelle öffnen
+                                                    {texte.quelleOeffnen}
                                                 </button>
                                                 <button
                                                     type="button"
                                                     className="source-trigger"
                                                     onClick={() => merklisteAufnehmen(tender, { suchbegriff: tenderQuery })}
                                                 >
-                                                    {aufTafel(tender.id) ? 'Auf der Tafel — Gründe aktualisieren' : 'Auf die Go/No-Go-Tafel'}
+                                                    {aufTafel(tender.id) ? texte.aufTafelSchon : texte.aufTafel}
                                                 </button>
                                             </div>
                                         </article>
@@ -1081,29 +1118,19 @@ export default function LandingPage() {
                         <div className="tafel" id="tafel">
                             <div className="tafel__kopf">
                                 <div>
-                                    <span className="profile-lead__eyebrow">Go/No-Go</span>
-                                    <h3>Gemeinsame Vorauswahl</h3>
-                                    <p>
-                                        Treffer landen hier per Klick — oder über einen Agenten, der die Werkzeuge
-                                        dieser Seite nutzt. Die Gründe stammen aus den Feldern der Bekanntmachung:
-                                        CPV, Leistungsort, Frist, Auftragswert gegen den EU-Schwellenwert,
-                                        Zuschlagskriterien, Lose. Entschieden wird von Ihnen; die Argumente sind
-                                        eine Vorarbeit, keine Empfehlung.
-                                    </p>
+                                    <span className="profile-lead__eyebrow">{texte.eyebrow}</span>
+                                    <h3>{texte.titel}</h3>
+                                    <p>{texte.einleitung}</p>
                                 </div>
                                 {merkliste.length > 0 && (
                                     <button type="button" className="source-trigger" onClick={merklisteLeeren}>
-                                        Tafel leeren
+                                        {texte.leeren}
                                     </button>
                                 )}
                             </div>
 
                             {merkliste.length === 0 ? (
-                                <div className="tender-state">
-                                    Noch nichts auf der Tafel. Legen Sie einen Treffer darauf — oder bitten Sie in
-                                    einem Browser mit WebMCP Ihren Agenten darum, etwa: „Suche Fassadenausschreibungen
-                                    und leg die drei mit der längsten Frist auf die Tafel."
-                                </div>
+                                <div className="tender-state">{texte.leer}</div>
                             ) : (
                                 <div className="tafel__liste">
                                     {merkliste.map((eintrag) => {
@@ -1114,28 +1141,28 @@ export default function LandingPage() {
                                                     <span>{(eintrag.tender.source || '').toUpperCase()}</span>
                                                     <span className={`tafel-karte__status ist-${eintrag.entscheidung || 'offen'}`}>
                                                         {eintrag.entscheidung === 'go'
-                                                            ? 'Go'
+                                                            ? texte.go
                                                             : eintrag.entscheidung === 'no_go'
-                                                                ? 'No-Go'
-                                                                : 'offen'}
+                                                                ? texte.noGo
+                                                                : texte.offen}
                                                     </span>
                                                 </div>
                                                 <h4>{eintrag.tender.title}</h4>
                                                 <dl>
                                                     <div>
-                                                        <dt>Auftraggeber</dt>
-                                                        <dd>{eintrag.tender.buyer_name || 'Nicht angegeben'}</dd>
+                                                        <dt>{texte.auftraggeber}</dt>
+                                                        <dd>{eintrag.tender.buyer_name || texte.nichtAngegeben}</dd>
                                                     </div>
                                                     <div>
-                                                        <dt>Frist</dt>
-                                                        <dd>{formatDate(eintrag.tender.deadline_at)}</dd>
+                                                        <dt>{texte.frist}</dt>
+                                                        <dd>{formatDate(eintrag.tender.deadline_at, sprache)}</dd>
                                                     </div>
                                                 </dl>
 
                                                 {eintrag.gruende.length > 0 && (
                                                     <>
                                                         <p className="tafel-karte__bilanz">
-                                                            {bilanz.dafuer} dafür · {bilanz.dagegen} dagegen · {bilanz.neutral} zu prüfen
+                                                            {texte.bilanz(bilanz.dafuer, bilanz.dagegen, bilanz.neutral)}
                                                         </p>
                                                         <ul className="tafel-karte__gruende">
                                                             {eintrag.gruende.map((grund) => (
@@ -1155,20 +1182,20 @@ export default function LandingPage() {
                                                         className={eintrag.entscheidung === 'go' ? 'is-active' : ''}
                                                         onClick={() => entscheidungSetzen(eintrag.id, eintrag.entscheidung === 'go' ? null : 'go')}
                                                     >
-                                                        Go
+                                                        {texte.go}
                                                     </button>
                                                     <button
                                                         type="button"
                                                         className={eintrag.entscheidung === 'no_go' ? 'is-active' : ''}
                                                         onClick={() => entscheidungSetzen(eintrag.id, eintrag.entscheidung === 'no_go' ? null : 'no_go')}
                                                     >
-                                                        No-Go
+                                                        {texte.noGo}
                                                     </button>
                                                     <a href={eintrag.tender.source_url} target="_blank" rel="noopener noreferrer">
-                                                        Originalbekanntmachung
+                                                        {texte.original}
                                                     </a>
                                                     <button type="button" onClick={() => merklisteEntfernen(eintrag.id)}>
-                                                        Entfernen
+                                                        {texte.entfernen}
                                                     </button>
                                                 </div>
                                             </article>

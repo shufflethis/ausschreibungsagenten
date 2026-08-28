@@ -8,8 +8,14 @@
 // einer nackten Zahl, und der Mensch sieht dieselben Gruende auf dem
 // Bildschirm.
 //
+// Alle Texte gibt es deutsch und englisch, gesteuert ueber `sprache`
+// (siehe src/lib/sprache.js). Mensch und Agent bekommen immer dieselbe
+// Sprache - sie sollen dasselbe vor sich haben, nicht zwei Fassungen.
+//
 // Was hier NICHT passiert: eine Empfehlung. Die Funktionen liefern
 // Argumente mit Vorzeichen, entschieden wird von Menschen.
+
+import { STANDARDSPRACHE } from './sprache'
 
 // EU-Schwellenwerte fuer 2026/2027. Dieselben Zahlen nennt die FAQ auf
 // der Landingpage; sie stehen hier nur einmal, damit beide nicht
@@ -18,15 +24,21 @@
 export const EU_SCHWELLENWERTE = {
     zentrale_regierungsbehoerde: {
         wert: 140000,
-        text: 'Liefer- und Dienstleistungen zentraler Regierungsbehörden',
+        text: {
+            de: 'Liefer- und Dienstleistungen zentraler Regierungsbehörden',
+            en: 'supplies and services of central government authorities',
+        },
     },
     oeffentlicher_auftraggeber: {
         wert: 216000,
-        text: 'Liefer- und Dienstleistungen anderer öffentlicher Auftraggeber',
+        text: {
+            de: 'Liefer- und Dienstleistungen anderer öffentlicher Auftraggeber',
+            en: 'supplies and services of other public buyers',
+        },
     },
     bauauftrag: {
         wert: 5404000,
-        text: 'Bauaufträge',
+        text: { de: 'Bauaufträge', en: 'works contracts' },
     },
 }
 
@@ -34,44 +46,54 @@ export const EU_SCHWELLENWERTE = {
 // Menschen zu sagen, worum es ueberhaupt geht - die vollstaendige
 // CPV-Systematik hat ueber 9.000 Eintraege und gehoert nicht ins Bundle.
 const CPV_ABTEILUNGEN = {
-    '09': 'Erdölerzeugnisse, Brennstoffe, Strom',
-    30: 'Büromaschinen, Datenverarbeitungsgeräte',
-    32: 'Rundfunk-, Fernseh-, Kommunikationsgeräte',
-    34: 'Fahrzeuge',
-    38: 'Labor-, optische und Präzisionsgeräte',
-    39: 'Möbel, Einrichtungsgegenstände, Reinigungsmittel',
-    42: 'Maschinen und Anlagen',
-    44: 'Baukonstruktionen und -materialien',
-    45: 'Bauarbeiten',
-    48: 'Softwarepakete und Informationssysteme',
-    50: 'Reparatur und Wartung',
-    51: 'Installationsarbeiten',
-    55: 'Hotel-, Restaurant- und Einzelhandelsdienste',
-    60: 'Transport- und Beförderungsdienste',
-    63: 'Hilfs- und Nebentätigkeiten des Transports, Reisebüros',
-    64: 'Post- und Telekommunikationsdienste',
-    66: 'Finanz- und Versicherungsdienste',
-    70: 'Immobiliendienste',
-    71: 'Architektur-, Bau-, Ingenieur- und Inspektionsleistungen',
-    72: 'IT-Dienste: Beratung, Software, Internet',
-    73: 'Forschung und Entwicklung',
-    75: 'Öffentliche Verwaltung, Verteidigung, Sozialversicherung',
-    77: 'Land- und forstwirtschaftliche Dienste, Gartenbau',
-    79: 'Unternehmensdienste: Recht, Marketing, Beratung, Druck',
-    80: 'Allgemeine und berufliche Bildung',
-    85: 'Gesundheits- und Sozialwesen',
-    90: 'Abwasser, Abfall, Reinigung, Umweltschutz',
-    92: 'Erholung, Kultur, Sport',
-    98: 'Sonstige öffentliche und persönliche Dienste',
+    '09': { de: 'Erdölerzeugnisse, Brennstoffe, Strom', en: 'Petroleum products, fuel, electricity' },
+    30: { de: 'Büromaschinen, Datenverarbeitungsgeräte', en: 'Office and computing machinery' },
+    32: { de: 'Rundfunk-, Fernseh-, Kommunikationsgeräte', en: 'Radio, television and communication equipment' },
+    34: { de: 'Fahrzeuge', en: 'Transport equipment' },
+    38: { de: 'Labor-, optische und Präzisionsgeräte', en: 'Laboratory, optical and precision equipment' },
+    39: { de: 'Möbel, Einrichtungsgegenstände, Reinigungsmittel', en: 'Furniture, furnishings, cleaning products' },
+    42: { de: 'Maschinen und Anlagen', en: 'Industrial machinery' },
+    44: { de: 'Baukonstruktionen und -materialien', en: 'Construction structures and materials' },
+    45: { de: 'Bauarbeiten', en: 'Construction work' },
+    48: { de: 'Softwarepakete und Informationssysteme', en: 'Software packages and information systems' },
+    50: { de: 'Reparatur und Wartung', en: 'Repair and maintenance services' },
+    51: { de: 'Installationsarbeiten', en: 'Installation services' },
+    55: { de: 'Hotel-, Restaurant- und Einzelhandelsdienste', en: 'Hotel, restaurant and retail services' },
+    60: { de: 'Transport- und Beförderungsdienste', en: 'Transport services' },
+    63: { de: 'Hilfs- und Nebentätigkeiten des Transports, Reisebüros', en: 'Supporting transport services, travel agencies' },
+    64: { de: 'Post- und Telekommunikationsdienste', en: 'Postal and telecommunications services' },
+    66: { de: 'Finanz- und Versicherungsdienste', en: 'Financial and insurance services' },
+    70: { de: 'Immobiliendienste', en: 'Real estate services' },
+    71: {
+        de: 'Architektur-, Bau-, Ingenieur- und Inspektionsleistungen',
+        en: 'Architectural, construction, engineering and inspection services',
+    },
+    72: { de: 'IT-Dienste: Beratung, Software, Internet', en: 'IT services: consulting, software, internet' },
+    73: { de: 'Forschung und Entwicklung', en: 'Research and development' },
+    75: {
+        de: 'Öffentliche Verwaltung, Verteidigung, Sozialversicherung',
+        en: 'Administration, defence and social security services',
+    },
+    77: { de: 'Land- und forstwirtschaftliche Dienste, Gartenbau', en: 'Agricultural, forestry and horticultural services' },
+    79: { de: 'Unternehmensdienste: Recht, Marketing, Beratung, Druck', en: 'Business services: legal, marketing, consulting, printing' },
+    80: { de: 'Allgemeine und berufliche Bildung', en: 'Education and training services' },
+    85: { de: 'Gesundheits- und Sozialwesen', en: 'Health and social work services' },
+    90: { de: 'Abwasser, Abfall, Reinigung, Umweltschutz', en: 'Sewage, refuse, cleaning and environmental services' },
+    92: { de: 'Erholung, Kultur, Sport', en: 'Recreational, cultural and sporting services' },
+    98: { de: 'Sonstige öffentliche und persönliche Dienste', en: 'Other community, social and personal services' },
 }
 
-export function cpvAbteilung(cpv) {
+const sprachwahl = (sprache) => (sprache === 'en' ? 'en' : STANDARDSPRACHE)
+
+export function cpvAbteilung(cpv, sprache) {
     const ziffern = String(cpv ?? '').replace(/\D/g, '')
     if (ziffern.length < 2) return null
+    const s = sprachwahl(sprache)
     const schluessel = ziffern.slice(0, 2)
+    const eintrag = CPV_ABTEILUNGEN[schluessel] ?? CPV_ABTEILUNGEN[Number(schluessel)]
     return {
         code: schluessel,
-        text: CPV_ABTEILUNGEN[schluessel] ?? CPV_ABTEILUNGEN[Number(schluessel)] ?? `CPV-Abteilung ${schluessel}`,
+        text: eintrag ? eintrag[s] : s === 'en' ? `CPV division ${schluessel}` : `CPV-Abteilung ${schluessel}`,
     }
 }
 
@@ -88,98 +110,135 @@ export function tageBisFrist(frist, jetzt = new Date()) {
 // Ordnet einen Auftragswert dem passenden EU-Schwellenwert zu. `art` ist
 // entweder ein Schluessel aus EU_SCHWELLENWERTE oder wird aus der
 // CPV-Abteilung abgeleitet: 45 sind Bauarbeiten.
-export function schwellenwertPruefung(wertEur, art) {
+export function schwellenwertPruefung(wertEur, art, sprache) {
+    const s = sprachwahl(sprache)
     const schluessel = art && EU_SCHWELLENWERTE[art] ? art : 'oeffentlicher_auftraggeber'
     const schwelle = EU_SCHWELLENWERTE[schluessel]
     const wert = Number(wertEur)
     if (!Number.isFinite(wert) || wert <= 0) {
-        return { art: schluessel, schwelle: schwelle.wert, oberhalb: null, text: schwelle.text }
+        return { art: schluessel, schwelle: schwelle.wert, oberhalb: null, text: schwelle.text[s] }
     }
-    return { art: schluessel, schwelle: schwelle.wert, oberhalb: wert >= schwelle.wert, text: schwelle.text }
+    return { art: schluessel, schwelle: schwelle.wert, oberhalb: wert >= schwelle.wert, text: schwelle.text[s] }
 }
 
 export function artAusCpv(cpv) {
     return cpvAbteilung(cpv)?.code === '45' ? 'bauauftrag' : 'oeffentlicher_auftraggeber'
 }
 
-const euro = (wert) =>
-    new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(wert)
+const euro = (wert, sprache) =>
+    new Intl.NumberFormat(sprache === 'en' ? 'en-IE' : 'de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0,
+    }).format(wert)
+
+const TEXTE = {
+    de: {
+        cpv: (abteilung, cpv, weitere) =>
+            `${abteilung} (CPV ${cpv}${weitere ? `, ${weitere} ${weitere === 1 ? 'weiterer CPV-Code' : 'weitere CPV-Codes'}` : ''}).`,
+        suchbegriffTreffer: (begriff) => `Der Suchbegriff „${begriff}" steht im Titel.`,
+        suchbegriffDaneben: (begriff) =>
+            `Der Suchbegriff „${begriff}" steht nicht im Titel; der Treffer kommt über CPV oder Volltext.`,
+        ort: (ort) => `Leistungsort: ${ort}. Anfahrt und Bauleitung vor Ort selbst einschätzen.`,
+        fristFehlt: 'Die Bekanntmachung nennt keine Angebotsfrist. Frist in den Vergabeunterlagen prüfen.',
+        fristAbgelaufen: (tage) => `Die Angebotsfrist ist seit ${tage} Tagen abgelaufen.`,
+        fristKnapp: (tage) => `Nur noch ${tage} Tage bis zur Frist — für ein vollständiges Angebot knapp.`,
+        fristOffen: (tage) => `${tage} Tage bis zur Angebotsfrist.`,
+        wertFehlt: (schwelle, art) =>
+            `Kein Auftragswert veröffentlicht. Der EU-Schwellenwert für ${art} liegt bei ${schwelle}.`,
+        wert: (wert, lage, schwelle, art) =>
+            `Auftragswert ${wert}, ${lage} des EU-Schwellenwerts von ${schwelle} für ${art}.`,
+        oberhalb: 'oberhalb',
+        unterhalb: 'unterhalb',
+        nurPreis: 'Zuschlag allein über den Preis — Qualität und Referenzen zählen nicht.',
+        mehrKriterien: (anzahl) => `Zuschlag über ${anzahl} Kriterien, nicht nur den Preis.`,
+        lose: (anzahl) => `${anzahl} Lose — eine Bewerbung auf einzelne Lose ist möglich.`,
+        rahmen: 'Rahmenvereinbarung: der Zuschlag sichert Abrufe zu, keine feste Auftragsmenge.',
+        gpa: 'Verfahren fällt unter das WTO-Beschaffungsübereinkommen — auch Bieter außerhalb der EU sind zugelassen.',
+        score: (score) => `Vorschau-Score ${score} von 100. Ein Firmenprofil macht den Score belastbarer.`,
+    },
+    en: {
+        cpv: (abteilung, cpv, weitere) =>
+            `${abteilung} (CPV ${cpv}${weitere ? `, ${weitere} further CPV ${weitere === 1 ? 'code' : 'codes'}` : ''}).`,
+        suchbegriffTreffer: (begriff) => `The search term "${begriff}" appears in the title.`,
+        suchbegriffDaneben: (begriff) =>
+            `The search term "${begriff}" is not in the title; this notice matched on CPV or full text.`,
+        ort: (ort) => `Place of performance: ${ort}. Judge travel and on-site supervision yourself.`,
+        fristFehlt: 'The notice states no bid deadline. Check the deadline in the procurement documents.',
+        fristAbgelaufen: (tage) => `The bid deadline passed ${tage} days ago.`,
+        fristKnapp: (tage) => `Only ${tage} days left — tight for a complete bid.`,
+        fristOffen: (tage) => `${tage} days until the bid deadline.`,
+        wertFehlt: (schwelle, art) =>
+            `No contract value published. The EU threshold for ${art} is ${schwelle}.`,
+        wert: (wert, lage, schwelle, art) =>
+            `Contract value ${wert}, ${lage} the EU threshold of ${schwelle} for ${art}.`,
+        oberhalb: 'at or above',
+        unterhalb: 'below',
+        nurPreis: 'Awarded on lowest price alone — quality and references do not count.',
+        mehrKriterien: (anzahl) => `Awarded on ${anzahl} criteria, not on price alone.`,
+        lose: (anzahl) => `${anzahl} lots — bidding for individual lots is possible.`,
+        rahmen: 'Framework agreement: winning secures call-offs, not a fixed volume.',
+        gpa: 'Covered by the WTO Government Procurement Agreement — bidders from outside the EU are admitted too.',
+        score: (score) => `Preview score ${score} of 100. A company profile makes the score more reliable.`,
+    },
+}
 
 // Liefert die Einzelgruende zu einer Bekanntmachung, jeder mit Vorzeichen
-// ('plus', 'minus', 'neutral'). Die Texte sind deutsch, weil sie
-// unveraendert auf der Seite erscheinen.
-export function fitGruende(tender, { suchbegriff = '', jetzt = new Date() } = {}) {
+// ('plus', 'minus', 'neutral'), in der gewaehlten Sprache.
+export function fitGruende(tender, { suchbegriff = '', jetzt = new Date(), sprache } = {}) {
     if (!tender) return []
+    const s = sprachwahl(sprache)
+    const t = TEXTE[s]
     const gruende = []
 
-    const abteilung = cpvAbteilung(tender.cpv_main)
+    const abteilung = cpvAbteilung(tender.cpv_main, s)
     if (abteilung) {
         const weitere = Array.isArray(tender.cpv_additional) ? tender.cpv_additional.length : 0
-        gruende.push({
-            kennung: 'cpv',
-            bewertung: 'plus',
-            text: `${abteilung.text} (CPV ${tender.cpv_main}${weitere ? `, ${weitere} weitere CPV-Codes` : ''}).`,
-        })
+        gruende.push({ kennung: 'cpv', bewertung: 'plus', text: t.cpv(abteilung.text, tender.cpv_main, weitere) })
     }
 
-    const begriff = suchbegriff.trim().toLowerCase()
+    const begriff = suchbegriff.trim()
     if (begriff.length >= 3) {
-        const imTitel = String(tender.title ?? '').toLowerCase().includes(begriff)
+        const imTitel = String(tender.title ?? '').toLowerCase().includes(begriff.toLowerCase())
         gruende.push({
             kennung: 'suchbegriff',
             bewertung: imTitel ? 'plus' : 'neutral',
-            text: imTitel
-                ? `Der Suchbegriff „${suchbegriff}" steht im Titel.`
-                : `Der Suchbegriff „${suchbegriff}" steht nicht im Titel; der Treffer kommt über CPV oder Volltext.`,
+            text: imTitel ? t.suchbegriffTreffer(begriff) : t.suchbegriffDaneben(begriff),
         })
     }
 
     if (tender.performance_location) {
-        gruende.push({
-            kennung: 'ort',
-            bewertung: 'neutral',
-            text: `Leistungsort: ${tender.performance_location}. Anfahrt und Bauleitung vor Ort selbst einschätzen.`,
-        })
+        gruende.push({ kennung: 'ort', bewertung: 'neutral', text: t.ort(tender.performance_location) })
     }
 
     const tage = tageBisFrist(tender.deadline_at, jetzt)
     if (tage === null) {
-        gruende.push({
-            kennung: 'frist',
-            bewertung: 'neutral',
-            text: 'Die Bekanntmachung nennt keine Angebotsfrist. Frist in den Vergabeunterlagen prüfen.',
-        })
+        gruende.push({ kennung: 'frist', bewertung: 'neutral', text: t.fristFehlt })
     } else if (tage < 0) {
-        gruende.push({ kennung: 'frist', bewertung: 'minus', text: `Die Angebotsfrist ist seit ${Math.abs(tage)} Tagen abgelaufen.` })
+        gruende.push({ kennung: 'frist', bewertung: 'minus', text: t.fristAbgelaufen(Math.abs(tage)) })
     } else if (tage <= 13) {
-        gruende.push({
-            kennung: 'frist',
-            bewertung: 'minus',
-            text: `Nur noch ${tage} Tage bis zur Frist — für ein vollständiges Angebot knapp.`,
-        })
+        gruende.push({ kennung: 'frist', bewertung: 'minus', text: t.fristKnapp(tage) })
     } else {
-        gruende.push({
-            kennung: 'frist',
-            bewertung: tage >= 21 ? 'plus' : 'neutral',
-            text: `${tage} Tage bis zur Angebotsfrist.`,
-        })
+        gruende.push({ kennung: 'frist', bewertung: tage >= 21 ? 'plus' : 'neutral', text: t.fristOffen(tage) })
     }
 
-    const art = artAusCpv(tender.cpv_main)
-    const pruefung = schwellenwertPruefung(tender.estimated_value_eur, art)
+    const pruefung = schwellenwertPruefung(tender.estimated_value_eur, artAusCpv(tender.cpv_main), s)
     if (pruefung.oberhalb === null) {
         gruende.push({
             kennung: 'wert',
             bewertung: 'neutral',
-            text: `Kein Auftragswert veröffentlicht. Der EU-Schwellenwert für ${pruefung.text} liegt bei ${euro(pruefung.schwelle)}.`,
+            text: t.wertFehlt(euro(pruefung.schwelle, s), pruefung.text),
         })
     } else {
         gruende.push({
             kennung: 'wert',
             bewertung: 'neutral',
-            text: `Auftragswert ${euro(Number(tender.estimated_value_eur))}, ${
-                pruefung.oberhalb ? 'oberhalb' : 'unterhalb'
-            } des EU-Schwellenwerts von ${euro(pruefung.schwelle)} für ${pruefung.text}.`,
+            text: t.wert(
+                euro(Number(tender.estimated_value_eur), s),
+                pruefung.oberhalb ? t.oberhalb : t.unterhalb,
+                euro(pruefung.schwelle, s),
+                pruefung.text,
+            ),
         })
     }
 
@@ -189,35 +248,21 @@ export function fitGruende(tender, { suchbegriff = '', jetzt = new Date() } = {}
         gruende.push({
             kennung: 'zuschlag',
             bewertung: nurPreis ? 'minus' : 'plus',
-            text: nurPreis
-                ? 'Zuschlag allein über den Preis — Qualität und Referenzen zählen nicht.'
-                : `Zuschlag über ${kriterien.length} Kriterien, nicht nur den Preis.`,
+            text: nurPreis ? t.nurPreis : t.mehrKriterien(kriterien.length),
         })
     }
 
     const lose = Number(tender.lot_count)
     if (Number.isFinite(lose) && lose > 1) {
-        gruende.push({
-            kennung: 'lose',
-            bewertung: 'plus',
-            text: `${lose} Lose — eine Bewerbung auf einzelne Lose ist möglich.`,
-        })
+        gruende.push({ kennung: 'lose', bewertung: 'plus', text: t.lose(lose) })
     }
 
     if (tender.framework_agreement && tender.framework_agreement !== 'none') {
-        gruende.push({
-            kennung: 'rahmen',
-            bewertung: 'neutral',
-            text: 'Rahmenvereinbarung: der Zuschlag sichert Abrufe zu, keine feste Auftragsmenge.',
-        })
+        gruende.push({ kennung: 'rahmen', bewertung: 'neutral', text: t.rahmen })
     }
 
     if (tender.gpa_covered) {
-        gruende.push({
-            kennung: 'gpa',
-            bewertung: 'neutral',
-            text: 'Verfahren fällt unter das WTO-Beschaffungsübereinkommen — auch Bieter außerhalb der EU sind zugelassen.',
-        })
+        gruende.push({ kennung: 'gpa', bewertung: 'neutral', text: t.gpa })
     }
 
     const score = Number(tender.relevance_score)
@@ -225,7 +270,7 @@ export function fitGruende(tender, { suchbegriff = '', jetzt = new Date() } = {}
         gruende.push({
             kennung: 'score',
             bewertung: score >= 75 ? 'plus' : score >= 55 ? 'neutral' : 'minus',
-            text: `Vorschau-Score ${score} von 100. Ein Firmenprofil macht den Score belastbarer.`,
+            text: t.score(score),
         })
     }
 

@@ -38,6 +38,10 @@ overrides back on its next call. That is the collaborative workflow the WebMCP
 spec describes, applied to a decision that genuinely needs two kinds of
 knowledge.
 
+The board renders in the viewer's browser language, German or English, reasons
+included. Person and agent always see the same wording — a board the human
+cannot read would defeat the point of putting the reasoning on screen at all.
+
 ## What people and agents can do together here that was hard before
 
 Ask an agent: *"Search facade tenders in Germany, put the three with the longest
@@ -95,6 +99,7 @@ Deliberate constraints:
 | --- | --- |
 | `src/lib/webmcp.js` | Registration adapter: feature detection, `registerTool` per tool, unregistration through one `AbortSignal`, MCP-shaped responses |
 | `src/lib/vergabe.js` | Domain logic: EU thresholds, CPV divisions, deadline arithmetic, weighted fit reasons. No DOM, no network |
+| `src/lib/sprache.js`, `src/lib/tafelTexte.js` | The board follows the browser language — German or English. Only the board: it is the surface people and agents share, and both must be able to read it. The rest of the page is marketing copy for the German market |
 | `src/lib/merkliste.js` | Board persistence in `localStorage`; reasons are recomputed on load because deadlines age |
 | `src/pages/LandingPage.jsx` | Tool registration and the visible board; tools read live state through a ref so they never answer from a stale closure |
 | `vercel.json` | `Origin-Agent-Cluster: ?1` — `registerTool` rejects with `SecurityError` in a document that is not origin-keyed |

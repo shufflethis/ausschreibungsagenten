@@ -63,9 +63,16 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
     const tenderAufrufe = () =>
         globalThis.fetch.mock.calls.map(([url]) => String(url)).filter((url) => url.includes('/api/tenders-public'))
 
+    const spracheSetzen = (werte) =>
+        Object.defineProperty(navigator, 'languages', { value: werte, configurable: true })
+
     beforeEach(async () => {
         vi.useFakeTimers()
         localStorage.clear()
+        // Die Tafel folgt der Browsersprache. Fuer die Tests wird sie
+        // festgelegt, sonst haengt das Ergebnis an der Voreinstellung von
+        // jsdom.
+        spracheSetzen(['en-US', 'en'])
         registriert = []
         // jsdom kennt scrollIntoView nicht; jeder Browser tut es.
         Element.prototype.scrollIntoView = vi.fn()
@@ -249,9 +256,9 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         expect(tafel.textContent).toContain('Fassadenarbeiten Rathaus')
         expect(tafel.textContent).toContain('Bestandskunde')
         // Die Gruende kommen aus Feldern, die die Trefferkarte nicht zeigt.
-        expect(tafel.textContent).toMatch(/Bauarbeiten/)
-        expect(tafel.textContent).toMatch(/3 Lose/)
-        expect(tafel.textContent).toMatch(/Preis/)
+        expect(tafel.textContent).toMatch(/Construction work/)
+        expect(tafel.textContent).toMatch(/3 lots/)
+        expect(tafel.textContent).toMatch(/lowest price alone/)
     })
 
     // Der eigentliche Punkt der gemeinsamen Tafel: der Agent liest, was
@@ -335,7 +342,7 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
 
         expect(zweiter.querySelector('#tafel').textContent).toContain('Fassadenarbeiten Rathaus')
         // Die Gruende werden neu berechnet, nicht mitgespeichert: Fristen altern.
-        expect(zweiter.querySelector('#tafel').textContent).toMatch(/Bauarbeiten/)
+        expect(zweiter.querySelector('#tafel').textContent).toMatch(/Construction work/)
     })
 
     // Die Grenze soll neue Eintraege bremsen, nicht das Aktualisieren eines
@@ -375,6 +382,40 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         const vorhandener = await aufrufen('shortlist_tender', { id: 'f-0', note: 'Neue Notiz' })
         expect(vorhandener.isError).toBeUndefined()
         expect(behaelter.querySelector('#tafel').textContent).toContain('Neue Notiz')
+    })
+
+    // Die Jury der WebMCP Challenge liest englisch, unsere Kundschaft
+    // deutsch. Beide muessen dieselbe Tafel lesen koennen - deshalb folgt
+    // sie der Browsersprache, und zwar vollstaendig: eine halb uebersetzte
+    // Tafel waere schlimmer als eine einsprachige.
+    it('zeigt einem deutschen Browser die deutsche Tafel', async () => {
+        act(() => wurzel.unmount())
+        behaelter.remove()
+        spracheSetzen(['de-DE', 'de'])
+
+        const zweiter = document.createElement('div')
+        document.body.appendChild(zweiter)
+        await act(async () => {
+            wurzel = createRoot(zweiter)
+            wurzel.render(
+                <HelmetProvider>
+                    <BrowserRouter>
+                        <LandingPage />
+                    </BrowserRouter>
+                </HelmetProvider>,
+            )
+        })
+        await act(async () => {
+            await vi.advanceTimersByTimeAsync(50)
+        })
+        behaelter = zweiter
+
+        await aufrufen('shortlist_tender', { id: 't-1' })
+        const tafel = behaelter.querySelector('#tafel').textContent
+        expect(tafel).toContain('Gemeinsame Vorauswahl')
+        expect(tafel).toMatch(/Bauarbeiten/)
+        expect(tafel).toMatch(/3 Lose/)
+        expect(tafel).not.toMatch(/Construction work/)
     })
 
     it('bleibt ohne unterstuetzenden Browser wirkungslos', async () => {

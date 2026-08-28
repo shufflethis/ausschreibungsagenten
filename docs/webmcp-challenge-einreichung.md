@@ -25,6 +25,7 @@ in Chrome 149+ mit `chrome://flags/#enable-webmcp-testing`.
 | Punkt | Stand |
 | --- | --- |
 | Werkzeuge registrieren sich in Chrome 149 | ✅ am 28.08. auf der Live-URL bestätigt |
+| Tafel für die Jury lesbar | ✅ sie folgt der Browsersprache — ein englischer Browser sieht eine englische Tafel samt Begründungen. Beim Video-Dreh also mit englischem Browserprofil aufnehmen |
 | Öffentliches Repo mit erkannter OSS-Lizenz | ✅ |
 | Abgrenzung Vorarbeit/Einreichungszeitraum | ✅ `WEBMCP.md`, dazu die Commit-Historie |
 | Beschreibungstext | ✅ unten, englisch |
@@ -109,6 +110,10 @@ prescribes.
 Tools returning notice text set `untrustedContentHint: true` — that text comes
 from 17 third-party procurement portals and must not be read as instructions.
 
+The board follows the browser language, German or English, reasons included.
+Only the board: it is the surface the two parties share, and both have to read
+it. The rest of the page stays German, because that is who it is for.
+
 35 tests cover the tools and the domain logic, including the one that matters:
 a human clicks **Go** in the DOM, and `list_shortlist` reads that decision back.
 
@@ -117,7 +122,8 @@ a human clicks **Go** in the DOM, and `list_shortlist` reads that decision back.
 ## Video-Skript
 
 Unter drei Minuten heißt: höchstens rund 420 gesprochene Wörter. Englisch, Ton
-Pflicht. Chrome 149 mit gesetztem Flag, Fenster aufgeräumt, Tafel vorher leeren.
+Pflicht. Chrome 149 mit gesetztem Flag, **englischem Browserprofil** (sonst
+rendert die Tafel deutsch), Fenster aufgeräumt, Tafel vorher leeren.
 
 **0:00–0:20 — Das Problem** *(Bild: Landingpage, Trefferliste)*
 

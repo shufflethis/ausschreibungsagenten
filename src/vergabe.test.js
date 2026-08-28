@@ -8,6 +8,7 @@ import {
     schwellenwertPruefung,
     tageBisFrist,
 } from './lib/vergabe'
+import { spracheErmitteln, STANDARDSPRACHE } from './lib/sprache'
 
 const JETZT = new Date('2026-08-28T12:00:00.000Z')
 
@@ -139,5 +140,63 @@ describe('Fit-Gruende', () => {
         expect(bilanz.dafuer).toBeGreaterThan(0)
         expect(bilanz.dagegen).toBeGreaterThan(0)
         expect(Object.keys(bilanz)).toEqual(['dafuer', 'dagegen', 'neutral'])
+    })
+})
+
+describe('Sprachwahl', () => {
+    const nav = (languages) => ({ languages })
+
+    it('nimmt die erste Sprache, zu der es etwas anzubieten gibt', () => {
+        expect(spracheErmitteln(nav(['de-DE', 'de', 'en']))).toBe('de')
+        expect(spracheErmitteln(nav(['en-GB', 'en']))).toBe('en')
+        // Franzoesisch vor Deutsch: Franzoesisch kennen wir nicht, Deutsch
+        // steht aber in der Liste und gewinnt vor der Vermutung.
+        expect(spracheErmitteln(nav(['fr-FR', 'de-DE']))).toBe('de')
+    })
+
+    it('raet Englisch, wenn weder Deutsch noch Englisch angeboten wird', () => {
+        expect(spracheErmitteln(nav(['fr-FR', 'es-ES']))).toBe('en')
+    })
+
+    // scripts/prerender.mjs rendert ohne navigator; dort darf nichts werfen.
+    it('faellt ohne navigator auf Deutsch zurueck', () => {
+        expect(spracheErmitteln(null)).toBe(STANDARDSPRACHE)
+        expect(spracheErmitteln({})).toBe('en')
+    })
+})
+
+describe('Zweisprachige Gruende', () => {
+    const grundZu = (gruende, kennung) => gruende.find((grund) => grund.kennung === kennung)
+
+    it('liefert dieselbe Bewertung in beiden Sprachen', () => {
+        const de = fitGruende(bekanntmachung({ lot_count: 3 }), { suchbegriff: 'fassade', jetzt: JETZT, sprache: 'de' })
+        const en = fitGruende(bekanntmachung({ lot_count: 3 }), { suchbegriff: 'fassade', jetzt: JETZT, sprache: 'en' })
+
+        expect(en.map((g) => g.kennung)).toEqual(de.map((g) => g.kennung))
+        expect(en.map((g) => g.bewertung)).toEqual(de.map((g) => g.bewertung))
+        expect(gruendeBilanz(en)).toEqual(gruendeBilanz(de))
+    })
+
+    it('uebersetzt Sachbegriffe, nicht nur die Rahmensaetze', () => {
+        const en = fitGruende(bekanntmachung({ lot_count: 3 }), { jetzt: JETZT, sprache: 'en' })
+        expect(grundZu(en, 'cpv').text).toMatch(/Construction work/)
+        expect(grundZu(en, 'wert').text).toMatch(/works contracts/)
+        expect(grundZu(en, 'zuschlag').text).toMatch(/lowest price alone/)
+        expect(grundZu(en, 'lose').text).toMatch(/3 lots/)
+    })
+
+    // „1 further CPV codes" stand kurz auf der Seite.
+    it('beugt den Singular richtig', () => {
+        const einer = fitGruende(bekanntmachung({ cpv_additional: ['45443000'] }), { jetzt: JETZT, sprache: 'en' })
+        expect(grundZu(einer, 'cpv').text).toMatch(/1 further CPV code\b/)
+        const mehrere = fitGruende(bekanntmachung(), { jetzt: JETZT, sprache: 'en' })
+        expect(grundZu(mehrere, 'cpv').text).toMatch(/2 further CPV codes/)
+
+        const einerDe = fitGruende(bekanntmachung({ cpv_additional: ['45443000'] }), { jetzt: JETZT, sprache: 'de' })
+        expect(grundZu(einerDe, 'cpv').text).toMatch(/1 weiterer CPV-Code\b/)
+    })
+
+    it('behaelt Deutsch, wenn keine Sprache angegeben ist', () => {
+        expect(grundZu(fitGruende(bekanntmachung(), { jetzt: JETZT }), 'cpv').text).toMatch(/Bauarbeiten/)
     })
 })
