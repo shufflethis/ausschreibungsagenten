@@ -1,6 +1,30 @@
-# Ausschreibungsagenten.de
+# Ausschreibungsagenten.de — Public Tender Search, Agent-Native (WebMCP + MCP)
 
-Marketing-Website und öffentliche Vorschau für den privaten AgentLeads-Tender-Index.
+[![WebMCP](https://img.shields.io/badge/WebMCP-11_in--page_tools-6f2fa9)](WEBMCP.md)
+[![MCP Server](https://img.shields.io/badge/MCP-Streamable_HTTP-blue)](https://github.com/shufflethis/ausschreibungsagenten-mcp)
+[![OpenAPI](https://img.shields.io/badge/REST-OpenAPI-green)](https://www.ausschreibungsagenten.de/openapi.json)
+[![Sources](https://img.shields.io/badge/Sources-17_connected-0aa)](https://www.ausschreibungsagenten.de/api/source-status)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+Website und öffentliche Vorschau von
+**[ausschreibungsagenten.de](https://www.ausschreibungsagenten.de)** — der
+Suche nach öffentlichen Ausschreibungen aus 17 Quellen in Deutschland, der EU
+und Großbritannien. Die internationale Schwestermarke ist
+**[tender-agents.com](https://www.tender-agents.com)**.
+
+Die Landingpage ist **agentenfähig gebaut**: sie stellt ihre eigenen Funktionen
+über WebMCP als Werkzeuge bereit, sodass ein Agent im Browser sie bedienen kann,
+statt die Oberfläche zu erraten — inklusive einer gemeinsamen Go/No-Go-Tafel,
+auf der Mensch und Agent dieselbe Vorauswahl bearbeiten.
+
+- **Live:** [www.ausschreibungsagenten.de](https://www.ausschreibungsagenten.de)
+- **WebMCP-Werkzeuge:** [WEBMCP.md](WEBMCP.md) — 11 Werkzeuge, `document.modelContext`
+- **MCP-Server (Backend, ohne Browser):** [ausschreibungsagenten-mcp](https://github.com/shufflethis/ausschreibungsagenten-mcp)
+- **Entwickler-Doku und kostenloser API-Key:** [/entwickler](https://www.ausschreibungsagenten.de/entwickler)
+- **Agent-Discovery:** [llms.txt](https://www.ausschreibungsagenten.de/llms.txt) · [agents.md](https://www.ausschreibungsagenten.de/agents.md) · [OpenAPI](https://www.ausschreibungsagenten.de/openapi.json) · [API-Katalog (RFC 9727)](https://www.ausschreibungsagenten.de/.well-known/api-catalog)
+
+> Die verlinkte Originalbekanntmachung ist immer maßgeblich. Kein Werkzeug gibt
+> ein Angebot ab, schickt ein Formular los oder spricht eine Empfehlung aus.
 
 ## WebMCP
 
@@ -159,3 +183,20 @@ Zwei Stellen dieser Website hängen an Entscheidungen, die im Backend-Repo dokum
   genügt nicht: es stoppt nur den Browser, nicht die Vercel Function und nicht das Backend.
 
 Preise werden auf der Website als Orientierung angezeigt. Ein Checkout wird erst nach vollständiger Stripe-Live-Konfiguration und Webhook-Abnahme wieder freigeschaltet.
+
+---
+
+## Kontakt
+
+- Website: [ausschreibungsagenten.de](https://www.ausschreibungsagenten.de) · [tender-agents.com](https://www.tender-agents.com)
+- E-Mail: [hi@ausschreibungsagenten.de](mailto:hi@ausschreibungsagenten.de)
+- YouTube: [@ausschreibungsagenten](https://www.youtube.com/@ausschreibungsagenten)
+- X: [@wuebbe](https://x.com/wuebbe)
+
+Betrieben von yawusa UG (haftungsbeschränkt), Berlin —
+[Impressum](https://www.ausschreibungsagenten.de/impressum) ·
+[Datenschutz](https://www.ausschreibungsagenten.de/datenschutz)
+
+**Lizenz:** MIT, siehe [LICENSE](LICENSE). Die Lizenz deckt den Inhalt dieses
+Repositorys. Für die Nutzung des Dienstes gelten die
+[Nutzungsbedingungen](https://www.ausschreibungsagenten.de/agb).
