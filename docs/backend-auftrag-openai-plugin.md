@@ -17,42 +17,17 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 > Du arbeitest im Backend, das den MCP-Server hinter
 > `api.ausschreibungsagenten.de` und `api.tender-agents.com` ausliefert.
 >
-> **Hintergrund:** Wir reichen die eingeschränkte Fläche `/mcp/open-data` als
-> Plugin im OpenAI-Verzeichnis ein — unter der internationalen Marke **Tender
-> Agents**, nicht unter Ausschreibungsagenten. Die Einreichung ist anonym, ohne
-> API-Key. Fünf Punkte stehen dem im Weg. Alle sind unten mit dem heute
-> beobachteten Ist-Zustand belegt; bitte jeden vor der Änderung selbst
-> nachstellen, statt mir zu glauben.
+> **Hintergrund:** Wir reichen die eingeschränkte Fläche
+> `https://api.ausschreibungsagenten.de/mcp/open-data` als Plugin im
+> OpenAI-Verzeichnis ein, unter der Marke **Ausschreibungsagenten**. Die
+> Einreichung ist anonym, ohne API-Key. Drei Punkte stehen dem im Weg. Alle
+> sind unten mit dem heute beobachteten Ist-Zustand belegt; bitte jeden vor der
+> Änderung selbst nachstellen, statt mir zu glauben.
 >
 > **Nicht anfassen:** die bezahlte Fläche `/mcp`. Sie funktioniert und bleibt
-> wie sie ist. Punkt 3 betrifft ausschließlich `/mcp/open-data`.
+> wie sie ist. Punkt 1 betrifft ausschließlich `/mcp/open-data`.
 >
-> ### 1. `/mcp/open-data` auf dem internationalen Host ausliefern
->
-> ```bash
-> curl -s -o /dev/null -w '%{http_code}\n' -X POST \
->   https://api.tender-agents.com/mcp/open-data -H 'Content-Type: application/json' -d '{}'
-> # heute: 404 (nginx). Auf api.ausschreibungsagenten.de: 200.
-> ```
->
-> Nur `/mcp` ist dort erreichbar. Die eingereichte Fläche muss unter beiden
-> Hosts identisch verfügbar sein — ohne sie gibt es nichts einzureichen.
->
-> ### 2. `serverInfo` je Host mit der richtigen Marke melden
->
-> ```bash
-> curl -s -X POST https://api.tender-agents.com/mcp \
->   -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
->   -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"p","version":"1"}}}'
-> # heute: {"name":"ausschreibungsagenten","title":"Ausschreibungsagenten Tender Search",...}
-> ```
->
-> MCP-Clients zeigen diesen `title` den Nutzern an. Auf dem internationalen
-> Host gehört dort **Tender Agents** hinein, sonst steht der deutsche Name
-> genau da, wo wir ihn loswerden wollten. Auf
-> `api.ausschreibungsagenten.de` bleibt der bisherige Titel.
->
-> ### 3. `fulltext_search` von `/mcp/open-data` entfernen
+> ### 1. `fulltext_search` von `/mcp/open-data` entfernen
 >
 > ```bash
 > curl -s -X POST https://api.ausschreibungsagenten.de/mcp/open-data \
@@ -81,7 +56,7 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 > oder Meldungen steckt: `grep -rn "agentleads\."` über die Meldungstexte. Die
 > Werkzeuge heißen nach außen `search_tenders`, `get_tender` und so weiter.
 >
-> ### 4. `countries` wirft bei falschem Argumenttyp einen nackten 500er
+> ### 2. `countries` wirft bei falschem Argumenttyp einen nackten 500er
 >
 > ```bash
 > curl -s -X POST https://api.ausschreibungsagenten.de/mcp/open-data \
@@ -96,7 +71,7 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 > auch die übrigen Werkzeuge auf denselben Fall abklopfen — ich habe nur
 > `countries` durchprobiert.
 >
-> ### 5. `get_tender` ohne `id` meldet irreführend „Tender not found"
+> ### 3. `get_tender` ohne `id` meldet irreführend „Tender not found"
 >
 > ```bash
 > curl -s -X POST https://api.ausschreibungsagenten.de/mcp/open-data \
@@ -127,18 +102,17 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 >
 > ### Abnahme
 >
-> Wenn alles sitzt, müssen diese vier Zeilen stimmen:
+> Wenn alles sitzt, müssen diese drei Zeilen stimmen:
 >
 > ```bash
+> A=https://api.ausschreibungsagenten.de/mcp/open-data
 > H='-H Content-Type:application/json -H Accept:application/json,text/event-stream'
-> # 1. Flaeche existiert international
-> curl -s -o /dev/null -w '%{http_code}\n' -X POST https://api.tender-agents.com/mcp/open-data $H -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'   # 200
-> # 2. Marke stimmt
-> curl -s -X POST https://api.tender-agents.com/mcp $H -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"p","version":"1"}}}' | grep -o '"title":"[^"]*"'   # Tender Agents
-> # 3. fuenf Werkzeuge, fulltext_search nicht dabei
-> curl -s -X POST https://api.tender-agents.com/mcp/open-data $H -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | grep -c fulltext_search   # 0
-> # 4. sauberer Fehler statt 500er
-> curl -s -X POST https://api.tender-agents.com/mcp/open-data $H -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"countries","arguments":{"min_count":"viele"}}}'   # JSON-RPC-Fehler
+> # 1. fuenf Werkzeuge, fulltext_search nicht mehr dabei
+> curl -s -X POST $A $H -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | grep -c fulltext_search   # 0
+> # 2. Aufruf des entfernten Werkzeugs: "Unknown tool", keine Tarifwerbung
+> curl -s -X POST $A $H -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"fulltext_search","arguments":{"query":"Fassade"}}}'
+> # 3. sauberer Fehler statt 500er
+> curl -s -X POST $A $H -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"countries","arguments":{"min_count":"viele"}}}'   # JSON-RPC-Fehler
 > ```
 >
 > Sag mir am Ende, was du geändert hast und was du nicht anfassen wolltest.
@@ -150,8 +124,12 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 Die fertige `chatgpt-app-submission.json` liegt in
 `shufflethis/ausschreibungsagenten-mcp` und führt **fünf** Werkzeuge. Solange
 der Server sechs ausliefert, widerspricht die Einreichung dem Server — und das
-ist die Art Mismatch, die einen Review kostet. Punkt 1 und 3 sind deshalb echte
-Tore, 2 ist der Grund für den ganzen Markenwechsel, 4 und 5 sind billig und
-fallen einem Reviewer auf, der die Eingaben abklopft.
+ist die Art Mismatch, die einen Review kostet. Punkt 1 ist deshalb das
+eigentliche Tor; 2 und 3 sind billig und fallen einem Reviewer auf, der die
+Eingaben abklopft.
+
+Zwei frühere Punkte sind entfallen, seit die Einreichung unter der deutschen
+Marke läuft: `/mcp/open-data` existiert auf `api.ausschreibungsagenten.de`
+bereits, und der Server meldet dort schon den richtigen Namen.
 
 Vollständiger Zusammenhang: [`openai-plugin-einreichung.md`](openai-plugin-einreichung.md).
