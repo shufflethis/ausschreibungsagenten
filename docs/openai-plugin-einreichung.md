@@ -286,6 +286,106 @@ und Ablehnungen kommen oft ohne konkrete Begründung. Häufigste konkrete
 Ablehnungsgründe in den Berichten: Business-Verifizierung und Bildmaterial —
 beides bei uns erledigt beziehungsweise nicht anwendbar.
 
+## So wird eingereicht
+
+Quelle: `developers.openai.com/plugins/deploy/submission`, gelesen am 28.08.2026.
+Eingereicht wird im **Plugin Submission Portal** der OpenAI Platform, nicht per
+E-Mail und nicht über das Verzeichnis.
+
+### Reihenfolge
+
+1. **Backend-Punkte erledigen** (siehe [`backend-auftrag-openai-plugin.md`](backend-auftrag-openai-plugin.md)).
+   Das Portal scannt den Server selbst („Scan Tools") und sieht `fulltext_search`.
+2. **Rolle prüfen.** Der Einreichende braucht in der Organisation die Berechtigung
+   **Apps Management = Write**. Organisationsinhaber haben sie automatisch,
+   alle anderen nicht. Einzustellen unter den Rollen-Einstellungen der Platform.
+3. **Entwickleridentität auswählen.** Die Verifizierung der yawusa UG ist erledigt;
+   im Formular muss sie im Feld **Developer Identity** ausgewählt werden. Wichtig:
+   aus **derselben Organisation** einreichen, in der verifiziert wurde — sonst
+   findet das Formular die Identität nicht.
+4. **Draft anlegen:** „Create plugin" → Typ **With MCP** (wir haben einen
+   MCP-Server, keine Skills, keine UI).
+5. **Domain-Verifizierung** — siehe unten, das ist der zweite Backend-Schritt.
+6. **Scan Tools** laufen lassen, entdeckte Werkzeuge und Metadaten prüfen.
+7. Formular füllen, Attestierungen bestätigen, **Submit for Review**.
+
+Nach der Freigabe wird **nicht automatisch veröffentlicht** — du entscheidest im
+Portal, wann das Plugin live geht.
+
+### Domain-Verifizierung
+
+Das Portal erzeugt einen Token, der unter dieser Adresse abrufbar sein muss:
+
+```
+https://api.ausschreibungsagenten.de/.well-known/openai-apps-challenge
+```
+
+Heute: 404. Die Regel lautet „MCP-Hostname oder ein **Parent**-Hostname".
+
+- `api.ausschreibungsagenten.de` — der Standardweg, **Backend**.
+- `ausschreibungsagenten.de` — wäre als Parent zulässig und liegt bei Vercel,
+  leitet aber vollständig auf `www` um. Ein Redirect statt des nackten Tokens
+  ist riskant, und Pfade werden laut Doku ignoriert.
+- `www.ausschreibungsagenten.de` — **scheidet aus**: `www` ist ein Geschwister
+  von `api`, kein Parent.
+
+Also: Backend. Der Endpunkt muss **nur den Token** zurückgeben — kein JSON,
+keine Liste, kein Redirect. Der Token existiert erst, wenn der Draft angelegt
+ist; das ist deshalb ein Zwischenschritt, kein Vorbereitungsschritt.
+
+### Felder, die die Datei nicht abdeckt
+
+Die `chatgpt-app-submission.json` füllt Listing, Annotationen und Testfälle
+vor. Diese Felder verlangt das Formular zusätzlich:
+
+**Kurzbeschreibung** (knapp halten):
+
+> Search current public tenders from Germany, the EU and the UK — with the
+> deadline, CPV code and buyer for every hit.
+
+**Starter-Prompts** — sollen realistische Arbeitsabläufe zeigen:
+
+> - „Find facade tenders in Germany that close in the next three weeks."
+> - „Which IT procurement notices are open in Austria right now, and what are the deadlines?"
+> - „Summarise this tender and tell me whether the award is on price alone."
+> - „Which procurement portals do you cover, and how current is the data?"
+
+**Release Notes** (Erstabgabe):
+
+> Initial submission. MCP-only plugin, no UI, no authentication. Read-only
+> search over public procurement notices from five sources with official
+> interfaces: TED (all 27 EU member states), service.bund.de and Datenservice
+> Öffentlicher Einkauf (German federal, above and below threshold), Find a
+> Tender and Contracts Finder (UK). Five tools, all read-only. No test
+> credentials needed — every tool works anonymously.
+
+**Verfügbarkeit (Länder):** Empfehlung **Deutschland, Österreich, Schweiz**.
+Die Richtlinie sagt: nur dort auswählen, wo *„publisher, product, support
+process, and legal terms are ready"*. AGB und Datenschutz sind deutsch, der
+Support ist deutschsprachig. Später erweitern ist möglich, umgekehrt sieht es
+schlecht aus.
+
+**CSP:** entfällt — die verlangt das Formular nur für Plugins mit UI.
+
+**Demo-Zugangsdaten:** entfallen, der Server ist anonym nutzbar. Genau das
+nennt die Doku als häufige Ablehnungsursache bei anderen.
+
+### Zwei Sätze aus der Doku, die uns betreffen
+
+> *„You cannot submit a plugin that references an existing, already-published
+> integration."*
+
+Betrifft uns nicht: Der Server steht zwar in der MCP-Registry und auf Smithery,
+ist aber keine veröffentlichte OpenAI-Integration. Eingereicht wird die
+Server-URL direkt.
+
+> *„Add output schemas when they help reviewers and models understand what the
+> tool returns."*
+
+Damit ist der `outputSchema`-Punkt aus der Skill-Prüfung nicht nur eine
+Empfehlung des Skills, sondern steht auch in der Einreichungsdoku. Weiterhin
+kein Blocker.
+
 ## Prüfbefehle
 
 ```bash

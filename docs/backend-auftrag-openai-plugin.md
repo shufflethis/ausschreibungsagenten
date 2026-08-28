@@ -20,7 +20,7 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 > **Hintergrund:** Wir reichen die eingeschränkte Fläche
 > `https://api.ausschreibungsagenten.de/mcp/open-data` als Plugin im
 > OpenAI-Verzeichnis ein, unter der Marke **Ausschreibungsagenten**. Die
-> Einreichung ist anonym, ohne API-Key. Drei Punkte stehen dem im Weg. Alle
+> Einreichung ist anonym, ohne API-Key. Vier Punkte stehen dem im Weg. Alle
 > sind unten mit dem heute beobachteten Ist-Zustand belegt; bitte jeden vor der
 > Änderung selbst nachstellen, statt mir zu glauben.
 >
@@ -84,6 +84,31 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 > benennen, damit ein Agent sich selbst korrigieren kann, statt eine falsche id
 > zu vermuten.
 >
+> ### 4. Domain-Verifizierung: Token unter /.well-known/openai-apps-challenge
+>
+> Kommt zeitlich nach den ersten dreien, weil der Token erst existiert, wenn der
+> Einreichungs-Draft im Portal angelegt ist. Bitte den Endpunkt jetzt schon
+> vorbereiten, damit er dann nur noch befüllt werden muss.
+>
+> ```bash
+> curl -s -o /dev/null -w '%{http_code}\n' \
+>   https://api.ausschreibungsagenten.de/.well-known/openai-apps-challenge
+> # heute: 404
+> ```
+>
+> Anforderungen aus `developers.openai.com/plugins/deploy/submission`:
+>
+> - Der Endpunkt gibt **nur den Token** zurück — kein JSON, keine Liste, kein
+>   Redirect, nichts drumherum.
+> - Er muss auf dem MCP-Hostnamen liegen oder auf einer Parent-Domain. Für uns
+>   heisst das `api.ausschreibungsagenten.de`. Die Website unter
+>   `www.ausschreibungsagenten.de` **scheidet aus** — `www` ist ein Geschwister
+>   von `api`, kein Parent. Die Apex-Domain `ausschreibungsagenten.de` waere
+>   zulaessig, leitet aber vollstaendig auf `www` um.
+>
+> Am einfachsten ist der Token als Umgebungsvariable, damit er ohne Deploy
+> gesetzt werden kann.
+>
 > ### Optional, kein Blocker
 >
 > Kein einziges Werkzeug deklariert `outputSchema`. Der Einreichungs-Skill von
@@ -102,7 +127,8 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 >
 > ### Abnahme
 >
-> Wenn alles sitzt, müssen diese drei Zeilen stimmen:
+> Wenn die Punkte 1 bis 3 sitzen, müssen diese drei Zeilen stimmen (Punkt 4
+> laesst sich erst pruefen, wenn der Token aus dem Portal vorliegt):
 >
 > ```bash
 > A=https://api.ausschreibungsagenten.de/mcp/open-data
