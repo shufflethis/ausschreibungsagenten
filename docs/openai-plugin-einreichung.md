@@ -70,7 +70,9 @@ Satz Werte — hier die Begründung, die in die Einreichung gehört:
 | `readOnlyHint` | `true` | Alle Werkzeuge lesen ausschließlich. Es wird nichts angelegt, geändert oder gelöscht; außerhalb der Unterhaltung ändert sich kein Zustand. |
 | `destructiveHint` | `false` | Folgt aus read-only: es gibt nichts, was zerstört werden könnte. |
 | `idempotentHint` | `true` | Dieselben Argumente liefern dieselbe Antwort. Ein wiederholter Aufruf hat keine zusätzliche Wirkung. Dass der Index zwischen zwei Aufrufen wächst, ändert daran nichts — die Wirkung des Aufrufs bleibt null. |
-| `openWorldHint` | `false` | **Der erklärungsbedürftige Wert.** Die Werkzeuge lesen aus unserem eigenen, geschlossenen Index. Während eines Werkzeugaufrufs wird kein fremdes System kontaktiert; das Abholen bei den Quellportalen läuft asynchron im Hintergrund und ist vom Aufruf entkoppelt. Es gibt keine offene, vom Aufrufer bestimmbare Menge externer Ziele — anders als bei einem Websuch-Werkzeug, das `true` wäre. |
+| `openWorldHint` | `false` | OpenAI definiert den Wert **enger als die allgemeine MCP-Spec**: `true` nur, wenn ein Werkzeug *„can change publicly visible internet state or external third-party systems, such as sending emails or messages, posting/publishing content"*. Keines unserer Werkzeuge schreibt irgendwo hin — sie lesen aus unserem eigenen Index. Damit ist `false` nach ihrer eigenen Definition eindeutig richtig, nicht nur vertretbar. |
+
+Diese Begründungen stehen wortgleich in `chatgpt-app-submission.json`.
 
 ## Anforderungen gegen unseren Stand
 
@@ -91,6 +93,42 @@ Satz Werte — hier die Begründung, die in die Einreichung gehört:
 | Screenshots | ✅ **entfallen** — die Richtlinie sagt: *„Don't submit screenshots for plugins without UI."* Unser Server hat keine UI-Komponenten |
 | Keine Werbung, keine Abo-Bewerbung | ⚠️ siehe Blocker — die Fehlermeldung von `fulltext_search` bewirbt Tarife |
 | Fehler mit klarer Meldung abgefangen | ⚠️ zwei Lücken, siehe „Fehlerbehandlung" |
+
+## Die Formulardatei
+
+Das Formular verlangt eine `chatgpt-app-submission.json`, erzeugt vom Skill
+`chatgpt-app-submission` des OpenAI-Developers-Plugins. Der Skill liegt
+öffentlich: `github.com/openai/plugins`. Die Datei wurde nach seinem
+Output-Contract gebaut und liegt im MCP-Repo:
+
+- `chatgpt-app-submission.json` — fünf Werkzeuge mit allen drei Hints und je
+  einer Begründung, fünf positive und drei negative Testfälle
+- `brand/tender-agents-icon-512.png` — quadratisch, 512×512, ohne Wortmarke
+
+**Die Datei führt fünf Werkzeuge, der Server liefert sechs.** Sie passt erst,
+wenn `fulltext_search` von der Fläche genommen ist. Vorher nicht hochladen.
+
+### Befunde aus der Prüfung, die der Skill verlangt
+
+1. **Kein Werkzeug deklariert `outputSchema`.** Kein Blocker, aber der Skill
+   verlangt den Hinweis: *„Add an outputSchema so models can use this tool's
+   results more reliably."* Betrifft alle sechs. Lohnt sich, weil die Modelle
+   die Ergebnisse dann verlässlicher weiterverarbeiten.
+2. **`summarize_tender` trägt `readOnlyHint: true` nur, weil die Fläche anonym
+   ist.** Anonyme Aufrufer bekommen ausschließlich gecachte Kurzfassungen. Ließe
+   sich dort eine neue erzeugen, wäre das ein Schreibvorgang plus LLM-Lauf, und
+   der Wert wäre falsch. Vor dem Absenden gegen das Backend gegenprüfen.
+3. **Keine sensiblen Eingabefelder.** Kein Werkzeug fragt nach Zugangsdaten,
+   Ausweisnummern, Gesundheits- oder Zahlungsdaten. Kein Standortfeld.
+4. **Werkzeugnamen decken sich mit dem Verhalten** — mit der bekannten Ausnahme
+   `fulltext_search`, dessen Beschreibung verschweigt, dass es anonym scheitert.
+
+### Icon
+
+`web-app-manifest-512x512.png` von tender-agents.com wäre **ungeeignet**: es
+trägt den Schriftzug „AusschreibungsAgenten — WIR FINDEN. DU GEWINNST." und
+hätte den deutschen Namen ins weltweite Verzeichnis getragen. Verwendet wird
+stattdessen die wortmarkenfreie A-Marke auf dem Markenhintergrund.
 
 ## Der offene Blocker: `fulltext_search`
 
