@@ -106,27 +106,54 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 >   von `api`, kein Parent. Die Apex-Domain `ausschreibungsagenten.de` waere
 >   zulaessig, leitet aber vollstaendig auf `www` um.
 >
-> **Der schnellste Weg führt an der Anwendung vorbei.** `api.ausschreibungsagenten.de`
-> läuft auf nginx — der Token braucht also keinen Anwendungscode und kein
-> Deployment, ein `location`-Block genügt:
+> **Die Anwendung bedient `/.well-known/` bereits.** Nachgemessen am 28.08.:
+> `/.well-known/openai-apps-challenge` antwortet mit `{"detail":"Not Found"}`
+> und `Content-Type: application/json` — das ist die FastAPI-404, nicht die von
+> nginx. Ein wirklich unbekannter Pfad liefert dagegen nginx' HTML-Seite. nginx
+> reicht `/.well-known/` also durch.
+>
+> Vier Routen liegen dort schon und antworten mit 200:
+> `mcp/server-card.json`, `agent-card.json`, `oauth-authorization-server`,
+> `oauth-protected-resource`. Die neue gehört daneben:
+>
+> ```python
+> @app.get("/.well-known/openai-apps-challenge", include_in_schema=False)
+> def openai_apps_challenge() -> Response:
+>     token = os.environ.get("OPENAI_APPS_CHALLENGE", "")
+>     if not token:
+>         raise HTTPException(status_code=404)
+>     return Response(content=token, media_type="text/plain")
+> ```
+>
+> **Die Falle:** ein schlichtes `return token` aus einer FastAPI-Route liefert
+> JSON — also `"o-Qss…"` **mit Anführungszeichen**. Die Doku verlangt
+> ausschließlich den Token. Deshalb `Response(..., media_type="text/plain")`.
+> Auch kein `\n` anhängen.
+>
+> Der Token kommt aus dem Einreichungs-Draft und wird separat übergeben; als
+> Umgebungsvariable bleibt er ohne Deploy austauschbar.
+>
+> **Alternative ohne Anwendungsänderung**, falls nginx-Zugriff schneller ist:
 >
 > ```nginx
 > location = /.well-known/openai-apps-challenge {
 >     default_type text/plain;
->     return 200 "HIER_DEN_TOKEN_AUS_DEM_PORTAL";
+>     return 200 "HIER_DEN_TOKEN";
 > }
 > ```
 >
-> `return 200 "..."` hängt keinen Zeilenumbruch an — genau das ist gewollt, die
-> Doku verlangt ausschließlich den Token. Der Block muss **vor** einer
-> allgemeinen `location /`-Regel greifen; `location =` ist eine exakte
-> Übereinstimmung und gewinnt in nginx ohnehin gegen Präfix-Regeln.
+> `location =` ist exakte Übereinstimmung und gewinnt gegen die Präfix-Regel,
+> die `/.well-known/` sonst durchreicht. `return 200 "..."` hängt keinen
+> Zeilenumbruch an.
 >
-> Wer es lieber in der Anwendung hat: als Umgebungsvariable bauen, damit der
-> Token ohne Deploy austauschbar bleibt.
+> **Prüfen, bevor im Portal „Verify" geklickt wird:**
 >
-> **Den Token selbst nicht in ein öffentliches Repository schreiben.** Er
-> kommt aus dem Einreichungs-Draft und wird separat übergeben.
+> ```bash
+> curl -s https://api.ausschreibungsagenten.de/.well-known/openai-apps-challenge | xxd | tail -2
+> ```
+>
+> Die Ausgabe muss mit dem letzten Zeichen des Tokens enden — kein `0a`
+> dahinter, keine `22` (Anführungszeichen) davor oder danach.
 >
 > ### Optional, kein Blocker
 >
