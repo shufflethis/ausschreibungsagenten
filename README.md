@@ -192,6 +192,7 @@ Preise werden auf der Website als Orientierung angezeigt. Ein Checkout wird erst
 - E-Mail: [hi@ausschreibungsagenten.de](mailto:hi@ausschreibungsagenten.de)
 - YouTube: [@ausschreibungsagenten](https://www.youtube.com/@ausschreibungsagenten)
 - X: [@wuebbe](https://x.com/wuebbe)
+- LinkedIn: [wuebbe](https://www.linkedin.com/in/wuebbe/)
 
 Betrieben von yawusa UG (haftungsbeschränkt), Berlin —
 [Impressum](https://www.ausschreibungsagenten.de/impressum) ·
