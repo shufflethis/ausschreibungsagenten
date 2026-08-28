@@ -1,7 +1,14 @@
 # OpenAI-Plugin: Einreichungsmappe
 
-Stand: 28.08.2026. Einreichbar bis auf einen Punkt — `fulltext_search` gehört
-von der eingereichten Fläche genommen, siehe „Der offene Blocker".
+Stand: 28.08.2026. **Eingereicht wird unter der internationalen Marke Tender
+Agents**, nicht unter Ausschreibungsagenten — das Verzeichnis ist weltweit, und
+„Ausschreibungsagenten Tender Search" ist für englischsprachige Nutzer kein
+lesbarer Name.
+
+Diese Entscheidung kostet drei Backend-Änderungen, siehe „Offen". Ohne sie ist
+die Einreichung unter der neuen Marke nicht möglich: `api.tender-agents.com`
+liefert die eingereichte Fläche heute nicht aus und meldet sich mit dem
+deutschen Namen.
 
 Quelle der Anforderungen: `developers.openai.com/plugins/app-guidelines`,
 gelesen am 28.08.2026.
@@ -15,13 +22,23 @@ gelesen am 28.08.2026.
 
 | Feld | Wert |
 | --- | --- |
-| Name | Ausschreibungsagenten Tender Search |
-| MCP-Endpunkt | `https://api.ausschreibungsagenten.de/mcp/open-data` |
+| Name | **Tender Agents** |
+| MCP-Endpunkt | `https://api.tender-agents.com/mcp/open-data` — **existiert noch nicht, siehe „Offen"** |
 | Transport | Streamable HTTP |
 | Auth | keine erforderlich (anonym, 60 Anfragen/Stunde) |
-| Datenschutz | https://www.ausschreibungsagenten.de/datenschutz |
-| Support | hi@ausschreibungsagenten.de |
-| Anbieter | Yawusa UG (haftungsbeschränkt), Schliemannstraße 23, 10437 Berlin |
+| Datenschutz | https://www.tender-agents.com/privacy |
+| Nutzungsbedingungen | https://www.tender-agents.com/terms |
+| Support | hi@tender-agents.com |
+| Anbieter | yawusa UG (haftungsbeschränkt), Schliemannstraße 23, 10437 Berlin |
+
+Die Betreiberin ist bei beiden Marken dieselbe — laut Imprint von
+tender-agents.com die yawusa UG. Die Nennung einer „Agentifizierung UG" im
+`TENDER-AGENTS-PLAN.md` ist überholt.
+
+Zum Namen: die Richtlinie warnt vor *„overly generic names, especially
+single-word dictionary terms that aren't explicitly tied to your brand"*.
+„Tender Agents" ist zweiteilig und deckt sich mit Domain und
+Organization-Eintrag — das trägt.
 
 **Wichtig: eingereicht wird `/mcp/open-data`, nicht `/mcp`.** Die eingeschränkte
 Fläche liefert nur aus Quellen mit einer vom Betreiber dafür bereitgestellten
@@ -180,13 +197,26 @@ oder bewerben. Es ist ein Entdeckungs- und Lead-Kanal.
 
 ## Offen
 
-Alles drei im privaten AgentLeads-Backend:
+Alles im privaten AgentLeads-Backend. Am 28.08. gegen die Live-Hosts geprüft.
 
-1. **`fulltext_search`** von `/mcp/open-data` entfernen. Der eigentliche
-   Blocker.
-2. **`countries`** darf bei falschem Argumenttyp keinen nackten
+**Aus der Markenentscheidung:**
+
+1. **`/mcp/open-data` auf `api.tender-agents.com` ausliefern.** Heute
+   antwortet der Host dort mit einem nginx-404; nur `/mcp` ist erreichbar.
+   Ohne diesen Endpunkt gibt es nichts einzureichen.
+2. **`serverInfo` je Host brandgerecht melden.** `api.tender-agents.com/mcp`
+   antwortet heute mit `name: "ausschreibungsagenten"` und
+   `title: "Ausschreibungsagenten Tender Search"`. MCP-Clients zeigen diesen
+   Titel den Nutzern an — der deutsche Name stünde also genau dort, wo wir ihn
+   loswerden wollten. Auf dem internationalen Host gehört „Tender Agents"
+   hinein.
+
+**Unabhängig von der Marke:**
+
+3. **`fulltext_search`** von `/mcp/open-data` entfernen. Der Ablehnungsgrund.
+4. **`countries`** darf bei falschem Argumenttyp keinen nackten
    `Internal Server Error` liefern.
-3. **`get_tender`** ohne `id` soll das fehlende Argument benennen, nicht
+5. **`get_tender`** ohne `id` soll das fehlende Argument benennen, nicht
    `Tender not found` melden.
 
 Dazu, unabhängig von der Einreichung: die **rechtliche Einordnung** der zwölf
@@ -202,19 +232,32 @@ beides bei uns erledigt beziehungsweise nicht anwendbar.
 
 ## Prüfbefehle
 
+Nach dem Umzug auf die internationale Marke gegen `api.tender-agents.com`
+laufen zu lassen. Bis Punkt 1 erledigt ist, antwortet der Host dort mit 404 —
+das ist derzeit der erwartete Befund.
+
 ```bash
-# Werkzeugliste der eingereichten Fläche
-curl -sX POST https://api.ausschreibungsagenten.de/mcp/open-data \
+# 1. Gibt es die eingereichte Flaeche ueberhaupt? (heute: 404)
+curl -sX POST https://api.tender-agents.com/mcp/open-data \
   -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 
-# Nur die fünf offiziellen Quellen
-curl -sX POST https://api.ausschreibungsagenten.de/mcp/open-data \
+# 2. Meldet sich der Server unter der richtigen Marke?
+#    Erwartet nach dem Fix: title "Tender Agents", nicht "Ausschreibungsagenten ..."
+curl -sX POST https://api.tender-agents.com/mcp \
+  -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"p","version":"1"}}}'
+
+# 3. Nur die fuenf offiziellen Quellen
+curl -sX POST https://api.tender-agents.com/mcp/open-data \
   -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"source_status","arguments":{}}}'
 
-# Der Blocker: muss nach dem Fix "unknown tool" liefern, nicht die Tarifwerbung
-curl -sX POST https://api.ausschreibungsagenten.de/mcp/open-data \
+# 4. Der Blocker: muss nach dem Fix "unknown tool" liefern, nicht die Tarifwerbung
+curl -sX POST https://api.tender-agents.com/mcp/open-data \
   -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
-  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"fulltext_search","arguments":{"query":"Fassade"}}}'
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"fulltext_search","arguments":{"query":"facade"}}}'
 ```
+
+Die deutsche Fläche `api.ausschreibungsagenten.de/mcp/open-data` bleibt
+unverändert bestehen und funktioniert; sie ist nur nicht mehr die eingereichte.
