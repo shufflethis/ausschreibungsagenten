@@ -2,6 +2,14 @@
 
 Marketing-Website und öffentliche Vorschau für den privaten AgentLeads-Tender-Index.
 
+## WebMCP
+
+Die Landingpage stellt ihre Funktionen über `document.modelContext` als Werkzeuge für Agenten im Browser bereit — Suche, Trefferdetails, Quellenstatus und eine gemeinsame Go/No-Go-Tafel, auf der Mensch und Agent dieselbe Vorauswahl bearbeiten. Kein Werkzeug schickt ein Formular ab, keines gibt eine Empfehlung ab.
+
+Das ist etwas anderes als der MCP-Server unter `/mcp`: dort ruft ein Agent das Backend ohne Browser auf, hier ändert jeder Aufruf sichtbar den Zustand der geöffneten Seite.
+
+Vollständige Beschreibung, Werkzeugliste und Testanleitung: [WEBMCP.md](WEBMCP.md).
+
 ## Architektur
 
 Dieses Repository enthält **nicht** den Tender-Scraper und nicht die AgentLeads-Datenbank. Es enthält:

@@ -4,6 +4,9 @@ import Seo from '../components/Seo'
 import Icon from '../components/Icon'
 import VideoAbschnitt from '../components/VideoAbschnitt'
 import { VIDEO_BESCHREIBUNG, VIDEO_TITEL, VIDEO_TRANSKRIPT } from '../data/videoTranskript'
+import { stelleWerkzeugeBereit, warteAuf, werkzeugAntwort, werkzeugFehler } from '../lib/webmcp'
+import { eintragAnlegen, MERKLISTE_GRENZE, merklisteLesen, merklisteSchreiben } from '../lib/merkliste'
+import { artAusCpv, EU_SCHWELLENWERTE, fitGruende, gruendeBilanz, schwellenwertPruefung } from '../lib/vergabe'
 
 const TOOLS = [
     { name: 'DTVP', url: 'https://www.dtvp.de', price: '€49/Mon. Professional', ai: false, portals: 'DTVP', focus: 'Offizielles Portal', gaeb: false, alerts: true, free: true },
@@ -74,6 +77,12 @@ export default function LandingPage() {
     const [formStatus, setFormStatus] = useState(null)
     const [sending, setSending] = useState(false)
     const [tenderQuery, setTenderQuery] = useState('marketing')
+    // Land, Mindest-Score und Trefferzahl haben bewusst kein Bedienelement:
+    // sie sind die Stellschrauben, die das WebMCP-Werkzeug `search_tenders`
+    // setzt. Fuer Menschen bleibt die Suche ein einziges Eingabefeld.
+    const [tenderLand, setTenderLand] = useState('DEU')
+    const [tenderMindestScore, setTenderMindestScore] = useState(50)
+    const [tenderAnzahl, setTenderAnzahl] = useState(6)
     // Der Erstaufruf soll nicht entprellt werden, jede weitere Eingabe schon.
     const ersterTenderLauf = useRef(true)
     const [tenders, setTenders] = useState([])
@@ -94,6 +103,10 @@ export default function LandingPage() {
     const [profileSending, setProfileSending] = useState(false)
     const [profileResult, setProfileResult] = useState(null)
     const [selectedTender, setSelectedTender] = useState(null)
+    // Die gemeinsame Go/No-Go-Tafel. Menschen legen Treffer per Klick
+    // darauf, Agenten ueber die WebMCP-Werkzeuge - beide arbeiten auf
+    // derselben Liste, und beide sehen, was die andere Seite getan hat.
+    const [merkliste, setMerkliste] = useState([])
 
     const indexedTotal = sourceStatus.reduce((sum, source) => sum + (Number(source.stored) || 0), 0)
     const latestSuccessAt = sourceStatus.reduce(
@@ -133,10 +146,10 @@ export default function LandingPage() {
             setTendersError(null)
             try {
                 const params = new URLSearchParams({
-                    country: 'DEU',
+                    country: tenderLand,
                     search: tenderQuery,
-                    min_score: '50',
-                    limit: '6',
+                    min_score: String(tenderMindestScore),
+                    limit: String(tenderAnzahl),
                 })
                 // Gecachte KI-Kurzfassung je Treffer (Backend labelt sie, das
                 // Original bleibt massgeblich). Ausgelassen wird nur der
@@ -187,7 +200,7 @@ export default function LandingPage() {
             clearTimeout(timer)
             controller.abort()
         }
-    }, [tenderQuery])
+    }, [tenderQuery, tenderLand, tenderMindestScore, tenderAnzahl])
 
     useEffect(() => {
         const controller = new AbortController()
@@ -196,6 +209,532 @@ export default function LandingPage() {
             .then((data) => setSourceStatus(Array.isArray(data) ? data : []))
             .catch(() => {})
         return () => controller.abort()
+    }, [])
+
+    useEffect(() => {
+        const gespeichert = merklisteLesen()
+        if (gespeichert.length === 0) return
+        setMerkliste(gespeichert.map((eintrag) => ({ ...eintrag, gruende: fitGruende(eintrag.tender, {}) })))
+    }, [])
+
+    // Geschrieben wird in der Aenderung selbst statt in einem Effekt auf
+    // `merkliste`. Ein Effekt liefe beim ersten Rendern mit der noch
+    // leeren Liste und ueberschriebe das Gespeicherte, bevor es geladen
+    // ist. Der Seiteneffekt im Updater laeuft unter StrictMode zweimal -
+    // zweimal denselben Wert zu schreiben ist folgenlos.
+    const merklisteAendern = (aenderung) => {
+        setMerkliste((bisher) => {
+            const neu = aenderung(bisher)
+            merklisteSchreiben(neu)
+            return neu
+        })
+    }
+
+    // Ein Treffer landet mit seinen Gruenden auf der Tafel. Schon
+    // vorhandene Eintraege werden aktualisiert statt verdoppelt - sonst
+    // haette eine zweite Agentenrunde die Liste verdoppelt.
+    const merklisteAufnehmen = (tender, { notiz, suchbegriff } = {}) => {
+        const gruende = fitGruende(tender, { suchbegriff })
+        merklisteAendern((bisher) => {
+            const vorhanden = bisher.find((eintrag) => eintrag.id === String(tender.id))
+            if (vorhanden) {
+                return bisher.map((eintrag) =>
+                    eintrag.id === vorhanden.id
+                        ? { ...eintrag, tender, gruende, notiz: notiz ?? eintrag.notiz }
+                        : eintrag,
+                )
+            }
+            if (bisher.length >= MERKLISTE_GRENZE) return bisher
+            return [...bisher, { ...eintragAnlegen(tender, { notiz: notiz ?? '' }), gruende }]
+        })
+        return gruende
+    }
+
+    const merklisteLeeren = () => merklisteAendern(() => [])
+
+    const aufTafel = (id) => merkliste.some((eintrag) => eintrag.id === String(id))
+
+    const merklisteEntfernen = (id) =>
+        merklisteAendern((bisher) => bisher.filter((eintrag) => eintrag.id !== String(id)))
+
+    const entscheidungSetzen = (id, entscheidung, begruendung) =>
+        merklisteAendern((bisher) =>
+            bisher.map((eintrag) =>
+                eintrag.id === String(id)
+                    ? { ...eintrag, entscheidung, notiz: begruendung ?? eintrag.notiz }
+                    : eintrag,
+            ),
+        )
+
+    // ===== WebMCP =====
+    //
+    // Werkzeuge fuer Agenten, die *diese geoeffnete Seite* bedienen. Der
+    // MCP-Server unter /mcp bleibt davon unberuehrt: dort ruft ein Agent
+    // das Backend ohne Browser auf, hier aendert jeder Aufruf sichtbar den
+    // Zustand der Seite. Genau das ist der Zweck - der Mensch davor sieht,
+    // was der Agent tut, und der Agent muss die Karten nicht aus dem DOM
+    // zusammenkratzen.
+    //
+    // Ohne unterstuetzenden Browser passiert hier nichts (siehe
+    // src/lib/webmcp.js). Heute ist das jeder Besucher ausser Chrome 149+
+    // im Origin Trial.
+    const zustand = useRef({})
+    useEffect(() => {
+        // Registriert wird einmal beim Mounten, aufgerufen wird spaeter.
+        // Die Werkzeuge lesen den Zustand deshalb ueber diese Referenz und
+        // nicht aus ihrer Closure - sonst antworteten sie mit der
+        // Trefferliste von vor dem ersten Tastendruck.
+        zustand.current = {
+            tenders,
+            tendersLoading,
+            tendersError,
+            tenderQuery,
+            tenderLand,
+            tenderMindestScore,
+            tenderAnzahl,
+            sourceStatus,
+            merkliste,
+            merklisteAufnehmen,
+            merklisteEntfernen,
+            entscheidungSetzen,
+        }
+    })
+
+    useEffect(() => {
+        const zumAnker = (id) => {
+            if (typeof document === 'undefined') return
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+
+        const alsTreffer = (liste) =>
+            (Array.isArray(liste) ? liste : []).map((tender) => ({
+                id: tender.id,
+                title: tender.title,
+                buyer: tender.buyer_name || null,
+                deadline: tender.deadline_at || null,
+                estimated_value_eur: tender.estimated_value_eur ?? null,
+                relevance_score: tender.relevance_score ?? null,
+                source: tender.source,
+                source_url: tender.source_url,
+                summary: tender.summary?.summary || null,
+            }))
+
+        // Ein Agent kennt ids aus der Trefferliste *und* von der Tafel.
+        // Beide Orte zu durchsuchen erspart ihm die Regel, welche id woher
+        // stammt.
+        const tenderFinden = (id) => {
+            const jetzt = zustand.current
+            const ausTreffern = (Array.isArray(jetzt.tenders) ? jetzt.tenders : []).find(
+                (tender) => String(tender.id) === String(id),
+            )
+            if (ausTreffern) return ausTreffern
+            return (jetzt.merkliste ?? []).find((eintrag) => eintrag.id === String(id))?.tender ?? null
+        }
+
+        const alsGruende = (gruende) =>
+            (gruende ?? []).map((grund) => ({ key: grund.kennung, weight: grund.bewertung, text: grund.text }))
+
+        const alsTafel = (liste) =>
+            (liste ?? []).map((eintrag) => ({
+                id: eintrag.id,
+                title: eintrag.tender?.title ?? null,
+                decision: eintrag.entscheidung ?? 'open',
+                note: eintrag.notiz || null,
+                source_url: eintrag.tender?.source_url ?? null,
+                balance: gruendeBilanz(eintrag.gruende),
+                reasons: alsGruende(eintrag.gruende),
+            }))
+
+        // Antwortet erst, wenn die Tafel den Stand auch zeigt.
+        const tafelAbwarten = (istFertig) => warteAuf(istFertig, { grenzeMs: 3000 })
+
+        const trefferAntwort = (liste, begriff, land) => {
+            const treffer = alsTreffer(liste)
+            const text = treffer.length === 0
+                ? `No preview results for "${begriff}" in ${land}. Try a different keyword or a lower min_score; the anonymous preview only shows part of the index.`
+                : `${treffer.length} tender(s) for "${begriff}" in ${land} are now displayed on the page. The linked original notice always prevails over these summaries.`
+            return werkzeugAntwort(text, { query: begriff, country: land, count: treffer.length, tenders: treffer })
+        }
+
+        const werkzeuge = [
+            {
+                name: 'search_tenders',
+                title: 'Ausschreibungen suchen',
+                annotations: { readOnlyHint: true, untrustedContentHint: true },
+                description:
+                    'Search current public tender notices and show the results on this page. Filters by keyword, ISO alpha-3 buyer country and minimum relevance score.',
+                inputSchema: {
+                    type: 'object',
+                    properties: {
+                        search: { type: 'string', description: 'Keyword or trade, for example "Fassade" or "Webdesign"' },
+                        country: { type: 'string', description: 'ISO alpha-3 buyer country, for example DEU, AUT or GBR' },
+                        min_score: { type: 'number', description: 'Minimum relevance score from 0 to 100' },
+                        limit: { type: 'integer', description: 'Number of results to display, 1 to 20' },
+                    },
+                    required: ['search'],
+                    additionalProperties: false,
+                },
+                execute: async ({ search, country, min_score: minScore, limit } = {}) => {
+                    const jetzt = zustand.current
+                    const begriff = typeof search === 'string' ? search.trim() : jetzt.tenderQuery
+                    const land = typeof country === 'string' && country.trim()
+                        ? country.trim().toUpperCase()
+                        : jetzt.tenderLand
+                    if (!/^[A-Z]{3}$/.test(land)) {
+                        return werkzeugFehler(`"${country}" is not an ISO alpha-3 country code. Expected for example DEU, AUT or GBR.`)
+                    }
+                    const score = minScore === undefined ? jetzt.tenderMindestScore : Number(minScore)
+                    if (!Number.isFinite(score) || score < 0 || score > 100) {
+                        return werkzeugFehler('min_score must be a number between 0 and 100.')
+                    }
+                    const anzahl = limit === undefined ? jetzt.tenderAnzahl : Number(limit)
+                    if (!Number.isInteger(anzahl) || anzahl < 1 || anzahl > 20) {
+                        return werkzeugFehler('limit must be a whole number between 1 and 20.')
+                    }
+
+                    const unveraendert =
+                        begriff === jetzt.tenderQuery &&
+                        land === jetzt.tenderLand &&
+                        score === jetzt.tenderMindestScore &&
+                        anzahl === jetzt.tenderAnzahl
+                    if (unveraendert && !jetzt.tendersLoading) {
+                        return trefferAntwort(jetzt.tenders, begriff, land)
+                    }
+
+                    // Der Ladezustand wird schon hier gesetzt und nicht erst
+                    // im entprellten Lade-Effekt: sonst haelt warteAuf() die
+                    // noch unveraenderte Liste faelschlich fuer das Ergebnis.
+                    setTendersLoading(true)
+                    setTenderQuery(begriff)
+                    setTenderLand(land)
+                    setTenderMindestScore(score)
+                    setTenderAnzahl(anzahl)
+                    zumAnker('suche')
+
+                    const fertig = await warteAuf(() => {
+                        const spaeter = zustand.current
+                        return (
+                            !spaeter.tendersLoading &&
+                            spaeter.tenderQuery === begriff &&
+                            spaeter.tenderLand === land &&
+                            spaeter.tenderMindestScore === score &&
+                            spaeter.tenderAnzahl === anzahl
+                        )
+                    })
+                    if (!fertig) {
+                        return werkzeugFehler('The tender search did not respond in time. Try again in a few seconds.')
+                    }
+                    const danach = zustand.current
+                    if (danach.tendersError) {
+                        return werkzeugFehler('The tender search failed. Try again in a few seconds.')
+                    }
+                    return trefferAntwort(danach.tenders, begriff, land)
+                },
+            },
+            {
+                name: 'list_visible_tenders',
+                title: 'Angezeigte Treffer lesen',
+                annotations: { readOnlyHint: true, untrustedContentHint: true },
+                description: 'Return the tenders currently displayed on this page, without changing the search.',
+                inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+                execute: () => {
+                    const jetzt = zustand.current
+                    if (jetzt.tendersLoading) {
+                        return werkzeugFehler('The result list is still loading. Try again in a few seconds.')
+                    }
+                    return trefferAntwort(jetzt.tenders, jetzt.tenderQuery, jetzt.tenderLand)
+                },
+            },
+            {
+                name: 'open_tender',
+                title: 'Ausschreibung oeffnen',
+                annotations: { readOnlyHint: true, untrustedContentHint: true },
+                description:
+                    'Open one of the tenders currently displayed and show its details on the page, including the link to the original notice.',
+                inputSchema: {
+                    type: 'object',
+                    properties: { id: { type: 'string', description: 'Tender id from search_tenders or list_visible_tenders' } },
+                    required: ['id'],
+                    additionalProperties: false,
+                },
+                execute: ({ id } = {}) => {
+                    const liste = Array.isArray(zustand.current.tenders) ? zustand.current.tenders : []
+                    if (liste.length === 0) {
+                        return werkzeugFehler('No tenders are displayed right now. Call search_tenders first.')
+                    }
+                    const treffer = liste.find((tender) => String(tender.id) === String(id))
+                    if (!treffer) {
+                        return werkzeugFehler(
+                            `No displayed tender has the id "${id}". Available ids: ${liste.map((tender) => tender.id).join(', ')}.`,
+                        )
+                    }
+                    setSelectedTender(treffer)
+                    return werkzeugAntwort(
+                        `"${treffer.title}" is now open on the page. The linked original notice prevails over this summary.`,
+                        alsTreffer([treffer])[0],
+                    )
+                },
+            },
+            {
+                name: 'source_status',
+                title: 'Quellenstatus',
+                annotations: { readOnlyHint: true },
+                description:
+                    'List the connected procurement sources with implementation status, last successful poll and stored notice count.',
+                inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+                execute: () => {
+                    const quellen = Array.isArray(zustand.current.sourceStatus) ? zustand.current.sourceStatus : []
+                    if (quellen.length === 0) {
+                        return werkzeugFehler('The source status has not loaded yet. Try again in a few seconds.')
+                    }
+                    const gespeichert = quellen.reduce((summe, quelle) => summe + (Number(quelle.stored) || 0), 0)
+                    return werkzeugAntwort(
+                        `${quellen.length} connected sources holding ${gespeichert} stored notices in total.`,
+                        { total_stored: gespeichert, sources: quellen },
+                    )
+                },
+            },
+            {
+                name: 'prefill_pilot_profile',
+                title: 'Pilotanfrage vorausfuellen',
+                annotations: { readOnlyHint: false },
+                description:
+                    'Prefill the pilot request form on this page with company details. The form is only filled in, never submitted: the request sends an email to a real team, so the user has to review it and press the button themselves.',
+                inputSchema: {
+                    type: 'object',
+                    properties: {
+                        company: { type: 'string', description: 'Company name' },
+                        email: { type: 'string', description: 'Business email address' },
+                        industry: { type: 'string', description: 'Trade or industry, for example "Fassadenbau"' },
+                        region: { type: 'string', description: 'Region or service area' },
+                        services: { type: 'string', description: 'Services offered, free text' },
+                        budget: { type: 'string', description: 'Typical order value' },
+                        frequency: { type: 'string', description: 'Desired digest frequency' },
+                    },
+                    additionalProperties: false,
+                },
+                execute: (eingaben = {}) => {
+                    const felder = ['company', 'email', 'industry', 'region', 'services', 'budget', 'frequency']
+                    const uebernommen = {}
+                    for (const feld of felder) {
+                        const wert = eingaben[feld]
+                        if (typeof wert === 'string' && wert.trim()) uebernommen[feld] = wert.trim()
+                    }
+                    if (Object.keys(uebernommen).length === 0) {
+                        return werkzeugFehler(`No fillable field was passed. Available fields: ${felder.join(', ')}.`)
+                    }
+                    // `website` fehlt in der Liste mit Absicht: das ist das
+                    // Honeypot-Feld der Spamabwehr. Ein gefuelltes Feld liesse
+                    // api/profile-lead.js die Anfrage stillschweigend verwerfen.
+                    setProfileData((bisher) => ({ ...bisher, ...uebernommen }))
+                    zumAnker('profil')
+                    return werkzeugAntwort(
+                        `Prefilled: ${Object.keys(uebernommen).join(', ')}. The form was deliberately not submitted - ask the user to review it and press the button.`,
+                        { prefilled_fields: Object.keys(uebernommen), submitted: false },
+                    )
+                },
+            },
+            {
+                name: 'shortlist_tender',
+                title: 'Auf die Go/No-Go-Tafel legen',
+                annotations: { readOnlyHint: false, untrustedContentHint: true },
+                description:
+                    'Put a tender on the shared go/no-go board on this page and compute its fit reasons from the notice fields (CPV division, place of performance, days to deadline, value against the EU threshold, award criteria, lots, framework agreement, GPA coverage). The board is visible to the user, who can override every decision. Reason texts are German because they are rendered on the page.',
+                inputSchema: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'string', description: 'Tender id from search_tenders, list_visible_tenders or list_shortlist' },
+                        note: { type: 'string', description: 'Optional note shown on the board card' },
+                    },
+                    required: ['id'],
+                    additionalProperties: false,
+                },
+                execute: async ({ id, note } = {}) => {
+                    const tender = tenderFinden(id)
+                    if (!tender) {
+                        return werkzeugFehler(
+                            `No tender with id "${id}" is displayed or on the board. Call search_tenders first.`,
+                        )
+                    }
+                    // Die Grenze gilt fuer neue Eintraege. Einen bereits
+                    // liegenden Treffer zu aktualisieren laesst die Tafel
+                    // nicht wachsen und darf deshalb nicht scheitern.
+                    const schonDrauf = (zustand.current.merkliste ?? []).some(
+                        (eintrag) => eintrag.id === String(id),
+                    )
+                    if (!schonDrauf && (zustand.current.merkliste ?? []).length >= MERKLISTE_GRENZE) {
+                        return werkzeugFehler(
+                            `The board holds the maximum of ${MERKLISTE_GRENZE} tenders. Call remove_from_shortlist before adding another.`,
+                        )
+                    }
+                    const gruende = zustand.current.merklisteAufnehmen(tender, {
+                        notiz: note,
+                        suchbegriff: zustand.current.tenderQuery,
+                    })
+                    await tafelAbwarten(() =>
+                        (zustand.current.merkliste ?? []).some((eintrag) => eintrag.id === String(id)),
+                    )
+                    zumAnker('tafel')
+                    const bilanz = gruendeBilanz(gruende)
+                    return werkzeugAntwort(
+                        `"${tender.title}" is on the board with ${bilanz.dafuer} argument(s) in favour and ${bilanz.dagegen} against. No decision has been made - present the reasons and let the user decide, or call set_decision with their answer.`,
+                        { id: String(id), decision: 'open', balance: bilanz, reasons: alsGruende(gruende) },
+                    )
+                },
+            },
+            {
+                name: 'explain_fit',
+                title: 'Passung begruenden',
+                annotations: { readOnlyHint: true, untrustedContentHint: true },
+                description:
+                    'Explain why a tender does or does not fit, as individual weighted reasons derived from the notice. Does not change the board. Use shortlist_tender when the reasons should stay visible to the user.',
+                inputSchema: {
+                    type: 'object',
+                    properties: { id: { type: 'string', description: 'Tender id' } },
+                    required: ['id'],
+                    additionalProperties: false,
+                },
+                execute: ({ id } = {}) => {
+                    const tender = tenderFinden(id)
+                    if (!tender) {
+                        return werkzeugFehler(`No tender with id "${id}" is displayed or on the board. Call search_tenders first.`)
+                    }
+                    const gruende = fitGruende(tender, { suchbegriff: zustand.current.tenderQuery })
+                    const bilanz = gruendeBilanz(gruende)
+                    return werkzeugAntwort(
+                        `${bilanz.dafuer} argument(s) in favour, ${bilanz.dagegen} against, ${bilanz.neutral} neutral. These are arguments, not a recommendation - the go/no-go call is the user's.`,
+                        { id: String(id), balance: bilanz, reasons: alsGruende(gruende) },
+                    )
+                },
+            },
+            {
+                name: 'set_decision',
+                title: 'Go/No-Go setzen',
+                annotations: { readOnlyHint: false },
+                description:
+                    'Record the go/no-go decision the user made for a tender on the board, together with their reasoning. Only call this with a decision the user actually expressed - never decide on their behalf. Use "open" to take a decision back.',
+                inputSchema: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'string', description: 'Tender id on the board' },
+                        decision: { type: 'string', enum: ['go', 'no_go', 'open'], description: 'The decision the user made' },
+                        reason: { type: 'string', description: "The user's reasoning, shown on the board card" },
+                    },
+                    required: ['id', 'decision'],
+                    additionalProperties: false,
+                },
+                execute: async ({ id, decision, reason } = {}) => {
+                    if (!['go', 'no_go', 'open'].includes(decision)) {
+                        return werkzeugFehler('decision must be one of: go, no_go, open.')
+                    }
+                    const vorhanden = (zustand.current.merkliste ?? []).some((eintrag) => eintrag.id === String(id))
+                    if (!vorhanden) {
+                        return werkzeugFehler(`Tender "${id}" is not on the board. Call shortlist_tender first.`)
+                    }
+                    const gesetzt = decision === 'open' ? null : decision
+                    zustand.current.entscheidungSetzen(id, gesetzt, reason)
+                    await tafelAbwarten(() =>
+                        (zustand.current.merkliste ?? []).some(
+                            (eintrag) => eintrag.id === String(id) && eintrag.entscheidung === gesetzt,
+                        ),
+                    )
+                    zumAnker('tafel')
+                    return werkzeugAntwort(
+                        `Decision "${decision}" is now shown on the board for tender ${id}. The user can change it there at any time.`,
+                        { id: String(id), decision, note: reason ?? null },
+                    )
+                },
+            },
+            {
+                name: 'remove_from_shortlist',
+                title: 'Von der Tafel nehmen',
+                annotations: { readOnlyHint: false },
+                description: 'Remove a tender from the shared board.',
+                inputSchema: {
+                    type: 'object',
+                    properties: { id: { type: 'string', description: 'Tender id on the board' } },
+                    required: ['id'],
+                    additionalProperties: false,
+                },
+                execute: async ({ id } = {}) => {
+                    if (!(zustand.current.merkliste ?? []).some((eintrag) => eintrag.id === String(id))) {
+                        return werkzeugFehler(`Tender "${id}" is not on the board.`)
+                    }
+                    zustand.current.merklisteEntfernen(id)
+                    await tafelAbwarten(() =>
+                        !(zustand.current.merkliste ?? []).some((eintrag) => eintrag.id === String(id)),
+                    )
+                    return werkzeugAntwort(`Tender ${id} was removed from the board.`, { id: String(id), removed: true })
+                },
+            },
+            {
+                name: 'list_shortlist',
+                title: 'Tafel lesen',
+                annotations: { readOnlyHint: true, untrustedContentHint: true },
+                description:
+                    'Return the shared go/no-go board as the user currently sees it, including decisions the user made by hand.',
+                inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+                execute: () => {
+                    const tafel = alsTafel(zustand.current.merkliste)
+                    if (tafel.length === 0) {
+                        return werkzeugAntwort('The board is empty. Call shortlist_tender to put a tender on it.', {
+                            count: 0,
+                            entries: [],
+                        })
+                    }
+                    const offen = tafel.filter((eintrag) => eintrag.decision === 'open').length
+                    return werkzeugAntwort(
+                        `${tafel.length} tender(s) on the board, ${offen} still undecided.`,
+                        { count: tafel.length, undecided: offen, entries: tafel },
+                    )
+                },
+            },
+            {
+                name: 'check_eu_threshold',
+                title: 'EU-Schwellenwert pruefen',
+                annotations: { readOnlyHint: true },
+                description:
+                    'Check a contract value against the EU procurement thresholds for 2026/2027. Above the threshold an EU-wide procedure with longer minimum deadlines applies. The official values and the procurement documents of the individual procedure always prevail.',
+                inputSchema: {
+                    type: 'object',
+                    properties: {
+                        value_eur: { type: 'number', description: 'Contract value in euro' },
+                        contract_type: {
+                            type: 'string',
+                            enum: ['bauauftrag', 'oeffentlicher_auftraggeber', 'zentrale_regierungsbehoerde'],
+                            description: 'Works, other public buyers, or central government bodies. Derived from the CPV division when omitted.',
+                        },
+                        cpv: { type: 'string', description: 'CPV code used to derive the contract type when contract_type is omitted' },
+                    },
+                    required: ['value_eur'],
+                    additionalProperties: false,
+                },
+                execute: ({ value_eur: wert, contract_type: art, cpv } = {}) => {
+                    if (!Number.isFinite(Number(wert)) || Number(wert) <= 0) {
+                        return werkzeugFehler('value_eur must be a positive number in euro.')
+                    }
+                    const gewaehlt = art || (cpv ? artAusCpv(cpv) : 'oeffentlicher_auftraggeber')
+                    const pruefung = schwellenwertPruefung(wert, gewaehlt)
+                    return werkzeugAntwort(
+                        `${Number(wert)} EUR is ${pruefung.oberhalb ? 'at or above' : 'below'} the ${pruefung.schwelle} EUR threshold for ${pruefung.text}. The official values and the procurement documents prevail.`,
+                        {
+                            value_eur: Number(wert),
+                            contract_type: pruefung.art,
+                            threshold_eur: pruefung.schwelle,
+                            above_threshold: pruefung.oberhalb,
+                            all_thresholds: EU_SCHWELLENWERTE,
+                        },
+                    )
+                },
+            },
+        ]
+
+        return stelleWerkzeugeBereit(werkzeuge, (name, fehler) => {
+            // Haeufigste Ursachen laut Spec: fehlende Origin-Isolation und
+            // eine Permissions Policy ohne `tools`. Beides waere sonst
+            // unsichtbar - die Werkzeuge fehlten einfach.
+            console.warn(`WebMCP: Werkzeug ${name} nicht angemeldet`, fehler)
+        })
     }, [])
 
     const handleSubmit = async (e) => {
@@ -517,18 +1056,127 @@ export default function LandingPage() {
                                                     </div>
                                                 )}
                                             </dl>
-                                            <button
-                                                type="button"
-                                                className="source-trigger"
-                                                onClick={() => setSelectedTender(tender)}
-                                            >
-                                                Quelle öffnen
-                                            </button>
+                                            <div className="tender-card__aktionen">
+                                                <button
+                                                    type="button"
+                                                    className="source-trigger"
+                                                    onClick={() => setSelectedTender(tender)}
+                                                >
+                                                    Quelle öffnen
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="source-trigger"
+                                                    onClick={() => merklisteAufnehmen(tender, { suchbegriff: tenderQuery })}
+                                                >
+                                                    {aufTafel(tender.id) ? 'Auf der Tafel — Gründe aktualisieren' : 'Auf die Go/No-Go-Tafel'}
+                                                </button>
+                                            </div>
                                         </article>
                                     )
                                 })}
                             </div>
                         )}
+
+                        <div className="tafel" id="tafel">
+                            <div className="tafel__kopf">
+                                <div>
+                                    <span className="profile-lead__eyebrow">Go/No-Go</span>
+                                    <h3>Gemeinsame Vorauswahl</h3>
+                                    <p>
+                                        Treffer landen hier per Klick — oder über einen Agenten, der die Werkzeuge
+                                        dieser Seite nutzt. Die Gründe stammen aus den Feldern der Bekanntmachung:
+                                        CPV, Leistungsort, Frist, Auftragswert gegen den EU-Schwellenwert,
+                                        Zuschlagskriterien, Lose. Entschieden wird von Ihnen; die Argumente sind
+                                        eine Vorarbeit, keine Empfehlung.
+                                    </p>
+                                </div>
+                                {merkliste.length > 0 && (
+                                    <button type="button" className="source-trigger" onClick={merklisteLeeren}>
+                                        Tafel leeren
+                                    </button>
+                                )}
+                            </div>
+
+                            {merkliste.length === 0 ? (
+                                <div className="tender-state">
+                                    Noch nichts auf der Tafel. Legen Sie einen Treffer darauf — oder bitten Sie in
+                                    einem Browser mit WebMCP Ihren Agenten darum, etwa: „Suche Fassadenausschreibungen
+                                    und leg die drei mit der längsten Frist auf die Tafel."
+                                </div>
+                            ) : (
+                                <div className="tafel__liste">
+                                    {merkliste.map((eintrag) => {
+                                        const bilanz = gruendeBilanz(eintrag.gruende)
+                                        return (
+                                            <article className="tafel-karte" key={eintrag.id}>
+                                                <div className="tender-card__meta">
+                                                    <span>{(eintrag.tender.source || '').toUpperCase()}</span>
+                                                    <span className={`tafel-karte__status ist-${eintrag.entscheidung || 'offen'}`}>
+                                                        {eintrag.entscheidung === 'go'
+                                                            ? 'Go'
+                                                            : eintrag.entscheidung === 'no_go'
+                                                                ? 'No-Go'
+                                                                : 'offen'}
+                                                    </span>
+                                                </div>
+                                                <h4>{eintrag.tender.title}</h4>
+                                                <dl>
+                                                    <div>
+                                                        <dt>Auftraggeber</dt>
+                                                        <dd>{eintrag.tender.buyer_name || 'Nicht angegeben'}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Frist</dt>
+                                                        <dd>{formatDate(eintrag.tender.deadline_at)}</dd>
+                                                    </div>
+                                                </dl>
+
+                                                {eintrag.gruende.length > 0 && (
+                                                    <>
+                                                        <p className="tafel-karte__bilanz">
+                                                            {bilanz.dafuer} dafür · {bilanz.dagegen} dagegen · {bilanz.neutral} zu prüfen
+                                                        </p>
+                                                        <ul className="tafel-karte__gruende">
+                                                            {eintrag.gruende.map((grund) => (
+                                                                <li key={grund.kennung} className={`ist-${grund.bewertung}`}>
+                                                                    {grund.text}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </>
+                                                )}
+
+                                                {eintrag.notiz && <p className="tafel-karte__notiz">{eintrag.notiz}</p>}
+
+                                                <div className="tafel-karte__aktionen">
+                                                    <button
+                                                        type="button"
+                                                        className={eintrag.entscheidung === 'go' ? 'is-active' : ''}
+                                                        onClick={() => entscheidungSetzen(eintrag.id, eintrag.entscheidung === 'go' ? null : 'go')}
+                                                    >
+                                                        Go
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={eintrag.entscheidung === 'no_go' ? 'is-active' : ''}
+                                                        onClick={() => entscheidungSetzen(eintrag.id, eintrag.entscheidung === 'no_go' ? null : 'no_go')}
+                                                    >
+                                                        No-Go
+                                                    </button>
+                                                    <a href={eintrag.tender.source_url} target="_blank" rel="noopener noreferrer">
+                                                        Originalbekanntmachung
+                                                    </a>
+                                                    <button type="button" onClick={() => merklisteEntfernen(eintrag.id)}>
+                                                        Entfernen
+                                                    </button>
+                                                </div>
+                                            </article>
+                                        )
+                                    })}
+                                </div>
+                            )}
+                        </div>
 
                         <div className="profile-lead" id="profil">
                             <div>

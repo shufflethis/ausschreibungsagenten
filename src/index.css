@@ -956,6 +956,176 @@ img {
     background: rgba(239, 68, 68, 0.08);
 }
 
+/* ---------- Go/No-Go-Tafel ---------- */
+
+.tender-card__aktionen {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-top: auto;
+}
+
+.tender-card__aktionen .source-trigger {
+    margin-top: 0;
+}
+
+.tafel {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+}
+
+.tafel__kopf {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.tafel__kopf h3 {
+    color: var(--text-heading);
+    font-size: var(--font-size-2xl);
+    margin: 0.35rem 0 0.5rem;
+}
+
+.tafel__kopf p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    max-width: 62ch;
+}
+
+.tafel__liste {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.tafel-karte {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.045);
+    padding: 1.25rem;
+}
+
+.tafel-karte h4 {
+    color: var(--text-heading);
+    font-size: var(--font-size-lg);
+    line-height: 1.35;
+}
+
+.tafel-karte__status.ist-go {
+    color: var(--accent-green);
+}
+
+.tafel-karte__status.ist-no_go {
+    color: var(--accent-red);
+}
+
+.tafel-karte__status.ist-offen {
+    color: var(--text-tertiary);
+}
+
+.tafel-karte dl {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+}
+
+.tafel-karte dt {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.tafel-karte dd {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin: 0.15rem 0 0;
+}
+
+.tafel-karte__bilanz {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.tafel-karte__gruende {
+    display: grid;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tafel-karte__gruende li {
+    border-left: 2px solid var(--glass-border);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    padding-left: 0.75rem;
+}
+
+/* ist-neutral bekommt bewusst keine eigene Regel: ein Punkt, der weder
+   dafuer noch dagegen spricht, behaelt die graue Grundlinie von oben. */
+.tafel-karte__gruende li.ist-plus {
+    border-left-color: var(--accent-green);
+}
+
+.tafel-karte__gruende li.ist-minus {
+    border-left-color: var(--accent-red);
+}
+
+.tafel-karte__notiz {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+}
+
+.tafel-karte__aktionen {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.tafel-karte__aktionen button,
+.tafel-karte__aktionen a {
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    padding: 0.4rem 0.85rem;
+    text-decoration: none;
+}
+
+.tafel-karte__aktionen button:hover,
+.tafel-karte__aktionen a:hover {
+    border-color: var(--glass-border-hover);
+    color: var(--text-primary);
+}
+
+.tafel-karte__aktionen button.is-active {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan-light);
+}
+
 .profile-lead {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
@@ -2139,6 +2309,7 @@ img {
     .hero__title { font-size: var(--font-size-5xl); }
     .section__title { font-size: var(--font-size-3xl); }
     .grid-3, .features-grid, .problem-grid, .steps-grid, .tender-grid, .profile-lead { grid-template-columns: repeat(2, 1fr); }
+    .tafel__liste { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .steps-grid::before { display: none; }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
     .about-principles, .about-team__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -2159,7 +2330,7 @@ img {
     .section__title { font-size: var(--font-size-2xl); }
 
     .grid-2, .grid-3, .grid-4,
-    .features-grid, .problem-grid, .steps-grid, .tender-grid, .profile-lead,
+    .features-grid, .problem-grid, .steps-grid, .tender-grid, .profile-lead, .tafel__liste,
     .match-grid, .pricing-strip,
     .contact-grid { grid-template-columns: 1fr; }
 

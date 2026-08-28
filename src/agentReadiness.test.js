@@ -252,12 +252,44 @@ describe('Agent-Readiness machine contracts', () => {
         expect(llms.length).toBeLessThan(30000)
     })
 
-    it('advertises WebMCP and machine endpoints from rendered HTML', async () => {
-        const html = await text('index.html')
-        expect(html).toMatch(/document\.modelContext\.registerTool/)
+    it('advertises machine endpoints from the footer', async () => {
         const footer = await text('src/components/Footer.jsx')
         expect(footer).toMatch(/\/openapi\.json/)
         expect(footer).toMatch(/\/agents\.md/)
         expect(footer).toMatch(/\/\.well-known\/api-catalog/)
+    })
+
+    // Der fruehere Inline-Stub in index.html registrierte sein Werkzeug
+    // beim Parsen des Dokuments, also vor der Hydrierung, und ohne Bezug
+    // zum sichtbaren Zustand. Die Registrierung gehoert in die Komponente,
+    // deren Zustand die Werkzeuge steuern.
+    it('registers WebMCP tools through document.modelContext', async () => {
+        expect(await text('index.html')).not.toMatch(/modelContext/)
+        const webmcp = await text('src/lib/webmcp.js')
+        expect(webmcp).toMatch(/document\.modelContext\?\.registerTool/)
+        // Abgemeldet wird laut Spec ueber ein AbortSignal.
+        expect(webmcp).toMatch(/signal: abbruch\.signal/)
+
+        const landing = await text('src/pages/LandingPage.jsx')
+        expect(landing).toMatch(/return stelleWerkzeugeBereit\(werkzeuge, /)
+        for (const werkzeug of [
+            'search_tenders',
+            'list_visible_tenders',
+            'open_tender',
+            'source_status',
+            'prefill_pilot_profile',
+            'shortlist_tender',
+            'explain_fit',
+            'set_decision',
+            'remove_from_shortlist',
+            'list_shortlist',
+            'check_eu_threshold',
+        ]) {
+            expect(landing, werkzeug).toContain(`name: '${werkzeug}'`)
+        }
+        // Kontakt- und Profilformular loesen echte E-Mails aus. Agenten
+        // duerfen ausfuellen, abschicken bleibt der Klick des Menschen.
+        expect(landing).toMatch(/submitted: false/)
+        expect(landing).not.toMatch(/handleProfileSubmit\(\)/)
     })
 })

@@ -7,6 +7,7 @@ Use these resources to integrate current public tender search, source freshness,
 - OpenAPI: https://www.ausschreibungsagenten.de/openapi.json
 - Anonymous preview: https://www.ausschreibungsagenten.de/api/tenders-public
 - MCP Streamable HTTP: https://www.ausschreibungsagenten.de/mcp
+- WebMCP in-page tools (W3C draft; Chrome 149+ origin trial and the ChatGPT in-app browser): `document.modelContext` on https://www.ausschreibungsagenten.de/ exposes 11 tools — search_tenders, list_visible_tenders, open_tender, source_status, prefill_pilot_profile, shortlist_tender, explain_fit, set_decision, remove_from_shortlist, list_shortlist and check_eu_threshold. Every call changes what the page displays; no tool submits a form and none returns a recommendation. Details: https://github.com/shufflethis/ausschreibungsagenten/blob/master/WEBMCP.md
 - A2A card: https://www.ausschreibungsagenten.de/.well-known/agent-card.json
 - API catalog: https://www.ausschreibungsagenten.de/.well-known/api-catalog
 - Authentication: https://www.ausschreibungsagenten.de/auth.md

@@ -51,30 +51,6 @@
 <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-        // WebMCP draft API: read-only tender search for supporting browsers and agents.
-        if (document.modelContext?.registerTool) {
-            document.modelContext.registerTool({
-                name: 'search_public_tenders',
-                description: 'Search current public procurement notices by keyword, country and CPV code.',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        search: { type: 'string', description: 'Tender keyword or trade' },
-                        country: { type: 'string', description: 'ISO-3 country code such as DEU or GBR' },
-                        cpv: { type: 'string', description: 'Optional CPV prefix' }
-                    },
-                    required: ['search']
-                },
-                execute: async ({ search, country = 'DEU', cpv = '' }) => {
-                    const query = new URLSearchParams({ search, country, limit: '6' });
-                    if (cpv) query.set('cpv', cpv);
-                    const response = await fetch('/api/tenders-public?' + query.toString());
-                    return await response.json();
-                }
-            });
-        }
-    </script>
 </body>
 
 </html>
