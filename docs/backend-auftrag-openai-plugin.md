@@ -106,8 +106,27 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 >   von `api`, kein Parent. Die Apex-Domain `ausschreibungsagenten.de` waere
 >   zulaessig, leitet aber vollstaendig auf `www` um.
 >
-> Am einfachsten ist der Token als Umgebungsvariable, damit er ohne Deploy
-> gesetzt werden kann.
+> **Der schnellste Weg führt an der Anwendung vorbei.** `api.ausschreibungsagenten.de`
+> läuft auf nginx — der Token braucht also keinen Anwendungscode und kein
+> Deployment, ein `location`-Block genügt:
+>
+> ```nginx
+> location = /.well-known/openai-apps-challenge {
+>     default_type text/plain;
+>     return 200 "HIER_DEN_TOKEN_AUS_DEM_PORTAL";
+> }
+> ```
+>
+> `return 200 "..."` hängt keinen Zeilenumbruch an — genau das ist gewollt, die
+> Doku verlangt ausschließlich den Token. Der Block muss **vor** einer
+> allgemeinen `location /`-Regel greifen; `location =` ist eine exakte
+> Übereinstimmung und gewinnt in nginx ohnehin gegen Präfix-Regeln.
+>
+> Wer es lieber in der Anwendung hat: als Umgebungsvariable bauen, damit der
+> Token ohne Deploy austauschbar bleibt.
+>
+> **Den Token selbst nicht in ein öffentliches Repository schreiben.** Er
+> kommt aus dem Einreichungs-Draft und wird separat übergeben.
 >
 > ### Optional, kein Blocker
 >
