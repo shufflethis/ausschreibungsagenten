@@ -29,7 +29,7 @@ gelesen am 28.08.2026.
 
 | Feld | Wert |
 | --- | --- |
-| Name | **Ausschreibungsagenten** |
+| Name | **Ausschreibungsagenten.de** |
 | Untertitel | „German & EU public tenders" (26 von max. 30 Zeichen) |
 | MCP-Endpunkt | `https://api.ausschreibungsagenten.de/mcp/open-data` — existiert, HTTP 200 |
 | Transport | Streamable HTTP |
@@ -41,8 +41,12 @@ gelesen am 28.08.2026.
 
 Zum Namen: die Richtlinie warnt vor *„overly generic names, especially
 single-word dictionary terms that aren't explicitly tied to your brand"*.
-„Ausschreibungsagenten" ist weder generisch noch ein Wörterbuchbegriff und
+„Ausschreibungsagenten.de" ist weder generisch noch ein Wörterbuchbegriff und
 deckt sich mit der Domain — das trägt deutlich.
+
+Die Schreibweise folgt dem eigenen [Brandkit](https://www.ausschreibungsagenten.de/brandkit):
+großes A, mit „.de". Das „.de" signalisiert im weltweiten Verzeichnis
+nebenbei den Markt.
 
 Die Betreiberin ist bei beiden Marken dieselbe yawusa UG. Die Nennung einer
 „Agentifizierung UG" im `TENDER-AGENTS-PLAN.md` ist überholt.
@@ -136,10 +140,23 @@ Verwendet wird die **wortmarkenfreie A-Marke** aus `public/brand/logo-mark.png`
 auf dem Markenhintergrund, 512×512.
 
 Naheliegend wäre `web-app-manifest-512x512.png` gewesen — das vorhandene
-App-Icon. Es trägt aber den Schriftzug „AusschreibungsAgenten — WIR FINDEN. DU
-GEWINNST.". Verzeichnisse zeigen Icons in etwa 48 bis 64 Pixel an; der
-Schriftzug wäre dort unlesbarer Brei. Icons in App-Verzeichnissen sind eine
-Marke, keine Wortmarke.
+App-Icon. Zwei Gründe dagegen:
+
+1. Es trägt einen Schriftzug. Verzeichnisse zeigen Icons in etwa 48 bis 64
+   Pixel an; der Schriftzug wäre dort unlesbarer Brei. Icons in
+   App-Verzeichnissen sind eine Marke, keine Wortmarke.
+2. Der Schriftzug lautet „AusschreibungsAgenten" — **genau die Schreibweise,
+   die das eigene [Brandkit](https://www.ausschreibungsagenten.de/brandkit)
+   unter „Bitte nicht" führt** (richtig wäre „Ausschreibungsagenten.de").
+
+Die gewählte A-Marke auf Nachtblau `#050b1a` entspricht dagegen der
+Brandkit-Regel „Dunkler Grund, blaue Akzente: Die Marke lebt auf Nachtblau".
+
+> **Nebenbefund für die Website:** Dass `web-app-manifest-512x512.png` und
+> `apple-touch-icon.png` die verbotene Schreibweise tragen, betrifft nicht nur
+> diese Einreichung — das ist das Icon, das Besucher beim Anlegen einer
+> Verknüpfung auf dem Homescreen sehen. Nicht dringend, aber irgendwann
+> nachziehen.
 
 ## Der offene Blocker: `fulltext_search`
 

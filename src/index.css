@@ -2213,45 +2213,85 @@ img {
     background: var(--bg-secondary);
 }
 
-.footer__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+.footer__spalten {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
 }
 
-.footer__brand {
-    color: var(--text-secondary);
+.footer__marke {
+    max-width: 34ch;
+}
+
+.footer__wortmarke {
+    color: var(--text-heading);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+}
+
+.footer__marke p {
+    color: var(--text-tertiary);
     font-size: var(--font-size-sm);
+    line-height: 1.6;
+    margin: 0 0 0.75rem;
 }
 
-.footer__brand strong {
+.footer__service {
+    color: var(--text-secondary);
+}
+
+.footer__service strong {
     color: var(--text-primary);
 }
 
-.footer__links {
+.footer__spalte {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 0.6rem;
 }
 
-.footer__links a {
+.footer__spalte h2 {
+    color: var(--text-primary);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.2rem;
+    text-transform: uppercase;
+}
+
+.footer__spalte a,
+.footer__rechtliches a {
     color: var(--text-tertiary);
     font-size: var(--font-size-sm);
     transition: color var(--transition-fast);
 }
 
-.footer__links a:hover {
+.footer__spalte a:hover,
+.footer__rechtliches a:hover {
     color: var(--text-primary);
 }
 
+.footer__abschluss {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 1.5rem;
+}
+
+.footer__rechtliches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
 .footer__copy {
-    text-align: center;
     color: var(--text-tertiary);
     font-size: var(--font-size-xs);
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--glass-border);
+    text-align: right;
 }
 
 /* ---------- Legal Pages ---------- */
@@ -2309,6 +2349,8 @@ img {
     .hero__title { font-size: var(--font-size-5xl); }
     .section__title { font-size: var(--font-size-3xl); }
     .grid-3, .features-grid, .problem-grid, .steps-grid, .tender-grid, .profile-lead { grid-template-columns: repeat(2, 1fr); }
+    .footer__spalten { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .footer__marke { grid-column: 1 / -1; max-width: none; }
     .tafel__liste { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .steps-grid::before { display: none; }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -2330,6 +2372,9 @@ img {
     .section__title { font-size: var(--font-size-2xl); }
 
     .grid-2, .grid-3, .grid-4,
+    .footer__spalten { grid-template-columns: 1fr; }
+    .footer__abschluss { justify-content: flex-start; }
+    .footer__copy { text-align: left; }
     .features-grid, .problem-grid, .steps-grid, .tender-grid, .profile-lead, .tafel__liste,
     .match-grid, .pricing-strip,
     .contact-grid { grid-template-columns: 1fr; }

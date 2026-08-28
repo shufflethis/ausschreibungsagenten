@@ -1,59 +1,118 @@
 import { Link } from 'react-router-dom'
 
+// Der Footer trug 24 Links in einer einzigen Reihe. Gruppiert nach dem,
+// wonach jemand tatsaechlich sucht: Inhalte zum Thema, Vergleiche mit
+// anderen Anbietern, die Maschinenflaechen fuer Entwickler und Agenten,
+// und das Unternehmen. Die Rechtstexte stehen unten neben dem Copyright,
+// wo man sie erwartet.
+const SPALTEN = [
+    {
+        titel: 'Wissen',
+        eintraege: [
+            { zu: '/ausschreibungssuche-automatisieren', text: 'Suche automatisieren' },
+            { zu: '/ki-angebot-ausschreibung', text: 'KI und Angebot' },
+            { zu: '/semantische-suche-ausschreibungen', text: 'Semantische Suche' },
+        ],
+    },
+    {
+        titel: 'Alternativen',
+        eintraege: [
+            { zu: '/vergabepilot-alternative', text: 'Vergabepilot Alternative' },
+            { zu: '/vergabefix-alternative', text: 'Vergabefix Alternative' },
+            { zu: '/tenderflow-alternative', text: 'Tenderflow Alternative' },
+        ],
+    },
+    {
+        titel: 'API & Agenten',
+        eintraege: [
+            { zu: '/entwickler', text: 'Entwickler-Portal' },
+            // Direkt auf die Spezifikation, nicht nur auf die Erklaerseite:
+            // Agenten und Entwickler suchen die Referenz, und von der
+            // Startseite aus war sie bisher gar nicht erreichbar.
+            { href: 'https://api.ausschreibungsagenten.de/docs', extern: true, text: 'API-Referenz' },
+            { href: '/openapi.json', text: 'OpenAPI' },
+            { href: '/agents.md', text: 'Agent Instructions' },
+            { href: '/.well-known/api-catalog', text: 'API Catalog' },
+            { href: '/.well-known/mcp/server-card.json', text: 'MCP Server Card' },
+            { href: '/pricing.md', text: 'Preise (Markdown)' },
+        ],
+    },
+    {
+        titel: 'Unternehmen',
+        eintraege: [
+            { zu: '/ueber-uns', text: 'Über uns' },
+            { zu: '/zahlen', text: 'Zahlen & Statistik' },
+            { zu: '/status', text: 'Quellenstatus' },
+            {
+                href: 'https://status.ausschreibungsagenten.de/status/ausschreibungsagenten',
+                extern: true,
+                text: 'System-Status',
+            },
+            { zu: '/partner', text: 'Partnerprogramm' },
+            { zu: '/brandkit', text: 'Brandkit' },
+        ],
+    },
+]
+
+const RECHTLICHES = [
+    { zu: '/impressum', text: 'Impressum' },
+    { zu: '/agb', text: 'AGB' },
+    { zu: '/datenschutz', text: 'Datenschutz' },
+    { zu: '/disclaimer', text: 'Disclaimer' },
+]
+
+function Eintrag({ eintrag }) {
+    if (eintrag.zu) return <Link to={eintrag.zu}>{eintrag.text}</Link>
+    return (
+        <a
+            href={eintrag.href}
+            {...(eintrag.extern ? { target: '_blank', rel: 'noreferrer' } : {})}
+        >
+            {eintrag.text}
+        </a>
+    )
+}
+
 export default function Footer() {
     return (
         <footer className="footer">
             <div className="container">
-                <div className="footer__inner">
-                    <div className="footer__brand">
-                        Ein Service von{' '}
-                        <a href="https://www.agentifizierung.de/" target="_blank" rel="noreferrer">
-                            <strong>Agentifizierung</strong>
-                        </a>
+                <div className="footer__spalten">
+                    <div className="footer__marke">
+                        <div className="footer__wortmarke">Ausschreibungsagenten.de</div>
+                        <p>
+                            Öffentliche Ausschreibungen aus 17 Quellen in Deutschland, der EU und
+                            Großbritannien — mit nachvollziehbaren Treffergründen.
+                        </p>
+                        <p className="footer__service">
+                            Ein Service von{' '}
+                            <a href="https://www.agentifizierung.de/" target="_blank" rel="noreferrer">
+                                <strong>Agentifizierung</strong>
+                            </a>
+                        </p>
                     </div>
-                    <div className="footer__links">
-                        <Link to="/ausschreibungssuche-automatisieren">Suche automatisieren</Link>
-                        <Link to="/ki-angebot-ausschreibung">KI und Angebot</Link>
-                        <Link to="/semantische-suche-ausschreibungen">Semantische Suche</Link>
-                        <Link to="/vergabepilot-alternative">Vergabepilot Alternative</Link>
-                        <Link to="/vergabefix-alternative">Vergabefix Alternative</Link>
-                        <Link to="/tenderflow-alternative">Tenderflow Alternative</Link>
-                        <Link to="/ueber-uns">Über uns</Link>
-                        <Link to="/entwickler">API & Agenten</Link>
-                        <a href="/openapi.json">OpenAPI</a>
-                        <a href="/agents.md">Agent Instructions</a>
-                        <a href="/.well-known/api-catalog">API Catalog</a>
-                        <a href="/.well-known/mcp/server-card.json">MCP Server Card</a>
-                        <a href="/pricing.md">Preise (Markdown)</a>
-                        {/* Direkt auf die Spezifikation, nicht nur auf die Erklaerseite:
-                            Agenten und Entwickler suchen die Referenz, und von der
-                            Startseite aus war sie bisher gar nicht erreichbar. */}
-                        <a
-                            href="https://api.ausschreibungsagenten.de/docs"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            API-Referenz
-                        </a>
-                        <Link to="/zahlen">Zahlen &amp; Statistik</Link>
-                        <Link to="/status">Quellenstatus</Link>
-                        <a
-                            href="https://status.ausschreibungsagenten.de/status/ausschreibungsagenten"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            System-Status
-                        </a>
-                        <Link to="/partner">Partnerprogramm</Link>
-                        <Link to="/brandkit">Brandkit</Link>
-                        <Link to="/impressum">Impressum</Link>
-                        <Link to="/agb">AGB</Link>
-                        <Link to="/datenschutz">Datenschutz</Link>
-                        <Link to="/disclaimer">Disclaimer</Link>
-                    </div>
+
+                    {SPALTEN.map((spalte) => (
+                        <nav className="footer__spalte" key={spalte.titel} aria-label={spalte.titel}>
+                            <h2>{spalte.titel}</h2>
+                            {spalte.eintraege.map((eintrag) => (
+                                <Eintrag eintrag={eintrag} key={eintrag.text} />
+                            ))}
+                        </nav>
+                    ))}
                 </div>
-                <div className="footer__copy">
-                    © {new Date().getFullYear()} Yawusa UG (haftungsbeschränkt) Alle Rechte vorbehalten. | Ausschreibungsagenten.de – KI-Agenten für Öffentliche Ausschreibungen
+
+                <div className="footer__abschluss">
+                    <nav className="footer__rechtliches" aria-label="Rechtliches">
+                        {RECHTLICHES.map((eintrag) => (
+                            <Eintrag eintrag={eintrag} key={eintrag.text} />
+                        ))}
+                    </nav>
+                    <div className="footer__copy">
+                        © {new Date().getFullYear()} Yawusa UG (haftungsbeschränkt). Alle Rechte
+                        vorbehalten. · Ausschreibungsagenten.de – KI-Agenten für öffentliche
+                        Ausschreibungen
+                    </div>
                 </div>
             </div>
         </footer>
