@@ -6,6 +6,83 @@
 [![Sources](https://img.shields.io/badge/Sources-17_connected-0aa)](https://www.ausschreibungsagenten.de/api/source-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+The website and public preview of
+**[ausschreibungsagenten.de](https://www.ausschreibungsagenten.de)** — search
+across public procurement notices from 17 connected sources in Germany, the EU
+and the United Kingdom. The international sister brand is
+**[tender-agents.com](https://www.tender-agents.com)**.
+
+The landing page is **built to be used by agents**: it exposes its own
+functions as WebMCP tools, so an agent in the browser can operate it instead of
+guessing its way through the UI — including a shared go/no-go board where the
+person and the agent work on the same shortlist.
+
+- **Live:** [www.ausschreibungsagenten.de](https://www.ausschreibungsagenten.de)
+- **WebMCP tools:** [WEBMCP.md](WEBMCP.md) — 11 tools via `document.modelContext`
+- **MCP server (backend, no browser):** [ausschreibungsagenten-mcp](https://github.com/shufflethis/ausschreibungsagenten-mcp)
+- **Developer docs and free API key:** [/entwickler](https://www.ausschreibungsagenten.de/entwickler)
+- **Agent discovery:** [llms.txt](https://www.ausschreibungsagenten.de/llms.txt) · [agents.md](https://www.ausschreibungsagenten.de/agents.md) · [OpenAPI](https://www.ausschreibungsagenten.de/openapi.json) · [API catalog (RFC 9727)](https://www.ausschreibungsagenten.de/.well-known/api-catalog)
+
+> The linked original notice always prevails. No tool submits a bid, sends a
+> form, or returns a recommendation.
+
+## WebMCP
+
+The landing page registers eleven tools through `document.modelContext`:
+search, result details, source freshness, form prefill, and a shared go/no-go
+board that the person and the agent edit together. Every call changes what is
+on the screen. No tool submits a form; none returns a recommendation.
+
+This is a different surface from the MCP server at `/mcp`: there an agent calls
+the backend without a browser, here every call visibly changes the state of the
+open page.
+
+Full description, tool list and testing instructions: **[WEBMCP.md](WEBMCP.md)**.
+
+## Repository map
+
+This repository does **not** contain the tender scraper or the AgentLeads
+database. It contains the React/Vite website, the Vercel Functions for contact
+and pilot requests, and the public tender proxy.
+
+| Path | What it is |
+| --- | --- |
+| `src/lib/webmcp.js` | WebMCP registration adapter — feature detection, `registerTool`, `AbortSignal` cleanup |
+| `src/lib/vergabe.js` | Procurement logic — EU thresholds, CPV divisions, deadlines, weighted fit reasons. No DOM, no network |
+| `src/lib/merkliste.js` | Go/no-go board persistence |
+| `src/lib/sprache.js`, `src/lib/tafelTexte.js` | The board follows the browser language, German or English |
+| `src/pages/LandingPage.jsx` | Tool registration and the visible board |
+| `api/` | Vercel Functions: tender proxy, contact, pilot lead, agent view |
+| `docs/` | Working documents and submission dossiers (German) |
+
+## Running it
+
+```bash
+npm install
+npm run dev      # http://localhost:5180
+npm test         # 205 tests
+npm run build    # client + SSR + prerender + sitemap + prerender check
+```
+
+To see the WebMCP tools, open the dev server in Chrome 149+ with
+`chrome://flags/#enable-webmcp-testing` enabled, or in the ChatGPT desktop
+app's in-app browser.
+
+## A note on language
+
+Code comments and the operating documentation below are in German — that is
+the working language of this codebase, and the comments carry the reasoning
+behind decisions, not just descriptions. They are deliberately not translated:
+two copies of an explanation drift apart, and a stale explanation is worse than
+one in a language you can machine-translate.
+
+The parts written for an outside audience are in English:
+[WEBMCP.md](WEBMCP.md), the tool descriptions and responses, and this section.
+
+---
+
+# Deutsch — Entwicklung und Betrieb
+
 Website und öffentliche Vorschau von
 **[ausschreibungsagenten.de](https://www.ausschreibungsagenten.de)** — der
 Suche nach öffentlichen Ausschreibungen aus 17 Quellen in Deutschland, der EU
@@ -15,24 +92,8 @@ und Großbritannien. Die internationale Schwestermarke ist
 Die Landingpage ist **agentenfähig gebaut**: sie stellt ihre eigenen Funktionen
 über WebMCP als Werkzeuge bereit, sodass ein Agent im Browser sie bedienen kann,
 statt die Oberfläche zu erraten — inklusive einer gemeinsamen Go/No-Go-Tafel,
-auf der Mensch und Agent dieselbe Vorauswahl bearbeiten.
-
-- **Live:** [www.ausschreibungsagenten.de](https://www.ausschreibungsagenten.de)
-- **WebMCP-Werkzeuge:** [WEBMCP.md](WEBMCP.md) — 11 Werkzeuge, `document.modelContext`
-- **MCP-Server (Backend, ohne Browser):** [ausschreibungsagenten-mcp](https://github.com/shufflethis/ausschreibungsagenten-mcp)
-- **Entwickler-Doku und kostenloser API-Key:** [/entwickler](https://www.ausschreibungsagenten.de/entwickler)
-- **Agent-Discovery:** [llms.txt](https://www.ausschreibungsagenten.de/llms.txt) · [agents.md](https://www.ausschreibungsagenten.de/agents.md) · [OpenAPI](https://www.ausschreibungsagenten.de/openapi.json) · [API-Katalog (RFC 9727)](https://www.ausschreibungsagenten.de/.well-known/api-catalog)
-
-> Die verlinkte Originalbekanntmachung ist immer maßgeblich. Kein Werkzeug gibt
-> ein Angebot ab, schickt ein Formular los oder spricht eine Empfehlung aus.
-
-## WebMCP
-
-Die Landingpage stellt ihre Funktionen über `document.modelContext` als Werkzeuge für Agenten im Browser bereit — Suche, Trefferdetails, Quellenstatus und eine gemeinsame Go/No-Go-Tafel, auf der Mensch und Agent dieselbe Vorauswahl bearbeiten. Kein Werkzeug schickt ein Formular ab, keines gibt eine Empfehlung ab.
-
-Das ist etwas anderes als der MCP-Server unter `/mcp`: dort ruft ein Agent das Backend ohne Browser auf, hier ändert jeder Aufruf sichtbar den Zustand der geöffneten Seite.
-
-Vollständige Beschreibung, Werkzeugliste und Testanleitung: [WEBMCP.md](WEBMCP.md).
+auf der Mensch und Agent dieselbe Vorauswahl bearbeiten. Vollständige
+Beschreibung und Testanleitung: [WEBMCP.md](WEBMCP.md).
 
 ## Architektur
 
@@ -186,7 +247,7 @@ Preise werden auf der Website als Orientierung angezeigt. Ein Checkout wird erst
 
 ---
 
-## Kontakt
+## Kontakt / Contact
 
 - Website: [ausschreibungsagenten.de](https://www.ausschreibungsagenten.de) · [tender-agents.com](https://www.tender-agents.com)
 - E-Mail: [hi@ausschreibungsagenten.de](mailto:hi@ausschreibungsagenten.de)
