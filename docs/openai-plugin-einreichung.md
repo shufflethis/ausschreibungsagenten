@@ -73,6 +73,7 @@ Satz Werte — hier die Begründung, die in die Einreichung gehört:
 | Entwickler-Verifizierung | ✅ Yawusa UG registriert |
 | Screenshots | ✅ **entfallen** — die Richtlinie sagt: *„Don't submit screenshots for plugins without UI."* Unser Server hat keine UI-Komponenten |
 | Keine Werbung, keine Abo-Bewerbung | ⚠️ siehe Blocker — die Fehlermeldung von `fulltext_search` bewirbt Tarife |
+| Fehler mit klarer Meldung abgefangen | ⚠️ zwei Lücken, siehe „Fehlerbehandlung" |
 
 ## Der offene Blocker: `fulltext_search`
 
@@ -105,6 +106,22 @@ scheitert. Auf `/mcp` (bezahlte Fläche) bleibt es unverändert.
 
 Das liegt im privaten AgentLeads-Backend, nicht in diesem Repo und nicht im
 öffentlichen MCP-Repo — beide enthalten nur Doku und Discovery-Metadaten.
+
+## Fehlerbehandlung
+
+Richtlinie: *„Errors, including unexpected ones, must be handled with clear
+messaging or fallback behaviors."* Am 28.08. auf `/mcp/open-data` abgeklopft.
+Sauber sind: unbekanntes Werkzeug (`Unknown tool: …`), unsinniger Ländercode
+(leeres Ergebnis statt Fehler), unbekannte Tender-id (`Tender not found`).
+
+Zwei Lücken, beide im Backend:
+
+1. **`countries` mit falschem Argumenttyp** (`min_count: "viele"`) antwortet mit
+   nacktem `Internal Server Error` — kein JSON-RPC, kein Hinweis, was falsch
+   war. Ein Reviewer, der die Eingaben abklopft, landet hier.
+2. **`get_tender` ohne `id`** antwortet `Tender not found`. Das ist irreführend:
+   gesucht wurde nichts, es fehlte das Pflichtargument. Richtig wäre eine
+   Meldung, die das benennt.
 
 ## Das Risiko, das man kennen muss
 
@@ -163,9 +180,17 @@ oder bewerben. Es ist ein Entdeckungs- und Lead-Kanal.
 
 ## Offen
 
-1. **`fulltext_search`** von `/mcp/open-data` entfernen (Backend).
-2. **Rechtliche Einordnung** der zwölf HTML-Quellen, falls das Plugin später auf
-   das Vollprodukt erweitert werden soll.
+Alles drei im privaten AgentLeads-Backend:
+
+1. **`fulltext_search`** von `/mcp/open-data` entfernen. Der eigentliche
+   Blocker.
+2. **`countries`** darf bei falschem Argumenttyp keinen nackten
+   `Internal Server Error` liefern.
+3. **`get_tender`** ohne `id` soll das fehlende Argument benennen, nicht
+   `Tender not found` melden.
+
+Dazu, unabhängig von der Einreichung: die **rechtliche Einordnung** der zwölf
+HTML-Quellen, falls das Plugin später auf das Vollprodukt erweitert werden soll.
 
 ## Was zu erwarten ist
 
