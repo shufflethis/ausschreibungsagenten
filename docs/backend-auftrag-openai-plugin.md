@@ -1,5 +1,16 @@
 # Backend-Auftrag: Plugin-Einreichung freimachen
 
+> **Status 01.09.2026: erledigt und produktiv geprüft.** `/mcp/open-data`
+> listet exakt fünf Werkzeuge, `fulltext_search` ist dort unbekannt,
+> Schemafehler liefern JSON-RPC `-32602`, und anonyme Kurzfassungen bleiben
+> strikt gecacht. Die Challenge-Route sowie die Compose-Weitergabe von
+> `OPENAI_APPS_CHALLENGE` sind vorbereitet. Backend-Commits: `3e36b03` und
+> `26da62d`. `f8859ed` schließt zusätzlich die Quellengrenze für Einzelabruf,
+> Summary und Länderaggregation. Offen ist nur der Token, den das OpenAI-Portal
+> beim Draft erzeugt.
+
+Der folgende Auftrag bleibt als Herleitung und reproduzierbare Abnahme erhalten.
+
 Zum Einfügen in eine Sitzung im Repo des MCP-/API-Backends (das, was
 `api.ausschreibungsagenten.de` und `api.tender-agents.com` ausliefert).
 
@@ -194,11 +205,10 @@ Nicht das richtige Repo sind: `shufflethis/ausschreibungsagenten` (Website),
 ## Warum das zusammen erledigt gehört
 
 Die fertige `chatgpt-app-submission.json` liegt in
-`shufflethis/ausschreibungsagenten-mcp` und führt **fünf** Werkzeuge. Solange
-der Server sechs ausliefert, widerspricht die Einreichung dem Server — und das
-ist die Art Mismatch, die einen Review kostet. Punkt 1 ist deshalb das
-eigentliche Tor; 2 und 3 sind billig und fallen einem Reviewer auf, der die
-Eingaben abklopft.
+`shufflethis/ausschreibungsagenten-mcp` und führt **fünf** Werkzeuge. Vor der
+Umsetzung lieferte der Server sechs; dieser Widerspruch hätte einen Review
+gekostet. Punkt 1 war deshalb das eigentliche Tor; 2 und 3 fallen einem
+Reviewer auf, der die Eingaben abklopft.
 
 Zwei frühere Punkte sind entfallen, seit die Einreichung unter der deutschen
 Marke läuft: `/mcp/open-data` existiert auf `api.ausschreibungsagenten.de`

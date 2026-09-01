@@ -24,7 +24,7 @@ in Chrome 149+ mit `chrome://flags/#enable-webmcp-testing`.
 
 | Punkt | Stand |
 | --- | --- |
-| Werkzeuge registrieren sich in Chrome 149 | ✅ am 28.08. auf der Live-URL bestätigt |
+| Werkzeuge registrieren sich in Chrome 149 | ✅ am 01.09. auf der Live-URL bestätigt: alle 11 gelistet, Suche, Shortlist, DOM-Klick und Rücklesen der Entscheidung geprüft |
 | Tafel für die Jury lesbar | ✅ sie folgt der Browsersprache — ein englischer Browser sieht eine englische Tafel samt Begründungen. Beim Video-Dreh also mit englischem Browserprofil aufnehmen |
 | Öffentliches Repo mit erkannter OSS-Lizenz | ✅ |
 | Abgrenzung Vorarbeit/Einreichungszeitraum | ✅ `WEBMCP.md`, dazu die Commit-Historie |
@@ -179,3 +179,5 @@ Prompt: *„What's on the board now?"*
 3. Live-URL ein letztes Mal in Chrome 149 durchspielen — die Jury testet dort.
 4. Repo-Link prüfen: Lizenz muss im Kopf der Repo-Seite stehen.
 5. Beschreibungstext oben einfügen.
+6. Nach der Frist weder Eintrag noch eingereichtes Repo oder Live-Seite ändern,
+   bis die Ergebnisse feststehen; weitere Entwicklung in einem Fork fortsetzen.

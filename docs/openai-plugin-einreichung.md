@@ -1,7 +1,9 @@
 # OpenAI-Plugin: Einreichungsmappe
 
-Stand: 28.08.2026. **Eingereicht wird unter der deutschen Marke
-Ausschreibungsagenten**, mit klarem DACH-Fokus.
+Stand: 01.09.2026. **Eingereicht wird unter der deutschen Marke
+Ausschreibungsagenten**, mit klarem DACH-Fokus. Die technische Plugin-Fläche
+ist produktiv bereit; offen sind nur noch Draft, Domain-Token und Absenden im
+OpenAI-Portal.
 
 Die internationale Marke Tender Agents war kurz im Gespräch. Dagegen sprach:
 Das Plugin hat gar keine deutsche Oberfläche — Werkzeugnamen, Beschreibungen
@@ -14,8 +16,9 @@ statt in einem zweiten Namen — das Modell wählt Plugins ohnehin über die
 Werkzeugbeschreibungen, nicht über den Anzeigenamen.
 
 Praktischer Nebeneffekt: die deutsche Fläche existiert bereits und der Server
-meldet dort schon den richtigen Namen. Damit fallen zwei der ursprünglich fünf
-Backend-Punkte weg; es bleiben drei.
+meldet dort schon den richtigen Namen. Die drei übrigen Backend-Punkte wurden
+am 01.09. produktiv ausgerollt. Auch die Challenge-Route ist vorbereitet; ihr
+Token entsteht erst beim Anlegen des Drafts im OpenAI-Portal.
 
 Quelle der Anforderungen: `developers.openai.com/plugins/app-guidelines`,
 gelesen am 28.08.2026.
@@ -57,8 +60,7 @@ Schnittstelle. Grund unten unter „Das Risiko".
 
 ## Werkzeuge
 
-Sechs, alle read-only, alle mit vollständigen Annotationen. Nach dem Fix unten
-sollen es **fünf** sein.
+Fünf, alle read-only, alle mit vollständigen Annotationen.
 
 | Werkzeug | Zweck |
 | --- | --- |
@@ -67,7 +69,9 @@ sollen es **fünf** sein.
 | `summarize_tender` | gekennzeichnete KI-Kurzfassung, de/en |
 | `source_status` | Datenstand je Portal, optional gefiltert |
 | `countries` | Verfahren je Land, optional ab Mindestzahl |
-| ~~`fulltext_search`~~ | **entfernen** — scheitert anonym, siehe unten |
+
+`fulltext_search` bleibt auf der bezahlten Fläche `/mcp`, wird auf der
+eingereichten Fläche `/mcp/open-data` aber weder gelistet noch ausgeführt.
 
 ### Begründung der Annotationen
 
@@ -80,17 +84,20 @@ Satz Werte — hier die Begründung, die in die Einreichung gehört:
 | --- | --- | --- |
 | `readOnlyHint` | `true` | Alle Werkzeuge lesen ausschließlich. Es wird nichts angelegt, geändert oder gelöscht; außerhalb der Unterhaltung ändert sich kein Zustand. |
 | `destructiveHint` | `false` | Folgt aus read-only: es gibt nichts, was zerstört werden könnte. |
-| `idempotentHint` | `true` | Dieselben Argumente liefern dieselbe Antwort. Ein wiederholter Aufruf hat keine zusätzliche Wirkung. Dass der Index zwischen zwei Aufrufen wächst, ändert daran nichts — die Wirkung des Aufrufs bleibt null. |
+| `idempotentHint` | `true` | Ein wiederholter Aufruf hat keine zusätzliche Wirkung und ändert keinen Zustand. Der Inhalt kann sich ändern, wenn der Index zwischen zwei Aufrufen wächst; das macht den Lesevorgang nicht weniger idempotent. |
 | `openWorldHint` | `false` | OpenAI definiert den Wert **enger als die allgemeine MCP-Spec**: `true` nur, wenn ein Werkzeug *„can change publicly visible internet state or external third-party systems, such as sending emails or messages, posting/publishing content"*. Keines unserer Werkzeuge schreibt irgendwo hin — sie lesen aus unserem eigenen Index. Damit ist `false` nach ihrer eigenen Definition eindeutig richtig, nicht nur vertretbar. |
 
-Diese Begründungen stehen wortgleich in `chatgpt-app-submission.json`.
+Die drei vom Import-Schema verlangten Begründungen (`readOnlyHint`,
+`openWorldHint`, `destructiveHint`) stehen wortgleich in
+`chatgpt-app-submission.json`. `idempotentHint` wird live vom MCP-Server
+geliefert, ist aber kein Feld des aktuellen Import-Schemas.
 
 ## Anforderungen gegen unseren Stand
 
 | Anforderung | Stand |
 | --- | --- |
 | Klare, zutreffende Werkzeugnamen | ✅ Server liefert `search_tenders` usw. ohne den internen `agentleads.`-Codenamen. Am 28.08. auch im öffentlichen MCP-Repo nachgezogen, dort stand er noch in der Werkzeugtabelle |
-| Beschreibungen entsprechen dem Verhalten | ⚠️ gilt für fünf Werkzeuge; `fulltext_search` nicht, siehe Blocker |
+| Beschreibungen entsprechen dem Verhalten | ✅ fünf Werkzeuge; `summarize_tender` nennt auf dieser Fläche ausdrücklich Cache und Fallback |
 | Korrekte Annotationen | ✅ vollständig gesetzt, Begründung siehe oben; Karte wird aus der Werkzeugliste erzeugt und kann nicht abweichen |
 | Minimale, zweckgebundene Eingaben | ✅ keine personenbezogenen Felder, keine Standortfelder |
 | Antwortminimierung | ✅ keine Session-, Trace- oder Request-IDs. `source_status` gibt Zeitstempel zurück — das ist der Zweck des Werkzeugs (Datenstand), nicht Telemetrie |
@@ -102,8 +109,8 @@ Diese Begründungen stehen wortgleich in `chatgpt-app-submission.json`.
 | Support-Kontakt | ✅ |
 | Entwickler-Verifizierung | ✅ Yawusa UG registriert |
 | Screenshots | ✅ **entfallen** — die Richtlinie sagt: *„Don't submit screenshots for plugins without UI."* Unser Server hat keine UI-Komponenten |
-| Keine Werbung, keine Abo-Bewerbung | ⚠️ siehe Blocker — die Fehlermeldung von `fulltext_search` bewirbt Tarife |
-| Fehler mit klarer Meldung abgefangen | ⚠️ zwei Lücken, siehe „Fehlerbehandlung" |
+| Keine Werbung, keine Abo-Bewerbung | ✅ `fulltext_search` ist nicht erreichbar; auch der Summary-Fallback enthält weder Tarif noch Signup-Link |
+| Fehler mit klarer Meldung abgefangen | ✅ Eingaben werden vor jedem Werkzeug zentral gegen dessen veröffentlichtes Schema geprüft und als JSON-RPC `-32602` beantwortet |
 
 ## Die Formulardatei
 
@@ -116,23 +123,26 @@ Output-Contract gebaut und liegt im MCP-Repo:
   einer Begründung, fünf positive und drei negative Testfälle
 - `brand/plugin-icon-512.png` — quadratisch, 512×512, ohne Wortmarke
 
-**Die Datei führt fünf Werkzeuge, der Server liefert sechs.** Sie passt erst,
-wenn `fulltext_search` von der Fläche genommen ist. Vorher nicht hochladen.
+Die Datei verwendet das aktuelle Schema
+`developers.openai.com/plugins/schemas/chatgpt-app-submission.v1.json`. Am
+01.09. wurde sie dagegen validiert und automatisch mit dem Live-Server
+verglichen: dieselben fünf Werkzeugnamen und dieselben Annotationen.
 
 ### Befunde aus der Prüfung, die der Skill verlangt
 
 1. **Kein Werkzeug deklariert `outputSchema`.** Kein Blocker, aber der Skill
    verlangt den Hinweis: *„Add an outputSchema so models can use this tool's
-   results more reliably."* Betrifft alle sechs. Lohnt sich, weil die Modelle
+   results more reliably."* Betrifft alle fünf. Lohnt sich, weil die Modelle
    die Ergebnisse dann verlässlicher weiterverarbeiten.
 2. **`summarize_tender` trägt `readOnlyHint: true` nur, weil die Fläche anonym
-   ist.** Anonyme Aufrufer bekommen ausschließlich gecachte Kurzfassungen. Ließe
-   sich dort eine neue erzeugen, wäre das ein Schreibvorgang plus LLM-Lauf, und
-   der Wert wäre falsch. Vor dem Absenden gegen das Backend gegenprüfen.
+   ist.** Im Code, in Tests und live geprüft: anonyme Aufrufer bekommen
+   ausschließlich gecachte Kurzfassungen. Ohne Cache verweist eine klare
+   Fehlermeldung auf `get_tender`; es gibt weder einen LLM-Lauf noch einen
+   Schreibvorgang.
 3. **Keine sensiblen Eingabefelder.** Kein Werkzeug fragt nach Zugangsdaten,
    Ausweisnummern, Gesundheits- oder Zahlungsdaten. Kein Standortfeld.
-4. **Werkzeugnamen decken sich mit dem Verhalten** — mit der bekannten Ausnahme
-   `fulltext_search`, dessen Beschreibung verschweigt, dass es anonym scheitert.
+4. **Werkzeugnamen decken sich mit dem Verhalten.** `fulltext_search` gehört
+   nicht mehr zur anonymen Open-Data-Werkzeugliste.
 
 ### Icon
 
@@ -158,9 +168,9 @@ Brandkit-Regel „Dunkler Grund, blaue Akzente: Die Marke lebt auf Nachtblau".
 > Verknüpfung auf dem Homescreen sehen. Nicht dringend, aber irgendwann
 > nachziehen.
 
-## Der offene Blocker: `fulltext_search`
+## Der behobene Blocker: `fulltext_search`
 
-Anonym aufgerufen — und die Einreichung ist anonym — antwortet das Werkzeug:
+Vor dem Fix antwortete das Werkzeug auf der anonymen Fläche:
 
 ```
 fulltext_search requires an API key with a paid tier (Pro/Agent).
@@ -183,9 +193,10 @@ Vier Verstöße in einer Zeile:
    auf dem Server nicht gibt. Der Reviewer sieht einen Werkzeugnamen ins Leere
    zeigen.
 
-**Empfehlung: `fulltext_search` von `/mcp/open-data` ganz entfernen.** Fünf
-Werkzeuge, die alle funktionieren, sind besser als sechs, von denen eines immer
-scheitert. Auf `/mcp` (bezahlte Fläche) bleibt es unverändert.
+Seit 01.09. ist `fulltext_search` von `/mcp/open-data` ganz entfernt. Ein
+direkter Aufruf liefert `Unknown tool: fulltext_search`; fünf Werkzeuge, die
+anonym funktionieren, werden gelistet. Auf `/mcp` (bezahlte Fläche) blieb es
+unverändert.
 
 Das liegt im privaten AgentLeads-Backend, nicht in diesem Repo und nicht im
 öffentlichen MCP-Repo — beide enthalten nur Doku und Discovery-Metadaten.
@@ -197,14 +208,16 @@ messaging or fallback behaviors."* Am 28.08. auf `/mcp/open-data` abgeklopft.
 Sauber sind: unbekanntes Werkzeug (`Unknown tool: …`), unsinniger Ländercode
 (leeres Ergebnis statt Fehler), unbekannte Tender-id (`Tender not found`).
 
-Zwei Lücken, beide im Backend:
+Die beiden damaligen Lücken sind behoben:
 
-1. **`countries` mit falschem Argumenttyp** (`min_count: "viele"`) antwortet mit
-   nacktem `Internal Server Error` — kein JSON-RPC, kein Hinweis, was falsch
-   war. Ein Reviewer, der die Eingaben abklopft, landet hier.
-2. **`get_tender` ohne `id`** antwortet `Tender not found`. Das ist irreführend:
-   gesucht wurde nichts, es fehlte das Pflichtargument. Richtig wäre eine
-   Meldung, die das benennt.
+1. **`countries` mit falschem Argumenttyp** (`min_count: "viele"`) liefert jetzt
+   JSON-RPC `-32602`: `Invalid argument 'min_count': expected integer.`
+2. **`get_tender` ohne `id`** liefert JSON-RPC `-32602`:
+   `Missing required argument: id`.
+
+Die gemeinsame Ursache war fehlende Schema-Prüfung an der MCP-Grenze. Deshalb
+wurde nicht nur für diese Beispiele gepatcht: Alle veröffentlichten
+Werkzeugschemas werden nun vor der Dispatch-Logik an einer Stelle geprüft.
 
 ## Das Risiko, das man kennen muss
 
@@ -261,15 +274,24 @@ keine Abonnements**, Checkout ausschließlich extern. Das Plugin kann den Pro-
 oder Agent-Tarif also nicht verkaufen, und es darf Tarife auch nicht anzeigen
 oder bewerben. Es ist ein Entdeckungs- und Lead-Kanal.
 
-## Offen
+## Technischer Stand und Restpunkte
 
-Alles im privaten AgentLeads-Backend. Am 28.08. gegen die Live-Hosts geprüft.
+Am 01.09. gegen Produktion geprüft und erledigt:
 
-1. **`fulltext_search`** von `/mcp/open-data` entfernen. Der Ablehnungsgrund.
-2. **`countries`** darf bei falschem Argumenttyp keinen nackten
-   `Internal Server Error` liefern.
-3. **`get_tender`** ohne `id` soll das fehlende Argument benennen, nicht
-   `Tender not found` melden.
+1. `/mcp/open-data` listet exakt fünf Werkzeuge, ohne `fulltext_search`.
+2. Ungültige und fehlende Argumente liefern klare JSON-RPC-Fehler.
+3. Die Quellengrenze gilt für Suche, Einzelabruf, Summary, Länderaggregation
+   und Quellenstatus. Auch eine bekannte ID aus einer HTML-Quelle liefert auf
+   dieser Fläche nur `Tender not found`.
+4. Die Challenge-Route und die Compose-Weitergabe von
+   `OPENAI_APPS_CHALLENGE` sind vorbereitet.
+5. Die anonyme Fläche ignoriert auch einen mitgesendeten Pro-Bearer-Token und
+   bleibt dadurch tatsächlich read-only.
+
+Offen bleibt nur der Portalablauf: Draft anlegen, erzeugten Challenge-Token in
+die Produktions-`.env` übernehmen, App-Container neu erstellen, Domain
+verifizieren und absenden. Ohne gesetzten Token liefert die Route absichtlich
+404.
 
 Die beiden Punkte zur internationalen Marke — `/mcp/open-data` auf
 `api.tender-agents.com` und ein markengerechtes `serverInfo` dort — sind mit
@@ -294,8 +316,9 @@ E-Mail und nicht über das Verzeichnis.
 
 ### Reihenfolge
 
-1. **Backend-Punkte erledigen** (siehe [`backend-auftrag-openai-plugin.md`](backend-auftrag-openai-plugin.md)).
-   Das Portal scannt den Server selbst („Scan Tools") und sieht `fulltext_search`.
+1. **Backend bereit — erledigt.** Siehe
+   [`backend-auftrag-openai-plugin.md`](backend-auftrag-openai-plugin.md). Das
+   Portal scannt jetzt fünf anonyme, read-only Werkzeuge.
 2. **Rolle prüfen.** Der Einreichende braucht in der Organisation die Berechtigung
    **Apps Management = Write**. Organisationsinhaber haben sie automatisch,
    alle anderen nicht. Einzustellen unter den Rollen-Einstellungen der Platform.
@@ -320,7 +343,10 @@ Das Portal erzeugt einen Token, der unter dieser Adresse abrufbar sein muss:
 https://api.ausschreibungsagenten.de/.well-known/openai-apps-challenge
 ```
 
-Heute: 404. Die Regel lautet „MCP-Hostname oder ein **Parent**-Hostname".
+Ohne gesetzten Portal-Token: absichtlich 404. Die Route ist implementiert,
+getestet und produktiv erreichbar; Docker Compose reicht
+`OPENAI_APPS_CHALLENGE` in den App-Container durch. Die Regel lautet
+„MCP-Hostname oder ein **Parent**-Hostname".
 
 - `api.ausschreibungsagenten.de` — der Standardweg, **Backend**.
 - `ausschreibungsagenten.de` — wäre als Parent zulässig und liegt bei Vercel,
@@ -357,7 +383,8 @@ vor. Diese Felder verlangt das Formular zusätzlich:
 > interfaces: TED (all 27 EU member states), service.bund.de and Datenservice
 > Öffentlicher Einkauf (German federal, above and below threshold), Find a
 > Tender and Contracts Finder (UK). Five tools, all read-only. No test
-> credentials needed — every tool works anonymously.
+> credentials needed — all tools are callable anonymously; summaries return a
+> cached result or a clear fallback to the full notice.
 
 **Verfügbarkeit (Länder):** Empfehlung **Deutschland, Österreich, Schweiz**.
 Die Richtlinie sagt: nur dort auswählen, wo *„publisher, product, support
@@ -389,7 +416,7 @@ kein Blocker.
 ## Prüfbefehle
 
 ```bash
-# 1. Werkzeugliste der eingereichten Flaeche — nach dem Fix ohne fulltext_search
+# 1. Werkzeugliste der eingereichten Flaeche — genau fuenf, ohne fulltext_search
 curl -sX POST https://api.ausschreibungsagenten.de/mcp/open-data \
   -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
@@ -399,7 +426,7 @@ curl -sX POST https://api.ausschreibungsagenten.de/mcp/open-data \
   -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"source_status","arguments":{}}}'
 
-# 3. Der Blocker: muss nach dem Fix "unknown tool" liefern, nicht die Tarifwerbung
+# 3. Entferntes Werkzeug: "unknown tool", keine Tarifwerbung
 curl -sX POST https://api.ausschreibungsagenten.de/mcp/open-data \
   -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"fulltext_search","arguments":{"query":"Fassade"}}}'
