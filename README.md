@@ -30,12 +30,13 @@ person and the agent work on the same shortlist.
 
 The landing page registers eleven tools through `document.modelContext`:
 search, result details, source freshness, form prefill, and a shared go/no-go
-board that the person and the agent edit together. Every call changes what is
-on the screen. No tool submits a form; none returns a recommendation.
+board that the person and the agent edit together. Each call either changes what
+is on the screen or reads that same visible state back. No tool submits a form;
+none returns a recommendation.
 
 This is a different surface from the MCP server at `/mcp`: there an agent calls
-the backend without a browser, here every call visibly changes the state of the
-open page.
+the backend without a browser; here state-changing calls visibly update the open
+page, and read-only calls return what the person can see there.
 
 Full description, tool list and testing instructions: **[WEBMCP.md](WEBMCP.md)**.
 

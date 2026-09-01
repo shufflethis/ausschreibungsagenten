@@ -8,8 +8,9 @@ import LandingPage from './pages/LandingPage'
 globalThis.IS_REACT_ACT_ENVIRONMENT = true
 
 // WebMCP-Werkzeuge sind nur dann mehr als DOM-Scraping mit Extraschritten,
-// wenn ihr Aufruf den sichtbaren Zustand der Seite aendert. Genau das
-// pruefen diese Tests - und dass kein Werkzeug ein Formular abschickt.
+// wenn sie den sichtbaren Zustand der Seite aendern oder genau diesen Zustand
+// zurueckgeben. Genau das pruefen diese Tests - und dass kein Werkzeug ein
+// Formular abschickt.
 const TREFFER = [
     {
         id: 't-1',
@@ -173,6 +174,7 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
             expect(eintrag.annotations.untrustedContentHint, name).toBe(true)
         }
         expect(registriert.find((e) => e.name === 'prefill_pilot_profile').annotations.readOnlyHint).toBe(false)
+        expect(registriert.find((e) => e.name === 'shortlist_tender').description).toContain('follow the browser language')
     })
 
     it('search_tenders aendert die sichtbare Trefferliste', async () => {

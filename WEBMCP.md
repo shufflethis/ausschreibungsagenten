@@ -32,8 +32,9 @@ human out of the loop entirely. Screen-scraping agents are the other failure
 mode: the human watches an agent guess its way through a UI it does not
 understand, and has no shared artifact to argue with.
 
-WebMCP gives both parties the same board. Every tool call changes what is on the
-screen. The human can override any of it by clicking, and the agent reads those
+WebMCP gives both parties the same board. State-changing tool calls update what
+is on the screen; read-only tools return that same visible state and reasoning.
+The human can override any of it by clicking, and the agent reads those
 overrides back on its next call. That is the collaborative workflow the WebMCP
 spec describes, applied to a decision that genuinely needs two kinds of
 knowledge.
@@ -135,7 +136,7 @@ Added during the submission period:
 - All 11 tools, registered from the component whose state they drive
 - The go/no-go board: shared state, visible UI, `localStorage` persistence
 - `Origin-Agent-Cluster: ?1`
-- `src/webmcpWerkzeuge.test.jsx` (18 tests) and `src/vergabe.test.js` (16 tests)
+- `src/webmcpWerkzeuge.test.jsx` (20 tests) and `src/vergabe.test.js` (23 tests)
 - Removal of the inline stub, replaced by registration from the component whose
   state the tools actually drive
 

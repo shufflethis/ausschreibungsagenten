@@ -57,9 +57,10 @@ work on the same visible state.
 
 ### How it creates a better user experience
 
-Every tool call changes what is on the screen. When the agent searches, the
-result list on the page reloads. When it shortlists a tender, a card appears on
-a go/no-go board with its reasons spelled out. Nothing happens off-screen.
+State-changing tool calls change what is on the screen. When the agent searches,
+the result list on the page reloads. When it shortlists a tender, a card appears
+on a go/no-go board with its reasons spelled out. Read-only tools return that
+same visible state and reasoning instead of maintaining a hidden second copy.
 
 The reasons come from fields the result card never shows: CPV division, place of
 performance, days to deadline, value against the EU threshold for that contract
@@ -114,7 +115,7 @@ The board follows the browser language, German or English, reasons included.
 Only the board: it is the surface the two parties share, and both have to read
 it. The rest of the page stays German, because that is who it is for.
 
-35 tests cover the tools and the domain logic, including the one that matters:
+43 tests cover the tools and the domain logic, including the one that matters:
 a human clicks **Go** in the DOM, and `list_shortlist` reads that decision back.
 
 ---
@@ -166,7 +167,7 @@ Prompt: *„What's on the board now?"*
 
 **2:25–2:45 — Abbinder** *(Bild: Repo)*
 
-> Built on a live procurement platform, MIT licensed, eleven tools, thirty-five
+> Built on a live procurement platform, MIT licensed, eleven tools, forty-three
 > tests. The link to the original notice always prevails over anything we show.
 
 **Nicht vergessen:** kein fremdes Markenmaterial, keine geschützte Musik.

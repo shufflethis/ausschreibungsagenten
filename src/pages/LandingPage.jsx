@@ -303,10 +303,10 @@ export default function LandingPage() {
     //
     // Werkzeuge fuer Agenten, die *diese geoeffnete Seite* bedienen. Der
     // MCP-Server unter /mcp bleibt davon unberuehrt: dort ruft ein Agent
-    // das Backend ohne Browser auf, hier aendert jeder Aufruf sichtbar den
-    // Zustand der Seite. Genau das ist der Zweck - der Mensch davor sieht,
-    // was der Agent tut, und der Agent muss die Karten nicht aus dem DOM
-    // zusammenkratzen.
+    // das Backend ohne Browser auf. Hier aendern schreibende Aufrufe den
+    // sichtbaren Zustand; lesende Aufrufe geben genau diesen Zustand zurueck.
+    // Der Mensch davor sieht, was der Agent tut, und der Agent muss die Karten
+    // nicht aus dem DOM zusammenkratzen.
     //
     // Ohne unterstuetzenden Browser passiert hier nichts (siehe
     // src/lib/webmcp.js). Heute ist das jeder Besucher ausser Chrome 149+
@@ -573,7 +573,7 @@ export default function LandingPage() {
                 title: 'Auf die Go/No-Go-Tafel legen',
                 annotations: { readOnlyHint: false, untrustedContentHint: true },
                 description:
-                    'Put a tender on the shared go/no-go board on this page and compute its fit reasons from the notice fields (CPV division, place of performance, days to deadline, value against the EU threshold, award criteria, lots, framework agreement, GPA coverage). The board is visible to the user, who can override every decision. Reason texts are German because they are rendered on the page.',
+                    'Put a tender on the shared go/no-go board on this page and compute its fit reasons from the notice fields (CPV division, place of performance, days to deadline, value against the EU threshold, award criteria, lots, framework agreement, GPA coverage). The board is visible to the user, who can override every decision. Reason texts follow the browser language so the user and agent read the same board.',
                 inputSchema: {
                     type: 'object',
                     properties: {
