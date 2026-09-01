@@ -1,0 +1,83 @@
+1
+00:00:00,000 --> 00:00:06,000
+German public procurement publishes more notices than any contractor can read.
+
+2
+00:00:06,000 --> 00:00:14,000
+Finding them is easy. Deciding which ones to bid on is the expensive part,
+and it needs two kinds of knowledge that never sit in the same place.
+
+3
+00:00:14,000 --> 00:00:21,000
+This site is called Ausschreibungsagenten.de — translated: Tender Agents.
+
+4
+00:00:21,000 --> 00:00:30,000
+It registers 11 tools, to be exact: 11 WebMCP tools for search, details,
+source freshness, and a shared Go/No-Go board.
+
+5
+00:00:30,000 --> 00:00:37,000
+Look for facade tenders in Germany, put the two with the longest deadlines
+on the board, and explain them.
+
+6
+00:00:37,000 --> 00:00:46,000
+Please watch the page, not the chat.
+
+7
+00:00:46,000 --> 00:00:58,000
+The search runs. The result list changes. Two tenders go on the board,
+each with its reasons.
+
+8
+00:00:58,000 --> 00:01:06,000
+CPV division, place of performance, days to deadline, and contract value
+against the EU threshold for construction.
+
+9
+00:01:06,000 --> 00:01:15,000
+Whether the award is on price alone and how many lots. Those reasons come
+from fields the result card never shows.
+
+10
+00:01:15,000 --> 00:01:24,000
+Now I disagree. The one on the left is out of range because its place of
+performance is not specified.
+
+11
+00:01:24,000 --> 00:01:33,000
+So, what is on the board now?
+
+12
+00:01:33,000 --> 00:01:37,000
+It reads back a decision it did not make.
+
+13
+00:01:37,000 --> 00:01:46,000
+That is the whole point: one artifact, two parties,
+and the human keeps the last word.
+
+14
+00:01:46,000 --> 00:01:55,000
+Three things this does not do. No tool submits a form. The pilot request
+emails a real person, so an agent may fill it in,
+
+15
+00:01:55,000 --> 00:02:04,000
+but sending stays a human click. Tools returning notice text are marked as
+untrusted content. That text comes from 17 third-party portals.
+
+16
+00:02:04,000 --> 00:02:15,000
+And no tool returns a recommendation — only arguments with a sign and a count.
+
+17
+00:02:15,000 --> 00:02:21,000
+Ausschreibungsagenten, or Tender Agents, is built on a live procurement
+platform.
+
+18
+00:02:21,000 --> 00:02:32,000
+The code is on GitHub under an MIT license: 11 tools, 43 tests.
+The link to the original notice always prevails over anything we show.

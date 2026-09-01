@@ -7,6 +7,12 @@ right tender is still slow and fragmented. Companies search across many
 portals, compare incomplete notices, check deadlines and thresholds, and then
 manually decide whether an opportunity deserves further attention.
 
+In 2024 alone, [Germany's Federal Statistical
+Office](https://www.destatis.de/EN/Themes/Government/Public-Finance/Public-procurement/_node.html)
+recorded 199,334 public contracts and concessions with a combined value of
+€135.2 billion. The challenge is therefore not a lack of opportunity, but
+turning a vast market into a manageable, evidence-based decision process.
+
 We wanted to explore a more useful role for browser agents: not replacing the
 human decision, but helping people turn scattered tender data into a
 transparent Go/No-Go workflow.
