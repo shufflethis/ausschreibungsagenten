@@ -35,6 +35,16 @@ read that decision during its next tool call.
 The result is a collaborative workspace instead of an invisible automation
 pipeline.
 
+## What was new for the challenge
+
+Tender Agents existed before August 25, 2026 as a public-tender search website.
+During the challenge period, we replaced its one-tool inline WebMCP prototype,
+which only proxied raw JSON, with 11 tools connected to the live React state.
+We also added the shared persistent Go/No-Go board, procurement-specific fit
+explanations, a bilingual board interface, explicit trust-boundary handling,
+and 43 focused tests. The dated commit history and `WEBMCP.md` document this
+extension.
+
 ## How we built it
 
 The frontend is built with React, Vite, and JavaScript and deployed on Vercel.
@@ -106,28 +116,3 @@ ranking.
 The longer-term goal is an agent-assisted workflow that helps small and
 medium-sized companies discover suitable public contracts without hiding the
 evidence behind each recommendation.
-
----
-
-## Built with
-
-WebMCP, JavaScript, React, Vite, Vercel, HTML5, CSS3, Node.js, REST API, Vitest,
-Testing Library, LocalStorage, MCP, Chrome
-
-## Try it out
-
-- Live WebMCP demo: https://www.ausschreibungsagenten.de/
-- GitHub repository: https://github.com/shufflethis/ausschreibungsagenten
-- WebMCP implementation notes:
-  https://github.com/shufflethis/ausschreibungsagenten/blob/master/WEBMCP.md
-
-## Suggested media captions
-
-1. **Live Tender Search** — An agent searches live public procurement sources
-   through the website.
-2. **Shared Go/No-Go Board** — Selected tenders appear on a board shared by the
-   agent and the human user.
-3. **Transparent Fit Reasons** — Each opportunity includes evidence-based fit
-   reasons instead of a black-box recommendation.
-4. **Human Override** — People retain control: manual Go/No-Go decisions are
-   persisted and readable by the agent.
