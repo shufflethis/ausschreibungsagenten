@@ -33,6 +33,9 @@ Alle Aufrufer der Funktion suchen und die gemeinsame Stelle einmal reparieren.
 - Kein Gerüst, das niemand bestellt hat.
 - Löschen vor Hinzufügen. Langweilig vor clever. So wenige Dateien wie möglich.
 - Komplexe Wünsche hinterfragen: „Brauchst du wirklich X, oder deckt Y das ab?"
+  Das als internen Prüfschritt behandeln, eine konkrete Empfehlung nennen und
+  weiterarbeiten. Nur nachfragen und auf die Antwort warten, wenn sie Umfang
+  oder Ergebnis der Arbeit grundlegend ändern würde.
 - Bei zwei gleich großen Wegen den nehmen, der die Randfälle richtig macht.
   Faul heißt weniger Code, nicht das wacklige Verfahren.
 - Eine bewusste Vereinfachung mit bekannter Grenze (globales Lock, O(n²)-Scan,
