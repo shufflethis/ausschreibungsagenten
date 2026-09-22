@@ -15,6 +15,7 @@ it('verbindet Einstieg, Blättern, belegte Nachweise und einen gespeicherten Än
     globalThis.fetch = vi.fn(async (url) => {
         const parsed = new URL(url, 'https://example.org')
         if (parsed.pathname === '/api/source-status') return { ok: true, json: async () => [] }
+        if (parsed.pathname === '/api/tender-document-watches') return { ok: true, json: async () => ({ supported_ids: ['notice-0'], enabled: true }) }
         const values = changed ? rows.map((row, i) => i ? row : { ...row, deadline_at: '2027-10-20T10:00:00Z', document_revision: 'v2' }) : rows
         const offset = Number(parsed.searchParams.get('offset') || 0), limit = Number(parsed.searchParams.get('limit') || 25)
         return { ok: true, json: async () => parsed.searchParams.has('ids') ? values.map((row) => compatible ? row : { ...row, deadline_details: undefined }) : values.slice(offset, offset + limit) }
@@ -37,6 +38,8 @@ it('verbindet Einstieg, Blättern, belegte Nachweise und einen gespeicherten Än
     expect(JSON.parse(localStorage.getItem('aa_merkliste'))[0].evidence.references).toBe('missing')
     fireEvent.click(screen.getByRole('button', { name: 'Suche speichern' }))
     await waitFor(() => expect(JSON.parse(localStorage.getItem(SUCHAUFTRAEGE_KEY))?.[0]?.snapshots).toHaveLength(13))
+    await screen.findByText(/Unterlagenabruf für 1 von 13 beobachteten Verfahren unterstützt/)
+    expect(globalThis.fetch.mock.calls.some(([url, options]) => url === '/api/tender-document-watches' && options?.method === 'POST' && JSON.parse(options.body).ids.length === 13)).toBe(true)
     changed = true
     fireEvent.click(screen.getByRole('button', { name: 'Jetzt aktualisieren ↻' }))
     await screen.findByText('Frist geändert')

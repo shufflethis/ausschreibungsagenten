@@ -71,7 +71,7 @@ export function suchauftragVergleichen(saved, current, watched = [], now = new D
         }
         if (!before && currentIds.has(row.id)) add('new', 'Neu gefunden', null, row.id)
         if (before && (Date.parse(before.deadline_at) || null) !== (Date.parse(row.deadline_at) || null)) add('deadline', before.deadline_at ? 'Frist geändert' : 'Frist ergänzt', before.deadline_at, row.deadline_at || null)
-        if (before && row.document_revision && before.document_revision !== row.document_revision) add('documents', before.document_revision ? 'Unterlagen geändert' : 'Unterlagen erstmals erfasst', before.document_revision, row.document_revision)
+        if (before && (before.document_revision || row.document_revision) && before.document_revision !== row.document_revision) add('documents', !row.document_revision ? 'Unterlagen nicht mehr erfasst' : before.document_revision ? 'Unterlagen geändert' : 'Unterlagen erstmals erfasst', before.document_revision, row.document_revision)
     }
     // Poll timestamps are intentionally ignored: only actual values produce news.
     // This quadratic deduplication is bounded to 75 rows; use sets if that limit grows.
