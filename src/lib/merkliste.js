@@ -51,6 +51,8 @@ export function merklisteLesen(speicher) {
                 tender: eintrag.tender,
                 entscheidung: ['go', 'no_go'].includes(eintrag.entscheidung) ? eintrag.entscheidung : null,
                 notiz: typeof eintrag.notiz === 'string' ? eintrag.notiz : '',
+                criteria: eintrag.criteria && typeof eintrag.criteria === 'object' ? eintrag.criteria : {},
+                evidence: Object.fromEntries(Object.entries(eintrag.evidence || {}).filter(([, value]) => ['available', 'missing'].includes(value))),
                 gruende: [],
             }))
     } catch {
@@ -67,6 +69,8 @@ export function merklisteSchreiben(liste, speicher) {
             tender: eintrag.tender,
             entscheidung: eintrag.entscheidung,
             notiz: eintrag.notiz,
+            criteria: eintrag.criteria,
+            evidence: eintrag.evidence,
         }))
         s.setItem(MERKLISTE_SCHLUESSEL, JSON.stringify(schlank))
         return true

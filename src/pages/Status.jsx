@@ -141,8 +141,9 @@ export default function Status() {
                     <p className="section__subtitle">
                         Oberhalb der EU-Schwellenwerte über TED; deutsche Unterschwellen-Verfahren
                         zusätzlich über Bund, den Datenservice Öffentlicher Einkauf, DTVP, RIB und
-                        zehn Landes- und Regionalportale. Die Zahlen sind der aktuelle Live-Bestand
-                        aktiver Verfahren unserer Verticals.
+                        zehn Landes- und Regionalportale. Die Zahlen zählen gespeicherte
+                        Bekanntmachungen unserer Verticals, einschließlich abgelaufener Verfahren
+                        und möglicher Mehrfachveröffentlichungen. Sie sind keine Zahl aktuell offener Aufträge.
                     </p>
                     {countries.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>

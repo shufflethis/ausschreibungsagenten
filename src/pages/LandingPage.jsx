@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
 import Icon from '../components/Icon'
+import Entscheidungskarte from '../components/Entscheidungskarte'
 import VideoAbschnitt from '../components/VideoAbschnitt'
 import { VIDEO_BESCHREIBUNG, VIDEO_TITEL, VIDEO_TRANSKRIPT } from '../data/videoTranskript'
 import { stelleWerkzeugeBereit, warteAuf, werkzeugAntwort, werkzeugFehler } from '../lib/webmcp'
 import { eintragAnlegen, MERKLISTE_GRENZE, merklisteLesen, merklisteSchreiben } from '../lib/merkliste'
-import { artAusCpv, EU_SCHWELLENWERTE, fitGruende, gruendeBilanz, schwellenwertPruefung } from '../lib/vergabe'
+import { artAusCpv, EU_SCHWELLENWERTE, fitGruende, fristText, GEWERKE, gruendeBilanz, quellenUrl, schwellenwertPruefung } from '../lib/vergabe'
+import { neuerSuchauftrag, SUCHAUFTRAEGE_LIMIT, suchauftragLesen, suchauftragSchreiben, suchauftragVergleichen, suchkriterien, suchparameter } from '../lib/suchauftraege'
 import { spracheErmitteln, STANDARDSPRACHE } from '../lib/sprache'
 import { tafelTexte } from '../lib/tafelTexte'
 
@@ -64,7 +66,7 @@ const TENDER_PRESETS = [
 ]
 
 const formatDate = (value, sprache = 'de') => {
-    if (!value) return sprache === 'en' ? 'No deadline stated' : 'Keine Frist genannt'
+    if (!value || !Number.isFinite(Date.parse(value))) return sprache === 'en' ? 'No deadline stated' : 'Keine Frist genannt'
     return new Intl.DateTimeFormat(sprache === 'en' ? 'en-GB' : 'de-DE', {
         day: '2-digit',
         month: '2-digit',
@@ -82,13 +84,27 @@ export default function LandingPage() {
     const [formData, setFormData] = useState({ name: '', email: '', company: '', branche: '', message: '', website: '' })
     const [formStatus, setFormStatus] = useState(null)
     const [sending, setSending] = useState(false)
-    const [tenderQuery, setTenderQuery] = useState('marketing')
-    // Land, Mindest-Score und Trefferzahl haben bewusst kein Bedienelement:
-    // sie sind die Stellschrauben, die das WebMCP-Werkzeug `search_tenders`
-    // setzt. Fuer Menschen bleibt die Suche ein einziges Eingabefeld.
+    const [tenderQuery, setTenderQuery] = useState('')
+    const [tenderRegion, setTenderRegion] = useState('')
+    const [tenderVertical, setTenderVertical] = useState('')
+    const [exclusions, setExclusions] = useState('')
+    const [minimumDays, setMinimumDays] = useState(0)
     const [tenderLand, setTenderLand] = useState('DEU')
-    const [tenderMindestScore, setTenderMindestScore] = useState(50)
-    const [tenderAnzahl, setTenderAnzahl] = useState(6)
+    const [tenderMindestScore, setTenderMindestScore] = useState(0)
+    const [tenderAnzahl, setTenderAnzahl] = useState(12)
+    const [hasMore, setHasMore] = useState(false)
+    const [moreLoading, setMoreLoading] = useState(false)
+    const [moreError, setMoreError] = useState('')
+    const searchVersion = useRef(0)
+    const nextOffset = useRef(0)
+    const [savedSearches, setSavedSearches] = useState([])
+    const [checkingSearches, setCheckingSearches] = useState(false)
+    const [savingSearch, setSavingSearch] = useState(false)
+    const [searchRetry, setSearchRetry] = useState(0)
+    const savedCheckController = useRef(null)
+    const [searchNotice, setSearchNotice] = useState('')
+    const [searchErrors, setSearchErrors] = useState({})
+    const dialogRef = useRef(null)
     // Der Erstaufruf soll nicht entprellt werden, jede weitere Eingabe schon.
     const ersterTenderLauf = useRef(true)
     const [tenders, setTenders] = useState([])
@@ -120,11 +136,121 @@ export default function LandingPage() {
     const [sprache, setSprache] = useState(STANDARDSPRACHE)
     const texte = tafelTexte(sprache)
 
-    const indexedTotal = sourceStatus.reduce((sum, source) => sum + (Number(source.stored) || 0), 0)
+    const criteria = suchkriterien({ search: tenderQuery, region: tenderRegion, vertical: tenderVertical, country: tenderLand, exclusions, minimumDays })
     const latestSuccessAt = sourceStatus.reduce(
         (latest, source) => (source.last_success_at && (!latest || source.last_success_at > latest) ? source.last_success_at : latest),
         null,
     )
+
+    useEffect(() => {
+        if (!selectedTender || !dialogRef.current) return
+        const previous = document.activeElement
+        const dialog = dialogRef.current
+        if (typeof dialog.showModal === 'function') dialog.showModal()
+        else dialog.setAttribute('open', '')
+        return () => { if (typeof dialog.close === 'function') dialog.close(); previous?.focus?.() }
+    }, [selectedTender?.id])
+
+    function savedSearchesWrite(rows) {
+        setSavedSearches((previous) => {
+            const next = typeof rows === 'function' ? rows(previous) : rows
+            if (!suchauftragSchreiben(next)) setSearchNotice('Ihr Browser konnte die Suche nicht dauerhaft speichern. Sie bleibt nur in dieser Sitzung verfügbar.')
+            return next
+        })
+    }
+
+    async function checkSavedSearches(rows, signal) {
+        if (!rows.length) return
+        if (!signal) {
+            savedCheckController.current?.abort()
+            savedCheckController.current = new AbortController()
+            signal = savedCheckController.current.signal
+        }
+        setCheckingSearches(true)
+        const errors = {}
+        const checked = []
+        for (const saved of rows) {
+            if (signal?.aborted) return
+            try {
+                const res = await fetch(`/api/tenders-public?${suchparameter(saved.criteria)}`, { signal })
+                if (!res.ok) throw new Error('Suche nicht erreichbar')
+                const current = await res.json()
+                if (!Array.isArray(current)) throw new Error('Ungültige Antwort')
+                let watched = []
+                if (saved.snapshots.length) {
+                    const ids = saved.snapshots.map((row) => row.id).join(',')
+                    const previous = await fetch(`/api/tenders-public?${new URLSearchParams({ ids })}`, { signal })
+                    if (!previous.ok) throw new Error('Gespeicherte Treffer konnten nicht geprüft werden')
+                    watched = await previous.json()
+                    if (!Array.isArray(watched)) throw new Error('Ungültige Antwort')
+                    if (watched.some((row) => !saved.snapshots.some((old) => old.id === row.id) || !Array.isArray(row.deadline_details))) throw new Error('Der Änderungsvergleich ist derzeit nicht verfügbar')
+                }
+                checked.push(suchauftragVergleichen(saved, current, watched))
+            } catch (error) {
+                if (signal?.aborted) return
+                errors[saved.id] = error.message
+                checked.push(saved)
+            }
+        }
+        if (!signal?.aborted) {
+            savedSearchesWrite((previous) => previous.map((row) => checked.find((item) => item.id === row.id) || row))
+            setSearchErrors(errors)
+            setCheckingSearches(false)
+        }
+    }
+
+    useEffect(() => {
+        const controller = new AbortController()
+        const saved = suchauftragLesen()
+        setSavedSearches(saved)
+        checkSavedSearches(saved, controller.signal)
+        return () => { controller.abort(); savedCheckController.current?.abort() }
+    }, [])
+
+    async function saveSearch() {
+        if (tendersLoading || tendersError || checkingSearches || savingSearch) return
+        const existing = savedSearches.find((row) => JSON.stringify(row.criteria) === JSON.stringify(criteria))
+        if (existing) { setSearchNotice('Diese Suche ist bereits gespeichert.'); return }
+        if (savedSearches.length >= SUCHAUFTRAEGE_LIMIT) { setSearchNotice(`Sie können ${SUCHAUFTRAEGE_LIMIT} Suchen speichern. Entfernen Sie zuerst eine nicht mehr benötigte Suche.`); return }
+        setSavingSearch(true)
+        try {
+            // Capture the same 25-result baseline used by every later comparison.
+            // The visible first page may only contain twelve results.
+            const response = await fetch(`/api/tenders-public?${suchparameter(criteria)}`)
+            if (!response.ok) throw new Error()
+            const baseline = await response.json()
+            if (!Array.isArray(baseline)) throw new Error()
+            savedSearchesWrite((previous) => [...previous, neuerSuchauftrag(criteria, baseline)])
+            setSearchNotice('Suche gespeichert. Neue Treffer und Änderungen werden beim nächsten Besuch oder beim Aktualisieren verglichen.')
+        } catch { setSearchNotice('Die Suche konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.') }
+        finally { setSavingSearch(false) }
+    }
+
+    function openSavedSearch(saved) {
+        const c = saved.criteria
+        setTenderQuery(c.search); setTenderRegion(c.region); setTenderVertical(c.vertical)
+        setTenderLand(c.country); setTenderMindestScore(0); setExclusions(c.exclusions); setMinimumDays(c.minimumDays)
+        document.getElementById('suche')?.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    async function loadMore() {
+        const version = searchVersion.current
+        setMoreLoading(true); setMoreError('')
+        try {
+            const params = suchparameter(criteria, { limit: tenderAnzahl, offset: nextOffset.current })
+            params.set('min_score', String(tenderMindestScore))
+            const res = await fetch(`/api/tenders-public?${params}`)
+            if (!res.ok) throw new Error()
+            const rows = await res.json()
+            if (!Array.isArray(rows)) throw new Error()
+            if (searchVersion.current === version) {
+                nextOffset.current += rows.length
+                setTenders((old) => [...old, ...rows.filter((row) => !old.some((t) => t.id === row.id))])
+                setHasMore(rows.length === tenderAnzahl)
+            }
+        } catch { if (searchVersion.current === version) setMoreError('Weitere Treffer konnten nicht geladen werden. Bitte erneut versuchen.') }
+        finally { if (searchVersion.current === version) setMoreLoading(false) }
+    }
 
     // Die Inhaltsseiten verlinken das Kontaktformular mit "?thema=...".
     // Damit steht im Nachrichtenfeld schon, worum es geht, und die Anfrage
@@ -153,6 +279,9 @@ export default function LandingPage() {
 
     useEffect(() => {
         const controller = new AbortController()
+        searchVersion.current += 1
+        setTendersLoading(true)
+        setMoreLoading(false); setMoreError('')
         const loadTenders = async () => {
             setTendersLoading(true)
             setTendersError(null)
@@ -163,6 +292,8 @@ export default function LandingPage() {
                     min_score: String(tenderMindestScore),
                     limit: String(tenderAnzahl),
                 })
+                if (tenderRegion.trim()) params.set('performance_region', tenderRegion.trim())
+                if (tenderVertical) params.set('vertical', tenderVertical)
                 // Gecachte KI-Kurzfassung je Treffer (Backend labelt sie, das
                 // Original bleibt massgeblich). Ausgelassen wird nur der
                 // Bereich von ein bis zwei Zeichen: solche Zwischenstaende
@@ -181,7 +312,10 @@ export default function LandingPage() {
                     throw new Error('Tender search failed')
                 }
                 const data = await res.json()
+                if (controller.signal.aborted) return
                 setTenders(Array.isArray(data) ? data : [])
+                nextOffset.current = Array.isArray(data) ? data.length : 0
+                setHasMore(Array.isArray(data) && data.length === tenderAnzahl)
             } catch (err) {
                 if (err.name !== 'AbortError') {
                     setTendersError('Aktuelle Ausschreibungen konnten gerade nicht geladen werden.')
@@ -212,7 +346,7 @@ export default function LandingPage() {
             clearTimeout(timer)
             controller.abort()
         }
-    }, [tenderQuery, tenderLand, tenderMindestScore, tenderAnzahl])
+    }, [tenderQuery, tenderLand, tenderMindestScore, tenderAnzahl, tenderRegion, tenderVertical, searchRetry])
 
     useEffect(() => {
         const controller = new AbortController()
@@ -278,7 +412,7 @@ export default function LandingPage() {
                 )
             }
             if (bisher.length >= MERKLISTE_GRENZE) return bisher
-            return [...bisher, { ...eintragAnlegen(tender, { notiz: notiz ?? '' }), gruende, suchbegriff }]
+            return [...bisher, { ...eintragAnlegen(tender, { notiz: notiz ?? '' }), gruende, suchbegriff, criteria }]
         })
         return gruende
     }
@@ -298,6 +432,13 @@ export default function LandingPage() {
                     : eintrag,
             ),
         )
+
+    function nachweisSetzen(tender, type, value) {
+        if (!aufTafel(tender.id) && merkliste.length >= MERKLISTE_GRENZE) return
+        if (!aufTafel(tender.id)) merklisteAufnehmen(tender, { suchbegriff: tenderQuery })
+        merklisteAendern((rows) => rows.map((row) => row.id === String(tender.id)
+            ? { ...row, evidence: { ...row.evidence, [type]: value } } : row))
+    }
 
     // ===== WebMCP =====
     //
@@ -323,6 +464,8 @@ export default function LandingPage() {
             tendersError,
             tenderQuery,
             tenderLand,
+            tenderRegion,
+            tenderVertical,
             tenderMindestScore,
             tenderAnzahl,
             sourceStatus,
@@ -387,7 +530,7 @@ export default function LandingPage() {
             const text = treffer.length === 0
                 ? `No preview results for "${begriff}" in ${land}. Try a different keyword or a lower min_score; the anonymous preview only shows part of the index.`
                 : `${treffer.length} tender(s) for "${begriff}" in ${land} are now displayed on the page. The linked original notice always prevails over these summaries.`
-            return werkzeugAntwort(text, { query: begriff, country: land, count: treffer.length, tenders: treffer })
+            return werkzeugAntwort(text, { query: begriff, country: land, performance_region: zustand.current.tenderRegion, vertical: zustand.current.tenderVertical, count: treffer.length, tenders: treffer })
         }
 
         const werkzeuge = [
@@ -402,13 +545,15 @@ export default function LandingPage() {
                     properties: {
                         search: { type: 'string', description: 'Keyword or trade, for example "Fassade" or "Webdesign"' },
                         country: { type: 'string', description: 'ISO alpha-3 buyer country, for example DEU, AUT or GBR' },
+                        performance_region: { type: 'string', description: 'Place of performance, e.g. Berlin or NRW. Empty string clears the region.' },
+                        vertical: { type: 'string', enum: GEWERKE.map((item) => item.value), description: 'Trade filter. Empty string clears the trade.' },
                         min_score: { type: 'number', description: 'Minimum relevance score from 0 to 100' },
                         limit: { type: 'integer', description: 'Number of results to display, 1 to 20' },
                     },
                     required: ['search'],
                     additionalProperties: false,
                 },
-                execute: async ({ search, country, min_score: minScore, limit } = {}) => {
+                execute: async ({ search, country, performance_region: region, vertical, min_score: minScore, limit } = {}) => {
                     const jetzt = zustand.current
                     const begriff = typeof search === 'string' ? search.trim() : jetzt.tenderQuery
                     const land = typeof country === 'string' && country.trim()
@@ -425,10 +570,15 @@ export default function LandingPage() {
                     if (!Number.isInteger(anzahl) || anzahl < 1 || anzahl > 20) {
                         return werkzeugFehler('limit must be a whole number between 1 and 20.')
                     }
+                    const ort = typeof region === 'string' ? region.trim().slice(0, 160) : jetzt.tenderRegion
+                    const gewerk = vertical === undefined ? jetzt.tenderVertical : vertical
+                    if (!GEWERKE.some((item) => item.value === gewerk)) return werkzeugFehler('Unknown trade filter.')
 
                     const unveraendert =
                         begriff === jetzt.tenderQuery &&
                         land === jetzt.tenderLand &&
+                        ort === jetzt.tenderRegion &&
+                        gewerk === jetzt.tenderVertical &&
                         score === jetzt.tenderMindestScore &&
                         anzahl === jetzt.tenderAnzahl
                     if (unveraendert && !jetzt.tendersLoading) {
@@ -441,6 +591,8 @@ export default function LandingPage() {
                     setTendersLoading(true)
                     setTenderQuery(begriff)
                     setTenderLand(land)
+                    setTenderRegion(ort)
+                    setTenderVertical(gewerk)
                     setTenderMindestScore(score)
                     setTenderAnzahl(anzahl)
                     zumAnker('suche')
@@ -451,6 +603,8 @@ export default function LandingPage() {
                             !spaeter.tendersLoading &&
                             spaeter.tenderQuery === begriff &&
                             spaeter.tenderLand === land &&
+                            spaeter.tenderRegion === ort &&
+                            spaeter.tenderVertical === gewerk &&
                             spaeter.tenderMindestScore === score &&
                             spaeter.tenderAnzahl === anzahl
                         )
@@ -834,286 +988,76 @@ export default function LandingPage() {
         <>
             <Seo path="/" faq={FAQS.map((eintrag) => ({ frage: eintrag.q, antwort: eintrag.a }))} />
 
-            {/* ===== HERO ===== */}
-            <section className="hero" id="start">
-                <img
-                    className="hero-foto"
-                    src="/hero/oeffentliche-ausschreibungen-team-recherche.webp"
-                    alt="Team bespricht öffentliche Ausschreibungen gemeinsam am Laptop im Büro"
-                    fetchPriority="high"
-                />
-                <div className="hero-foto__schleier" aria-hidden="true"></div>
+            <section className="search-hero" id="start">
                 <div className="container">
-                    <div className="hero__content">
-                        <div className="hero__badge">
-                            <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', animation: 'pulse 2s ease-in-out infinite' }}></span>
-                            17 öffentliche Quellen live – von TED bis zu den Landesportalen
+                    <span className="search-hero__eyebrow">Öffentliche Aufträge. Eine klare Vorauswahl.</span>
+                    <h1>Den passenden Auftrag finden.<br /><span className="gradient-text">Die richtige Entscheidung treffen.</span></h1>
+                    <p>Leistung und Region eingeben. Treffer mit Originalquelle prüfen. Interessante Verfahren im Blick behalten.</p>
+                    <form className="entry-search" id="suche" onSubmit={(event) => { event.preventDefault(); document.getElementById('ergebnisse')?.scrollIntoView({ behavior: 'smooth' }) }}>
+                        <div className="entry-search__fields">
+                            <label htmlFor="tender-query">Welche Leistung bieten Sie an?
+                                <input id="tender-query" type="search" placeholder="z. B. Fenster, Fassaden, Marketing …" value={tenderQuery} onChange={(event) => setTenderQuery(event.target.value)} maxLength={160} />
+                            </label>
+                            <label htmlFor="tender-gewerk">Gewerk
+                                <select id="tender-gewerk" value={tenderVertical} onChange={(event) => setTenderVertical(event.target.value)}>{GEWERKE.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select>
+                            </label>
+                            <label htmlFor="tender-region">Leistungsregion
+                                <input id="tender-region" placeholder="Bundesweit oder z. B. Berlin" list="regionen" value={tenderRegion} onChange={(event) => setTenderRegion(event.target.value)} maxLength={160} />
+                                <datalist id="regionen">{['Berlin', 'Brandenburg', 'Bayern', 'Baden-Württemberg', 'Hamburg', 'Hessen', 'Nordrhein-Westfalen', 'Sachsen', 'Niedersachsen'].map((region) => <option key={region} value={region} />)}</datalist>
+                            </label>
+                            <button className="btn btn--primary" type="submit">Aufträge finden <span aria-hidden="true">↓</span></button>
                         </div>
-
-                        <h1 className="hero__title">
-                            Nie wieder<br />
-                            <span className="gradient-text">Ausschreibungen verpassen</span>
-                        </h1>
-
-                        <p className="hero__description">
-                            Unser Pilot durchsucht 17 öffentliche Quellen – von TED über service.bund.de und den
-                            Datenservice Öffentlicher Einkauf bis zu den Landes- und Regionalportalen – und bewertet
-                            Ausschreibungen nachvollziehbar nach Ihrem Firmenprofil. Weitere Portale werden schrittweise angebunden.
-                        </p>
-
-                        <div className="hero__actions">
-                            <a href="#suche" className="btn btn--primary btn--lg">Live-Suche testen →</a>
-                            <a href="#kontakt" className="btn btn--outline btn--lg">Beratung anfragen</a>
+                        <div className="entry-search__bottom">
+                            <span>Kostenlos suchen · Ohne Anmeldung</span>
+                            <details className="search-options"><summary>Land & Entscheidungskriterien</summary>
+                                <div className="search-options__fields">
+                                    <label htmlFor="tender-country">Land<select id="tender-country" value={tenderLand} onChange={(event) => setTenderLand(event.target.value)}><option value="DEU">Deutschland</option><option value="AUT">Österreich</option><option value="CHE">Schweiz</option><option value="GBR">Großbritannien</option></select></label>
+                                    <label htmlFor="tender-exclusions">Ausschlussbegriffe<input id="tender-exclusions" placeholder="z. B. Personalüberlassung, Winterdienst" value={exclusions} onChange={(event) => setExclusions(event.target.value)} maxLength={300} /></label>
+                                    <label htmlFor="tender-days">Mindestvorlauf in Tagen<input id="tender-days" type="number" min="0" max="90" value={minimumDays} onChange={(event) => setMinimumDays(Math.min(90, Math.max(0, Number(event.target.value))))} /></label>
+                                </div>
+                                <p>Ausschlussbegriffe und Vorlauf markieren Risiken in der Entscheidungskarte. Sie blenden keine Treffer aus.</p>
+                            </details>
                         </div>
-
-                        <div className="hero__stats">
-                            <div className="hero__stat">
-                                <span className="hero__stat-value">
-                                    {indexedTotal > 0 ? `${new Intl.NumberFormat('de-DE').format(indexedTotal)}+` : '5.000+'}
-                                </span>
-                                <span className="hero__stat-label">
-                                    {latestSuccessAt
-                                        ? `Indexierte Ausschreibungen · Datenstand ${formatDate(latestSuccessAt)}`
-                                        : 'Indexierte Ausschreibungen'}
-                                </span>
-                            </div>
-                            <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#818cf8' }}>0–100</span>
-                                <span className="hero__stat-label">Erklärbarer Firmen-Fit</span>
-                            </div>
-                            <div className="hero__stat">
-                                <span className="hero__stat-value" style={{ color: '#38bdf8' }}>
-                                    {sourceStatus.length > 0 ? sourceStatus.filter((s) => s.implementation_status === 'live').length : 17}
-                                </span>
-                                <span className="hero__stat-label">Produktive öffentliche Quellen</span>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
+                    <div className="search-hero__footer"><span>Aktuell erfasst: Fenster & Fassade, Planung, Marketing & Digital.</span><Link to="/status">Quellen & Abdeckung ↗</Link></div>
                 </div>
             </section>
 
-            {/* ===== PROBLEM ===== */}
-            <section className="section section--alt" id="problem">
+            <section className="section workspace" id="ergebnisse">
                 <div className="container">
-                    <span className="section__label section__label--amber">
-                        <span className="pulse"></span> Das Problem
-                    </span>
-                    <h2 className="section__title">
-                        Warum <span className="gradient-text--amber">manuelle Suche</span> Sie Aufträge kostet
-                    </h2>
-                    <p className="section__subtitle">
-                        Jeden Tag werden tausende neue Ausschreibungen veröffentlicht – verteilt auf Dutzende Portale.
-                        Wer manuell sucht, verliert systematisch Aufträge an die Konkurrenz.
-                    </p>
-
-                    <div className="problem-grid">
-                        <div className="glass-card problem-card">
-                            <div className="problem-card__number">Viele</div>
-                            <h3 className="glass-card__title">Zeitverlust</h3>
-                            <p className="glass-card__text">
-                                Bekanntmachungen sind über EU-, Bundes-, Landes- und weitere Vergabeportale verteilt. Wer mehrere Quellen manuell kontrolliert, bindet Zeit, die für Eignungsprüfung und Angebotserstellung fehlt.
-                            </p>
-                        </div>
-                        <div className="glass-card problem-card">
-                            <div className="problem-card__number">Zu viele</div>
-                            <h3 className="glass-card__title">Informationsflut</h3>
-                            <p className="glass-card__text">
-                                Breite Stichwörter liefern auch unpassende Gewerke, Regionen und Auftragsgrößen. Ein Firmenprofil macht sichtbar, warum ein Treffer passt oder ausgeschlossen wird.
-                            </p>
-                        </div>
-                        <div className="glass-card problem-card">
-                            <div className="problem-card__number">Kurz</div>
-                            <h3 className="glass-card__title">Verpasste Fristen</h3>
-                            <p className="glass-card__text">
-                                Angebotsfristen hängen von Verfahrensart und Bekanntmachung ab. Je später ein passendes Verfahren erkannt wird, desto weniger Zeit bleibt für Unterlagen, Partner und Kalkulation.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===== HOW IT WORKS ===== */}
-            <section className="section" id="prozess">
-                <div className="container">
-                    <span className="section__label">
-                        <span className="pulse"></span> So funktioniert's
-                    </span>
-                    <h2 className="section__title">
-                        In 3 Schritten zum <span className="gradient-text">passenden Auftrag</span>
-                    </h2>
-                    <p className="section__subtitle">
-                        Richten Sie Ihren persönlichen KI-Agenten ein und erhalten Sie ab sofort nur noch relevante
-                        Ausschreibungen – automatisch und tagesaktuell.
-                    </p>
-
-                    <div className="steps-grid">
-                        <div className="glass-card step-card">
-                            <div className="step-card__number">1</div>
-                            <h3 className="glass-card__title">Profil anlegen</h3>
-                            <p className="glass-card__text">
-                                Definieren Sie Ihr Firmenprofil: Gewerke, Leistungsbereiche, bevorzugte Regionen,
-                                Auftragsvolumen und Eignungskriterien. Je präziser Ihr Profil, desto besser die
-                                Trefferqualität Ihres KI-Agenten. Die Einrichtung dauert nur wenige Minuten.
-                            </p>
-                        </div>
-                        <div className="glass-card step-card">
-                            <div className="step-card__number">2</div>
-                            <h3 className="glass-card__title">Agent arbeitet</h3>
-                            <p className="glass-card__text">
-                                Der Agent fragt alle 17 Live-Quellen regelmäßig ab – TED, service.bund.de, den Datenservice
-                                Öffentlicher Einkauf, DTVP, RIB, die Landes- und Regionalportale sowie die britischen Quellen
-                                Find a Tender und Contracts Finder. Jede neue Ausschreibung wird
-                                über CPV, Regeln, Keywords, Region, Wert und Frist mit Ihrem Profil abgeglichen.
-                                Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
-                            </p>
-                        </div>
-                        <div className="glass-card step-card">
-                            <div className="step-card__number">3</div>
-                            <h3 className="glass-card__title">Angebot abgeben</h3>
-                            <p className="glass-card__text">
-                            Im begleiteten Pilot testen wir den E-Mail-Digest gemeinsam; danach kann er je Profil täglich oder wöchentlich freigeschaltet werden.
-                                Das Pilot-Dashboard zeigt Auftraggeber, Leistungsort, Frist, Wert, Match-Gründe und
-                                Originalquelle. Push und WhatsApp sind noch nicht produktiv.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===== LIVE SEARCH ===== */}
-            <section className="section section--alt" id="suche">
-                <div className="container">
-                    <span className="section__label section__label--amber">
-                        <span className="pulse"></span> Live-Suche
-                    </span>
-                    <h2 className="section__title">
-                        Aktuelle <span className="gradient-text--amber">Ausschreibungen</span> aus dem Agenten-Index
-                    </h2>
-                    <p className="section__subtitle">
-                        Diese Treffer kommen direkt aus AgentLeads. Die freie Vorschau zeigt ausgewählte Ergebnisse;
-                        ein Pilotprofil ergänzt Firmen-Fit, Status, Notizen, Digest, GAEB und Exporte.
-                    </p>
-
-                    <div className="glass-card" style={{ marginBottom: '2rem' }}>
-                        <h3 className="glass-card__title">Quellenstatus</h3>
-                        <p className="glass-card__text">
-                            Alle 17 angebundenen Quellen sind live: TED, service.bund.de, der Datenservice Öffentlicher Einkauf, DTVP, RIB,
-                            die Landesportale Bayern, Nordrhein-Westfalen, Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen
-                            und Rheinland-Pfalz, die Metropolregion Rhein-Neckar, das Vergabeportal Baden-Württemberg sowie die britischen
-                            Quellen Find a Tender und Contracts Finder. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
-                        </p>
-                        {sourceStatus.length > 0 && (
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem', marginTop: '1rem' }}>
-                                {sourceStatus.map((source) => (
-                                    <span className={`badge ${source.implementation_status === 'live' ? 'badge--yes' : 'badge--no'}`} key={source.source}>
-                                        {source.source.toUpperCase()}: {source.implementation_status === 'live' ? 'live' : 'im Ausbau'}
-                                        {source.implementation_status === 'live' && source.last_success_at
-                                            ? ` · Datenstand ${formatDate(source.last_success_at)}`
-                                            : source.last_attempt_at
-                                                ? ` · zuletzt geprüft ${formatDate(source.last_attempt_at)}`
-                                                : ''}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-
                     <div className="tender-search">
-                        <form className="tender-search__form" onSubmit={(e) => e.preventDefault()}>
-                            <label htmlFor="tender-query">Leistung suchen</label>
-                            <div className="tender-search__input-row">
-                                <input
-                                    id="tender-query"
-                                    type="search"
-                                    value={tenderQuery}
-                                    onChange={(e) => setTenderQuery(e.target.value)}
-                                    placeholder="z. B. Fassade, Fenster, Webdesign, PR"
-                                />
-                                <a href="#kontakt" className="btn btn--amber">Profil anlegen</a>
-                            </div>
-                        </form>
-
-                        <div className="tender-search__presets" aria-label="Beispielsuchen">
-                            {TENDER_PRESETS.map((preset) => (
-                                <button
-                                    key={preset.value}
-                                    type="button"
-                                    className={tenderQuery === preset.value ? 'is-active' : ''}
-                                    onClick={() => setTenderQuery(preset.value)}
-                                >
-                                    {preset.label}
-                                </button>
-                            ))}
+                        <div className="workspace__heading">
+                            <div><span className="section__label">Ihre Vorauswahl</span><h2>Aufträge, die Sie weiterbringen.</h2><p>{tendersLoading ? 'Treffer werden gesucht …' : `${tenders.length} Treffer geladen`}{tenderRegion ? ` · ${tenderRegion}` : ' · Alle Leistungsregionen'}{latestSuccessAt ? ` · Letzter Quellenabruf ${formatDate(latestSuccessAt)}` : ''}</p></div>
+                            <button className="btn btn--outline" type="button" onClick={saveSearch} disabled={tendersLoading || moreLoading || !!tendersError || checkingSearches || savingSearch}>{savingSearch ? 'Suche wird gespeichert …' : 'Suche speichern'}</button>
                         </div>
+                        <div className="tender-search__presets" aria-label="Beispielsuchen">{TENDER_PRESETS.map((preset) => <button type="button" key={preset.value} className={tenderQuery === preset.value ? 'is-active' : ''} onClick={() => { setTenderQuery(preset.value); setTenderVertical('') }}>{preset.label}</button>)}</div>
+                        {searchNotice && <p className="workspace-notice" role="status">{searchNotice}</p>}
+                        {tendersLoading && <div className="result-skeleton" role="status"><span className="sr-only">Aktuelle Ausschreibungen werden geladen …</span>{[1, 2, 3].map((item) => <div key={item} />)}</div>}
+                        {tendersError && <div className="tender-state tender-state--error" role="alert">{tendersError} <button type="button" className="source-trigger" onClick={() => setSearchRetry((value) => value + 1)}>Erneut versuchen</button></div>}
+                        {!tendersLoading && !tendersError && tenders.length === 0 && <div className="tender-state"><h3>Für diese Kombination gibt es gerade keinen Treffer.</h3><p>Probieren Sie einen allgemeineren Leistungsbegriff oder erweitern Sie die Region. Unbekannte Leistungsorte werden bei einer Regionssuche nicht einbezogen.</p><button type="button" className="source-trigger" onClick={() => { setTenderRegion(''); setTenderVertical(''); setTenderQuery('') }}>Filter zurücksetzen</button></div>}
+                        {!tendersLoading && !tendersError && tenders.length > 0 && <div className="tender-grid">
+                            {tenders.map((tender) => <article className="tender-card opportunity" key={tender.id}>
+                                <div className="tender-card__meta"><span>{(tender.source || '').toUpperCase()}</span><span>{tender.deadline_at ? 'Frist erfasst' : 'Frist offen'}</span></div>
+                                <h3><button type="button" onClick={() => setSelectedTender(tender)}>{tender.title}</button></h3>
+                                <p className="opportunity__buyer">{tender.buyer_name || 'Auftraggeber nicht angegeben'}</p>
+                                <p className="opportunity__description">{tender.description ? `${tender.description.slice(0, 220)}${tender.description.length > 220 ? ' …' : ''}` : 'Leistungsumfang in der Originalbekanntmachung prüfen.'}</p>
+                                <dl><div><dt>Leistungsort</dt><dd>{tender.performance_location || (tender.performance_nuts?.length ? `NUTS ${tender.performance_nuts.join(', ')}` : 'Noch ungeklärt')}</dd></div><div><dt>Frist</dt><dd className={!tender.deadline_at ? 'is-uncertain' : ''}>{fristText(tender)}</dd></div><div><dt>Auftragswert</dt><dd>{formatCurrency(tender.estimated_value_eur) || 'Nicht veröffentlicht'}</dd></div></dl>
+                                <div className="tender-card__aktionen"><button type="button" className="btn btn--primary" onClick={() => setSelectedTender(tender)}>Entscheidung prüfen</button><button type="button" className="source-trigger" disabled={!aufTafel(tender.id) && merkliste.length >= MERKLISTE_GRENZE} onClick={() => merklisteAufnehmen(tender, { suchbegriff: tenderQuery })}>{aufTafel(tender.id) ? '✓ Gemerkt' : 'Merken'}</button></div>
+                                {quellenUrl(tender.source_url) && <a className="opportunity__source" href={quellenUrl(tender.source_url)} target="_blank" rel="noopener noreferrer">Originalquelle direkt öffnen ↗</a>}
+                            </article>)}
+                        </div>}
+                        {!tendersLoading && !tendersError && <div className="workspace__pagination">{hasMore ? <button type="button" className="btn btn--outline" disabled={moreLoading} onClick={loadMore}>{moreLoading ? 'Weitere Aufträge werden geladen …' : 'Weitere Aufträge laden ↓'}</button> : tenders.length > 0 && <p>Alle Treffer dieser Suche geladen.</p>}{moreError && <p role="alert">{moreError}</p>}</div>}
 
-                        {tendersLoading && (
-                            <div className="tender-state">Aktuelle Ausschreibungen werden geladen...</div>
-                        )}
-                        {tendersError && (
-                            <div className="tender-state tender-state--error">{tendersError}</div>
-                        )}
-                        {!tendersLoading && !tendersError && tenders.length === 0 && (
-                            <div className="tender-state">
-                                Keine passenden Vorschau-Treffer gefunden. Mit einem Firmenprofil kann der Agent breiter suchen.
-                            </div>
-                        )}
-
-                        {!tendersLoading && !tendersError && tenders.length > 0 && (
-                            <div className="tender-grid">
-                                {tenders.map((tender) => {
-                                    const value = formatCurrency(tender.estimated_value_eur)
-                                    return (
-                                        <article className="tender-card" key={tender.id}>
-                                            <div className="tender-card__meta">
-                                                <span>{tender.source.toUpperCase()}</span>
-                                                <span>Score {tender.relevance_score}</span>
-                                            </div>
-                                            <h3>{tender.title}</h3>
-                                            {tender.summary?.summary && (
-                                                <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--text-secondary)', margin: '0 0 .5rem' }}>
-                                                    {tender.summary.summary}
-                                                    <span style={{ display: 'block', color: 'var(--text-tertiary)', fontSize: 'var(--font-size-xs)', marginTop: '.25rem' }}>
-                                                        {tender.summary.label}
-                                                    </span>
-                                                </p>
-                                            )}
-                                            <dl>
-                                                <div>
-                                                    <dt>Auftraggeber</dt>
-                                                    <dd>{tender.buyer_name || 'Nicht angegeben'}</dd>
-                                                </div>
-                                                <div>
-                                                    <dt>Frist</dt>
-                                                    <dd>{formatDate(tender.deadline_at)}</dd>
-                                                </div>
-                                                {value && (
-                                                    <div>
-                                                        <dt>Wert</dt>
-                                                        <dd>{value}</dd>
-                                                    </div>
-                                                )}
-                                            </dl>
-                                            <div className="tender-card__aktionen">
-                                                <button
-                                                    type="button"
-                                                    className="source-trigger"
-                                                    onClick={() => setSelectedTender(tender)}
-                                                >
-                                                    {texte.quelleOeffnen}
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="source-trigger"
-                                                    onClick={() => merklisteAufnehmen(tender, { suchbegriff: tenderQuery })}
-                                                >
-                                                    {aufTafel(tender.id) ? texte.aufTafelSchon : texte.aufTafel}
-                                                </button>
-                                            </div>
-                                        </article>
-                                    )
-                                })}
-                            </div>
-                        )}
+                        <section className="saved-searches" id="gespeichert" aria-labelledby="saved-title">
+                            <div className="workspace__heading"><div><span className="section__label">Dranbleiben</span><h3 id="saved-title">Ihre gespeicherten Suchen</h3><p>Auf diesem Gerät gespeichert. Beim Öffnen und Aktualisieren vergleichen wir neue Treffer, Fristen und bereits erfasste Unterlagen.</p></div><button type="button" className="source-trigger" disabled={checkingSearches || !savedSearches.length} onClick={() => checkSavedSearches(savedSearches)}>{checkingSearches ? 'Wird geprüft …' : 'Jetzt aktualisieren ↻'}</button></div>
+                            {!savedSearches.length && <p className="saved-searches__empty">Eine gute Suche muss man nicht zweimal bauen. Speichern Sie Ihre Auswahl oben – Änderungen erscheinen hier.</p>}
+                            {savedSearches.map((saved) => <article className="saved-search" key={saved.id}>
+                                <div className="saved-search__heading"><div><h4>{saved.criteria.search || GEWERKE.find((g) => g.value === saved.criteria.vertical)?.label || 'Alle Leistungen'}</h4><p>{saved.criteria.region || 'Alle Regionen'} · {saved.criteria.country} · {saved.checkedAt ? `Geprüft ${formatDate(saved.checkedAt)}` : 'Noch nicht geprüft'}</p></div><div className="saved-search__actions"><button type="button" className="source-trigger" onClick={() => openSavedSearch(saved)}>Suche öffnen</button><button type="button" className="source-trigger" disabled={checkingSearches} onClick={() => savedSearchesWrite(savedSearches.filter((row) => row.id !== saved.id))}>Entfernen</button></div></div>
+                                {searchErrors[saved.id] && <p role="alert">{searchErrors[saved.id]}. Der letzte geprüfte Stand bleibt erhalten.</p>}
+                                {saved.updates.length > 0 ? <><ul className="search-updates">{saved.updates.map((update) => <li key={update.fingerprint}><span className={`search-updates__badge is-${update.kind}`}>{update.label}</span><div>{quellenUrl(update.tender.source_url) ? <a href={quellenUrl(update.tender.source_url)} target="_blank" rel="noopener noreferrer">{update.tender.title} ↗</a> : <span>{update.tender.title}</span>}{update.kind === 'deadline' && <p>{update.previousLabel || (update.previous ? formatDate(update.previous) : 'Nicht erfasst')} → {update.valueLabel || (update.value ? formatDate(update.value) : 'Nicht mehr angegeben')}</p>}</div></li>)}</ul><button type="button" className="source-trigger" disabled={checkingSearches} onClick={() => savedSearchesWrite(savedSearches.map((row) => row.id === saved.id ? { ...row, updates: [] } : row))}>Änderungen als gelesen markieren</button></> : !searchErrors[saved.id] && <p className="saved-search__quiet">Keine neuen Änderungen seit dem letzten Vergleich.</p>}
+                            </article>)}
+                            <p className="workspace__hint">Je Suche: die ersten 25 Treffer und bis zu 25 beobachtete Verfahren. Unterlagenänderungen erkennen wir, sobald neue Dokumentstände im Index vorliegen. Keine E-Mail-Benachrichtigung in dieser Browseransicht. Für regelmäßige E-Mail-Digests: <a href="#profil">Pilotprofil anfragen</a>.</p>
+                        </section>
 
                         <div className="tafel" id="tafel">
                             <div className="tafel__kopf">
@@ -1174,7 +1118,7 @@ export default function LandingPage() {
                                                     </>
                                                 )}
 
-                                                {eintrag.notiz && <p className="tafel-karte__notiz">{eintrag.notiz}</p>}
+                                                <label className="shortlist-label">{sprache === 'en' ? 'Your decision notes' : 'Ihre Entscheidungsnotiz'}<textarea className="shortlist-note" rows={2} maxLength={2000} value={eintrag.notiz || ''} onChange={(event) => entscheidungSetzen(eintrag.id, eintrag.entscheidung, event.target.value)} placeholder={sprache === 'en' ? 'Next step, owner, open questions …' : 'Nächster Schritt, Zuständigkeit, offene Fragen …'} /></label>
 
                                                 <div className="tafel-karte__aktionen">
                                                     <button
@@ -1191,7 +1135,8 @@ export default function LandingPage() {
                                                     >
                                                         {texte.noGo}
                                                     </button>
-                                                    <a href={eintrag.tender.source_url} target="_blank" rel="noopener noreferrer">
+                                                    <button type="button" onClick={() => setSelectedTender(eintrag.tender)}>Entscheidung prüfen</button>
+                                                    <a href={quellenUrl(eintrag.tender.source_url) || undefined} target="_blank" rel="noopener noreferrer">
                                                         {texte.original}
                                                     </a>
                                                     <button type="button" onClick={() => merklisteEntfernen(eintrag.id)}>
@@ -1332,73 +1277,21 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {selectedTender && (
-                <div className="source-modal" role="dialog" aria-modal="true" aria-labelledby="source-modal-title">
-                    <button
-                        type="button"
-                        className="source-modal__backdrop"
-                        aria-label="Dialog schließen"
-                        onClick={() => setSelectedTender(null)}
-                    />
-                    <div className="source-modal__panel">
-                        <button
-                            type="button"
-                            className="source-modal__close"
-                            aria-label="Dialog schließen"
-                            onClick={() => setSelectedTender(null)}
-                        >
-                            ×
-                        </button>
-                        <span className="profile-lead__eyebrow">Jetzt starten</span>
-                        <h3 id="source-modal-title">{selectedTender.title}</h3>
-                        <dl className="source-modal__facts">
-                            <div>
-                                <dt>Auftraggeber</dt>
-                                <dd>{selectedTender.buyer_name || 'Nicht angegeben'}</dd>
-                            </div>
-                            <div>
-                                <dt>Frist</dt>
-                                <dd>{formatDate(selectedTender.deadline_at)}</dd>
-                            </div>
-                            <div>
-                                <dt>Wert</dt>
-                                <dd>{formatCurrency(selectedTender.estimated_value_eur) || 'Nicht genannt'}</dd>
-                            </div>
-                            <div>
-                                <dt>Score</dt>
-                                <dd>{selectedTender.relevance_score || selectedTender.match_score || 'n/a'}</dd>
-                            </div>
-                        </dl>
-                        <p>
-                            Öffnen Sie die Quelle kostenlos. Wenn Sie daraus systematisch Angebote machen wollen,
-                            legt der Ausschreibungsagent ein strukturiertes Suchprofil mit Fit-Gründen und E-Mail-Digest an.
-                        </p>
-                        <div className="source-modal__actions">
-                            <a
-                                className="btn btn--primary"
-                                href="#profil"
-                                onClick={() => setSelectedTender(null)}
-                            >
-                                Agentenprofil vorbereiten
-                            </a>
-                            <a
-                                className="btn btn--secondary"
-                                href={selectedTender.source_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => setSelectedTender(null)}
-                            >
-                                Quelle kostenlos öffnen
-                            </a>
-                        </div>
-                        <div className="source-modal__plans">
-                            <span>Pro: Alerts und strukturierte Suchprofile</span>
-                            <span>Agent: höhere Limits sowie A2A/MCP</span>
-                            <span>Die Preise sind sichtbar; der Checkout wird erst nach erfolgreichem Pilot freigeschaltet.</span>
-                        </div>
+            {selectedTender && <dialog ref={dialogRef} className="decision-dialog" aria-labelledby="decision-title" onCancel={() => setSelectedTender(null)} onClick={(event) => { if (event.target === event.currentTarget) setSelectedTender(null) }}>
+                <div className="decision-dialog__panel">
+                    <button type="button" className="decision-dialog__close" aria-label="Entscheidungskarte schließen" onClick={() => setSelectedTender(null)}>×</button>
+                    <span className="section__label">Entscheidungskarte</span>
+                    <h2 id="decision-title">{selectedTender.title}</h2>
+                    <p>{selectedTender.buyer_name || 'Auftraggeber nicht angegeben'}</p>
+                    <Entscheidungskarte tender={selectedTender} criteria={merkliste.find((row) => row.id === String(selectedTender.id))?.criteria || criteria} evidence={merkliste.find((row) => row.id === String(selectedTender.id))?.evidence} onEvidenceChange={(type, value) => nachweisSetzen(selectedTender, type, value)} />
+                    <div className="decision-dialog__actions">
+                        {quellenUrl(selectedTender.source_url) && <a className="btn btn--primary" href={quellenUrl(selectedTender.source_url)} target="_blank" rel="noopener noreferrer">Original & Unterlagen öffnen ↗</a>}
+                        <button type="button" className="btn btn--outline" disabled={!aufTafel(selectedTender.id) && merkliste.length >= MERKLISTE_GRENZE} onClick={() => merklisteAufnehmen(selectedTender, { suchbegriff: tenderQuery })}>{aufTafel(selectedTender.id) ? '✓ Auf Ihrer Merkliste' : 'Auf die Merkliste'}</button>
                     </div>
+                    {!aufTafel(selectedTender.id) && merkliste.length >= MERKLISTE_GRENZE && <p>Ihre Merkliste ist voll. Entfernen Sie einen Eintrag, um weitere Nachweisstände zu speichern.</p>}
                 </div>
-            )}
+            </dialog>}
+            <section className="section workflow" id="prozess"><div className="container"><h2>Vom ersten Treffer zur klaren Entscheidung.</h2><div className="workflow__steps"><p><strong>01 · Finden</strong>Leistung und Region wählen. Direkt in den erfassten Quellen suchen.</p><p><strong>02 · Prüfen</strong>Leistungen, Risiken und Nachweise anhand der Originalangaben abgleichen.</p><p><strong>03 · Dranbleiben</strong>Suche speichern, Änderungen prüfen und Ihre Entscheidung festhalten.</p></div></div></section>
 
             {/* ===== COMPARISON TABLE ===== */}
             <section className="section section--alt" id="vergleich">

@@ -194,7 +194,7 @@ export function fitGruende(tender, { suchbegriff = '', jetzt = new Date(), sprac
     const abteilung = cpvAbteilung(tender.cpv_main, s)
     if (abteilung) {
         const weitere = Array.isArray(tender.cpv_additional) ? tender.cpv_additional.length : 0
-        gruende.push({ kennung: 'cpv', bewertung: 'plus', text: t.cpv(abteilung.text, tender.cpv_main, weitere) })
+        gruende.push({ kennung: 'cpv', bewertung: 'neutral', text: t.cpv(abteilung.text, tender.cpv_main, weitere) })
     }
 
     const begriff = suchbegriff.trim()
@@ -269,7 +269,7 @@ export function fitGruende(tender, { suchbegriff = '', jetzt = new Date(), sprac
     if (Number.isFinite(score)) {
         gruende.push({
             kennung: 'score',
-            bewertung: score >= 75 ? 'plus' : score >= 55 ? 'neutral' : 'minus',
+            bewertung: 'neutral',
             text: t.score(score),
         })
     }
@@ -286,4 +286,65 @@ export function gruendeBilanz(gruende) {
         dagegen: liste.filter((grund) => grund.bewertung === 'minus').length,
         neutral: liste.filter((grund) => grund.bewertung === 'neutral').length,
     }
+}
+
+export const GEWERKE = [
+    { value: '', label: 'Alle Gewerke' },
+    { value: 'facade_construction', label: 'Fenster, Fassade & Metallbau' },
+    { value: 'planning', label: 'Architektur & Planung' },
+    { value: 'marketing', label: 'Marketing & Digital' },
+]
+
+const NACHWEISE = {
+    references: 'Vergleichbare Referenzen', turnover: 'Umsatznachweis', insurance: 'Haftpflichtversicherung',
+    certificate: 'Zertifikate', prequalification: 'Präqualifikation', tax: 'Steuerliche Nachweise',
+    social_security: 'Sozialversicherungsnachweise', trade_register: 'Registerauszug',
+    personnel: 'Personalqualifikation', self_declaration: 'Eigenerklärung',
+    tariff_compliance: 'Tariftreue', subcontractor: 'Nachunternehmer', consortium: 'Bietergemeinschaft', bond: 'Bürgschaft',
+}
+
+export function quellenUrl(value) {
+    try {
+        const url = new URL(value)
+        return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : null
+    } catch { return null }
+}
+
+export function fristText(tender) {
+    const details = Array.isArray(tender.deadline_details) ? tender.deadline_details : []
+    const detail = details.find((item) => ['submission', 'participation', 'interest', 'questions', 'unspecified'].includes(item.kind)
+        && new Date(item.at).getTime() === new Date(tender.deadline_at).getTime())
+    const date = new Date(tender.deadline_at)
+    if (!tender.deadline_at || Number.isNaN(date.getTime())) return 'Frist noch ungeklärt'
+    const label = { submission: 'Angebot', participation: 'Teilnahme', interest: 'Interesse', questions: 'Bieterfragen' }[detail?.kind] || 'Portalfrist'
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Berlin' }
+    if (detail?.precision === 'datetime') Object.assign(options, { hour: '2-digit', minute: '2-digit' })
+    const displayDate = detail?.precision === 'date' ? new Date(`${detail.at.slice(0, 10)}T12:00:00Z`) : date
+    return `${label}: ${new Intl.DateTimeFormat('de-DE', options).format(displayDate)}${detail?.precision === 'datetime' ? ' Uhr (Berlin)' : ' · Uhrzeit prüfen'}`
+}
+
+// Vorprüfung gegen ausdrücklich gewählte Suchkriterien. Eine vorhandene CPV
+// oder ein Index-Score ist kein Beleg für die Eignung eines Unternehmens.
+export function entscheidungshilfe(tender, { search = '', vertical = '', exclusions = '', minimumDays = 0 } = {}, jetzt = new Date()) {
+    const passend = [], ausschluss = [], offen = []
+    const text = `${tender.title || ''} ${tender.description || ''}`.toLocaleLowerCase('de')
+    const begriff = search.trim().toLocaleLowerCase('de')
+    if (begriff && text.includes(begriff)) passend.push({ text: `Ihre Leistung „${search.trim()}“ wird genannt.`, beleg: tender.title.toLocaleLowerCase('de').includes(begriff) ? tender.title : tender.description, feld: 'Leistungsbeschreibung' })
+    else if (begriff) offen.push({ text: 'Leistungsumfang im Original mit Ihrer Suche abgleichen.', feld: 'Leistungsbeschreibung' })
+    if (vertical && tender.verticals?.includes(vertical)) passend.push({ text: `${GEWERKE.find((g) => g.value === vertical)?.label}: passende Quellenklassifikation.`, beleg: `CPV ${[tender.cpv_main, ...(tender.cpv_additional || [])].filter(Boolean).join(', ')}`, feld: 'Klassifikation' })
+    for (const wort of exclusions.split(',').map((s) => s.trim()).filter(Boolean).slice(0, 10)) {
+        if (text.includes(wort.toLocaleLowerCase('de'))) ausschluss.push({ text: `Ihr Ausschlussbegriff „${wort}“ ist enthalten.`, beleg: (tender.title || '').toLocaleLowerCase('de').includes(wort.toLocaleLowerCase('de')) ? tender.title : tender.description, feld: 'Leistungsbeschreibung' })
+    }
+    const tage = tageBisFrist(tender.deadline_at, jetzt)
+    if (tender.deadline_at && new Date(tender.deadline_at) < jetzt) ausschluss.push({ text: 'Die gespeicherte Verfahrensfrist ist abgelaufen.', beleg: fristText(tender), feld: 'Frist' })
+    else if (tage === null) offen.push({ text: 'Frist und Offenheit des Verfahrens sind noch ungeklärt.', feld: 'Frist' })
+    else if (minimumDays > 0 && tage < minimumDays) ausschluss.push({ text: `Weniger als Ihre ${minimumDays} Tage Mindestvorlauf.`, beleg: fristText(tender), feld: 'Frist' })
+    else offen.push({ text: `${fristText(tender)}. Aktuellen Stand im Original prüfen.`, feld: 'Frist' })
+    if (!tender.performance_location && !tender.performance_nuts?.length) offen.push({ text: 'Leistungsort ist nicht angegeben.', feld: 'Leistungsort' })
+    if (tender.estimated_value_eur == null) offen.push({ text: 'Auftragswert ist nicht veröffentlicht.', feld: 'Auftragswert' })
+    const nachweise = (Array.isArray(tender.requirements) ? tender.requirements : [])
+        .filter((r) => r && NACHWEISE[r.type] && typeof r.evidence === 'string' && r.evidence.trim())
+        .map((r) => ({ type: r.type, text: NACHWEISE[r.type], beleg: r.evidence, feld: 'Eignungsanforderungen' }))
+    if (!nachweise.length) offen.push({ text: 'Eignungsnachweise sind im Kurztext nicht belegt. Vergabeunterlagen prüfen.', feld: 'Eignungsanforderungen' })
+    return { passend, ausschluss, offen, nachweise }
 }

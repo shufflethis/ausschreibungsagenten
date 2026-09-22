@@ -35,19 +35,16 @@ export default function Header() {
                 <button
                     className="header__mobile-toggle"
                     onClick={() => setMenuOpen(!menuOpen)}
-                    aria-label="Menü öffnen"
+                    aria-label={menuOpen ? "Menü schließen" : "Menü öffnen"} aria-expanded={menuOpen}
                 >
                     {menuOpen ? '✕' : '☰'}
                 </button>
 
                 <nav className={`header__nav ${menuOpen ? 'header__nav--open' : ''}`} aria-label="Hauptnavigation">
                     <a href="/#suche" onClick={() => setMenuOpen(false)}>Live-Suche</a>
-                    <a href="/#vergleich" onClick={() => setMenuOpen(false)}>Vergleich</a>
-                    <a href="/#preise" onClick={() => setMenuOpen(false)}>Preise</a>
-                    <Link to="/entwickler" onClick={() => setMenuOpen(false)}>API</Link>
-                    <a href="/#funktionen" onClick={() => setMenuOpen(false)}>Funktionen</a>
-                    <a href="/#branchen" onClick={() => setMenuOpen(false)}>Branchen</a>
-                    <a href="/#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
+                    <a href="/#gespeichert" onClick={() => setMenuOpen(false)}>Gespeicherte Suchen</a>
+                    <a href="/#tafel" onClick={() => setMenuOpen(false)}>Merkliste</a>
+                    <a href="/#preise" onClick={() => setMenuOpen(false)}>Pilotphase</a>
                     <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
                     <a href="/#kontakt" className="btn btn--primary header__cta" onClick={() => setMenuOpen(false)}>Jetzt starten</a>
                 </nav>

@@ -4,6 +4,101 @@
    (abgestimmt auf das leuchtende A-Logo)
    ============================================================ */
 
+/* Arbeitsfläche: Suche und Entscheidungen vor der Produktinformation. */
+.search-hero { padding: 132px 0 42px; background: radial-gradient(ellipse at 75% 5%, #18335888, transparent 65%); border-bottom: 1px solid #ffffff12; }
+.search-hero__eyebrow { color: #9fbbdc; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.search-hero h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.16; letter-spacing: -.045em; margin: 16px 0; }
+.search-hero > .container > p { color: #b5c3d8; max-width: 710px; margin-bottom: 28px; }
+.entry-search { scroll-margin-top: 100px; padding: 24px; background: #101c32; border: 1px solid #4b6a9266; border-radius: 16px; box-shadow: 0 20px 70px #0004; }
+.entry-search__fields { display: grid; grid-template-columns: 1.5fr 1fr 1fr auto; gap: 14px; align-items: end; }
+.entry-search label { display: flex; flex-direction: column; gap: 8px; font-size: .8rem; font-weight: 600; color: #c6d2e5; }
+.entry-search input, .entry-search select, .decision-card select, .shortlist-note { min-width: 0; width: 100%; font: inherit; font-weight: 400; color: #f1f5f9; background: #080f20; border: 1px solid #42536d; border-radius: 8px; padding: 12px; min-height: 46px; }
+.entry-search input::placeholder { color: #91a3bf; }
+.entry-search__fields > .btn { min-height: 46px; }
+.entry-search__bottom, .search-hero__footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 18px; font-size: .8rem; color: #9eafc8; }
+.search-options { max-width: 650px; }
+.search-options summary { cursor: pointer; color: #bccfee; text-align: right; }
+.search-options__fields { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 12px; margin: 16px 0 8px; }
+.workspace { padding-top: 42px !important; }
+.workspace__heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 22px; }
+.workspace__heading h2, .workspace__heading h3 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); line-height: 1.3; letter-spacing: -.03em; }
+.workspace__heading p { color: #a7b7cc; font-size: .85rem; margin-top: 8px; max-width: 660px; }
+.workspace .section__label { margin-bottom: 8px; }
+.workspace .tender-search { margin-top: 0; }
+.workspace .tender-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.opportunity { display: flex; flex-direction: column; padding: 24px !important; border-color: #364761 !important; background: linear-gradient(145deg, #101b2f, #0c1424) !important; }
+.opportunity h3 { margin: 14px 0 8px !important; }
+.opportunity h3 button { background: none; border: 0; font: inherit; text-align: left; color: #f1f5f9; cursor: pointer; }
+.opportunity h3 button:hover { color: #93c5fd; }
+.opportunity__buyer { color: #a8bbd4; font-size: .8rem; margin-bottom: 14px; }
+.opportunity__description { color: #bdc9da; font-size: .85rem; margin-bottom: 20px; }
+.opportunity dl { margin-top: auto; font-size: .8rem; }
+.opportunity dd { overflow-wrap: anywhere; }
+.opportunity .tender-card__aktionen { margin-top: 20px; align-items: center; gap: 14px; }
+.opportunity .btn { font-size: .8rem; padding: 10px 14px; }
+.opportunity__source { font-size: .8rem; margin-top: 18px; color: #93c5fd; }
+.opportunity .is-uncertain { color: #f5cf89; }
+.workspace__pagination { text-align: center; margin: 28px 0 52px; color: #a7b7cc; }
+.workspace-notice { padding: 12px 16px; background: #15332d; color: #a9ebd7; border-radius: 8px; margin: 16px 0; }
+.workspace__hint { color: #a7b7cc; font-size: .8rem; margin-top: 20px; }
+.saved-searches { border: 1px solid #33455f; border-radius: 16px; padding: 28px; scroll-margin-top: 100px; background: #0d182b; }
+.saved-searches__empty { border: 1px dashed #455775; padding: 22px; border-radius: 10px; color: #bac8dc; }
+.saved-search { border-top: 1px solid #33445c; padding: 20px 0; }
+.saved-search__heading { display: flex; justify-content: space-between; gap: 16px; }
+.saved-search__heading p, .saved-search__quiet { font-size: .8rem; color: #9cafc9; }
+.saved-search__actions { display: flex; gap: 16px; align-items: flex-start; flex-shrink: 0; }
+.search-updates { list-style: none; margin: 16px 0; }
+.search-updates li { display: flex; gap: 14px; padding: 12px 0; align-items: flex-start; }
+.search-updates__badge { border-radius: 5px; padding: 3px 8px; font-size: .7rem; color: #b7deff; background: #1c3758; flex-shrink: 0; }
+.search-updates__badge.is-deadline { background: #49391d; color: #fce0a3; }
+.search-updates p { font-size: .8rem; color: #bac8dc; }
+.decision-dialog { position: fixed; margin: auto; width: min(760px, calc(100% - 32px)); max-height: 90dvh; overflow-y: auto; background: #0c172a; color: #e2e8f0; border: 1px solid #566c8d; border-radius: 18px; box-shadow: 0 30px 100px #0008; }
+.decision-dialog::backdrop { background: #020714cc; backdrop-filter: blur(5px); }
+.decision-dialog__panel { padding: 32px; }
+.decision-dialog__close { float: right; width: 44px; height: 44px; font-size: 1.8rem; background: #263750; color: #fff; border: 0; border-radius: 50%; cursor: pointer; margin: -10px -10px 8px 8px; }
+.decision-dialog h2 { font-size: 1.5rem; line-height: 1.4; margin: 10px 0; }
+.decision-card__intro { color: #a7b7cc; font-size: .85rem; margin: 20px 0; }
+.decision-card__verdict { background: #153c33; border-left: 3px solid #5fcfa7; padding: 16px; border-radius: 8px; }
+.decision-card__verdict.has-blocker { background: #432e24; border-color: #f2b57e; }
+.decision-card__verdict strong, .decision-card__verdict span { display: block; }
+.decision-card__verdict span { font-size: .85rem; margin-top: 5px; }
+.decision-card__group { padding: 22px 0; border-bottom: 1px solid #34435b; }
+.decision-card__group h4 { margin-bottom: 12px; font-size: 1rem; }
+.decision-card__group ul { list-style: none; }
+.decision-card__group li + li { margin-top: 18px; }
+.decision-card blockquote { margin: 8px 0; border-left: 2px solid #647d9d; padding-left: 12px; color: #b9c7db; font-size: .85rem; white-space: pre-line; max-height: 150px; overflow: auto; }
+.decision-card a { color: #93c5fd; font-size: .8rem; }
+.decision-card__empty { color: #a7b7cc; font-size: .85rem; }
+.decision-card__evidence { display: flex; align-items: center; gap: 16px; font-size: .85rem; margin-top: 12px; }
+.decision-card__evidence select { width: auto; max-width: 100%; }
+.decision-card__next { margin: 24px 0; }
+.decision-card__next p { margin: 8px 0; }
+.decision-dialog__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.workflow { border-block: 1px solid #ffffff12; }
+.workflow__steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 24px; color: #a7b7cc; }
+.workflow__steps strong { display: block; color: #b8d4ff; margin-bottom: 8px; }
+.result-skeleton { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.result-skeleton > div { min-height: 280px; border: 1px solid #273954; background: linear-gradient(110deg, #101c30, #192940, #101c30); border-radius: 16px; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+:is(a, button, input, select, summary, textarea):focus-visible { outline: 3px solid #93c5fd; outline-offset: 4px; }
+@media (max-width: 1000px) {
+    .entry-search__fields { grid-template-columns: 1fr 1fr; }
+    .workspace .tender-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+    .search-hero { padding-top: 108px; }
+    .search-hero h1 { font-size: 2rem; }
+    .entry-search { padding: 18px; }
+    .entry-search__fields, .search-options__fields { grid-template-columns: 1fr; }
+    .entry-search__bottom, .search-hero__footer, .workspace__heading, .saved-search__heading { flex-direction: column; align-items: flex-start; }
+    .search-options summary { text-align: left; }
+    .workspace .tender-grid, .workflow__steps, .result-skeleton { grid-template-columns: 1fr; }
+    .saved-searches { padding: 20px; }
+    .decision-dialog__panel { padding: 22px; }
+    .decision-card__evidence { align-items: flex-start; flex-direction: column; gap: 8px; }
+    .search-updates li { flex-direction: column; gap: 6px; }
+}
+
 /* ---------- CSS Custom Properties ---------- */
 :root {
     /* Backgrounds */
@@ -2240,6 +2335,7 @@ img {
 .footer__service {
     color: var(--text-secondary);
 }
+
 
 .footer__service strong {
     color: var(--text-primary);

@@ -26,7 +26,27 @@ person and the agent work on the same shortlist.
 > The linked original notice always prevails. No tool submits a bid, sends a
 > form, or returns a recommendation.
 
-## WebMCP
+## Search workspace
+
+The entry form searches by service, trade and performance region, without an
+implicit minimum score. Results can be loaded page by page. Decision cards use
+notice excerpts and explicit user criteria; missing information remains unknown.
+Evidence status, decisions and notes stay with the browser shortlist.
+
+Up to eight searches can be saved on this device. On opening the page or clicking
+refresh, each compares the first 25 results and up to 25 previously observed IDs.
+Changes use actual deadline values and document content fingerprints, not polling
+timestamps. This browser feature does not send background email notifications.
+The authenticated pilot's email digest remains a separate workflow.
+
+Requires the backend's typed deadlines, corrected unique pagination, public
+`ids` lookup (including closed notices), requirements and document revisions.
+The backend changes and historical-data repair are maintained in
+`shufflethis/ausschreibungsagent`, branch `feat/reliable-tender-workspace`.
+Run `npm test` and `npm run build`; after release, verify the search, pagination,
+decision dialog, saved-search refresh and footer link on the production domain.
+
+## WebMCP tools
 
 The landing page registers eleven tools through `document.modelContext`:
 search, result details, source freshness, form prefill, and a shared go/no-go
