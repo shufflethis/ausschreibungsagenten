@@ -182,6 +182,7 @@ export default function LandingPage() {
         setCheckingSearches(true)
         const errors = {}
         const coverage = {}
+        const watchRequests = []
         const checked = []
         for (const saved of rows) {
             if (signal?.aborted) return
@@ -201,14 +202,16 @@ export default function LandingPage() {
                 }
                 const updated = suchauftragVergleichen(saved, current, watched)
                 checked.push(updated)
-                try { coverage[saved.id] = await registerDocumentWatches(updated.snapshots, signal) }
-                catch (error) { if (signal?.aborted) return; coverage[saved.id] = { error: error.message } }
+                watchRequests.push(registerDocumentWatches(updated.snapshots, signal)
+                    .then((result) => { coverage[saved.id] = result })
+                    .catch((error) => { coverage[saved.id] = { error: error.message } }))
             } catch (error) {
                 if (signal?.aborted) return
                 errors[saved.id] = error.message
                 checked.push(saved)
             }
         }
+        await Promise.all(watchRequests)
         if (!signal?.aborted) {
             savedSearchesWrite((previous) => previous.map((row) => checked.find((item) => item.id === row.id) || row))
             setSearchErrors(errors)
