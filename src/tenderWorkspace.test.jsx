@@ -50,4 +50,5 @@ it('verbindet Einstieg, Blättern, belegte Nachweise und einen gespeicherten Än
     fireEvent.click(screen.getByRole('button', { name: 'Jetzt aktualisieren ↻' }))
     await screen.findByText(/Der Änderungsvergleich ist derzeit nicht verfügbar/)
     expect(localStorage.getItem(SUCHAUFTRAEGE_KEY)).toBe(baseline)
+    expect(screen.queryByText('Keine neuen Änderungen seit dem letzten Vergleich.')).toBeNull()
 })

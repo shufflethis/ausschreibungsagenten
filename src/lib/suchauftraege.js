@@ -56,19 +56,24 @@ export function neuerSuchauftrag(criteria, tenders, now = new Date().toISOString
 
 export function suchauftragVergleichen(saved, current, watched = [], now = new Date().toISOString()) {
     const old = new Map(saved.snapshots.map((row) => [identity(row), row]))
-    const latest = new Map([...watched, ...current].map((row) => [identity(row), row]))
-    const currentKeys = new Set(current.map(identity))
+    const oldById = new Map(saved.snapshots.map((row) => [row.id, row]))
+    const watchedById = new Map(watched.map((row) => [row.id, row]))
+    // ID lookups bypass the search cache; keep their newer values, including renamed titles.
+    const refreshed = current.map((row) => watchedById.get(row.id) || row)
+    const latest = new Map([...watched, ...refreshed].map((row) => [identity(row), row]))
+    const currentIds = new Set(current.map((row) => row.id))
     const updates = [...saved.updates]
     for (const [key, row] of latest) {
-        const before = old.get(key)
+        const before = oldById.get(row.id) || old.get(key)
         const add = (kind, label, previous, value) => {
             const fingerprint = `${key}|${kind}|${value || ''}`
             if (!updates.some((u) => u.fingerprint === fingerprint)) updates.unshift({ fingerprint, kind, label, previous, value, previousLabel: before?.deadline_text, valueLabel: snapshot(row).deadline_text, tender: snapshot(row), at: now })
         }
-        if (!before && currentKeys.has(key)) add('new', 'Neu gefunden', null, row.id)
+        if (!before && currentIds.has(row.id)) add('new', 'Neu gefunden', null, row.id)
         if (before && (Date.parse(before.deadline_at) || null) !== (Date.parse(row.deadline_at) || null)) add('deadline', before.deadline_at ? 'Frist geändert' : 'Frist ergänzt', before.deadline_at, row.deadline_at || null)
         if (before && row.document_revision && before.document_revision !== row.document_revision) add('documents', before.document_revision ? 'Unterlagen geändert' : 'Unterlagen erstmals erfasst', before.document_revision, row.document_revision)
     }
     // Poll timestamps are intentionally ignored: only actual values produce news.
-    return { ...saved, checkedAt: now, snapshots: [...current, ...watched, ...saved.snapshots].filter((row, i, all) => all.findIndex((r) => identity(r) === identity(row)) === i).slice(0, 25).map(snapshot), updates: updates.slice(0, 50) }
+    // This quadratic deduplication is bounded to 75 rows; use sets if that limit grows.
+    return { ...saved, checkedAt: now, snapshots: [...refreshed, ...watched, ...saved.snapshots].filter((row, i, all) => all.findIndex((r) => r.id === row.id || identity(r) === identity(row)) === i).slice(0, 25).map(snapshot), updates: updates.slice(0, 50) }
 }

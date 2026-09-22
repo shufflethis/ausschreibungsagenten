@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         })
         const body = await upstream.text()
 
-        res.setHeader('Cache-Control', upstream.ok
+        res.setHeader('Cache-Control', upstream.ok && !upstreamUrl.searchParams.has('ids')
             ? 's-maxage=60, stale-while-revalidate=120'
             : 'no-store')
         res.setHeader('Content-Type', upstream.headers.get('content-type') || 'application/json')

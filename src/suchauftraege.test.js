@@ -31,6 +31,18 @@ describe('Gespeicherte Suchen und belegte Entscheidungen', () => {
         expect(restored.snapshots).toHaveLength(1)
     })
 
+    it('behält frische ID-Abrufe bei veralteten Suchtreffern und umbenannten Verfahren', () => {
+        const saved = neuerSuchauftrag({}, [tender])
+        const fresh = { ...tender, title: 'Fassadenbau Schule – geänderte Bekanntmachung', deadline_at: '2026-10-20T08:00:00Z', document_revision: 'v2' }
+        const checked = suchauftragVergleichen(saved, [tender], [fresh])
+        expect(checked.updates.map((u) => u.kind).sort()).toEqual(['deadline', 'documents'])
+        expect(checked.snapshots).toHaveLength(1)
+        expect(checked.snapshots[0]).toMatchObject(fresh)
+        const repeated = suchauftragVergleichen({ ...checked, updates: [] }, [tender], [fresh])
+        expect(repeated.updates).toEqual([])
+        expect(repeated.snapshots).toEqual(checked.snapshots)
+    })
+
     it('sucht ohne versteckte Score-Hürde und erhält Region, Gewerk und eindeutigen Offset', () => {
         const params = suchparameter({ search: 'Balkon', region: 'Berlin', vertical: 'facade_construction' }, { offset: 25 })
         expect(Object.fromEntries(params)).toMatchObject({ min_score: '0', country: 'DEU', performance_region: 'Berlin', vertical: 'facade_construction', offset: '25', limit: '25' })
