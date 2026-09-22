@@ -2720,3 +2720,18 @@ img {
         flex: 1 1 auto;
     }
 }
+
+.footer__chatgpt {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    border: 1px solid #526078;
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-size: .875rem;
+    background: #ffffff06;
+}
+.footer__chatgpt:hover { background: #ffffff10; border-color: #9eacc3; color: #fff; }
+.footer__chatgpt svg { flex-shrink: 0; }
