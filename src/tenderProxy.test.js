@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest'
-import handler from './tenders-public'
+import handler from '../api/tenders-public'
 
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
