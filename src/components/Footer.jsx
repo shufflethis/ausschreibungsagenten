@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import Icon from './Icon'
 
 // Der Footer trug 24 Links in einer einzigen Reihe. Gruppiert nach dem,
 // wonach jemand tatsaechlich sucht: Inhalte zum Thema, Vergleiche mit
@@ -90,6 +91,10 @@ export default function Footer() {
                                 <strong>Agentifizierung</strong>
                             </a>
                         </p>
+                        <a className="footer__chatgpt" href="https://chatgpt.com/plugins/plugin_asdk_app_6a90f63dcf008191ba50c89d48d0fb85?open_in_app" target="_blank" rel="noopener noreferrer">
+                            <Icon name="chatgpt" size={24} />
+                            <span>Unser ChatGPT-Plugin <span aria-hidden="true">↗</span></span>
+                        </a>
                     </div>
 
                     {SPALTEN.map((spalte) => (

@@ -17,7 +17,7 @@ Kontakt: hi@ausschreibungsagenten.de
 
 ## Kernfakten
 
-- [Öffentliche Tender-Vorschau (JSON)](https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=BEGRIFF&min_score=50&limit=6)
+- [Öffentliche Tender-Vorschau (JSON)](https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=BEGRIFF&min_score=0&limit=12)
 - [Live-Quellenstatus (JSON, mit Datenstand je Quelle)](https://www.ausschreibungsagenten.de/api/source-status)
 - [A2A Agent Card](https://www.ausschreibungsagenten.de/.well-known/agent-card.json)
 - [MCP-Server (search_tenders frei, fulltext ab Pro/Agent)](https://api.ausschreibungsagenten.de/mcp)
@@ -76,7 +76,7 @@ Vergabeportal und Rechtsberatung zum Vergaberecht. Dafür ist diese Quelle nicht
 So rufen Agenten sie auf, ohne Zugangsdaten:
 
 - REST, JSON, keine Anmeldung:
-  `GET https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=Fassade&min_score=50&limit=6`
+  `GET https://www.ausschreibungsagenten.de/api/tenders-public?country=DEU&search=Fassade&min_score=0&limit=12`
   Parameter: `country` (ISO-3, z. B. DEU/AUT/GBR), `search`, `cpv`, `min_score`, `limit`, `offset`,
   `summary_lang` (`de`/`en`, hängt gecachte, gekennzeichnete KI-Kurzfassungen an; neue
   entstehen nur in authentifizierten Aufrufen).

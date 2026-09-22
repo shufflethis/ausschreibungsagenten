@@ -179,7 +179,7 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
 
     it('search_tenders aendert die sichtbare Trefferliste', async () => {
         const vorher = tenderAufrufe().length
-        const ergebnis = await aufrufen('search_tenders', { search: 'fassade', country: 'aut', min_score: 70, limit: 2 })
+        const ergebnis = await aufrufen('search_tenders', { search: 'fassade', country: 'aut', min_score: 70, limit: 2, performance_region: 'Wien', vertical: 'facade_construction' })
 
         const letzte = tenderAufrufe().at(-1)
         expect(tenderAufrufe().length).toBeGreaterThan(vorher)
@@ -187,10 +187,14 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         expect(letzte).toContain('search=fassade')
         expect(letzte).toContain('min_score=70')
         expect(letzte).toContain('limit=2')
+        expect(letzte).toContain('performance_region=Wien')
+        expect(letzte).toContain('vertical=facade_construction')
 
         expect(ergebnis.isError).toBeUndefined()
         expect(ergebnis.structuredContent.count).toBe(2)
         expect(ergebnis.structuredContent.country).toBe('AUT')
+        expect(ergebnis.structuredContent.performance_region).toBe('Wien')
+        expect(behaelter.querySelector('#tender-region').value).toBe('Wien')
         expect(ergebnis.structuredContent.tenders[0].source_url).toBe('https://ted.europa.eu/beispiel')
         // Der Mensch vor dem Bildschirm sieht dasselbe wie der Agent.
         expect(behaelter.querySelector('input[type="search"]').value).toBe('fassade')

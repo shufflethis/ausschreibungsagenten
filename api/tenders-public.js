@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const allowedParams = [
         'country', 'search', 'cpv', 'vertical', 'performance_region',
         'minimum_value_eur', 'maximum_value_eur', 'deadline_within_days',
-        'only_active', 'min_score', 'limit', 'offset', 'summary_lang',
+        'only_active', 'min_score', 'limit', 'offset', 'summary_lang', 'ids',
     ]
     for (const key of allowedParams) {
         const value = req.query[key]
@@ -26,14 +26,18 @@ export default async function handler(req, res) {
     try {
         const upstream = await fetch(upstreamUrl.toString(), {
             headers: { Accept: 'application/json' },
+            signal: AbortSignal.timeout(15000),
         })
         const body = await upstream.text()
 
-        res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600')
+        res.setHeader('Cache-Control', upstream.ok
+            ? 's-maxage=60, stale-while-revalidate=120'
+            : 'no-store')
         res.setHeader('Content-Type', upstream.headers.get('content-type') || 'application/json')
         return res.status(upstream.status).send(body)
     } catch (err) {
         console.error('AgentLeads public tender proxy failed:', err)
+        res.setHeader('Cache-Control', 'no-store')
         return res.status(502).json({ error: 'AgentLeads API is unavailable' })
     }
 }

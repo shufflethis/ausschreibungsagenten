@@ -70,7 +70,7 @@ All tools are registered on the landing page through `document.modelContext`.
 
 | Tool | Effect on the page |
 | --- | --- |
-| `search_tenders` | Sets query, country, minimum score and result count; the result list reloads visibly |
+| `search_tenders` | Sets query, country, performance region, trade (`vertical`), minimum score and result count; the result list reloads visibly |
 | `list_visible_tenders` | Returns what is currently displayed |
 | `open_tender` | Opens the detail view for one result |
 | `source_status` | Reports the 17 connected sources and their last successful poll |
