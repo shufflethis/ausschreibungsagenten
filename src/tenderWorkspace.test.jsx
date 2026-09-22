@@ -9,7 +9,7 @@ afterEach(() => { cleanup(); localStorage.clear(); vi.restoreAllMocks() })
 
 it('verbindet Einstieg, Blättern, belegte Nachweise und einen gespeicherten Änderungsvergleich', async () => {
     Element.prototype.scrollIntoView = vi.fn()
-    const rows = Array.from({ length: 13 }, (_, i) => ({ id: `notice-${i}`, title: `Fenster Berlin ${i}`, buyer_name: 'Stadt', source: 'ted', source_url: `https://example.org/${i}`, description: 'Fenster und Fassaden sanieren.', requirements: [{ type: 'references', evidence: 'Drei Referenzen nachweisen.' }], deadline_at: '2027-10-10T10:00:00Z', document_revision: 'v1' }))
+    const rows = Array.from({ length: 13 }, (_, i) => ({ id: `notice-${i}`, title: `Fenster Berlin ${i}`, buyer_name: 'Stadt', source: 'ted', source_url: `https://example.org/${i}`, description: 'Fenster und Fassaden sanieren.', requirements: [{ type: 'references', evidence: 'Drei Referenzen nachweisen.' }], deadline_at: '2027-10-10T10:00:00Z', deadline_details: [], document_revision: 'v1' }))
     let changed = false
     globalThis.fetch = vi.fn(async (url) => {
         const parsed = new URL(url, 'https://example.org')

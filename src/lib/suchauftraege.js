@@ -30,7 +30,7 @@ export function suchauftragLesen(storage) {
             .slice(0, SUCHAUFTRAEGE_LIMIT).map((row) => ({ ...row, criteria: suchkriterien(row.criteria),
                 checkedAt: Number.isFinite(Date.parse(row.checkedAt)) ? row.checkedAt : null,
                 snapshots: row.snapshots.filter(validTender).slice(0, 25).map(snapshot),
-                updates: Array.isArray(row.updates) ? row.updates.filter((u) => u && typeof u.fingerprint === 'string' && typeof u.label === 'string' && ['new', 'deadline', 'documents'].includes(u.kind) && validTender(u.tender)).slice(0, 50) : [] })) : []
+                updates: Array.isArray(row.updates) ? row.updates.filter((u) => u && typeof u.fingerprint === 'string' && typeof u.label === 'string' && ['new', 'deadline', 'documents'].includes(u.kind) && validTender(u.tender)).slice(0, 50).map((u) => ({ ...u, previousLabel: typeof u.previousLabel === 'string' ? u.previousLabel : '', valueLabel: typeof u.valueLabel === 'string' ? u.valueLabel : '' })) : [] })) : []
     } catch { return [] }
 }
 

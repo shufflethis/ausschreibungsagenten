@@ -183,7 +183,7 @@ export default function LandingPage() {
                     if (!previous.ok) throw new Error('Gespeicherte Treffer konnten nicht geprüft werden')
                     watched = await previous.json()
                     if (!Array.isArray(watched)) throw new Error('Ungültige Antwort')
-                    if (watched.some((row) => !saved.snapshots.some((old) => old.id === row.id))) throw new Error('Änderungsvergleich im Backend noch nicht verfügbar')
+                    if (watched.some((row) => !saved.snapshots.some((old) => old.id === row.id) || !Array.isArray(row.deadline_details))) throw new Error('Der Änderungsvergleich ist derzeit nicht verfügbar')
                 }
                 checked.push(suchauftragVergleichen(saved, current, watched))
             } catch (error) {
