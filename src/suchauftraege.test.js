@@ -14,6 +14,8 @@ describe('Gespeicherte Suchen und belegte Entscheidungen', () => {
         expect(checked.updates.find((u) => u.kind === 'deadline').previous).toBe(tender.deadline_at)
         expect(suchauftragVergleichen(checked, [next], [changed]).updates).toEqual(checked.updates)
         expect(suchauftragVergleichen({ ...checked, updates: [] }, [next], [changed]).updates).toEqual([])
+        const removed = suchauftragVergleichen(saved, [{ ...tender, document_revision: null }])
+        expect(removed.updates.find((u) => u.kind === 'documents').label).toBe('Unterlagen nicht mehr erfasst')
         // A timezone representation change and polling timestamps are no news.
         expect(suchauftragVergleichen(saved, [{ ...tender, deadline_at: '2026-10-13T10:00:00+02:00', updated_at: 'tomorrow' }]).updates).toEqual([])
     })

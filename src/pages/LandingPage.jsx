@@ -104,6 +104,7 @@ export default function LandingPage() {
     const savedCheckController = useRef(null)
     const [searchNotice, setSearchNotice] = useState('')
     const [searchErrors, setSearchErrors] = useState({})
+    const [watchCoverage, setWatchCoverage] = useState({})
     const dialogRef = useRef(null)
     // Der Erstaufruf soll nicht entprellt werden, jede weitere Eingabe schon.
     const ersterTenderLauf = useRef(true)
@@ -159,6 +160,18 @@ export default function LandingPage() {
         })
     }
 
+    async function registerDocumentWatches(snapshots, signal) {
+        if (!snapshots.length) return { supported: 0, total: 0 }
+        const response = await fetch('/api/tender-document-watches', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: snapshots.map((row) => row.id) }), signal,
+        })
+        if (!response.ok) throw new Error('Die Unterlagenüberwachung ist derzeit nicht erreichbar')
+        const data = await response.json()
+        if (!Array.isArray(data.supported_ids) || typeof data.enabled !== 'boolean') throw new Error('Die Unterlagenüberwachung ist derzeit nicht erreichbar')
+        return { supported: data.supported_ids.length, total: snapshots.length, enabled: data.enabled }
+    }
+
     async function checkSavedSearches(rows, signal) {
         if (!rows.length) return
         if (!signal) {
@@ -168,6 +181,7 @@ export default function LandingPage() {
         }
         setCheckingSearches(true)
         const errors = {}
+        const coverage = {}
         const checked = []
         for (const saved of rows) {
             if (signal?.aborted) return
@@ -185,7 +199,10 @@ export default function LandingPage() {
                     if (!Array.isArray(watched)) throw new Error('Ungültige Antwort')
                     if (watched.some((row) => !saved.snapshots.some((old) => old.id === row.id) || !Array.isArray(row.deadline_details))) throw new Error('Der Änderungsvergleich ist derzeit nicht verfügbar')
                 }
-                checked.push(suchauftragVergleichen(saved, current, watched))
+                const updated = suchauftragVergleichen(saved, current, watched)
+                checked.push(updated)
+                try { coverage[saved.id] = await registerDocumentWatches(updated.snapshots, signal) }
+                catch (error) { if (signal?.aborted) return; coverage[saved.id] = { error: error.message } }
             } catch (error) {
                 if (signal?.aborted) return
                 errors[saved.id] = error.message
@@ -195,6 +212,7 @@ export default function LandingPage() {
         if (!signal?.aborted) {
             savedSearchesWrite((previous) => previous.map((row) => checked.find((item) => item.id === row.id) || row))
             setSearchErrors(errors)
+            setWatchCoverage(coverage)
             setCheckingSearches(false)
         }
     }
@@ -220,8 +238,16 @@ export default function LandingPage() {
             if (!response.ok) throw new Error()
             const baseline = await response.json()
             if (!Array.isArray(baseline)) throw new Error()
-            savedSearchesWrite((previous) => [...previous, neuerSuchauftrag(criteria, baseline)])
-            setSearchNotice('Suche gespeichert. Neue Treffer und Änderungen werden beim nächsten Besuch oder beim Aktualisieren verglichen.')
+            const saved = neuerSuchauftrag(criteria, baseline)
+            savedSearchesWrite((previous) => [...previous, saved])
+            try {
+                const coverage = await registerDocumentWatches(saved.snapshots)
+                setWatchCoverage((previous) => ({ ...previous, [saved.id]: coverage }))
+                setSearchNotice(coverage.enabled ? 'Suche gespeichert. Neue Treffer und Änderungen werden beim nächsten Besuch oder beim Aktualisieren verglichen.' : 'Suche gespeichert. Neue Treffer und Fristen werden verglichen; die automatische Unterlagenprüfung ist derzeit deaktiviert.')
+            } catch {
+                setWatchCoverage((previous) => ({ ...previous, [saved.id]: { error: 'Die Unterlagenüberwachung ist derzeit nicht erreichbar' } }))
+                setSearchNotice('Suche gespeichert. Die Unterlagenüberwachung ist derzeit nicht erreichbar; Treffer und Fristen werden weiterhin verglichen.')
+            }
         } catch { setSearchNotice('Die Suche konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.') }
         finally { setSavingSearch(false) }
     }
@@ -1054,9 +1080,12 @@ export default function LandingPage() {
                             {savedSearches.map((saved) => <article className="saved-search" key={saved.id}>
                                 <div className="saved-search__heading"><div><h4>{saved.criteria.search || GEWERKE.find((g) => g.value === saved.criteria.vertical)?.label || 'Alle Leistungen'}</h4><p>{saved.criteria.region || 'Alle Regionen'} · {saved.criteria.country} · {saved.checkedAt ? `Geprüft ${formatDate(saved.checkedAt)}` : 'Noch nicht geprüft'}</p></div><div className="saved-search__actions"><button type="button" className="source-trigger" onClick={() => openSavedSearch(saved)}>Suche öffnen</button><button type="button" className="source-trigger" disabled={checkingSearches} onClick={() => savedSearchesWrite(savedSearches.filter((row) => row.id !== saved.id))}>Entfernen</button></div></div>
                                 {searchErrors[saved.id] && <p role="alert">{searchErrors[saved.id]}. Der letzte geprüfte Stand bleibt erhalten.</p>}
+                                {watchCoverage[saved.id]?.error && <p role="status">{watchCoverage[saved.id].error}. Treffer und Fristen werden weiterhin verglichen.</p>}
+                                {watchCoverage[saved.id]?.enabled === false && <p role="status">Die automatische Unterlagenprüfung ist derzeit deaktiviert. Bitte prüfen Sie die Quelle direkt.</p>}
+                                {watchCoverage[saved.id]?.enabled && watchCoverage[saved.id]?.total > watchCoverage[saved.id]?.supported && <p className="saved-search__quiet">Unterlagenabruf für {watchCoverage[saved.id].supported} von {watchCoverage[saved.id].total} beobachteten Verfahren unterstützt. Bei den übrigen bitte die Quelle prüfen.</p>}
                                 {saved.updates.length > 0 ? <><ul className="search-updates">{saved.updates.map((update) => <li key={update.fingerprint}><span className={`search-updates__badge is-${update.kind}`}>{update.label}</span><div>{quellenUrl(update.tender.source_url) ? <a href={quellenUrl(update.tender.source_url)} target="_blank" rel="noopener noreferrer">{update.tender.title} ↗</a> : <span>{update.tender.title}</span>}{update.kind === 'deadline' && <p>{update.previousLabel || (update.previous ? formatDate(update.previous) : 'Nicht erfasst')} → {update.valueLabel || (update.value ? formatDate(update.value) : 'Nicht mehr angegeben')}</p>}</div></li>)}</ul><button type="button" className="source-trigger" disabled={checkingSearches} onClick={() => savedSearchesWrite(savedSearches.map((row) => row.id === saved.id ? { ...row, updates: [] } : row))}>Änderungen als gelesen markieren</button></> : !searchErrors[saved.id] && <p className="saved-search__quiet">Keine neuen Änderungen seit dem letzten Vergleich.</p>}
                             </article>)}
-                            <p className="workspace__hint">Je Suche: die ersten 25 Treffer und bis zu 25 beobachtete Verfahren. Unterlagenänderungen erkennen wir, sobald neue Dokumentstände im Index vorliegen. Keine E-Mail-Benachrichtigung in dieser Browseransicht. Für regelmäßige E-Mail-Digests: <a href="#profil">Pilotprofil anfragen</a>.</p>
+                            <p className="workspace__hint">Je Suche: die ersten 25 Treffer und bis zu 25 beobachtete Verfahren. Unterstützte öffentliche Unterlagen werden im Hintergrund regelmäßig geprüft; Änderungen erscheinen nach dem nächsten Abgleich. Andere Unterlagen bitte direkt an der Quelle prüfen. Keine E-Mail-Benachrichtigung in dieser Browseransicht. Für regelmäßige E-Mail-Digests: <a href="#profil">Pilotprofil anfragen</a>.</p>
                         </section>
 
                         <div className="tafel" id="tafel">
