@@ -38,7 +38,7 @@ it('verbindet Einstieg, Blättern, belegte Nachweise und einen gespeicherten Än
     expect(JSON.parse(localStorage.getItem('aa_merkliste'))[0].evidence.references).toBe('missing')
     fireEvent.click(screen.getByRole('button', { name: 'Suche speichern' }))
     await waitFor(() => expect(JSON.parse(localStorage.getItem(SUCHAUFTRAEGE_KEY))?.[0]?.snapshots).toHaveLength(13))
-    await screen.findByText(/Unterlagenabruf für 1 von 13 beobachteten Verfahren unterstützt/)
+    await screen.findByText(/Automatische Unterlagenprüfung für 1 von 13 beobachteten Verfahren möglich\. Nicht jedes Portal gibt seine Unterlagen frei/)
     expect(globalThis.fetch.mock.calls.some(([url, options]) => url === '/api/tender-document-watches' && options?.method === 'POST' && JSON.parse(options.body).ids.length === 13)).toBe(true)
     changed = true
     fireEvent.click(screen.getByRole('button', { name: 'Jetzt aktualisieren ↻' }))
