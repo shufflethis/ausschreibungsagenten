@@ -66,7 +66,8 @@ export function suchauftragVergleichen(saved, current, watched = [], now = new D
     for (const [key, row] of latest) {
         const before = oldById.get(row.id) || old.get(key)
         const add = (kind, label, previous, value) => {
-            const fingerprint = `${key}|${kind}|${value || ''}`
+            // The previous value is part of the key: A → B → A is two changes, not a duplicate.
+            const fingerprint = `${key}|${kind}|${previous || ''}|${value || ''}`
             if (!updates.some((u) => u.fingerprint === fingerprint)) updates.unshift({ fingerprint, kind, label, previous, value, previousLabel: before?.deadline_text, valueLabel: snapshot(row).deadline_text, tender: snapshot(row), at: now })
         }
         if (!before && currentIds.has(row.id)) add('new', 'Neu gefunden', null, row.id)

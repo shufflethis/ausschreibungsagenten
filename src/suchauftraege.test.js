@@ -20,6 +20,16 @@ describe('Gespeicherte Suchen und belegte Entscheidungen', () => {
         expect(suchauftragVergleichen(saved, [{ ...tender, deadline_at: '2026-10-13T10:00:00+02:00', updated_at: 'tomorrow' }]).updates).toEqual([])
     })
 
+    it('meldet die Rückkehr zu einer früheren Unterlagenversion als eigene Änderung', () => {
+        const saved = neuerSuchauftrag({ search: 'Fassade' }, [{ ...tender, document_revision: null }])
+        const first = suchauftragVergleichen(saved, [], [tender])
+        const changed = suchauftragVergleichen(first, [], [{ ...tender, document_revision: 'v2' }])
+        const reverted = suchauftragVergleichen(changed, [], [tender])
+        expect(reverted.updates.map((u) => [u.label, u.previous, u.value])).toEqual([
+            ['Unterlagen geändert', 'v2', 'v1'], ['Unterlagen geändert', 'v1', 'v2'], ['Unterlagen erstmals erfasst', null, 'v1']])
+        expect(suchauftragVergleichen(reverted, [], [tender]).updates).toEqual(reverted.updates)
+    })
+
     it('hält alte Vergleichswerte bei fehlenden IDs und gesperrtem Speicher fest', () => {
         const saved = neuerSuchauftrag({}, [tender])
         expect(suchauftragVergleichen(saved, [], []).snapshots).toEqual(saved.snapshots)
