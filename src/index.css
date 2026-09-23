@@ -34,11 +34,14 @@
 .opportunity h3 button:hover { color: #93c5fd; }
 .opportunity__buyer { color: #a8bbd4; font-size: .8rem; margin-bottom: 14px; }
 .opportunity__description { color: #bdc9da; font-size: .85rem; margin-bottom: 20px; }
-.opportunity dl { margin-top: auto; font-size: .8rem; }
+/* Eckdaten und Buttons sitzen am Kartenende, damit sie in jeder Reihe auf einer
+   Linie stehen. Doppelte Klasse, weil .tender-card dl (margin: 0) und
+   .tender-card a (margin-top: auto) weiter unten stehen und sonst gewinnen. */
+.tender-card.opportunity dl { margin-top: auto; font-size: .8rem; }
 .opportunity dd { overflow-wrap: anywhere; }
 .opportunity .tender-card__aktionen { margin-top: 20px; align-items: center; gap: 14px; }
 .opportunity .btn { font-size: .8rem; padding: 10px 14px; }
-.opportunity__source { font-size: .8rem; margin-top: 18px; color: #93c5fd; }
+.tender-card.opportunity .opportunity__source { font-size: .8rem; margin-top: 18px; color: #93c5fd; }
 .opportunity .is-uncertain { color: #f5cf89; }
 .workspace__pagination { text-align: center; margin: 28px 0 52px; color: #a7b7cc; }
 .workspace-notice { padding: 12px 16px; background: #15332d; color: #a9ebd7; border-radius: 8px; margin: 16px 0; }
