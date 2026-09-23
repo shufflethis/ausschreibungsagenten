@@ -1018,6 +1018,8 @@ export default function LandingPage() {
             <Seo path="/" faq={FAQS.map((eintrag) => ({ frage: eintrag.q, antwort: eintrag.a }))} />
 
             <section className="search-hero" id="start">
+                <img className="hero-foto" src="/hero/oeffentliche-ausschreibungen-team-recherche.webp" alt="Team bespricht öffentliche Ausschreibungen gemeinsam am Laptop im Büro" fetchPriority="high" />
+                <div className="hero-foto__schleier" aria-hidden="true"></div>
                 <div className="container">
                     <span className="search-hero__eyebrow">Öffentliche Aufträge. Eine klare Vorauswahl.</span>
                     <h1>Den passenden Auftrag finden.<br /><span className="gradient-text">Die richtige Entscheidung treffen.</span></h1>

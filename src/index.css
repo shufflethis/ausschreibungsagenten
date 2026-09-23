@@ -5,7 +5,9 @@
    ============================================================ */
 
 /* Arbeitsfläche: Suche und Entscheidungen vor der Produktinformation. */
-.search-hero { padding: 132px 0 42px; background: radial-gradient(ellipse at 75% 5%, #18335888, transparent 65%); border-bottom: 1px solid #ffffff12; }
+.search-hero { position: relative; overflow: hidden; padding: 132px 0 42px; background: radial-gradient(ellipse at 75% 5%, #18335888, transparent 65%); border-bottom: 1px solid #ffffff12; }
+.search-hero > .container { position: relative; z-index: 1; }
+.search-hero .hero-foto { object-position: center 15%; }
 .search-hero__eyebrow { color: #9fbbdc; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
 .search-hero h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.16; letter-spacing: -.045em; margin: 16px 0; }
 .search-hero > .container > p { color: #b5c3d8; max-width: 710px; margin-bottom: 28px; }
