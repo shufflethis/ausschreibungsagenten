@@ -8,6 +8,19 @@ import Icon from './Icon'
 // wo man sie erwartet.
 const SPALTEN = [
     {
+        // Diese Abschnitte der Startseite stehen nicht mehr in der oberen
+        // Navigation. Ohne diese Spalte waeren sie von Unterseiten aus nur
+        // ueber den Umweg Startseite und Scrollen erreichbar.
+        titel: 'Produkt',
+        eintraege: [
+            { href: '/#funktionen', text: 'Funktionen' },
+            { href: '/#branchen', text: 'Branchen' },
+            { href: '/#vergleich', text: 'Vergleich' },
+            { href: '/#preise', text: 'Preise' },
+            { href: '/#faq', text: 'FAQ' },
+        ],
+    },
+    {
         titel: 'Wissen',
         eintraege: [
             { zu: '/ausschreibungssuche-automatisieren', text: 'Suche automatisieren' },
