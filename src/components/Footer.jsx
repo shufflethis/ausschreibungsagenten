@@ -121,6 +121,9 @@ export default function Footer() {
                 </div>
 
                 <div className="footer__abschluss">
+                    <a className="footer__readiness" href="https://webmcp-tool.com/check/www.ausschreibungsagenten.de" target="_blank" rel="noopener noreferrer">
+                        <img src="https://webmcp-tool.com/badge/www.ausschreibungsagenten.de.svg" alt="Aktueller Agent Readiness Score für Ausschreibungsagenten.de, gemessen von webmcp-tool.com" width="208" height="40" loading="lazy" decoding="async" />
+                    </a>
                     <nav className="footer__rechtliches" aria-label="Rechtliches">
                         {RECHTLICHES.map((eintrag) => (
                             <Eintrag eintrag={eintrag} key={eintrag.text} />

@@ -192,6 +192,7 @@ describe('Agent-Readiness machine contracts', () => {
         expect(mensch.status).toBe(404)
         expect(mensch.header['Content-Type']).toBe('text/html; charset=utf-8')
         expect(mensch.body).toContain('<title>Seite nicht gefunden')
+        expect(mensch.body).toContain('data-domain="ausschreibungsagenten.de" src="https://agenttracking.co/agent.js"')
     })
 
     it('fuehrt geratene Navigationspfade auf vorhandene Anker', async () => {

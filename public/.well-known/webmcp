@@ -1,0 +1,19 @@
+{
+  "name": "Ausschreibungsagenten.de",
+  "description": "Öffentliche Ausschreibungen aus 17 Quellen suchen und passende Verfahren gemeinsam prüfen.",
+  "tools": [
+    {
+      "name": "search_tenders",
+      "description": "Sucht öffentliche Ausschreibungen nach Leistung, Land und Region und zeigt die Treffer auf der Startseite."
+    },
+    {
+      "name": "list_visible_tenders",
+      "description": "Gibt die aktuell angezeigten Ausschreibungen mit Originalquelle und Frist zurück."
+    },
+    {
+      "name": "source_status",
+      "description": "Gibt den aktuellen Datenstand der angebundenen Ausschreibungsquellen zurück."
+    }
+  ],
+  "pages": ["https://www.ausschreibungsagenten.de/"]
+}

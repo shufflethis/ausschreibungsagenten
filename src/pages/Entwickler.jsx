@@ -267,15 +267,17 @@ npx ausschreibungsagenten laender --json`}</pre>
                         <form onSubmit={handleSignup}>
                             <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={signupHoneypot} onChange={(e) => setSignupHoneypot(e.target.value)} />
                             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                                <label htmlFor="api-key-email" className="profile-lead__field" style={{ flex: '1 1 260px' }}>Geschäftliche E-Mail *
                                 <input
+                                    id="api-key-email"
+                                    name="email"
                                     type="email"
-                                    placeholder="Geschäftliche E-Mail *"
+                                    autoComplete="email"
                                     value={signupEmail}
                                     onChange={(e) => setSignupEmail(e.target.value)}
                                     required
-                                    style={{ flex: '1 1 260px' }}
-                                    aria-label="E-Mail für API-Key"
                                 />
+                                </label>
                                 <button type="submit" className="btn btn--primary" disabled={signupSending}>
                                     {signupSending ? 'Key wird erstellt...' : 'Free API-Key erstellen'}
                                 </button>
@@ -290,17 +292,17 @@ npx ausschreibungsagenten laender --json`}</pre>
                                 </div>
                             )}
                             {signupStatus === 'exists' && (
-                                <p className="form-status form-status--error">
+                                <p className="form-status form-status--error" role="alert">
                                     Diese E-Mail ist bereits registriert. Bei Key-Verlust schreiben Sie an hi@ausschreibungsagenten.de.
                                 </p>
                             )}
                             {signupStatus === 'ratelimited' && (
-                                <p className="form-status form-status--error">
+                                <p className="form-status form-status--error" role="alert">
                                     Zu viele Anfragen. Bitte versuchen Sie es in einer Stunde erneut.
                                 </p>
                             )}
                             {signupStatus === 'error' && (
-                                <p className="form-status form-status--error">
+                                <p className="form-status form-status--error" role="alert">
                                     Der Key konnte nicht erstellt werden. Bitte später erneut versuchen oder an hi@ausschreibungsagenten.de schreiben.
                                 </p>
                             )}
