@@ -129,6 +129,7 @@ const HTML = `<!DOCTYPE html>
             </ul>
         </nav>
     </main>
+    <script defer data-domain="ausschreibungsagenten.de" src="https://agenttracking.co/agent.js"></script>
 </body>
 
 </html>

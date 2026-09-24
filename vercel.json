@@ -5,7 +5,7 @@
         {
             "source": "/(.*)",
             "headers": [
-                { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://app.ausschreibungsagenten.de" },
+                { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://agenttracking.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://agenttracking.co; font-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://app.ausschreibungsagenten.de" },
                 { "key": "X-Content-Type-Options", "value": "nosniff" },
                 { "key": "X-Frame-Options", "value": "DENY" },
                 { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
@@ -19,6 +19,12 @@
             "headers": [
                 { "key": "Vary", "value": "Accept, Accept-Encoding, User-Agent" },
                 { "key": "Link", "value": "</index.md>; rel=\"alternate\"; type=\"text/markdown\", </sitemap.xml>; rel=\"sitemap\"; type=\"application/xml\", </openapi.json>; rel=\"service-desc\"; type=\"application/vnd.oai.openapi+json\", </.well-known/api-catalog>; rel=\"api-catalog\"" }
+            ]
+        },
+        {
+            "source": "/.well-known/webmcp",
+            "headers": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
             ]
         },
         {

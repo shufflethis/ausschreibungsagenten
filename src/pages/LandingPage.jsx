@@ -83,6 +83,7 @@ export default function LandingPage() {
     const [openFaq, setOpenFaq] = useState(null)
     const [formData, setFormData] = useState({ name: '', email: '', company: '', branche: '', message: '', website: '' })
     const [formStatus, setFormStatus] = useState(null)
+    const [invalidField, setInvalidField] = useState(null)
     const [sending, setSending] = useState(false)
     const [tenderQuery, setTenderQuery] = useState('')
     const [tenderRegion, setTenderRegion] = useState('')
@@ -959,6 +960,7 @@ export default function LandingPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setInvalidField(null)
         setSending(true)
         setFormStatus(null)
         try {
@@ -981,6 +983,7 @@ export default function LandingPage() {
 
     const handleProfileSubmit = async (e) => {
         e.preventDefault()
+        setInvalidField(null)
         setProfileSending(true)
         setProfileStatus(null)
         setProfileResult(null)
@@ -1024,16 +1027,16 @@ export default function LandingPage() {
                     <span className="search-hero__eyebrow">Öffentliche Aufträge. Eine klare Vorauswahl.</span>
                     <h1>Den passenden Auftrag finden.<br /><span className="gradient-text">Die richtige Entscheidung treffen.</span></h1>
                     <p>Leistung und Region eingeben. Treffer mit Originalquelle prüfen. Interessante Verfahren im Blick behalten.</p>
-                    <form className="entry-search" id="suche" onSubmit={(event) => { event.preventDefault(); document.getElementById('ergebnisse')?.scrollIntoView({ behavior: 'smooth' }) }}>
+                    <form className="entry-search" id="suche" toolname="search_tenders_form" tooldescription="Set search terms and filters for public tenders; show matching notices on this page." onSubmit={(event) => { event.preventDefault(); document.getElementById('ergebnisse')?.scrollIntoView({ behavior: 'smooth' }) }}>
                         <div className="entry-search__fields">
                             <label htmlFor="tender-query">Welche Leistung bieten Sie an?
-                                <input id="tender-query" type="search" placeholder="z. B. Fenster, Fassaden, Marketing …" value={tenderQuery} onChange={(event) => setTenderQuery(event.target.value)} maxLength={160} />
+                                <input id="tender-query" name="query" type="search" autoComplete="on" placeholder="z. B. Fenster, Fassaden, Marketing …" value={tenderQuery} onChange={(event) => setTenderQuery(event.target.value)} maxLength={160} />
                             </label>
                             <label htmlFor="tender-gewerk">Gewerk
-                                <select id="tender-gewerk" value={tenderVertical} onChange={(event) => setTenderVertical(event.target.value)}>{GEWERKE.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select>
+                                <select id="tender-gewerk" name="vertical" autoComplete="on" value={tenderVertical} onChange={(event) => setTenderVertical(event.target.value)}>{GEWERKE.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select>
                             </label>
                             <label htmlFor="tender-region">Leistungsregion
-                                <input id="tender-region" placeholder="Bundesweit oder z. B. Berlin" list="regionen" value={tenderRegion} onChange={(event) => setTenderRegion(event.target.value)} maxLength={160} />
+                                <input id="tender-region" name="performance_region" type="text" autoComplete="on" placeholder="Bundesweit oder z. B. Berlin" list="regionen" value={tenderRegion} onChange={(event) => setTenderRegion(event.target.value)} maxLength={160} />
                                 <datalist id="regionen">{['Berlin', 'Brandenburg', 'Bayern', 'Baden-Württemberg', 'Hamburg', 'Hessen', 'Nordrhein-Westfalen', 'Sachsen', 'Niedersachsen'].map((region) => <option key={region} value={region} />)}</datalist>
                             </label>
                             <button className="btn btn--primary" type="submit">Aufträge finden <span aria-hidden="true">↓</span></button>
@@ -1042,9 +1045,9 @@ export default function LandingPage() {
                             <span>Kostenlos suchen · Ohne Anmeldung</span>
                             <details className="search-options"><summary>Land & Entscheidungskriterien</summary>
                                 <div className="search-options__fields">
-                                    <label htmlFor="tender-country">Land<select id="tender-country" value={tenderLand} onChange={(event) => setTenderLand(event.target.value)}><option value="DEU">Deutschland</option><option value="AUT">Österreich</option><option value="CHE">Schweiz</option><option value="GBR">Großbritannien</option></select></label>
-                                    <label htmlFor="tender-exclusions">Ausschlussbegriffe<input id="tender-exclusions" placeholder="z. B. Personalüberlassung, Winterdienst" value={exclusions} onChange={(event) => setExclusions(event.target.value)} maxLength={300} /></label>
-                                    <label htmlFor="tender-days">Mindestvorlauf in Tagen<input id="tender-days" type="number" min="0" max="90" value={minimumDays} onChange={(event) => setMinimumDays(Math.min(90, Math.max(0, Number(event.target.value))))} /></label>
+                                    <label htmlFor="tender-country">Land<select id="tender-country" name="country" autoComplete="on" value={tenderLand} onChange={(event) => setTenderLand(event.target.value)}><option value="DEU">Deutschland</option><option value="AUT">Österreich</option><option value="CHE">Schweiz</option><option value="GBR">Großbritannien</option></select></label>
+                                    <label htmlFor="tender-exclusions">Ausschlussbegriffe<input id="tender-exclusions" name="exclusions" type="text" autoComplete="on" placeholder="z. B. Personalüberlassung, Winterdienst" value={exclusions} onChange={(event) => setExclusions(event.target.value)} maxLength={300} /></label>
+                                    <label htmlFor="tender-days">Mindestvorlauf in Tagen<input id="tender-days" name="minimum_days" type="number" autoComplete="on" min="0" max="90" value={minimumDays} onChange={(event) => setMinimumDays(Math.min(90, Math.max(0, Number(event.target.value))))} /></label>
                                 </div>
                                 <p>Ausschlussbegriffe und Vorlauf markieren Risiken in der Entscheidungskarte. Sie blenden keine Treffer aus.</p>
                             </details>
@@ -1193,68 +1196,55 @@ export default function LandingPage() {
                                     Auftragsgrößen und melden uns mit den nächsten konkreten Treffern.
                                 </p>
                             </div>
-                            <form className="profile-lead__form" onSubmit={handleProfileSubmit}>
+                            <form className="profile-lead__form" onSubmit={handleProfileSubmit} onInvalid={(e) => setInvalidField((current) => current ?? e.target.id)} onInput={(e) => { if (e.target.id === invalidField) setInvalidField(null) }}>
                                 <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={profileData.website} onChange={(e) => setProfileData({ ...profileData, website: e.target.value })} />
                                 <div className="profile-lead__grid">
-                                    <input
-                                        type="text"
-                                        placeholder="Unternehmen *"
-                                        value={profileData.company}
-                                        onChange={(e) => setProfileData({ ...profileData, company: e.target.value })}
-                                        required
-                                    />
-                                    <input
-                                        type="email"
-                                        placeholder="Geschäftliche E-Mail *"
-                                        value={profileData.email}
-                                        onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
-                                        required
-                                    />
-                                    <select
-                                        value={profileData.industry}
-                                        onChange={(e) => setProfileData({ ...profileData, industry: e.target.value })}
-                                    >
-                                        <option value="">Branche wählen</option>
-                                        <option value="Handwerk">Handwerk</option>
-                                        <option value="Bau">Bau</option>
-                                        <option value="IT">IT / Software</option>
-                                        <option value="Marketing">Marketing / PR</option>
-                                        <option value="Beratung">Beratung</option>
-                                        <option value="Facility">Facility Management</option>
-                                    </select>
-                                    <input
-                                        type="text"
-                                        placeholder="Region, z. B. NRW, Berlin, DACH"
-                                        value={profileData.region}
-                                        onChange={(e) => setProfileData({ ...profileData, region: e.target.value })}
-                                    />
-                                    <select
-                                        value={profileData.budget}
-                                        onChange={(e) => setProfileData({ ...profileData, budget: e.target.value })}
-                                    >
-                                        <option value="">Ziel-Auftragsvolumen</option>
-                                        <option value="Bis 25.000 EUR">Bis 25.000 EUR</option>
-                                        <option value="25.000-100.000 EUR">25.000-100.000 EUR</option>
-                                        <option value="100.000-500.000 EUR">100.000-500.000 EUR</option>
-                                        <option value="500.000+ EUR">500.000+ EUR</option>
-                                    </select>
-                                    <select
-                                        value={profileData.frequency}
-                                        onChange={(e) => setProfileData({ ...profileData, frequency: e.target.value })}
-                                    >
-                                        <option value="">Teilnahme bisher</option>
-                                        <option value="Noch nie">Noch nie</option>
-                                        <option value="1-3 pro Jahr">1-3 pro Jahr</option>
-                                        <option value="Monatlich">Monatlich</option>
-                                        <option value="Regelmäßig / Team vorhanden">Regelmäßig / Team vorhanden</option>
-                                    </select>
+                                    <label className="profile-lead__field" htmlFor="profile-company">Unternehmen *
+                                        <input id="profile-company" name="company" type="text" autoComplete="organization" aria-invalid={invalidField === 'profile-company'} aria-describedby={invalidField === 'profile-company' ? 'profile-company-error' : undefined} value={profileData.company} onChange={(e) => setProfileData({ ...profileData, company: e.target.value })} required />
+                                        {invalidField === 'profile-company' && <span id="profile-company-error" className="field-error">Bitte geben Sie Ihr Unternehmen an.</span>}
+                                    </label>
+                                    <label className="profile-lead__field" htmlFor="profile-email">Geschäftliche E-Mail *
+                                        <input id="profile-email" name="email" type="email" autoComplete="email" aria-invalid={invalidField === 'profile-email'} aria-describedby={invalidField === 'profile-email' ? 'profile-email-hint profile-email-error' : 'profile-email-hint'} value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} required />
+                                        <span id="profile-email-hint" className="field-hint">An diese Adresse senden wir die Antwort auf Ihre Pilotanfrage.</span>
+                                        {invalidField === 'profile-email' && <span id="profile-email-error" className="field-error">Bitte geben Sie eine gültige geschäftliche E-Mail-Adresse an.</span>}
+                                    </label>
+                                    <label className="profile-lead__field" htmlFor="profile-industry">Branche
+                                        <select id="profile-industry" name="industry" autoComplete="off" value={profileData.industry} onChange={(e) => setProfileData({ ...profileData, industry: e.target.value })}>
+                                            <option value="">Branche wählen</option>
+                                            <option value="Handwerk">Handwerk</option>
+                                            <option value="Bau">Bau</option>
+                                            <option value="IT">IT / Software</option>
+                                            <option value="Marketing">Marketing / PR</option>
+                                            <option value="Beratung">Beratung</option>
+                                            <option value="Facility">Facility Management</option>
+                                        </select>
+                                    </label>
+                                    <label className="profile-lead__field" htmlFor="profile-region">Regionen für Ihr Suchprofil
+                                        <input id="profile-region" name="region" type="text" autoComplete="off" placeholder="z. B. NRW, Berlin, DACH" value={profileData.region} onChange={(e) => setProfileData({ ...profileData, region: e.target.value })} />
+                                    </label>
+                                    <label className="profile-lead__field" htmlFor="profile-budget">Ziel-Auftragsvolumen
+                                        <select id="profile-budget" name="budget" autoComplete="off" value={profileData.budget} onChange={(e) => setProfileData({ ...profileData, budget: e.target.value })}>
+                                            <option value="">Bitte wählen</option>
+                                            <option value="Bis 25.000 EUR">Bis 25.000 EUR</option>
+                                            <option value="25.000-100.000 EUR">25.000-100.000 EUR</option>
+                                            <option value="100.000-500.000 EUR">100.000-500.000 EUR</option>
+                                            <option value="500.000+ EUR">500.000+ EUR</option>
+                                        </select>
+                                    </label>
+                                    <label className="profile-lead__field" htmlFor="profile-frequency">Bisherige Teilnahme
+                                        <select id="profile-frequency" name="frequency" autoComplete="off" value={profileData.frequency} onChange={(e) => setProfileData({ ...profileData, frequency: e.target.value })}>
+                                            <option value="">Bitte wählen</option>
+                                            <option value="Noch nie">Noch nie</option>
+                                            <option value="1-3 pro Jahr">1-3 pro Jahr</option>
+                                            <option value="Monatlich">Monatlich</option>
+                                            <option value="Regelmäßig / Team vorhanden">Regelmäßig / Team vorhanden</option>
+                                        </select>
+                                    </label>
                                 </div>
-                                <textarea
-                                    placeholder="Welche Leistungen sollen Agenten für Sie suchen? *"
-                                    value={profileData.services}
-                                    onChange={(e) => setProfileData({ ...profileData, services: e.target.value })}
-                                    required
-                                />
+                                <label className="profile-lead__field" htmlFor="profile-services">Welche Leistungen sollen Agenten für Sie suchen? *
+                                    <textarea id="profile-services" name="services" autoComplete="off" aria-invalid={invalidField === 'profile-services'} aria-describedby={invalidField === 'profile-services' ? 'profile-services-error' : undefined} value={profileData.services} onChange={(e) => setProfileData({ ...profileData, services: e.target.value })} required />
+                                    {invalidField === 'profile-services' && <span id="profile-services-error" className="field-error">Bitte beschreiben Sie die gesuchten Leistungen.</span>}
+                                </label>
                                 <button type="submit" className="btn btn--primary" disabled={profileSending}>
                                     {profileSending ? 'Profil wird gesendet...' : 'Agentenprofil anfragen'}
                                 </button>
@@ -1264,7 +1254,7 @@ export default function LandingPage() {
                                     </p>
                                 )}
                                 {profileStatus === 'error' && (
-                                    <p className="form-status form-status--error">
+                                    <p className="form-status form-status--error" role="alert">
                                         Das Profil konnte nicht gesendet werden. Bitte nutzen Sie das Kontaktformular unten.
                                     </p>
                                 )}
@@ -1642,30 +1632,41 @@ export default function LandingPage() {
                     </p>
 
                     <div className="contact-grid">
-                        <form className="contact-form" onSubmit={handleSubmit}>
+                        <form className="contact-form" onSubmit={handleSubmit} onInvalid={(e) => setInvalidField((current) => current ?? e.target.id)} onInput={(e) => { if (e.target.id === invalidField) setInvalidField(null) }}>
                             <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} />
                             <div className="form-row">
                                 <div className="form-group">
                                     <label htmlFor="contact-name">Name *</label>
                                     <input
                                         id="contact-name"
+                                        name="name"
                                         type="text"
+                                        autoComplete="name"
+                                        aria-invalid={invalidField === 'contact-name'}
+                                        aria-describedby={invalidField === 'contact-name' ? 'contact-name-error' : undefined}
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         placeholder="Max Mustermann"
                                         required
                                     />
+                                    {invalidField === 'contact-name' && <span id="contact-name-error" className="field-error">Bitte geben Sie Ihren Namen an.</span>}
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="contact-email">E-Mail *</label>
                                     <input
                                         id="contact-email"
+                                        name="email"
                                         type="email"
+                                        autoComplete="email"
+                                        aria-invalid={invalidField === 'contact-email'}
+                                        aria-describedby={invalidField === 'contact-email' ? 'contact-email-hint contact-email-error' : 'contact-email-hint'}
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                         placeholder="max@firma.de"
                                         required
                                     />
+                                    <span id="contact-email-hint" className="field-hint">Wir antworten an diese Adresse.</span>
+                                    {invalidField === 'contact-email' && <span id="contact-email-error" className="field-error">Bitte geben Sie eine gültige E-Mail-Adresse an.</span>}
                                 </div>
                             </div>
 
@@ -1674,7 +1675,9 @@ export default function LandingPage() {
                                     <label htmlFor="contact-company">Unternehmen</label>
                                     <input
                                         id="contact-company"
+                                        name="company"
                                         type="text"
+                                        autoComplete="organization"
                                         value={formData.company}
                                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                                         placeholder="Mustermann GmbH"
@@ -1684,6 +1687,8 @@ export default function LandingPage() {
                                     <label htmlFor="contact-branche">Branche</label>
                                     <select
                                         id="contact-branche"
+                                        name="branche"
+                                        autoComplete="off"
                                         value={formData.branche}
                                         onChange={(e) => setFormData({ ...formData, branche: e.target.value })}
                                     >
@@ -1704,11 +1709,16 @@ export default function LandingPage() {
                                 <label htmlFor="contact-message">Nachricht *</label>
                                 <textarea
                                     id="contact-message"
+                                    name="message"
+                                    autoComplete="off"
+                                    aria-invalid={invalidField === 'contact-message'}
+                                    aria-describedby={invalidField === 'contact-message' ? 'contact-message-error' : undefined}
                                     value={formData.message}
                                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                     placeholder="Wie können wir Ihnen helfen? Beschreiben Sie Ihre aktuelle Situation bei der Ausschreibungssuche..."
                                     required
                                 />
+                                {invalidField === 'contact-message' && <span id="contact-message-error" className="field-error">Bitte schreiben Sie eine Nachricht.</span>}
                             </div>
 
                             <button type="submit" className="btn btn--primary" disabled={sending}>
@@ -1721,7 +1731,7 @@ export default function LandingPage() {
                                 </div>
                             )}
                             {formStatus === 'error' && (
-                                <div className="form-status form-status--error">
+                                <div className="form-status form-status--error" role="alert">
                                     Es gab ein Problem beim Senden. Bitte versuchen Sie es erneut oder schreiben Sie an hi@ausschreibungsagenten.de.
                                 </div>
                             )}
@@ -1729,23 +1739,23 @@ export default function LandingPage() {
 
                         <div className="contact-info">
                             <div className="glass-card contact-info__item">
-                                <h4><Icon name="mail" size={18} /> E-Mail</h4>
+                                <h3><Icon name="mail" size={18} /> E-Mail</h3>
                                 <p><a href="mailto:hi@ausschreibungsagenten.de">hi@ausschreibungsagenten.de</a></p>
                             </div>
                             <div className="glass-card contact-info__item">
-                                <h4><Icon name="phone" size={18} /> Telefon</h4>
+                                <h3><Icon name="phone" size={18} /> Telefon</h3>
                                 <p><a href="tel:+4930403665430">030 – 403 665 430</a></p>
                             </div>
                             <div className="glass-card contact-info__item">
-                                <h4><Icon name="pin" size={18} /> Standort</h4>
+                                <h3><Icon name="pin" size={18} /> Standort</h3>
                                 <p>Yawusa UG (haftungsbeschränkt)<br />Schliemannstraße 23, 10437 Berlin</p>
                             </div>
                             <div className="glass-card contact-info__item">
-                                <h4><Icon name="zap" size={18} /> Antwortzeit</h4>
+                                <h3><Icon name="zap" size={18} /> Antwortzeit</h3>
                                 <p>In der Regel antworten wir innerhalb von 24 Stunden an Werktagen.</p>
                             </div>
                             <div className="glass-card contact-info__item">
-                                <h4><Icon name="target" size={18} /> Für wen?</h4>
+                                <h3><Icon name="target" size={18} /> Für wen?</h3>
                                 <p>Handwerk, Bau, IT, Beratung, Facility Management und alle Unternehmen, die öffentliche Aufträge gewinnen möchten.</p>
                             </div>
                         </div>

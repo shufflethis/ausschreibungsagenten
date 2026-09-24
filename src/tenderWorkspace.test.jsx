@@ -7,6 +7,20 @@ import { SUCHAUFTRAEGE_KEY } from './lib/suchauftraege'
 
 afterEach(() => { cleanup(); localStorage.clear(); vi.restoreAllMocks() })
 
+it('beschreibt ein ungültiges Pflichtfeld und entfernt den Fehler nach Eingabe', () => {
+    globalThis.fetch = vi.fn(async () => ({ ok: true, json: async () => [] }))
+    render(<HelmetProvider><BrowserRouter><LandingPage /></BrowserRouter></HelmetProvider>)
+    const company = screen.getByLabelText('Unternehmen *')
+    fireEvent.invalid(company)
+    expect(company.getAttribute('aria-invalid')).toBe('true')
+    expect(company.getAttribute('aria-describedby')).toBe('profile-company-error')
+    expect(screen.getByText('Bitte geben Sie Ihr Unternehmen an.')).toBeTruthy()
+    fireEvent.change(company, { target: { value: 'Beispiel GmbH' } })
+    fireEvent.input(company)
+    expect(company.getAttribute('aria-invalid')).toBe('false')
+    expect(screen.queryByText('Bitte geben Sie Ihr Unternehmen an.')).toBeNull()
+})
+
 it('verbindet Einstieg, Blättern, belegte Nachweise und einen gespeicherten Änderungsvergleich', async () => {
     Element.prototype.scrollIntoView = vi.fn()
     const rows = Array.from({ length: 13 }, (_, i) => ({ id: `notice-${i}`, title: `Fenster Berlin ${i}`, buyer_name: 'Stadt', source: 'ted', source_url: `https://example.org/${i}`, description: 'Fenster und Fassaden sanieren.', requirements: [{ type: 'references', evidence: 'Drei Referenzen nachweisen.' }], deadline_at: '2027-10-10T10:00:00Z', deadline_details: [], document_revision: 'v1' }))
