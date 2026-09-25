@@ -88,6 +88,35 @@ const DIENST = {
     termsOfService: `${SITE_ORIGIN}/agb`,
 }
 
+// Gleicht die Autorenangaben auf geo-tool.com ab, damit Suchmaschinen und
+// KI-Systeme beide Profile als dieselbe Person zusammenfuehren. worksFor
+// nennt zuerst die Betreiberin dieser Seite, dann famefact.
+const GORDEN_WUEBBE = {
+    '@type': 'Person',
+    '@id': `${SITE_ORIGIN}/ueber-uns#gorden-wuebbe`,
+    name: 'Gorden Wübbe',
+    alternateName: 'Gorden Wuebbe',
+    jobTitle: ['Geschäftsführer Technologie & KI', 'AI Search Evangelist'],
+    description:
+        'Geschäftsführer von Ausschreibungsagenten.de, Gründer von geo-tool.com und Mitgründer von famefact. '
+        + 'Misst, ob KI-Systeme wie ChatGPT, Perplexity und Google AI Mode Unternehmen empfehlen.',
+    image: `${SITE_ORIGIN}/team/gorden-wuebbe.webp`,
+    url: `${SITE_ORIGIN}/ueber-uns`,
+    founder: { '@type': 'Organization', name: 'geo-tool', url: 'https://geo-tool.com' },
+    worksFor: [
+        { '@id': `${SITE_ORIGIN}/#organisation` },
+        { '@type': 'Organization', name: 'famefact', url: 'https://famefact.com' },
+    ],
+    knowsAbout: [
+        'Generative Engine Optimization',
+        'AI Search',
+        'KI-Sichtbarkeit',
+        'Agentic Commerce',
+        'Öffentliche Ausschreibungen',
+    ],
+    sameAs: ['https://www.linkedin.com/in/wuebbe', 'https://x.com/wuebbe', 'https://geo-tool.com'],
+}
+
 export default function StrukturierteDaten({ path, faq }) {
     const route = routeByPath(path)
     if (!route) throw new Error(`Kein Manifest-Eintrag fuer ${path}`)
@@ -121,6 +150,10 @@ export default function StrukturierteDaten({ path, faq }) {
     // Unterseite zu wiederholen macht ihn nicht deutlicher.
     if (route.path === '/') {
         graph.push(DIENST)
+    }
+
+    if (route.path === '/ueber-uns') {
+        graph.push(GORDEN_WUEBBE)
     }
 
     if (faq?.length) {

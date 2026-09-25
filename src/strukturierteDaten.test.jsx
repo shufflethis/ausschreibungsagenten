@@ -70,6 +70,14 @@ describe('Strukturierte Daten', () => {
         expect(jsonLd('/entwickler')['@graph'].some((k) => k['@type'] === 'Service')).toBe(false)
     })
 
+    it('fuehrt Gorden Wuebbe nur auf der Ueber-uns-Seite mit seinen Profilen', () => {
+        const person = jsonLd('/ueber-uns')['@graph'].find((k) => k['@type'] === 'Person')
+        expect(person.name).toBe('Gorden Wübbe')
+        expect(person.sameAs).toContain('https://www.linkedin.com/in/wuebbe')
+        expect(person.worksFor[0]['@id']).toBe('https://www.ausschreibungsagenten.de/#organisation')
+        expect(jsonLd('/')['@graph'].some((k) => k['@type'] === 'Person')).toBe(false)
+    })
+
     it('nennt den eigenen YouTube-Kanal als Profil derselben Entitaet', () => {
         const daten = jsonLd('/')
         const organisation = daten['@graph'].find((k) => k['@type'] === 'Organization')
