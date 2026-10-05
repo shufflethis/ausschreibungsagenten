@@ -19,6 +19,7 @@ const SOURCE_LABELS = {
     vpbw: 'Vergabeportal Baden-Württemberg',
     dtvp: 'DTVP Deutsches Vergabeportal',
     rib: 'RIB / iTWO tender',
+    sam: 'US SAM.gov Contract Opportunities (Bund, JSON-API)',
 }
 
 const COUNTRY_NAMES = {
@@ -27,7 +28,7 @@ const COUNTRY_NAMES = {
     LUX: 'Luxemburg', FIN: 'Finnland', IRL: 'Irland', HRV: 'Kroatien', EST: 'Estland',
     DNK: 'Dänemark', GRC: 'Griechenland', BGR: 'Bulgarien', HUN: 'Ungarn', LTU: 'Litauen',
     MLT: 'Malta', ROU: 'Rumänien', SVN: 'Slowenien', SVK: 'Slowakei', LVA: 'Lettland',
-    PRT: 'Portugal', CYP: 'Zypern', GBR: 'Vereinigtes Königreich',
+    PRT: 'Portugal', CYP: 'Zypern', GBR: 'Vereinigtes Königreich', USA: 'USA',
 }
 
 const formatDateTime = (value) => {

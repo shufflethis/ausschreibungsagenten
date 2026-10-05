@@ -133,7 +133,7 @@ export default function Entwickler() {
                             Ausschreibungsagenten <span className="gradient-text">API-Dokumentation</span>
                         </h1>
                         <p className="hero__description">
-                            17 öffentliche Live-Quellen, erklärbares Matching und eine Agent-Anbindung, die
+                            18 öffentliche Live-Quellen, erklärbares Matching und eine Agent-Anbindung, die
                             Ihr KI-Agent selbst entdecken kann. Die Vorschau-API ist ohne Anmeldung nutzbar;
                             höhere Limits, Volltextsuche und Firmen-Fit gehören zum Agent-Tarif.
                         </p>

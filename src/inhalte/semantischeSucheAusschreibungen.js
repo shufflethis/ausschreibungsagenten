@@ -70,7 +70,7 @@ export const semantischeSucheAusschreibungen = {
         },
         {
             frage: 'Ist das dann überhaupt KI?',
-            antwort: 'Der Agent automatisiert Abruf, Zuordnung und Bewertung über 17 Quellen und arbeitet dabei regelbasiert und nachvollziehbar. Ob man das KI nennt, ist eine Definitionsfrage. Uns ist wichtiger, dass jede Entscheidung des Systems eine Begründung hat, die Sie prüfen können.',
+            antwort: 'Der Agent automatisiert Abruf, Zuordnung und Bewertung über 18 Quellen und arbeitet dabei regelbasiert und nachvollziehbar. Ob man das KI nennt, ist eine Definitionsfrage. Uns ist wichtiger, dass jede Entscheidung des Systems eine Begründung hat, die Sie prüfen können.',
         },
         {
             frage: 'Kann ich eigene Begriffe hinterlegen?',
@@ -84,6 +84,6 @@ export const semantischeSucheAusschreibungen = {
     querverweise: [
         { path: '/ausschreibungssuche-automatisieren', text: 'Wie die automatisierte Suche insgesamt funktioniert' },
         { path: '/ki-angebot-ausschreibung', text: 'Was KI beim Angebot leisten kann und was nicht' },
-        { path: '/status', text: 'Quellenstatus aller 17 angebundenen Portale' },
+        { path: '/status', text: 'Quellenstatus aller 18 angebundenen Portale' },
     ],
 }

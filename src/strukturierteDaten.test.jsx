@@ -53,7 +53,7 @@ describe('Strukturierte Daten', () => {
 
     it('beschreibt die Entitaet, nicht nur ihren Namen', () => {
         const organisation = jsonLd('/')['@graph'].find((k) => k['@type'] === 'Organization')
-        expect(organisation.description).toContain('17 Vergabequellen')
+        expect(organisation.description).toContain('18 Vergabequellen')
         expect(organisation.url).toBe('https://www.ausschreibungsagenten.de/')
         expect(organisation.logo['@type']).toBe('ImageObject')
         expect(organisation.logo.url).toContain('/brand/logo-mark.png')

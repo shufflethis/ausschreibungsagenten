@@ -13,7 +13,7 @@ export const vergabepilotAlternative = {
         zeilen: [
             ['Suchverfahren', 'Semantische KI-Suche, KI versteht den Kontext', 'CPV-Codes, Regeln und Ausschlüsse, Begründung je Treffer'],
             ['Treffer nachvollziehbar', 'KI-Zusammenfassung und KI-Assistent', 'Jeder Treffer nennt die Gründe, warum er zu Ihnen passt'],
-            ['Quellen', '„Alle Vergabeportale an einem Ort“', '17 benannte Quellen mit belegtem Abrufstand im Quellenstatus'],
+            ['Quellen', '„Alle Vergabeportale an einem Ort“', '18 benannte Quellen mit belegtem Abrufstand im Quellenstatus'],
             ['Angebotserstellung', 'Angekündigt, laut Anbieter „geplant“', 'Bewusst nicht Teil des Angebots, siehe Abgrenzung'],
             ['Hosting und KI', 'Made in Germany, DSGVO-konform', 'Deutschland gehostet, Mistral AI in der EU, keine US-Hyperscaler'],
         ],
@@ -36,7 +36,7 @@ export const vergabepilotAlternative = {
         {
             titel: 'Quellen: benannt und belegt statt „alle“',
             absaetze: [
-                'Vergabepilot wirbt damit, alle öffentlichen Vergabeportale an einem Ort zu bündeln. Ausschreibungsagenten geht hier einen nüchternen Weg: Wir nennen die 17 Quellen beim Namen — TED, Bund, den Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale und die britischen Bekanntmachungswege — und zeigen im Quellenstatus zu jeder Quelle den letzten erfolgreichen Abruf.',
+                'Vergabepilot wirbt damit, alle öffentlichen Vergabeportale an einem Ort zu bündeln. Ausschreibungsagenten geht hier einen nüchternen Weg: Wir nennen die 18 Quellen beim Namen — TED, Bund, den Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale und die britischen Bekanntmachungswege — und zeigen im Quellenstatus zu jeder Quelle den letzten erfolgreichen Abruf.',
                 'Der Unterschied ist praktisch: Eine unbestimmte Zahl lässt sich nicht prüfen. Ein Quellenstatus mit Zeitstempel schon. Wenn eine Quelle klemmt, sehen Sie es, statt sich auf eine Zahl zu verlassen, die niemand nachvollziehen kann.',
             ],
         },

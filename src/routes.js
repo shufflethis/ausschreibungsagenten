@@ -10,7 +10,7 @@ export const routes = [
         component: 'LandingPage',
         title: 'Ausschreibungsagenten.de – Öffentliche Ausschreibungen automatisch finden',
         description:
-            'Öffentliche Ausschreibungen automatisch aus 17 Live-Quellen finden: TED, Bund, DTVP und Landesportale. Erklärbares Profil-Matching mit Begründung je Treffer.',
+            'Öffentliche Ausschreibungen automatisch aus 18 Live-Quellen finden: TED, Bund, DTVP und Landesportale. Erklärbares Profil-Matching mit Begründung je Treffer.',
         prerender: true,
         index: true,
         lastmod: '2026-08-14',
@@ -30,7 +30,7 @@ export const routes = [
         component: 'Entwickler',
         title: 'Ausschreibungsagenten API-Dokumentation | REST, MCP, A2A für Entwickler und Agenten',
         description:
-            'Öffentliche Ausschreibungen per API und KI-Agent abfragen: REST-Vorschau, A2A Agent Card, JSON-RPC und OpenAPI. 17 Live-Quellen, erklärbares Matching, transparente Limits.',
+            'Öffentliche Ausschreibungen per API und KI-Agent abfragen: REST-Vorschau, A2A Agent Card, JSON-RPC und OpenAPI. 18 Live-Quellen, erklärbares Matching, transparente Limits.',
         prerender: true,
         index: true,
         lastmod: '2026-08-14',
@@ -50,7 +50,7 @@ export const routes = [
         component: 'AusschreibungssucheAutomatisieren',
         title: 'Ausschreibungssuche automatisieren – so funktioniert es | Ausschreibungsagenten.de',
         description:
-            'So automatisieren Sie die Ausschreibungssuche: 17 Quellen von EU bis Landesportal, Abgleich über CPV, Ort, Wert und Frist – mit Begründung je Treffer.',
+            'So automatisieren Sie die Ausschreibungssuche: 18 Quellen von EU bis Landesportal, Abgleich über CPV, Ort, Wert und Frist – mit Begründung je Treffer.',
         prerender: true,
         index: true,
         lastmod: '2026-08-14',
@@ -80,7 +80,7 @@ export const routes = [
         component: 'VergabepilotAlternative',
         title: 'Vergabepilot Alternative: erklärbares Matching statt semantischer KI-Suche | Ausschreibungsagenten.de',
         description:
-            'Vergabepilot-Alternative gesucht? Ausschreibungsagenten matcht mit CPV-Codes, Regeln und Ausschlüssen statt Ähnlichkeitswert — jeder Treffer mit Begründung, 17 belegte Quellen, EU-Hosting.',
+            'Vergabepilot-Alternative gesucht? Ausschreibungsagenten matcht mit CPV-Codes, Regeln und Ausschlüssen statt Ähnlichkeitswert — jeder Treffer mit Begründung, 18 belegte Quellen, EU-Hosting.',
         prerender: true,
         index: true,
         lastmod: '2026-08-18',
@@ -90,7 +90,7 @@ export const routes = [
         component: 'VergabefixAlternative',
         title: 'Vergabefix Alternative: belegte Quellen statt Gesamtzahlen | Ausschreibungsagenten.de',
         description:
-            'Vergabefix-Alternative mit erklärbarem Matching: 17 benannte Quellen mit belegtem Abrufstand statt einer unbestimmten Portanzahl, Begründung je Treffer, kostenfreie Pilotphase.',
+            'Vergabefix-Alternative mit erklärbarem Matching: 18 benannte Quellen mit belegtem Abrufstand statt einer unbestimmten Portanzahl, Begründung je Treffer, kostenfreie Pilotphase.',
         prerender: true,
         index: true,
         lastmod: '2026-08-18',
@@ -100,7 +100,7 @@ export const routes = [
         component: 'TenderflowAlternative',
         title: 'Tenderflow Alternative: Begründung je Treffer statt Prozentversprechen | Ausschreibungsagenten.de',
         description:
-            'Tenderflow-Alternative gesucht? Ausschreibungsagenten nennt 17 belegte Quellen und begründet jeden Treffer — ohne pauschale Aufwandsversprechen. EU-Hosting, kostenfreie Pilotphase.',
+            'Tenderflow-Alternative gesucht? Ausschreibungsagenten nennt 18 belegte Quellen und begründet jeden Treffer — ohne pauschale Aufwandsversprechen. EU-Hosting, kostenfreie Pilotphase.',
         prerender: true,
         index: true,
         lastmod: '2026-08-18',

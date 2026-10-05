@@ -219,7 +219,7 @@ export default function Brandkit() {
                             <h3 className="glass-card__title">Über das Produkt</h3>
                             <p className="glass-card__text">
                                 Kurzbeschreibung für Presse und Partner: „Ausschreibungsagenten.de findet
-                                öffentliche Ausschreibungen aus 17 Live-Quellen — von TED bis zu den
+                                öffentliche Ausschreibungen aus 18 Live-Quellen — von TED bis zu den
                                 Landesportalen — und erklärt zu jedem Treffer, warum er zum Firmenprofil
                                 passt." Betrieben von der Yawusa UG (haftungsbeschränkt), Berlin;
                                 Datenverarbeitung in der EU.

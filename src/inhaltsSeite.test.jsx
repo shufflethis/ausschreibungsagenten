@@ -28,7 +28,7 @@ const SEITE = {
     faq: [
         { frage: 'Kostet das etwas?', antwort: 'Der Pro-Tarif kostet 149 Euro im Monat.' },
         { frage: 'Wie oft wird gesucht?', antwort: 'Mehrmals täglich, je nach Quelle.' },
-        { frage: 'Welche Portale?', antwort: 'Derzeit 17 Live-Quellen.' },
+        { frage: 'Welche Portale?', antwort: 'Derzeit 18 Live-Quellen.' },
     ],
     ctaKontext: 'Automatisierte Ausschreibungssuche',
     querverweise: [

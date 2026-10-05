@@ -95,8 +95,8 @@ export default function Footer() {
                     <div className="footer__marke">
                         <div className="footer__wortmarke">Ausschreibungsagenten.de</div>
                         <p>
-                            Öffentliche Ausschreibungen aus 17 Quellen in Deutschland, der EU und
-                            Großbritannien — mit nachvollziehbaren Treffergründen.
+                            Öffentliche Ausschreibungen aus 18 Quellen in Deutschland, der EU,
+                            Großbritannien und den USA — mit nachvollziehbaren Treffergründen.
                         </p>
                         <p className="footer__service">
                             Ein Service von{' '}

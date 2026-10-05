@@ -167,7 +167,7 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
             // [A-Za-z0-9_.-]; ein Verstoss laesst registerTool ablehnen.
             expect(eintrag.name).toMatch(/^[A-Za-z0-9_.-]{1,128}$/)
         }
-        // Bekanntmachungstexte stammen aus 17 fremden Portalen. Werkzeuge,
+        // Bekanntmachungstexte stammen aus 18 fremden Portalen. Werkzeuge,
         // die sie zurueckgeben, markieren das fuer den Agenten.
         for (const name of ['search_tenders', 'list_visible_tenders', 'open_tender', 'shortlist_tender', 'list_shortlist']) {
             const eintrag = registriert.find((vorhanden) => vorhanden.name === name)

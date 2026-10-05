@@ -7,7 +7,7 @@ const team = [
         role: 'Geschäftsführer · Technologie & KI',
         description: 'Gorden verantwortet die technische Plattform hinter Ausschreibungsagenten.de: Datenquellen, Matching, sichere Infrastruktur und die Automatisierung vom Fund bis zur nächsten Aktion.',
         longDescription:
-            'Er baut und betreibt die Anbindung der 17 öffentlichen Quellen – von TED über service.bund.de und den Datenservice Öffentlicher Einkauf bis zu den Landesportalen – und legt dabei Wert auf nachvollziehbare Datenpfade: Jede Bekanntmachung bleibt mit Originalquelle, Abrufzeitpunkt und Match-Begründung rekonstruierbar. Datenverarbeitung und KI-Modelle laufen bewusst in der Europäischen Union.',
+            'Er baut und betreibt die Anbindung der 18 öffentlichen Quellen – von TED über service.bund.de und den Datenservice Öffentlicher Einkauf bis zu den Landesportalen – und legt dabei Wert auf nachvollziehbare Datenpfade: Jede Bekanntmachung bleibt mit Originalquelle, Abrufzeitpunkt und Match-Begründung rekonstruierbar. Datenverarbeitung und KI-Modelle laufen bewusst in der Europäischen Union.',
         bio: 'Als Mitgründer der Berliner Agentur famefact baut er seit 2011 Marketing-Tools. Mit geo-tool.com hat er eines der ersten GEO-Tools im deutschsprachigen Raum gegründet: Es misst, ob KI-Systeme wie ChatGPT, Perplexity, Gemini und Google AI Mode ein Unternehmen empfehlen. Ehemann. Vater von drei Kindern. Slowmad.',
         image: '/team/gorden-wuebbe.webp',
         accent: 'cyan',
