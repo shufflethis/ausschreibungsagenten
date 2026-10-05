@@ -20,7 +20,7 @@ const ORGANISATION = {
     // unvollstaendig: Name und Adresse sagen, wer wir sind, aber nicht,
     // wofuer. Genau danach fragen Agenten bei der Entitaetsaufloesung.
     description:
-        'Ausschreibungsagenten.de findet öffentliche Ausschreibungen aus 17 Vergabequellen in '
+        'Ausschreibungsagenten.de findet öffentliche Ausschreibungen aus 18 Vergabequellen in '
         + 'Deutschland, der EU und dem Vereinigten Königreich und begründet jeden Treffer '
         + 'nachvollziehbar über CPV, Suchbegriffe, Ausschlüsse, Leistungsort, Auftragswert und Frist.',
     url: `${SITE_ORIGIN}/`,
@@ -70,8 +70,8 @@ const DIENST = {
     name: 'Ausschreibungs-Monitoring mit erklärbarem Profil-Matching',
     serviceType: 'Recherche und Überwachung öffentlicher Ausschreibungen',
     description:
-        'Tägliche Auswertung von 17 Vergabequellen (TED, service.bund.de, Datenservice Öffentlicher '
-        + 'Einkauf, DTVP, RIB, Landes- und Regionalportale, GB Find a Tender und Contracts Finder) '
+        'Tägliche Auswertung von 18 Vergabequellen (TED, service.bund.de, Datenservice Öffentlicher '
+        + 'Einkauf, DTVP, RIB, Landes- und Regionalportale, GB Find a Tender und Contracts Finder, US SAM.gov) '
         + 'mit erklärbarem Abgleich gegen das Firmenprofil und Zugriff über REST, MCP und A2A.',
     provider: { '@id': `${SITE_ORIGIN}/#organisation` },
     url: `${SITE_ORIGIN}/`,

@@ -6,12 +6,12 @@ export const tenderflowAlternative = {
         alt: 'Team der Ausschreibungsagenten am Arbeitsplatz',
     },
     direktantwort:
-        'Tenderflow durchsucht nach eigenen Angaben 150 und mehr Vergabeportale, gleicht sie mit einem Kompetenzprofil ab und gibt eine klare Empfehlung, ob Sie mitbieten sollten. Ausschreibungsagenten verfolgt dasselbe Ziel mit einer anderen Methode: 17 benannte Quellen mit belegtem Abrufstand und ein Matching, das zu jedem Treffer die Gründe nennt — ohne pauschale Aufwandsversprechen.',
+        'Tenderflow durchsucht nach eigenen Angaben 150 und mehr Vergabeportale, gleicht sie mit einem Kompetenzprofil ab und gibt eine klare Empfehlung, ob Sie mitbieten sollten. Ausschreibungsagenten verfolgt dasselbe Ziel mit einer anderen Methode: 18 benannte Quellen mit belegtem Abrufstand und ein Matching, das zu jedem Treffer die Gründe nennt — ohne pauschale Aufwandsversprechen.',
     fakten: {
         datenstand: '18. August 2026',
         kopf: ['Merkmal', 'Tenderflow', 'Ausschreibungsagenten'],
         zeilen: [
-            ['Quellen', '150+ Vergabeportale', '17 benannte Quellen mit belegtem Abrufstand'],
+            ['Quellen', '150+ Vergabeportale', '18 benannte Quellen mit belegtem Abrufstand'],
             ['Empfehlung', 'Go/Mid-Wert, „mitbieten oder nicht“', 'Go/No-Go nach festen Kriterien, mit Begründung'],
             ['Versprechen', '„80 % weniger Aufwand“', 'Keine pauschale Prozentzahl, nur prüfbare Treffer'],
             ['Einstieg', 'Setup in 5 Minuten, kostenlos testen', 'Kostenfreie, persönliche Pilotphase'],
@@ -45,13 +45,13 @@ export const tenderflowAlternative = {
         titel: 'Was Ausschreibungsagenten ausdrücklich nicht leistet',
         absaetze: [
             'Wir versprechen keine prozentuale Aufwandsersparnis und keine Gewinnquote. Automatisiert wird bei uns das Finden und Vorsortieren — nicht das Gewinnen. Die Prüfung der Eignungskriterien, der Angebotstext, die Kalkulation und die Abgabe bleiben vollständig Ihre Arbeit, weil an ihnen Zusage und Haftung hängen.',
-            'Auch unsere Quellenabdeckung ist bewusst klein und belegt: 17 Quellen, die wir benennen und deren letzten Abruf wir zeigen. Wir zählen keine Portale, die wir nicht nachweislich abfragen. Eine lückenlose Abdeckung kann niemand belegen, wir auch nicht.',
+            'Auch unsere Quellenabdeckung ist bewusst klein und belegt: 18 Quellen, die wir benennen und deren letzten Abruf wir zeigen. Wir zählen keine Portale, die wir nicht nachweislich abfragen. Eine lückenlose Abdeckung kann niemand belegen, wir auch nicht.',
         ],
     },
     faq: [
         {
-            frage: 'Ist „150+ Portale“ bei Tenderflow besser als 17 Quellen?',
-            antwort: 'Nicht zwangsläufig. Entscheidend ist, ob Ihre Gewerke, Regionen und Auftragsgrößen abgedeckt sind und ob die Quellen gerade tatsächlich abgefragt werden. Eine hohe Zahl lässt sich von außen nicht prüfen; unser Quellenstatus zeigt zu jeder der 17 Quellen den letzten erfolgreichen Abruf.',
+            frage: 'Ist „150+ Portale“ bei Tenderflow besser als 18 Quellen?',
+            antwort: 'Nicht zwangsläufig. Entscheidend ist, ob Ihre Gewerke, Regionen und Auftragsgrößen abgedeckt sind und ob die Quellen gerade tatsächlich abgefragt werden. Eine hohe Zahl lässt sich von außen nicht prüfen; unser Quellenstatus zeigt zu jeder der 18 Quellen den letzten erfolgreichen Abruf.',
         },
         {
             frage: 'Was ist der Unterschied zwischen einem Go/Mid-Wert und einer Go/No-Go-Karte?',

@@ -16,6 +16,7 @@ export const ausschreibungssucheAutomatisieren = {
             ['E-Vergabe', 'DTVP, RIB', 'Plattformen, über die viele Stellen gemeinsam ausschreiben'],
             ['Land und Region', 'Bayern, NRW, Baden-Württemberg, Hessen, Bremen, Sachsen, MV, Rheinland-Pfalz, Rhein-Neckar', 'Landesrecht und eigene Portale je Bundesland'],
             ['Vereinigtes Königreich', 'Find a Tender, Contracts Finder', 'Seit dem EU-Austritt eigene Bekanntmachungswege'],
+            ['USA (Bund)', 'SAM.gov Contract Opportunities', 'Zentrale Bundesplattform, Klassifikation nach NAICS statt CPV'],
         ],
     },
     abschnitte: [
