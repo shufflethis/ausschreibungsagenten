@@ -5,6 +5,7 @@ import { vergabepilotAlternative } from './vergabepilotAlternative'
 import { vergabefixAlternative } from './vergabefixAlternative'
 import { tenderflowAlternative } from './tenderflowAlternative'
 import { partnerprogramm } from './partnerprogramm'
+import { besteSoftwareAutomatischeAusschreibungssuche } from './besteSoftwareAutomatischeAusschreibungssuche'
 
 // Alle Inhaltsseiten an einer Stelle. src/inhalte.test.js prueft jede
 // davon gegen die Form aus der Spec: Direktantwort in 40-60 Woertern,
@@ -18,6 +19,7 @@ export const inhaltsSeiten = [
     vergabefixAlternative,
     tenderflowAlternative,
     partnerprogramm,
+    besteSoftwareAutomatischeAusschreibungssuche,
 ]
 
 export function inhaltsSeiteFuer(path) {
