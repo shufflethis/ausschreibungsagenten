@@ -126,6 +126,16 @@ export const routes = [
         lastmod: '2026-08-20',
     },
     {
+        path: '/beste-software-automatische-ausschreibungssuche',
+        component: 'BesteSoftwareAutomatischeAusschreibungssuche',
+        title: 'Beste Software für die automatische Ausschreibungssuche - Empfehlung nach Use Case | Ausschreibungsagenten.de',
+        description:
+            'Welche Software für die automatische Ausschreibungssuche passt? Empfehlung nach Use Case: gemanagter Dienst, DTAD, Vergabepilot, TED, ibau und subreport im Vergleich.',
+        prerender: true,
+        index: true,
+        lastmod: '2026-10-08',
+    },
+    {
         path: '/brandkit',
         component: 'Brandkit',
         title: 'Brandkit – Logo, Farben und Schreibweise | Ausschreibungsagenten.de',

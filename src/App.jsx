@@ -26,6 +26,7 @@ import {
     VergabefixAlternative,
     TenderflowAlternative,
     Partnerprogramm,
+    BesteSoftwareAutomatischeAusschreibungssuche,
 } from './pages/Inhaltsseiten'
 import { routes } from './routes'
 
@@ -45,6 +46,7 @@ export const pages = {
     VergabefixAlternative: <VergabefixAlternative />,
     TenderflowAlternative: <TenderflowAlternative />,
     Partnerprogramm: <Partnerprogramm />,
+    BesteSoftwareAutomatischeAusschreibungssuche: <BesteSoftwareAutomatischeAusschreibungssuche />,
     Impressum: <Impressum />,
     AGB: <AGB />,
     Datenschutz: <Datenschutz />,
