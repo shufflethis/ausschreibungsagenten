@@ -110,7 +110,27 @@ export default function Datenschutz() {
                 <p>
                     Das Portal verlinkt auf öffentliche Vergabeplattformen und weitere externe Websites. Erst beim
                     Öffnen eines solchen Links gelten die Datenschutzbestimmungen des jeweiligen Anbieters. Auf der
-                    öffentlichen Website sind derzeit weder externe Google Fonts noch ein Webanalyse-Skript eingebunden.
+                    öffentlichen Website sind keine externen Google Fonts eingebunden.
+                </p>
+
+                <h3>Webanalyse mit Plausible Analytics</h3>
+                <p>
+                    Diese Website nutzt Plausible Analytics, einen datenschutzfreundlichen Webanalyse-Dienst, den
+                    wir selbst unter analytics.polymarkt.de betreiben. Plausible verwendet keine Cookies und
+                    speichert keine personenbezogenen Daten; die IP-Adresse wird nur kurzzeitig zur Bildung einer
+                    anonymen, täglich wechselnden Kennung verarbeitet. Es werden keine Daten an Dritte
+                    weitergegeben. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der
+                    statistischen Auswertung der Websitenutzung).
+                </p>
+
+                <h3>Auswertung von KI-Agenten mit agenttracking.co</h3>
+                <p>
+                    Zusätzlich binden wir das Skript unseres eigenen Dienstes agenttracking.co ein. Es erfasst, wie
+                    KI-Agenten diese Website nutzen: aufgerufener Pfad, Herkunftsseite (nur der Hostname),
+                    utm_source sowie Name, Dauer und Ergebnis aufgerufener WebMCP-Werkzeuge. Das Skript setzt keine
+                    Cookies, nutzt keinen lokalen Speicher und bildet keine Kennungen, die Besucher wiedererkennen.
+                    Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse daran, die Nutzung der
+                    Website durch automatisierte Agenten zu verstehen und zu verbessern).
                 </p>
 
                 <h2>10. Speicherdauer und Löschung</h2>

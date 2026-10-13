@@ -195,6 +195,15 @@ describe('Agent-Readiness machine contracts', () => {
         expect(mensch.body).toContain('data-domain="ausschreibungsagenten.de" src="https://agenttracking.co/agent.js"')
     })
 
+    it('bindet Plausible ein und erlaubt es in der CSP', async () => {
+        const html = await text('index.html')
+        expect(html).toContain('src="https://analytics.polymarkt.de/js/pa-z1YBX4-8ecj8WKftIwXyi.js"')
+        const config = JSON.parse(await text('vercel.json'))
+        const csp = config.headers[0].headers.find((h) => h.key === 'Content-Security-Policy').value
+        expect(csp).toMatch(/script-src [^;]*https:\/\/analytics\.polymarkt\.de/)
+        expect(csp).toMatch(/connect-src [^;]*https:\/\/analytics\.polymarkt\.de/)
+    })
+
     it('fuehrt geratene Navigationspfade auf vorhandene Anker', async () => {
         const config = JSON.parse(await text('vercel.json'))
         const landingpage = await text('src/pages/LandingPage.jsx')
