@@ -1473,9 +1473,10 @@ export default function LandingPage() {
                     poster: '/video/ausschreibungsagenten-erklaervideo-poster.jpg',
                     // Gemessene Laufzeit der Datei: 549,94 Sekunden.
                     dauer: 'PT9M10S',
-                    // Veroeffentlichung auf dem eigenen Kanal. Bewusst ohne
-                    // Uhrzeit - sie ist nicht bekannt und wird nicht geraten.
-                    hochgeladenAm: '2026-08-12',
+                    // Zeitpunkt, an dem die Datei auf die Seite kam (Commit
+                    // 7ee648b). Google verlangt Uhrzeit mit Zeitzone; ein
+                    // reines Datum meldet die Search Console als ungueltig.
+                    hochgeladenAm: '2026-08-12T02:04:05+02:00',
                     // Dieselbe Aufnahme liegt auf dem eigenen Kanal.
                     auchAuf: ['https://www.youtube.com/watch?v=GXD2qj7njVk'],
                 }}

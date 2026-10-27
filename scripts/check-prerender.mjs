@@ -49,6 +49,14 @@ for (const route of prerenderRoutes) {
         fehler.push(`${route.path}: keine Description`)
     }
 
+    // Google meldet ein uploadDate ohne Uhrzeit und Zeitzone als ungueltig
+    // (Search Console, 18.08.2026).
+    for (const [, wert] of inhalt.matchAll(/"uploadDate":"([^"]*)"/g)) {
+        if (!/T\d{2}:\d{2}(:\d{2})?(Z|[+-]\d{2}:\d{2})$/.test(wert)) {
+            fehler.push(`${route.path}: uploadDate "${wert}" ohne Uhrzeit mit Zeitzone`)
+        }
+    }
+
     const text = sichtbarerText(inhalt)
     if (text.length < MINDEST_TEXTLAENGE) {
         fehler.push(

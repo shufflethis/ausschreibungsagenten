@@ -62,7 +62,7 @@ describe('Video-Abschnitt', () => {
                     art: 'datei',
                     url: '/video/agent.mp4',
                     dauer: 'PT9M10S',
-                    hochgeladenAm: '2026-08-12',
+                    hochgeladenAm: '2026-08-12T02:04:05+02:00',
                     auchAuf: ['https://www.youtube.com/watch?v=GXD2qj7njVk'],
                 }}
                 transkript={TRANSKRIPT}
@@ -75,6 +75,6 @@ describe('Video-Abschnitt', () => {
         )
         expect(daten.sameAs).toEqual(['https://www.youtube.com/watch?v=GXD2qj7njVk'])
         expect(daten.duration).toBe('PT9M10S')
-        expect(daten.uploadDate).toBe('2026-08-12')
+        expect(daten.uploadDate).toBe('2026-08-12T02:04:05+02:00')
     })
 })
