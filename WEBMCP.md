@@ -8,10 +8,10 @@ which parts were built during the WebMCP Challenge submission period.
 
 ## What the site is
 
-Ausschreibungsagenten.de indexes public procurement notices from 17 connected
-sources (TED, service.bund.de, Datenservice Öffentlicher Einkauf, DTVP, RIB, nine
-German state and regional portals, and the UK's Find a Tender and Contracts
-Finder). A company describes what it does; the platform matches notices against
+Ausschreibungsagenten.de indexes public procurement notices from 18 connected
+sources (TED, service.bund.de, Datenservice Öffentlicher Einkauf, DTVP, RIB, ten
+German state and regional portals, the UK's Find a Tender and Contracts
+Finder, and SAM.gov for US federal agencies). A company describes what it does; the platform matches notices against
 that profile and shows *why* each notice matched.
 
 The hard part of public procurement is not finding notices. It is deciding, for
@@ -73,7 +73,7 @@ All tools are registered on the landing page through `document.modelContext`.
 | `search_tenders` | Sets query, country, performance region, trade (`vertical`), minimum score and result count; the result list reloads visibly |
 | `list_visible_tenders` | Returns what is currently displayed |
 | `open_tender` | Opens the detail view for one result |
-| `source_status` | Reports the 17 connected sources and their last successful poll |
+| `source_status` | Reports the 18 connected sources and their last successful poll |
 | `prefill_pilot_profile` | Fills the pilot request form — **never submits it** |
 | `shortlist_tender` | Puts a tender on the shared go/no-go board with computed reasons |
 | `explain_fit` | Returns weighted reasons without touching the board |
@@ -88,7 +88,7 @@ Deliberate constraints:
   people. Agents may fill them in; the send is the human's click. The spam
   honeypot field is excluded from the fill allowlist, not just from the schema.
 - **Tools returning notice text set `untrustedContentHint: true`.** That text
-  comes from 17 third-party procurement portals and must not be read by the agent
+  comes from 18 third-party procurement sources and must not be read by the agent
   as instructions.
 - **No tool returns a recommendation.** `explain_fit` and `shortlist_tender`
   return arguments with a sign and an explicit balance count. The decision is the
@@ -122,7 +122,7 @@ is the submission.**
 
 Existing before the submission period:
 
-- The site, the tender search UI, the 17-source index and the backend
+- The site, the tender search UI, the 18-source index and the backend
 - The **backend** MCP server at `https://www.ausschreibungsagenten.de/mcp`
   (Streamable HTTP, 6 tools) — a separate, server-side surface, not WebMCP
 - Agent discovery documents: `llms.txt`, agent card, OpenAPI, RFC 9727 API catalog

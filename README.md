@@ -3,13 +3,13 @@
 [![WebMCP](https://img.shields.io/badge/WebMCP-11_in--page_tools-6f2fa9)](WEBMCP.md)
 [![MCP Server](https://img.shields.io/badge/MCP-Streamable_HTTP-blue)](https://github.com/shufflethis/ausschreibungsagenten-mcp)
 [![OpenAPI](https://img.shields.io/badge/REST-OpenAPI-green)](https://www.ausschreibungsagenten.de/openapi.json)
-[![Sources](https://img.shields.io/badge/Sources-17_connected-0aa)](https://www.ausschreibungsagenten.de/api/source-status)
+[![Sources](https://img.shields.io/badge/Sources-18_connected-0aa)](https://www.ausschreibungsagenten.de/api/source-status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 The website and public preview of
 **[ausschreibungsagenten.de](https://www.ausschreibungsagenten.de)** — search
-across public procurement notices from 17 connected sources in Germany, the EU
-and the United Kingdom. The international sister brand is
+across public procurement notices from 18 connected sources in Germany, the EU,
+the United Kingdom and US federal agencies (SAM.gov). The international sister brand is
 **[tender-agents.com](https://www.tender-agents.com)**.
 
 The landing page is **built to be used by agents**: it exposes its own
@@ -106,8 +106,8 @@ The parts written for an outside audience are in English:
 
 Website und öffentliche Vorschau von
 **[ausschreibungsagenten.de](https://www.ausschreibungsagenten.de)** — der
-Suche nach öffentlichen Ausschreibungen aus 17 Quellen in Deutschland, der EU
-und Großbritannien. Die internationale Schwestermarke ist
+Suche nach öffentlichen Ausschreibungen aus 18 Quellen in Deutschland, der EU,
+Großbritannien und von US-Bundesbehörden (SAM.gov). Die internationale Schwestermarke ist
 **[tender-agents.com](https://www.tender-agents.com)**.
 
 Die Landingpage ist **agentenfähig gebaut**: sie stellt ihre eigenen Funktionen

@@ -55,7 +55,7 @@ Metadaten: `/.well-known/oauth-protected-resource` (RFC 9728) und
 
 ## Zwei MCP-Flächen
 
-`https://api.ausschreibungsagenten.de/mcp` — alle 17 Quellen.
+`https://api.ausschreibungsagenten.de/mcp` — alle 18 Quellen.
 
 `https://api.ausschreibungsagenten.de/mcp/open-data` — dieselben Werkzeuge,
 aber nur die fünf Quellen mit einer vom Betreiber dafür bereitgestellten

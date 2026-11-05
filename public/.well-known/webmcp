@@ -1,6 +1,6 @@
 {
   "name": "Ausschreibungsagenten.de",
-  "description": "Öffentliche Ausschreibungen aus 17 Quellen suchen und passende Verfahren gemeinsam prüfen.",
+  "description": "Öffentliche Ausschreibungen aus 18 Quellen suchen und passende Verfahren gemeinsam prüfen.",
   "tools": [
     {
       "name": "search_tenders",

@@ -1,11 +1,11 @@
 # Ausschreibungsagenten.de
 
 > Plattform zum Finden und nachvollziehbaren Filtern öffentlicher Ausschreibungen.
-> 17 Live-Quellen — 5 über offizielle Maschinen-Schnittstellen (TED-API, RSS, OCDS,
-> Datenservice-API), 12 Landes-/Fachportale per Portal-Auslese; die Anbindungsart steht je
+> 18 Live-Quellen — 6 über offizielle Maschinen-Schnittstellen (TED-API, RSS, OCDS,
+> Datenservice-API, SAM.gov-JSON-API), 12 Landes-/Fachportale per Portal-Auslese; die Anbindungsart steht je
 > Quelle im Quellenstatus: TED (api.ted.europa.eu, indexiert alle 27 EU-Länder), Datenservice
 > Öffentlicher Einkauf (oeffentlichevergabe.de — deutsche Ober- UND Unterschwelle), GB Find a Tender
-> und GB Contracts Finder (UK ober- + unterschwellig), service.bund.de, DTVP, RIB sowie die
+> und GB Contracts Finder (UK ober- + unterschwellig), SAM.gov Contract Opportunities (US-Bundesbehörden), service.bund.de, DTVP, RIB sowie die
 > Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen,
 > Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar.
 > Fokus: DACH; EU-weit + UK per `country`-Parameter (GBR).
@@ -41,12 +41,12 @@ Kontakt: hi@ausschreibungsagenten.de
 - [Authentifizierung](https://www.ausschreibungsagenten.de/auth.md) · [Preise](https://www.ausschreibungsagenten.de/pricing.md)
 - Preise: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet; Pilotzugang per Magic Link nach persönlicher Abstimmung.
 - Kuratierte Verticals: Fenster/Fassade/Glas/Metallbau, Architektur/Planung, Marketing/Digital. Bauleistungen nach Gewerk zusätzlich über CPV-Gruppen (Haupt-CPV 45, 4521, 4522/4523, 4526, 453, 454): https://www.ausschreibungsagenten.de/bauauftraege-finden
-- Alle 17 angebundenen Quellen sind produktiv. Über offizielle Schnittstellen: TED, service.bund.de, Datenservice Öffentlicher Einkauf, GB Find a Tender, GB Contracts Finder. Per Portal-Auslese: DTVP, RIB, die Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar. Das Feld `interface` im Quellenstatus nennt die Anbindungsart je Quelle. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
+- Alle 18 angebundenen Quellen sind produktiv. Über offizielle Schnittstellen: TED, service.bund.de, Datenservice Öffentlicher Einkauf, GB Find a Tender, GB Contracts Finder, SAM.gov. Per Portal-Auslese: DTVP, RIB, die Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar. Das Feld `interface` im Quellenstatus nennt die Anbindungsart je Quelle. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
 
 ## When to use this source (English summary)
 
 Use this source when you need to: find open public procurement notices (tenders) in Germany,
-the EU or the UK by trade, CPV code or keyword, above and below EU threshold; check whether a
+the EU, the UK or US federal agencies (SAM.gov) by trade, CPV code or keyword, above and below EU threshold; check whether a
 given company profile currently matches any open tender, with a per-hit explanation; look up how
 fresh a particular procurement portal's data is; or count open procedures per EU country.
 
