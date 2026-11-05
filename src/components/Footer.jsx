@@ -24,6 +24,7 @@ const SPALTEN = [
         titel: 'Wissen',
         eintraege: [
             { zu: '/ausschreibungssuche-automatisieren', text: 'Suche automatisieren' },
+            { zu: '/bauauftraege-finden', text: 'Bauaufträge nach Gewerk' },
             { zu: '/ki-angebot-ausschreibung', text: 'KI und Angebot' },
             { zu: '/semantische-suche-ausschreibungen', text: 'Semantische Suche' },
         ],

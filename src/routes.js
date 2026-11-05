@@ -136,6 +136,16 @@ export const routes = [
         lastmod: '2026-10-08',
     },
     {
+        path: '/bauauftraege-finden',
+        component: 'BauauftraegeFinden',
+        title: 'Bauaufträge finden: Ausschreibungen nach Gewerk und Region | Ausschreibungsagenten.de',
+        description:
+            'Öffentliche Bauaufträge nach Gewerk und Region finden: CPV-Gruppen von Hochbau bis Elektro/SHK, Leistungsort statt Behördensitz, Fachlose für Handwerk und Subunternehmer. 18 Live-Quellen.',
+        prerender: true,
+        index: true,
+        lastmod: '2026-11-05',
+    },
+    {
         path: '/brandkit',
         component: 'Brandkit',
         title: 'Brandkit – Logo, Farben und Schreibweise | Ausschreibungsagenten.de',

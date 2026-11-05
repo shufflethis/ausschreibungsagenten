@@ -60,6 +60,17 @@ describe('Gespeicherte Suchen und belegte Entscheidungen', () => {
         expect(Object.fromEntries(params)).toMatchObject({ min_score: '0', country: 'DEU', performance_region: 'Berlin', vertical: 'facade_construction', offset: '25', limit: '25' })
     })
 
+    it('schickt Bau-Gewerke als CPV-Praefix statt als Vertical und begruendet nur ueber den Haupt-CPV', () => {
+        const params = Object.fromEntries(suchparameter({ vertical: 'tiefbau' }))
+        expect(params.cpv).toBe('4522,4523')
+        expect(params.vertical).toBeUndefined()
+        expect(Object.fromEntries(suchparameter({ vertical: 'unbekannt' })).vertical).toBeUndefined()
+        const passt = entscheidungshilfe({ title: 'Straßenbau', cpv_main: '45233120' }, { vertical: 'tiefbau' })
+        expect(passt.passend).toEqual([expect.objectContaining({ feld: 'Klassifikation', beleg: 'CPV 45233120' })])
+        // Nur Zusatz-CPV im Gewerk: das Backend filtert darauf nicht, also auch kein Grund.
+        expect(entscheidungshilfe({ title: 'Hochbau', cpv_main: '45210000', cpv_additional: ['45233120'] }, { vertical: 'tiefbau' }).passend).toEqual([])
+    })
+
     it('nennt nur belegte Passung und Nachweise; ein Index-Score beweist keine Eignung', () => {
         const karte = entscheidungshilfe({ ...tender, description: 'Fenster erneuern', relevance_score: 100, requirements: [{ type: 'references', evidence: 'Drei vergleichbare Referenzen erforderlich.' }, { type: 'insurance', evidence: '' }] }, { search: 'Fassade', exclusions: 'Gerüst', minimumDays: 30 }, new Date('2026-10-01'))
         expect(karte.passend).toHaveLength(1)

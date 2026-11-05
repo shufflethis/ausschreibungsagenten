@@ -288,12 +288,39 @@ export function gruendeBilanz(gruende) {
     }
 }
 
+// Zwei Arten von Gewerk-Filtern: Eintraege ohne `cpv` sind kuratierte
+// Backend-Verticals (Schluesselwortregeln, Feld `verticals`). Eintraege mit
+// `cpv` filtern nur ueber Praefixe des Haupt-CPV (Backend: cpv_main LIKE
+// '45%'). Das ist breiter und ungenauer als ein Vertical: Zusatz-CPVs und
+// falsch klassifizierte Bekanntmachungen fallen heraus. Ausweg bei Bedarf:
+// ein eigenes Bau-Vertical im Backend. Bestehende `value`-Werte nicht
+// umbenennen - gespeicherte Suchen auf Geraeten verweisen darauf.
 export const GEWERKE = [
     { value: '', label: 'Alle Gewerke' },
+    { value: 'bau', label: 'Bau: alle Bauleistungen (CPV 45)', cpv: '45' },
+    { value: 'hochbau', label: 'Bau: Hochbau (CPV 4521)', cpv: '4521' },
+    { value: 'tiefbau', label: 'Bau: Tief-, Straßen- & Ingenieurbau (CPV 4522/4523)', cpv: '4522,4523' },
+    { value: 'dach_spezialbau', label: 'Bau: Dach- & Spezialbau (CPV 4526)', cpv: '4526' },
+    { value: 'haustechnik', label: 'Bau: Elektro, SHK & Dämmung (CPV 453)', cpv: '453' },
+    { value: 'ausbau', label: 'Bau: Ausbau, Maler & Glas (CPV 454)', cpv: '454' },
     { value: 'facade_construction', label: 'Fenster, Fassade & Metallbau' },
     { value: 'planning', label: 'Architektur & Planung' },
     { value: 'marketing', label: 'Marketing & Digital' },
 ]
+
+// Einzige Stelle, an der ein Gewerk zum API-Parameter wird.
+export function gewerkParameter(params, value) {
+    const gewerk = GEWERKE.find((g) => g.value === value)
+    if (!gewerk?.value) return params
+    if (gewerk.cpv) params.set('cpv', gewerk.cpv)
+    else params.set('vertical', gewerk.value)
+    return params
+}
+
+function cpvGruppePasst(gewerk, tender) {
+    const haupt = String(tender.cpv_main || '')
+    return Boolean(gewerk?.cpv && haupt && gewerk.cpv.split(',').some((praefix) => haupt.startsWith(praefix)))
+}
 
 const NACHWEISE = {
     references: 'Vergleichbare Referenzen', turnover: 'Umsatznachweis', insurance: 'Haftpflichtversicherung',
@@ -331,7 +358,9 @@ export function entscheidungshilfe(tender, { search = '', vertical = '', exclusi
     const begriff = search.trim().toLocaleLowerCase('de')
     if (begriff && text.includes(begriff)) passend.push({ text: `Ihre Leistung „${search.trim()}“ wird genannt.`, beleg: tender.title.toLocaleLowerCase('de').includes(begriff) ? tender.title : tender.description, feld: 'Leistungsbeschreibung' })
     else if (begriff) offen.push({ text: 'Leistungsumfang im Original mit Ihrer Suche abgleichen.', feld: 'Leistungsbeschreibung' })
-    if (vertical && tender.verticals?.includes(vertical)) passend.push({ text: `${GEWERKE.find((g) => g.value === vertical)?.label}: passende Quellenklassifikation.`, beleg: `CPV ${[tender.cpv_main, ...(tender.cpv_additional || [])].filter(Boolean).join(', ')}`, feld: 'Klassifikation' })
+    const gewerk = GEWERKE.find((g) => g.value === vertical)
+    if (cpvGruppePasst(gewerk, tender)) passend.push({ text: `${gewerk.label}: Haupt-CPV liegt in dieser Gruppe.`, beleg: `CPV ${tender.cpv_main}`, feld: 'Klassifikation' })
+    else if (vertical && tender.verticals?.includes(vertical)) passend.push({ text: `${GEWERKE.find((g) => g.value === vertical)?.label}: passende Quellenklassifikation.`, beleg: `CPV ${[tender.cpv_main, ...(tender.cpv_additional || [])].filter(Boolean).join(', ')}`, feld: 'Klassifikation' })
     for (const wort of exclusions.split(',').map((s) => s.trim()).filter(Boolean).slice(0, 10)) {
         if (text.includes(wort.toLocaleLowerCase('de'))) ausschluss.push({ text: `Ihr Ausschlussbegriff „${wort}“ ist enthalten.`, beleg: (tender.title || '').toLocaleLowerCase('de').includes(wort.toLocaleLowerCase('de')) ? tender.title : tender.description, feld: 'Leistungsbeschreibung' })
     }

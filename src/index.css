@@ -1657,6 +1657,24 @@ img {
     cursor: default;
 }
 
+.branche-card__gewerke {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 0.75rem;
+    margin-top: 1rem;
+}
+
+.branche-card__gewerke .source-trigger {
+    align-self: auto;
+    margin-top: 0;
+    text-align: center;
+}
+
+.branche-card__gewerke .source-trigger[aria-pressed="true"] {
+    text-decoration: underline;
+}
+
 .branche-card__emoji {
     font-size: 3rem;
     margin-bottom: 1rem;

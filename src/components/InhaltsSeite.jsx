@@ -92,6 +92,15 @@ export default function InhaltsSeite({ seite }) {
                                     ))}
                                 </ul>
                             ) : null}
+                            {abschnitt.links ? (
+                                <ul className="inhalt__liste">
+                                    {abschnitt.links.map((link) => (
+                                        <li key={link.href}>
+                                            <a href={link.href}>{link.text}</a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : null}
                         </section>
                     ))}
 

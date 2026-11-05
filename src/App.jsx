@@ -27,6 +27,7 @@ import {
     TenderflowAlternative,
     Partnerprogramm,
     BesteSoftwareAutomatischeAusschreibungssuche,
+    BauauftraegeFinden,
 } from './pages/Inhaltsseiten'
 import { routes } from './routes'
 
@@ -47,6 +48,7 @@ export const pages = {
     TenderflowAlternative: <TenderflowAlternative />,
     Partnerprogramm: <Partnerprogramm />,
     BesteSoftwareAutomatischeAusschreibungssuche: <BesteSoftwareAutomatischeAusschreibungssuche />,
+    BauauftraegeFinden: <BauauftraegeFinden />,
     Impressum: <Impressum />,
     AGB: <AGB />,
     Datenschutz: <Datenschutz />,

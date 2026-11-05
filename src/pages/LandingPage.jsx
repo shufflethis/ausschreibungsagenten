@@ -7,7 +7,7 @@ import VideoAbschnitt from '../components/VideoAbschnitt'
 import { VIDEO_BESCHREIBUNG, VIDEO_TITEL, VIDEO_TRANSKRIPT } from '../data/videoTranskript'
 import { stelleWerkzeugeBereit, warteAuf, werkzeugAntwort, werkzeugFehler } from '../lib/webmcp'
 import { eintragAnlegen, MERKLISTE_GRENZE, merklisteLesen, merklisteSchreiben } from '../lib/merkliste'
-import { artAusCpv, EU_SCHWELLENWERTE, fitGruende, fristText, GEWERKE, gruendeBilanz, quellenUrl, schwellenwertPruefung } from '../lib/vergabe'
+import { artAusCpv, EU_SCHWELLENWERTE, fitGruende, fristText, GEWERKE, gewerkParameter, gruendeBilanz, quellenUrl, schwellenwertPruefung } from '../lib/vergabe'
 import { neuerSuchauftrag, SUCHAUFTRAEGE_LIMIT, suchauftragLesen, suchauftragSchreiben, suchauftragVergleichen, suchkriterien, suchparameter } from '../lib/suchauftraege'
 import { spracheErmitteln, STANDARDSPRACHE } from '../lib/sprache'
 import { tafelTexte } from '../lib/tafelTexte'
@@ -32,7 +32,12 @@ const FEATURES = [
     { icon: 'export', title: 'Standardisierter ERP-Export', text: 'Tender lassen sich als versioniertes JSON, CSV oder XLSX exportieren. Ein signierter Webhook ist konfigurierbar; konkrete ERP-Connectoren folgen erst nach Herstellerklärung.', color: '--violet' },
 ]
 
+// Bau laeuft ueber CPV-Gruppen, nicht ueber ein kuratiertes Vertical - der
+// Text sagt das, damit die Karte nicht mehr verspricht als der Filter kann.
+const BAU_GEWERKE = GEWERKE.filter((g) => g.cpv)
+
 const BRANCHEN = [
+    { emoji: 'pin', name: 'Bau & Handwerk', desc: 'Bauaufträge nach Gewerk und Region: Gruppen des CPV-Katalogs (Abteilung 45), gefiltert über den Haupt-CPV jeder Bekanntmachung. Gewerk wählen, Region ergänzen.', gewerke: BAU_GEWERKE },
     { emoji: 'crane', name: 'Fenster & Fassade', desc: 'Im Pilot aktiv: Fenster, Türen, Fassaden, Verglasung, Metallbau, Sonnenschutz und ausgewählte Brandschutz-Gewerke.' },
     { emoji: 'target', name: 'Architektur & Ingenieurbüros', desc: 'Neu konfiguriert: Objektplanung, Tragwerksplanung, TGA-Planung, Bauleitung, Vermessung und Bauleitplanung (CPV 71) — nach unserer TED-Auswertung die zweitgrößte Kategorie deutscher EU-Ausschreibungen.' },
     { emoji: 'megaphone', name: 'Marketing & Digital', desc: 'Weiterhin aktiv: Marketing, Werbung, PR, Webdesign, Grafik und ausgewählte digitale Dienstleistungen.' },
@@ -294,6 +299,13 @@ export default function LandingPage() {
         )
     }, [])
 
+    // Die Inhaltsseiten verlinken die Suche mit "?gewerk=hochbau#ergebnisse".
+    // Erst nach dem Mounten setzen, damit das vorgerenderte HTML passt.
+    useEffect(() => {
+        const gewerk = new URLSearchParams(window.location.search).get('gewerk')
+        if (gewerk && GEWERKE.some((g) => g.value === gewerk)) setTenderVertical(gewerk)
+    }, [])
+
     // Der Browser springt beim Laden zum Anker, danach laedt die
     // Trefferliste nach und schiebt das Formular weiter nach unten - man
     // landet ueber tausend Pixel darueber. Deshalb nach dem Nachladen
@@ -323,7 +335,7 @@ export default function LandingPage() {
                     limit: String(tenderAnzahl),
                 })
                 if (tenderRegion.trim()) params.set('performance_region', tenderRegion.trim())
-                if (tenderVertical) params.set('vertical', tenderVertical)
+                gewerkParameter(params, tenderVertical)
                 // Gecachte KI-Kurzfassung je Treffer (Backend labelt sie, das
                 // Original bleibt massgeblich). Ausgelassen wird nur der
                 // Bereich von ein bis zwei Zeichen: solche Zwischenstaende
@@ -576,7 +588,7 @@ export default function LandingPage() {
                         search: { type: 'string', description: 'Keyword or trade, for example "Fassade" or "Webdesign"' },
                         country: { type: 'string', description: 'ISO alpha-3 buyer country, for example DEU, AUT or GBR' },
                         performance_region: { type: 'string', description: 'Place of performance, e.g. Berlin or NRW. Empty string clears the region.' },
-                        vertical: { type: 'string', enum: GEWERKE.map((item) => item.value), description: 'Trade filter. Empty string clears the trade.' },
+                        vertical: { type: 'string', enum: GEWERKE.map((item) => item.value), description: 'Trade filter. Curated verticals (facade_construction, planning, marketing) or construction CPV groups matched on the main CPV prefix (bau = CPV 45, hochbau, tiefbau, dach_spezialbau, haustechnik, ausbau). Empty string clears the trade.' },
                         min_score: { type: 'number', description: 'Minimum relevance score from 0 to 100' },
                         limit: { type: 'integer', description: 'Number of results to display, 1 to 20' },
                     },
@@ -1446,8 +1458,9 @@ export default function LandingPage() {
                         Aktive <span className="gradient-text">Pilot-Verticals</span>
                     </h2>
                     <p className="section__subtitle">
-                        Der Index ist konfigurierbar, aber noch nicht universell. Produktiv gepflegt werden
-                        derzeit Fenster/Fassade sowie Marketing/Digital.
+                        Kuratiert mit eigenen Regeln: Fenster/Fassade, Architektur/Planung und Marketing/Digital.
+                        Bauleistungen insgesamt durchsuchen Sie nach CPV-Gruppe – breiter, aber ohne
+                        zusätzliche Schlagwortregeln. Mehr dazu: <Link to="/bauauftraege-finden">Bauaufträge nach Gewerk und Region finden</Link>.
                     </p>
 
                     <div className="branchen-grid">
@@ -1456,6 +1469,15 @@ export default function LandingPage() {
                                 <span className="branche-card__emoji"><Icon name={b.emoji} size={30} /></span>
                                 <h3 className="glass-card__title">{b.name}</h3>
                                 <p className="glass-card__text">{b.desc}</p>
+                                {b.gewerke && (
+                                    <div className="branche-card__gewerke" role="group" aria-label="Bau-Gewerk in der Suche wählen">
+                                        {b.gewerke.map((g) => (
+                                            <button type="button" className="source-trigger" key={g.value} aria-pressed={tenderVertical === g.value} onClick={() => { setTenderVertical(g.value); document.getElementById('ergebnisse')?.scrollIntoView({ behavior: 'smooth' }) }}>
+                                                {g.label.replace(/^Bau: /, '')}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>

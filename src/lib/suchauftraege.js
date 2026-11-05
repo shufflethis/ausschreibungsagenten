@@ -1,4 +1,4 @@
-import { fristText } from './vergabe'
+import { fristText, gewerkParameter } from './vergabe'
 
 // Bewusst auf diesem Gerät: kein Konto und kein E-Mail-Versand erforderlich.
 // Pro Suche vergleichen wir die ersten 25 Treffer und die zuletzt beobachteten
@@ -18,7 +18,7 @@ export function suchparameter(criteria, { limit = 25, offset = 0 } = {}) {
     const c = suchkriterien(criteria)
     const params = new URLSearchParams({ country: c.country, search: c.search, min_score: '0', limit: String(limit), offset: String(offset), summary_lang: 'de' })
     if (c.region) params.set('performance_region', c.region)
-    if (c.vertical) params.set('vertical', c.vertical)
+    gewerkParameter(params, c.vertical)
     return params
 }
 
