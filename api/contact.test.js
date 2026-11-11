@@ -79,4 +79,21 @@ describe('contact notification', () => {
         expect(res.statusCode).toBe(200)
         expect(fetchMock).toHaveBeenCalledTimes(2)
     })
+    it('maskiert Slack-Steuerzeichen aus Formulareingaben', async () => {
+        process.env.SLACK_BOT_TOKEN = 'xoxb-test'
+        process.env.SLACK_CHANNEL_ID = 'C1'
+        const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) })
+        vi.stubGlobal('fetch', fetchMock)
+        const { default: pilot } = await import('./profile-lead.js')
+
+        await handler({ method: 'POST', body: { name: '<!channel>', email: 'a@b.de', message: '<https://boese.example|Kundenportal> & mehr' } }, responseMock())
+        await pilot({ method: 'POST', body: { company: '<!here> GmbH', email: 'a@b.de', services: 'Fenster <@U1>' } }, responseMock())
+
+        for (const [, anfrage] of fetchMock.mock.calls) {
+            expect(anfrage.body).not.toMatch(/<[!@h]/)
+        }
+        expect(fetchMock.mock.calls[0][1].body).toContain('&lt;!channel&gt;')
+        expect(fetchMock.mock.calls[0][1].body).toContain('&amp; mehr')
+        expect(fetchMock.mock.calls[1][1].body).toContain('&lt;!here&gt; GmbH')
+    })
 })

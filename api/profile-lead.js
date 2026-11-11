@@ -1,4 +1,4 @@
-import { clean, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
+import { clean, slackText, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
 
 async function notifyByEmail(lead) {
     const apiKey = process.env.RESEND_API_KEY
@@ -36,7 +36,8 @@ async function notifyByEmail(lead) {
     return true
 }
 
-async function notifyBySlack(lead) {
+async function notifyBySlack(roh) {
+    const lead = Object.fromEntries(Object.entries(roh).map(([feld, wert]) => [feld, slackText(wert)]))
     const token = process.env.SLACK_BOT_TOKEN
     const channel = process.env.SLACK_CHANNEL_ID
     if (!token || !channel) return false

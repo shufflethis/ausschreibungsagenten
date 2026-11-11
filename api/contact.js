@@ -1,4 +1,4 @@
-import { clean, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
+import { clean, slackText, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
 
 function cleanHeader(value) {
     return String(value || '').replace(/[\r\n]+/g, ' ').trim().slice(0, 160)
@@ -50,7 +50,10 @@ async function sendResendNotification({ name, email, company, branche, message, 
     return true
 }
 
-async function sendSlackNotification({ name, email, company, branche, message, receivedAt }) {
+async function sendSlackNotification(anfrage) {
+    const { receivedAt } = anfrage
+    const [name, email, company, branche, message] = ['name', 'email', 'company', 'branche', 'message']
+        .map((feld) => slackText(anfrage[feld]))
     const token = process.env.SLACK_BOT_TOKEN
     const channel = process.env.SLACK_CHANNEL_ID
     if (!token || !channel) return false
