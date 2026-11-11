@@ -12,6 +12,7 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import App from './App'
+import { pages } from './seiten'
 import { routeByPath, SITE_ORIGIN } from './routes'
 import { SsrKontext } from './components/SsrKontext'
 
@@ -26,7 +27,7 @@ export async function render(url) {
         <SsrKontext.Provider value={true}>
             <HelmetProvider>
                 <StaticRouter location={url}>
-                    <App />
+                    <App seiten={pages} />
                 </StaticRouter>
             </HelmetProvider>
         </SsrKontext.Provider>,

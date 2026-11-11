@@ -1,6 +1,6 @@
 // Schreibt fuer jede vorgerenderte Route eine eigene index.html mit
 // echtem Inhalt. Laeuft nach dem Client- und dem Server-Build.
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -9,6 +9,30 @@ const distVerzeichnis = join(wurzel, 'dist')
 
 const { render } = await import(join(distVerzeichnis, 'server', 'entry-server.js'))
 const { routes } = await import(join(wurzel, 'src', 'routes.js'))
+const { seitenDateien } = await import(join(wurzel, 'src', 'seitenDateien.js'))
+
+// Jede Seite ist ein eigener Baustein. Ohne Ankuendigung erfaehrt der
+// Browser erst nach dem Ausfuehren des Startbausteins, welchen er noch
+// braucht - eine zusaetzliche Runde, bevor die Seite bedienbar ist. Das
+// Manifest von Vite nennt Datei und Abhaengigkeiten je Seite.
+const manifestPfad = join(distVerzeichnis, '.vite', 'manifest.json')
+const manifest = JSON.parse(await readFile(manifestPfad, 'utf8'))
+const startBaustein = Object.keys(manifest).find((schluessel) => manifest[schluessel].isEntry)
+
+function bausteine(schluessel, gesehen = new Set()) {
+    if (!manifest[schluessel] || schluessel === startBaustein || gesehen.has(schluessel)) return gesehen
+    gesehen.add(schluessel)
+    for (const abhaengigkeit of manifest[schluessel].imports ?? []) bausteine(abhaengigkeit, gesehen)
+    return gesehen
+}
+
+function vorabLaden(route) {
+    const schluessel = `src/pages/${seitenDateien[route.component].datei}.jsx`
+    if (!manifest[schluessel]) throw new Error(`Kein Baustein im Manifest fuer ${schluessel}`)
+    return [...bausteine(schluessel)]
+        .map((eintrag) => `<link rel="modulepreload" crossorigin href="/${manifest[eintrag].file}"/>`)
+        .join('\n    ')
+}
 
 const vorlage = await readFile(join(distVerzeichnis, 'index.html'), 'utf8')
 if (!vorlage.includes('<!--ssg-head-->')) {
@@ -32,7 +56,7 @@ for (const route of routes) {
 
     const seite = vorlage
         .replace(/<title>[\s\S]*?<\/title>\s*/, '')
-        .replace('<!--ssg-head-->', head)
+        .replace('<!--ssg-head-->', `${head}\n    ${vorabLaden(route)}`)
         .replace('<div id="root"></div>', `<div id="root">${rumpf}</div>`)
 
     const zielVerzeichnis = route.path === '/' ? distVerzeichnis : join(distVerzeichnis, route.path)
@@ -54,5 +78,8 @@ for (const route of routes) {
 // liefert Vercel wenigstens die gestaltete Seite statt seiner eigenen.
 const { HTML: seiteNichtGefunden } = await import(join(wurzel, 'api', 'not-found.js'))
 await writeFile(join(distVerzeichnis, '404.html'), seiteNichtGefunden, 'utf8')
+
+// Das Manifest ist ein Bauartefakt und gehoert nicht ins Netz.
+await rm(join(distVerzeichnis, '.vite'), { recursive: true })
 
 console.log(`${vorgerendert} Routen vorgerendert, ${geruest} Geruest-Seiten geschrieben.`)

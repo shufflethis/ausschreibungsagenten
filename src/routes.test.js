@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { routes } from './routes'
-import { pages } from './App'
+import { pages } from './seiten'
 
 describe('Routen-Manifest', () => {
     it('hat zu jedem Eintrag eine Komponente', () => {

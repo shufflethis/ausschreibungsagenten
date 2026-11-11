@@ -1,78 +1,33 @@
+import { Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollRestoration from './components/ScrollRestoration'
 import PartnerHinweis from './components/PartnerHinweis'
-import LandingPage from './pages/LandingPage'
-import Impressum from './pages/Impressum'
-import AGB from './pages/AGB'
-import Datenschutz from './pages/Datenschutz'
-import Disclaimer from './pages/Disclaimer'
-import CheckoutSuccess from './pages/CheckoutSuccess'
-import Login from './pages/Login'
-import CheckEmail from './pages/CheckEmail'
-import MagicHandoff from './pages/MagicHandoff'
-import AppRedirect from './pages/AppRedirect'
-import UeberUns from './pages/UeberUns'
-import Entwickler from './pages/Entwickler'
-import Status from './pages/Status'
-import Brandkit from './pages/Brandkit'
-import Zahlen from './pages/Zahlen'
-import {
-    AusschreibungssucheAutomatisieren,
-    KiAngebotAusschreibung,
-    SemantischeSucheAusschreibungen,
-    VergabepilotAlternative,
-    VergabefixAlternative,
-    TenderflowAlternative,
-    Partnerprogramm,
-    BesteSoftwareAutomatischeAusschreibungssuche,
-    BauauftraegeFinden,
-} from './pages/Inhaltsseiten'
 import { routes } from './routes'
 
-// Zuordnung Manifest-Schluessel auf Komponente. Der Test in routes.test.js
-// haelt beide Seiten deckungsgleich.
-export const pages = {
-    LandingPage: <LandingPage />,
-    UeberUns: <UeberUns />,
-    Entwickler: <Entwickler />,
-    Status: <Status />,
-    Brandkit: <Brandkit />,
-    Zahlen: <Zahlen />,
-    AusschreibungssucheAutomatisieren: <AusschreibungssucheAutomatisieren />,
-    KiAngebotAusschreibung: <KiAngebotAusschreibung />,
-    SemantischeSucheAusschreibungen: <SemantischeSucheAusschreibungen />,
-    VergabepilotAlternative: <VergabepilotAlternative />,
-    VergabefixAlternative: <VergabefixAlternative />,
-    TenderflowAlternative: <TenderflowAlternative />,
-    Partnerprogramm: <Partnerprogramm />,
-    BesteSoftwareAutomatischeAusschreibungssuche: <BesteSoftwareAutomatischeAusschreibungssuche />,
-    BauauftraegeFinden: <BauauftraegeFinden />,
-    Impressum: <Impressum />,
-    AGB: <AGB />,
-    Datenschutz: <Datenschutz />,
-    Disclaimer: <Disclaimer />,
-    CheckoutSuccess: <CheckoutSuccess />,
-    Login: <Login />,
-    CheckEmail: <CheckEmail />,
-    MagicHandoffExpired: <MagicHandoff expired />,
-    MagicHandoff: <MagicHandoff />,
-    KontoRedirect: <AppRedirect path="/app" title="Kundenkonto öffnen" />,
-    AbrechnungRedirect: <AppRedirect path="/app/billing" title="Abrechnung öffnen" />,
-}
-
-export default function App() {
+// `seiten` ordnet Manifest-Schluessel einem Element zu: auf dem Server und
+// in Tests src/seiten.jsx (fest eingebunden), im Browser src/seitenLazy.jsx
+// (nachgeladen). App selbst importiert keine Seite, sonst landeten wieder
+// alle im Startbaustein.
+//
+// Die Suspense-Grenze steht auf beiden Seiten an derselben Stelle. Beim
+// Hydrieren laesst React das vorgerenderte Markup stehen, bis der Baustein
+// der Route da ist; beim Seitenwechsel bleibt die alte Seite sichtbar, weil
+// React Router den Wechsel als Transition ausfuehrt.
+export default function App({ seiten }) {
     return (
         <>
             <ScrollRestoration />
             <Header />
             <main>
-                <Routes>
-                    {routes.map((route) => (
-                        <Route key={route.path} path={route.path} element={pages[route.component]} />
-                    ))}
-                </Routes>
+                <Suspense fallback={null}>
+                    <Routes>
+                        {routes.map((route) => (
+                            <Route key={route.path} path={route.path} element={seiten[route.component]} />
+                        ))}
+                    </Routes>
+                </Suspense>
             </main>
             <Footer />
             <PartnerHinweis />

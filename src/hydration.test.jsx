@@ -4,6 +4,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { afterEach, describe, expect, it } from 'vitest'
 import App from './App'
+// Hydriert wird mit der Browser-Fassung: nachgeladene Seiten gegen das
+// Markup, das der Server mit fest eingebundenen Seiten erzeugt hat.
+import { pages } from './seitenLazy'
 import { render } from './entry-server'
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true
@@ -33,7 +36,7 @@ async function hydriere(pfad, ausgeliefertesHtml) {
             <StrictMode>
                 <HelmetProvider>
                     <BrowserRouter>
-                        <App />
+                        <App seiten={pages} />
                     </BrowserRouter>
                 </HelmetProvider>
             </StrictMode>,
