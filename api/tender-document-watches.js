@@ -1,3 +1,5 @@
+import { besucherKoepfe } from '../lib/backendProxy.js'
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
     const baseUrl = process.env.AGENTLEADS_API_BASE
@@ -8,7 +10,7 @@ export default async function handler(req, res) {
     }
     try {
         const upstream = await fetch(new URL('/api/public/tenders/document-watches', baseUrl), {
-            method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...besucherKoepfe(req) },
             body: JSON.stringify({ ids }), signal: AbortSignal.timeout(15000),
         })
         res.setHeader('Cache-Control', 'no-store')

@@ -1,4 +1,5 @@
 import { clean, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
+import { besucherKoepfe } from '../lib/backendProxy.js'
 
 // Der Partner-Code kommt aus dem Cookie, nicht aus dem Body: der Body
 // wird vom Browser gestellt und waere frei waehlbar. Manipulierbar ist
@@ -55,7 +56,7 @@ export default async function handler(req, res) {
     try {
         const upstream = await fetch(new URL('/api/signup', baseUrl), {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...besucherKoepfe(req) },
             body: JSON.stringify(nutzlast),
             signal: AbortSignal.timeout(ZEITLIMIT_MS),
         })
