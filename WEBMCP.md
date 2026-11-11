@@ -102,7 +102,7 @@ Deliberate constraints:
 | `src/lib/vergabe.js` | Domain logic: EU thresholds, CPV divisions, deadline arithmetic, weighted fit reasons. No DOM, no network |
 | `src/lib/sprache.js`, `src/lib/tafelTexte.js` | The board follows the browser language — German or English. Only the board: it is the surface people and agents share, and both must be able to read it. The rest of the page is marketing copy for the German market |
 | `src/lib/merkliste.js` | Board persistence in `localStorage`; reasons are recomputed on load because deadlines age |
-| `src/pages/LandingPage.jsx` | Tool registration and the visible board; tools read live state through a ref so they never answer from a stale closure |
+| `src/pages/LandingPage.jsx`, `src/pages/landing/webmcpWerkzeuge.js` | The visible board and page state; tool definitions and registration; tools read live state through a ref so they never answer from a stale closure |
 | `vercel.json` | `Origin-Agent-Cluster: ?1` — `registerTool` rejects with `SecurityError` in a document that is not origin-keyed |
 
 Registration is a progressive enhancement: without a supporting browser nothing

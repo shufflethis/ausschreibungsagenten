@@ -206,7 +206,9 @@ describe('Agent-Readiness machine contracts', () => {
 
     it('fuehrt geratene Navigationspfade auf vorhandene Anker', async () => {
         const config = JSON.parse(await text('vercel.json'))
-        const landingpage = await text('src/pages/LandingPage.jsx')
+        // Die Abschnitte unterhalb der Suche liegen seit der Zerlegung in
+        // einer eigenen Datei; die Anker verteilen sich auf beide.
+        const landingpage = (await text('src/pages/LandingPage.jsx')) + (await text('src/pages/landing/Abschnitte.jsx'))
 
         for (const quelle of ['/preise', '/funktionen', '/wie-es-funktioniert', '/faq', '/api']) {
             const regel = config.redirects.find((r) => r.source === quelle)
@@ -295,7 +297,8 @@ describe('Agent-Readiness machine contracts', () => {
         // Abgemeldet wird laut Spec ueber ein AbortSignal.
         expect(webmcp).toMatch(/signal: abbruch\.signal/)
 
-        const landing = await text('src/pages/LandingPage.jsx')
+        const landing = await text('src/pages/landing/webmcpWerkzeuge.js')
+        expect(await text('src/pages/LandingPage.jsx')).toMatch(/useWebmcpWerkzeuge\(zustand, /)
         expect(landing).toMatch(/return stelleWerkzeugeBereit\(werkzeuge, /)
         for (const werkzeug of [
             'search_tenders',

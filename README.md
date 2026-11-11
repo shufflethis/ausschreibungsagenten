@@ -72,7 +72,9 @@ and pilot requests, and the public tender proxy.
 | `src/lib/vergabe.js` | Procurement logic — EU thresholds, CPV divisions, deadlines, weighted fit reasons. No DOM, no network |
 | `src/lib/merkliste.js` | Go/no-go board persistence |
 | `src/lib/sprache.js`, `src/lib/tafelTexte.js` | The board follows the browser language, German or English |
-| `src/pages/LandingPage.jsx` | Tool registration and the visible board |
+| `src/pages/LandingPage.jsx` | Search workspace, page state and the visible board |
+| `src/pages/landing/webmcpWerkzeuge.js` | The eleven WebMCP tool definitions and their registration |
+| `src/pages/landing/Abschnitte.jsx`, `daten.js` | Page sections below the workspace and their content |
 | `api/` | Vercel Functions: tender proxy, contact, pilot lead, agent view |
 | `docs/` | Working documents and submission dossiers (German) |
 
