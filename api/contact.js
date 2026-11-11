@@ -1,14 +1,9 @@
+import { clean, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
+
 function cleanHeader(value) {
     return String(value || '').replace(/[\r\n]+/g, ' ').trim().slice(0, 160)
 }
 
-function clean(value, maxLength) {
-    return String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, maxLength)
-}
-
-function validEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 320
-}
 
 async function sendResendNotification({ name, email, company, branche, message, receivedAt }) {
     const apiKey = process.env.RESEND_API_KEY
@@ -45,6 +40,7 @@ async function sendResendNotification({ name, email, company, branche, message, 
             subject: `Neue Kontaktanfrage: ${subjectSuffix}`,
             text,
         }),
+        signal: AbortSignal.timeout(ZEITLIMIT_MS),
     })
 
     if (!response.ok) {
@@ -101,6 +97,7 @@ async function sendSlackNotification({ name, email, company, branche, message, r
             blocks,
             text: `Neue Anfrage von ${name} (${email}) via ausschreibungsagenten.de`,
         }),
+        signal: AbortSignal.timeout(ZEITLIMIT_MS),
     })
     const data = await response.json().catch(() => ({}))
     if (!response.ok || !data.ok) {

@@ -1,10 +1,4 @@
-function clean(value, maxLength) {
-    return String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, maxLength)
-}
-
-function validEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 320
-}
+import { clean, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
 
 // Der Partner-Code kommt aus dem Cookie, nicht aus dem Body: der Body
 // wird vom Browser gestellt und waere frei waehlbar. Manipulierbar ist
@@ -63,6 +57,7 @@ export default async function handler(req, res) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             body: JSON.stringify(nutzlast),
+            signal: AbortSignal.timeout(ZEITLIMIT_MS),
         })
         const body = await upstream.text()
         res.setHeader('Content-Type', upstream.headers.get('content-type') || 'application/json')

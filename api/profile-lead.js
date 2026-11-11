@@ -1,10 +1,4 @@
-function clean(value, maxLength) {
-    return String(value || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, maxLength)
-}
-
-function validEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 320
-}
+import { clean, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
 
 async function notifyByEmail(lead) {
     const apiKey = process.env.RESEND_API_KEY
@@ -36,6 +30,7 @@ async function notifyByEmail(lead) {
                 'Hinweis: Ein Kundenkonto wird ausschließlich intern vorbereitet und per Magic Link freigegeben.',
             ].join('\n'),
         }),
+        signal: AbortSignal.timeout(ZEITLIMIT_MS),
     })
     if (!response.ok) throw new Error(`Resend profile notification failed (${response.status})`)
     return true
@@ -58,6 +53,7 @@ async function notifyBySlack(lead) {
                 `Leistungen: ${lead.services}`,
             ].join('\n'),
         }),
+        signal: AbortSignal.timeout(ZEITLIMIT_MS),
     })
     const data = await response.json().catch(() => ({}))
     if (!response.ok || !data.ok) throw new Error(`Slack profile notification failed: ${data.error || response.status}`)

@@ -229,6 +229,21 @@ describe('Agent-Readiness machine contracts', () => {
         expect(v1?.destination).toBe('https://api.ausschreibungsagenten.de/api/v1/$1')
         // Muss vor der allgemeinen /api-Regel stehen, sonst greift die zuerst.
         expect(quellen.indexOf('/api/v1/(.*)')).toBeLessThan(quellen.indexOf('/api/(.*)'))
+
+        // Dieselbe Zusage gilt fuer die unversionierten Pfade der Spec.
+        // /api/standard und /mcp/open-data liefen auf www ins 404.
+        for (const pfad of ['/api/standard', '/mcp/open-data', '/oauth/token']) {
+            const regel = config.rewrites.find((r) => r.source === pfad)
+            expect(regel?.destination, pfad).toBe(`https://api.ausschreibungsagenten.de${pfad}`)
+            expect(quellen.indexOf(pfad), pfad).toBeLessThan(quellen.indexOf('/api/(.*)'))
+        }
+    })
+
+    it('behauptet keine festen Rate-Limit-Werte', async () => {
+        // Statische "Remaining: 599"-Koepfe standen auf jeder Antwort, auch
+        // auf einem 429. Echte Werte kommen vom Backend (x-ratelimit-*).
+        expect(await text('vercel.json')).not.toMatch(/RateLimit-/i)
+        expect(await text('api/[...path].js')).not.toMatch(/RateLimit-/i)
     })
 
     it('macht die Entwicklerdokumente unter vorhersagbaren Adressen auffindbar', async () => {

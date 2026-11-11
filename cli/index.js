@@ -5,7 +5,7 @@ import { laenderZeilen, quellenZeilen, tenderZeilen } from './ausgabe.js'
 const VERSION = '0.1.2'
 
 const HILFE = `ausschreibungsagenten ${VERSION}
-Oeffentliche Ausschreibungen aus 17 Vergabequellen in Deutschland, der EU und UK.
+Oeffentliche Ausschreibungen aus 18 Vergabequellen in Deutschland, der EU, UK und den USA (SAM.gov).
 
   ausschreibungsagenten suche <begriff> [optionen]
   ausschreibungsagenten quellen

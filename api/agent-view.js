@@ -14,7 +14,7 @@ capabilities: [tender_search, source_status, country_coverage, explainable_match
 
 # Ausschreibungsagenten.de
 
-Find current public procurement notices from 17 connected sources across Germany, the EU and the United Kingdom.
+Find current public procurement notices from 18 connected sources across Germany, the EU, the United Kingdom and US federal agencies (SAM.gov).
 
 ## Authentication
 

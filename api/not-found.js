@@ -13,7 +13,7 @@ import { willAgentAnsicht } from '../lib/agentenErkennung.js'
 // und ungespiegelter Inhalt kann nicht ausbrechen.
 
 const ZIELE = [
-    ['Startseite mit Live-Suche über 17 Vergabequellen', '/'],
+    ['Startseite mit Live-Suche über 18 Vergabequellen', '/'],
     ['llms.txt — Kurzfassung dieser Website für KI-Agenten', '/llms.txt'],
     ['agents.md — wann und wie Agenten diese Quelle nutzen', '/agents.md'],
     ['sitemap.xml — alle indexierten Adressen', '/sitemap.xml'],
@@ -118,7 +118,7 @@ const HTML = `<!DOCTYPE html>
         <nav>
             <h2>Wo es weitergeht</h2>
             <ul>
-                <li><a href="/">Startseite</a> <span>– Live-Suche über 17 Vergabequellen</span></li>
+                <li><a href="/">Startseite</a> <span>– Live-Suche über 18 Vergabequellen</span></li>
                 <li><a href="/status">Quellenstatus</a> <span>– Datenstand je Portal</span></li>
                 <li><a href="/entwickler">API und Agent-Anbindung</a> <span>– REST, OpenAPI, MCP, A2A</span></li>
                 <li><a href="/ueber-uns">Über uns</a> <span>– Team und Betreiberin</span></li>

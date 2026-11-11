@@ -81,7 +81,7 @@ and pilot requests, and the public tender proxy.
 ```bash
 npm install
 npm run dev      # http://localhost:5180
-npm test         # 205 tests
+npm test
 npm run build    # client + SSR + prerender + sitemap + prerender check
 ```
 

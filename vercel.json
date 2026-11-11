@@ -35,30 +35,6 @@
             ]
         },
         {
-            "source": "/openapi.json",
-            "headers": [
-                { "key": "RateLimit-Limit", "value": "600" },
-                { "key": "RateLimit-Remaining", "value": "599" },
-                { "key": "RateLimit-Reset", "value": "3600" }
-            ]
-        },
-        {
-            "source": "/mcp",
-            "headers": [
-                { "key": "RateLimit-Limit", "value": "600" },
-                { "key": "RateLimit-Remaining", "value": "599" },
-                { "key": "RateLimit-Reset", "value": "3600" }
-            ]
-        },
-        {
-            "source": "/api/(.*)",
-            "headers": [
-                { "key": "RateLimit-Limit", "value": "600" },
-                { "key": "RateLimit-Remaining", "value": "599" },
-                { "key": "RateLimit-Reset", "value": "3600" }
-            ]
-        },
-        {
             "source": "/feeds/(.*)",
             "headers": [
                 { "key": "Content-Type", "value": "application/x-ndjson; charset=utf-8" }
@@ -192,6 +168,18 @@
         {
             "source": "/api/v1/(.*)",
             "destination": "https://api.ausschreibungsagenten.de/api/v1/$1"
+        },
+        {
+            "source": "/api/standard",
+            "destination": "https://api.ausschreibungsagenten.de/api/standard"
+        },
+        {
+            "source": "/mcp/open-data",
+            "destination": "https://api.ausschreibungsagenten.de/mcp/open-data"
+        },
+        {
+            "source": "/oauth/token",
+            "destination": "https://api.ausschreibungsagenten.de/oauth/token"
         },
         {
             "source": "/docs",

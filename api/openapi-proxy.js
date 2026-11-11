@@ -23,7 +23,10 @@ export default async function handler(req, res) {
     }
 
     try {
-        const upstream = await fetch(`${API_ORIGIN}/openapi.json`, { headers: { Accept: 'application/json' } })
+        const upstream = await fetch(`${API_ORIGIN}/openapi.json`, {
+            headers: { Accept: 'application/json' },
+            signal: AbortSignal.timeout(15000),
+        })
         if (!upstream.ok) throw new Error(`upstream HTTP ${upstream.status}`)
         const spec = await upstream.json()
         spec.info = {

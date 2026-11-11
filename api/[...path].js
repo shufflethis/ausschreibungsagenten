@@ -1,9 +1,6 @@
 export default function handler(req, res) {
     res.setHeader('Content-Type', 'application/problem+json; charset=utf-8')
     res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('RateLimit-Limit', '600')
-    res.setHeader('RateLimit-Remaining', '599')
-    res.setHeader('RateLimit-Reset', '3600')
     return res.status(404).json({
         type: 'https://www.ausschreibungsagenten.de/problems/route-not-found',
         title: 'API route not found',

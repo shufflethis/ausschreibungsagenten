@@ -1,7 +1,7 @@
 # ausschreibungsagenten
 
-CLI für öffentliche Ausschreibungen aus 17 Vergabequellen in Deutschland, der
-EU und dem Vereinigten Königreich. Sie liest die öffentliche API von
+CLI für öffentliche Ausschreibungen aus 18 Vergabequellen in Deutschland, der
+EU, dem Vereinigten Königreich und den USA (SAM.gov). Sie liest die öffentliche API von
 [ausschreibungsagenten.de](https://www.ausschreibungsagenten.de/entwickler) —
 ohne Anmeldung, ohne Abhängigkeiten.
 
