@@ -6,8 +6,8 @@ Repository gelehrt hat.
 
 ## Die Leiter
 
-Der beste Code ist der, der nie geschrieben wurde. Vor jeder Zeile auf der
-ersten Sprosse anhalten, die trägt:
+Der beste Code ist der, der nie geschrieben wurde. Vor jeder Zeile die erste
+Sprosse wählen, die trägt:
 
 1. Muss das überhaupt gebaut werden?
 2. Gibt es das in diesem Repository schon? Vorhandenen Helfer, Util oder
@@ -23,6 +23,9 @@ und den Code lesen, den sie berührt, den echten Ablauf durchgehen — dann
 klettern. Die kleinste Änderung an der falschen Stelle ist nicht faul, sondern
 ein zweiter Fehler.
 
+Diese Prüfung ist ein interner Entscheidungsschritt und kein Anlass, die Arbeit
+für eine Bestätigung zu unterbrechen.
+
 Fehlerbehebung heißt Ursache, nicht Symptom. Ein Bericht nennt ein Symptom.
 Alle Aufrufer der Funktion suchen und die gemeinsame Stelle einmal reparieren.
 
@@ -33,9 +36,8 @@ Alle Aufrufer der Funktion suchen und die gemeinsame Stelle einmal reparieren.
 - Kein Gerüst, das niemand bestellt hat.
 - Löschen vor Hinzufügen. Langweilig vor clever. So wenige Dateien wie möglich.
 - Komplexe Wünsche hinterfragen: „Brauchst du wirklich X, oder deckt Y das ab?"
-  Das als internen Prüfschritt behandeln, eine konkrete Empfehlung nennen und
-  weiterarbeiten. Nur nachfragen und auf die Antwort warten, wenn sie Umfang
-  oder Ergebnis der Arbeit grundlegend ändern würde.
+  Eine Empfehlung mitliefern und weiterarbeiten, außer die Antwort würde Umfang,
+  Ergebnis oder Risiko wesentlich verändern.
 - Bei zwei gleich großen Wegen den nehmen, der die Randfälle richtig macht.
   Faul heißt weniger Code, nicht das wacklige Verfahren.
 - Eine bewusste Vereinfachung mit bekannter Grenze (globales Lock, O(n²)-Scan,
@@ -60,8 +62,10 @@ HTTP 500, und die Markdown-Aushandlung lag eine Stunde. Gefunden hat es ein
 fremdes Prüfskript, nicht die eigene Abnahme. Wer solche Dateien anfasst,
 schreibt den Test, der sie importiert.
 
-**Nach jeder Änderung gegen Produktion nachmessen, nicht nur die Tests
-ansehen.** Die bindende Beschränkung hier ist selten die Zahl der Zeilen, fast
+**Änderungen zunächst lokal prüfen; nach autorisiertem Deployment die
+betroffene Produktionsfunktion nachmessen.** Eine Produktionsprüfung ersetzt
+keinen Test der lokalen Änderung und erteilt keine Deployment-Freigabe.
+Die bindende Beschränkung hier ist selten die Zahl der Zeilen, fast
 immer die Frage, ob die ausgelieferte Fläche noch das tut, was die
 Beschreibung verspricht. Zwei Fehler dieser Art in einer Sitzung: eine
 `auth.md`, die einen Header nannte, den die API ignoriert, und eine
