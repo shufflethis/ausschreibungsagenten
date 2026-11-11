@@ -53,4 +53,30 @@ describe('Thema und Suchkriterien in den Formularen', () => {
             'Brandschutzfenster',
         )
     })
+
+    it('zeigt nach Absenden des Pilotprofils eine konkrete 3-Schritte-Bestaetigung statt des leeren Formulars', async () => {
+        zeigeStartseite()
+        globalThis.fetch = vi.fn(async (url) => {
+            if (String(url).includes('/api/profile-lead')) {
+                return { ok: true, json: async () => ({ success: true, company: 'Musterbau GmbH', email: 'info@musterbau.de' }) }
+            }
+            return { ok: true, json: async () => [] }
+        })
+
+        const profil = within(document.getElementById('profil'))
+        fireEvent.change(profil.getByLabelText(/Unternehmen/), { target: { value: 'Musterbau GmbH' } })
+        fireEvent.change(profil.getByLabelText(/Geschäftliche E-Mail/), { target: { value: 'info@musterbau.de' } })
+        fireEvent.change(profil.getByLabelText(/Welche Leistungen sollen Agenten für Sie suchen/), {
+            target: { value: 'Fensterbau und Pfosten-Riegel-Fassaden' },
+        })
+        fireEvent.click(profil.getByRole('button', { name: /Kostenfreien Pilotzugang anfragen/ }))
+
+        expect(await profil.findByText(/wir bereiten das Suchprofil für Musterbau GmbH vor/)).toBeInTheDocument()
+        expect(profil.getByText('info@musterbau.de')).toBeInTheDocument()
+        expect(profil.getByText(/innerhalb von 24 Std\. an Werktagen/)).toBeInTheDocument()
+        expect(profil.queryByLabelText(/Unternehmen/)).toBeNull()
+
+        fireEvent.click(profil.getByRole('button', { name: /Weiteres Suchprofil einreichen/ }))
+        expect(profil.getByLabelText(/Unternehmen/)).toBeInTheDocument()
+    })
 })

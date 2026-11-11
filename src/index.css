@@ -1307,30 +1307,56 @@ img {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
 }
 
-.agent-offer {
-    margin-top: 1.5rem;
-    border: 1px solid rgba(251, 191, 36, 0.28);
-    border-radius: 16px;
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.09), rgba(59, 130, 246, 0.08));
-    padding: 1.5rem;
+.profile-lead--done {
+    grid-template-columns: 1fr;
+    border-color: rgba(16, 185, 129, 0.35);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.09), rgba(59, 130, 246, 0.08));
 }
 
-.agent-offer__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
+.profile-success {
+    display: grid;
+    gap: 1.5rem;
 }
 
-.agent-offer h3 {
-    margin: 0.35rem 0 0.5rem;
+.profile-success__head strong {
     color: var(--text-heading);
-    font-size: var(--font-size-2xl);
 }
 
-.agent-offer p {
+.profile-success__steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.profile-success__steps li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 1.1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 14, 26, 0.72);
+}
+
+.profile-success__steps strong {
+    color: var(--text-heading);
+    font-size: var(--font-size-sm);
+}
+
+.profile-success__steps span {
     color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+}
+
+.profile-success__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem;
 }
 
 .match-grid {
@@ -2687,7 +2713,7 @@ img {
 
     .tender-search__input-row { grid-template-columns: 1fr; }
     .profile-lead__grid { grid-template-columns: 1fr; }
-    .agent-offer__header { flex-direction: column; }
+    .profile-success__steps { grid-template-columns: 1fr; }
     .source-modal__facts { grid-template-columns: 1fr; }
     .source-modal__actions { flex-direction: column; }
 

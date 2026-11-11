@@ -555,6 +555,12 @@ export default function LandingPage() {
         setProfileSending(true)
         setProfileStatus(null)
         setProfileResult(null)
+        const eingereicht = {
+            company: profileData.company.trim(),
+            email: profileData.email.trim(),
+            industry: profileData.industry,
+            region: profileData.region.trim(),
+        }
         try {
             const res = await fetch('/api/profile-lead', {
                 method: 'POST',
@@ -564,7 +570,7 @@ export default function LandingPage() {
             if (res.ok) {
                 const data = await res.json()
                 setProfileStatus('success')
-                setProfileResult(data)
+                setProfileResult({ ...eingereicht, ...data })
                 setProfileData({
                     email: '',
                     company: '',
@@ -764,122 +770,129 @@ export default function LandingPage() {
                             )}
                         </div>
 
-                        <div className="profile-lead" id="profil">
-                            <div>
-                                <span className="profile-lead__eyebrow">Nächster Schritt · Kostenfrei im Pilot</span>
-                                <h3>Persönlichen Ausschreibungsagenten vorbereiten</h3>
-                                <p>
-                                    Hinterlegen Sie Ihr Suchprofil. Wir prüfen passende Branchen, Regionen und
-                                    Auftragsgrößen und schalten Ihren geschützten Zugang inklusive E-Mail-Digest per Magic Link frei.
-                                </p>
-                                {hatAuswahlFuerPilot && (
-                                    <button type="button" className="btn btn--outline profile-lead__prefill" onClick={() => uebernehmeInPilotprofil(criteria)}>
-                                        Aktuelle Suche &amp; Merkliste übernehmen
-                                    </button>
-                                )}
-                            </div>
-                            <form className="profile-lead__form" onSubmit={handleProfileSubmit} onInvalid={(e) => setInvalidField((current) => current ?? e.target.id)} onInput={(e) => { if (e.target.id === invalidField) setInvalidField(null) }}>
-                                <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={profileData.website} onChange={(e) => setProfileData({ ...profileData, website: e.target.value })} />
-                                <div className="profile-lead__grid">
-                                    <label className="profile-lead__field" htmlFor="profile-company">Unternehmen *
-                                        <input id="profile-company" name="company" type="text" autoComplete="organization" aria-invalid={invalidField === 'profile-company'} aria-describedby={invalidField === 'profile-company' ? 'profile-company-error' : undefined} value={profileData.company} onChange={(e) => setProfileData({ ...profileData, company: e.target.value })} required />
-                                        {invalidField === 'profile-company' && <span id="profile-company-error" className="field-error">Bitte geben Sie Ihr Unternehmen an.</span>}
-                                    </label>
-                                    <label className="profile-lead__field" htmlFor="profile-email">Geschäftliche E-Mail *
-                                        <input id="profile-email" name="email" type="email" autoComplete="email" aria-invalid={invalidField === 'profile-email'} aria-describedby={invalidField === 'profile-email' ? 'profile-email-hint profile-email-error' : 'profile-email-hint'} value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} required />
-                                        <span id="profile-email-hint" className="field-hint">An diese Adresse senden wir die Antwort auf Ihre Pilotanfrage.</span>
-                                        {invalidField === 'profile-email' && <span id="profile-email-error" className="field-error">Bitte geben Sie eine gültige geschäftliche E-Mail-Adresse an.</span>}
-                                    </label>
-                                    <label className="profile-lead__field" htmlFor="profile-industry">Branche
-                                        <select id="profile-industry" name="industry" autoComplete="off" value={profileData.industry} onChange={(e) => setProfileData({ ...profileData, industry: e.target.value })}>
-                                            <option value="">Branche wählen</option>
-                                            <option value="Handwerk">Handwerk</option>
-                                            <option value="Bau">Bau</option>
-                                            <option value="IT">IT / Software</option>
-                                            <option value="Marketing">Marketing / PR</option>
-                                            <option value="Beratung">Beratung</option>
-                                            <option value="Facility">Facility Management</option>
-                                        </select>
-                                    </label>
-                                    <label className="profile-lead__field" htmlFor="profile-region">Regionen für Ihr Suchprofil
-                                        <input id="profile-region" name="region" type="text" autoComplete="off" placeholder="z. B. NRW, Berlin, DACH" value={profileData.region} onChange={(e) => setProfileData({ ...profileData, region: e.target.value })} />
-                                    </label>
-                                    <label className="profile-lead__field" htmlFor="profile-budget">Ziel-Auftragsvolumen
-                                        <select id="profile-budget" name="budget" autoComplete="off" value={profileData.budget} onChange={(e) => setProfileData({ ...profileData, budget: e.target.value })}>
-                                            <option value="">Bitte wählen</option>
-                                            <option value="Bis 25.000 EUR">Bis 25.000 EUR</option>
-                                            <option value="25.000-100.000 EUR">25.000-100.000 EUR</option>
-                                            <option value="100.000-500.000 EUR">100.000-500.000 EUR</option>
-                                            <option value="500.000+ EUR">500.000+ EUR</option>
-                                        </select>
-                                    </label>
-                                    <label className="profile-lead__field" htmlFor="profile-frequency">Bisherige Teilnahme
-                                        <select id="profile-frequency" name="frequency" autoComplete="off" value={profileData.frequency} onChange={(e) => setProfileData({ ...profileData, frequency: e.target.value })}>
-                                            <option value="">Bitte wählen</option>
-                                            <option value="Noch nie">Noch nie</option>
-                                            <option value="1-3 pro Jahr">1-3 pro Jahr</option>
-                                            <option value="Monatlich">Monatlich</option>
-                                            <option value="Regelmäßig / Team vorhanden">Regelmäßig / Team vorhanden</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <label className="profile-lead__field" htmlFor="profile-services">Welche Leistungen sollen Agenten für Sie suchen? *
-                                    <textarea id="profile-services" name="services" autoComplete="off" aria-invalid={invalidField === 'profile-services'} aria-describedby={invalidField === 'profile-services' ? 'profile-services-error' : undefined} value={profileData.services} onChange={(e) => setProfileData({ ...profileData, services: e.target.value })} required />
-                                    {invalidField === 'profile-services' && <span id="profile-services-error" className="field-error">Bitte beschreiben Sie die gesuchten Leistungen.</span>}
-                                </label>
-                                <button type="submit" className="btn btn--primary" disabled={profileSending}>
-                                    {profileSending ? 'Profil wird gesendet...' : 'Kostenfreien Pilotzugang anfragen'}
-                                </button>
-                                <p className="field-hint">0 € in der Pilotphase · unverbindlich · keine Zahlungsdaten nötig.</p>
-                                {profileStatus === 'success' && (
-                                    <p className="form-status form-status--success">
-                                        Anfrage angekommen. Ein Zugang wird nach Prüfung ausschließlich per Magic Link freigegeben.
-                                    </p>
-                                )}
-                                {profileStatus === 'error' && (
-                                    <p className="form-status form-status--error" role="alert">
-                                        Das Profil konnte nicht gesendet werden. Bitte nutzen Sie das Kontaktformular unten.
-                                    </p>
-                                )}
-                            </form>
-                        </div>
-
-                        {profileResult && (
-                            <div className="agent-offer" aria-live="polite">
-                                <div className="agent-offer__header">
-                                    <div>
-                                        <span className="profile-lead__eyebrow">Pilotanfrage eingegangen</span>
-                                        <h3>Der nächste Schritt ist ein geschützter Magic-Link-Zugang</h3>
+                        <div className={`profile-lead ${profileStatus === 'success' ? 'profile-lead--done' : ''}`} id="profil">
+                            {profileStatus === 'success' ? (
+                                <div className="profile-success" aria-live="polite">
+                                    <div className="profile-success__head">
+                                        <span className="profile-lead__eyebrow">✓ Pilotanfrage eingegangen · 0 € in der Pilotphase</span>
+                                        <h3>Vielen Dank – wir bereiten das Suchprofil für {profileResult?.company || 'Ihr Unternehmen'} vor.</h3>
                                         <p>
-                                            Wir prüfen das Suchprofil für {profileResult.company} und bereiten den passenden Mandanten vor.
-                                            Es wird kein öffentlicher Pilot-Link erzeugt. Nach der Abstimmung erhält die freigegebene
-                                            E-Mail-Adresse einen einmalig verwendbaren Anmeldelink.
+                                            Unsere Rückmeldung und später Ihr persönlicher Anmeldelink gehen an{' '}
+                                            <strong>{profileResult?.email || 'Ihre geschäftliche E-Mail-Adresse'}</strong>
+                                            {[profileResult?.industry, profileResult?.region].filter(Boolean).length > 0 && (
+                                                <> ({[profileResult?.industry, profileResult?.region].filter(Boolean).join(' · ')})</>
+                                            )}
+                                            . Es entstehen keine Kosten und kein automatisches Abo.
                                         </p>
                                     </div>
-                                </div>
 
-                                <div className="pricing-strip">
-                                    <article>
-                                        <strong>Pro</strong>
-                                        <span><s>149 EUR/Monat</s> Kostenfrei in der Pilotphase</span>
-                                        <p>Suchprofil, Alerts, Fulltext-Suche und wöchentliche Trefferliste.</p>
-                                        <small>Checkout folgt nach Pilotabstimmung.</small>
-                                    </article>
-                                    <article>
-                                        <strong>Agent</strong>
-                                        <span><s>499 EUR/Monat</s> Kostenfrei in der Pilotphase</span>
-                                        <p>Höhere API-Limits, Volltextsuche, Agent API, A2A/MCP und Priorisierung.</p>
-                                        <small>Checkout folgt nach Pilotabstimmung.</small>
-                                    </article>
-                                    <article>
-                                        <strong>Verfahren</strong>
-                                        <span><s>1.499 EUR einmalig</s> Kostenfrei für Pilotpartner</span>
-                                        <p>Konkrete Ausschreibung prüfen, Anforderungen strukturieren, Angebotsfahrplan bauen.</p>
-                                        <small>Checkout folgt nach Pilotabstimmung.</small>
-                                    </article>
+                                    <ol className="profile-success__steps">
+                                        <li>
+                                            <strong>1 · CPV- &amp; Quellen-Abgleich (innerhalb von 24 Std. an Werktagen)</strong>
+                                            <span>Wir übersetzen Ihre Leistungen in passende CPV-Codes, Fachbegriffe und Ausschlüsse über unsere 18 Live-Quellen.</span>
+                                        </li>
+                                        <li>
+                                            <strong>2 · Erste echte Treffer per E-Mail</strong>
+                                            <span>Sie erhalten eine konkrete Vorauswahl aktueller Ausschreibungen samt Treffer-Begründung zur kurzen Abstimmung.</span>
+                                        </li>
+                                        <li>
+                                            <strong>3 · Kostenfreier Pilot-Zugang per Magic Link</strong>
+                                            <span>Passt das Profil, schalten wir Ihr geschütztes Dashboard inklusive regelmäßigem E-Mail-Digest frei – ohne Passwort, ohne Zahlungsdaten.</span>
+                                        </li>
+                                    </ol>
+
+                                    <div className="profile-success__actions">
+                                        <a href="#suche" className="btn btn--primary">Weiter Live-Aufträge prüfen ↑</a>
+                                        <Link to="/entwickler" className="btn btn--outline">Sofort Free-API-Key holen →</Link>
+                                        <button
+                                            type="button"
+                                            className="source-trigger"
+                                            onClick={() => {
+                                                setProfileStatus(null)
+                                                setProfileResult(null)
+                                            }}
+                                        >
+                                            Weiteres Suchprofil einreichen
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            ) : (
+                                <>
+                                    <div>
+                                        <span className="profile-lead__eyebrow">Nächster Schritt · Kostenfrei im Pilot</span>
+                                        <h3>Persönlichen Ausschreibungsagenten vorbereiten</h3>
+                                        <p>
+                                            Hinterlegen Sie Ihr Suchprofil. Wir prüfen passende Branchen, Regionen und
+                                            Auftragsgrößen und schalten Ihren geschützten Zugang inklusive E-Mail-Digest per Magic Link frei.
+                                        </p>
+                                        {hatAuswahlFuerPilot && (
+                                            <button type="button" className="btn btn--outline profile-lead__prefill" onClick={() => uebernehmeInPilotprofil(criteria)}>
+                                                Aktuelle Suche &amp; Merkliste übernehmen
+                                            </button>
+                                        )}
+                                    </div>
+                                    <form className="profile-lead__form" onSubmit={handleProfileSubmit} onInvalid={(e) => setInvalidField((current) => current ?? e.target.id)} onInput={(e) => { if (e.target.id === invalidField) setInvalidField(null) }}>
+                                        <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={profileData.website} onChange={(e) => setProfileData({ ...profileData, website: e.target.value })} />
+                                        <div className="profile-lead__grid">
+                                            <label className="profile-lead__field" htmlFor="profile-company">Unternehmen *
+                                                <input id="profile-company" name="company" type="text" autoComplete="organization" aria-invalid={invalidField === 'profile-company'} aria-describedby={invalidField === 'profile-company' ? 'profile-company-error' : undefined} value={profileData.company} onChange={(e) => setProfileData({ ...profileData, company: e.target.value })} required />
+                                                {invalidField === 'profile-company' && <span id="profile-company-error" className="field-error">Bitte geben Sie Ihr Unternehmen an.</span>}
+                                            </label>
+                                            <label className="profile-lead__field" htmlFor="profile-email">Geschäftliche E-Mail *
+                                                <input id="profile-email" name="email" type="email" autoComplete="email" aria-invalid={invalidField === 'profile-email'} aria-describedby={invalidField === 'profile-email' ? 'profile-email-hint profile-email-error' : 'profile-email-hint'} value={profileData.email} onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} required />
+                                                <span id="profile-email-hint" className="field-hint">An diese Adresse senden wir die Antwort auf Ihre Pilotanfrage.</span>
+                                                {invalidField === 'profile-email' && <span id="profile-email-error" className="field-error">Bitte geben Sie eine gültige geschäftliche E-Mail-Adresse an.</span>}
+                                            </label>
+                                            <label className="profile-lead__field" htmlFor="profile-industry">Branche
+                                                <select id="profile-industry" name="industry" autoComplete="off" value={profileData.industry} onChange={(e) => setProfileData({ ...profileData, industry: e.target.value })}>
+                                                    <option value="">Branche wählen</option>
+                                                    <option value="Handwerk">Handwerk</option>
+                                                    <option value="Bau">Bau</option>
+                                                    <option value="IT">IT / Software</option>
+                                                    <option value="Marketing">Marketing / PR</option>
+                                                    <option value="Beratung">Beratung</option>
+                                                    <option value="Facility">Facility Management</option>
+                                                </select>
+                                            </label>
+                                            <label className="profile-lead__field" htmlFor="profile-region">Regionen für Ihr Suchprofil
+                                                <input id="profile-region" name="region" type="text" autoComplete="off" placeholder="z. B. NRW, Berlin, DACH" value={profileData.region} onChange={(e) => setProfileData({ ...profileData, region: e.target.value })} />
+                                            </label>
+                                            <label className="profile-lead__field" htmlFor="profile-budget">Ziel-Auftragsvolumen
+                                                <select id="profile-budget" name="budget" autoComplete="off" value={profileData.budget} onChange={(e) => setProfileData({ ...profileData, budget: e.target.value })}>
+                                                    <option value="">Bitte wählen</option>
+                                                    <option value="Bis 25.000 EUR">Bis 25.000 EUR</option>
+                                                    <option value="25.000-100.000 EUR">25.000-100.000 EUR</option>
+                                                    <option value="100.000-500.000 EUR">100.000-500.000 EUR</option>
+                                                    <option value="500.000+ EUR">500.000+ EUR</option>
+                                                </select>
+                                            </label>
+                                            <label className="profile-lead__field" htmlFor="profile-frequency">Bisherige Teilnahme
+                                                <select id="profile-frequency" name="frequency" autoComplete="off" value={profileData.frequency} onChange={(e) => setProfileData({ ...profileData, frequency: e.target.value })}>
+                                                    <option value="">Bitte wählen</option>
+                                                    <option value="Noch nie">Noch nie</option>
+                                                    <option value="1-3 pro Jahr">1-3 pro Jahr</option>
+                                                    <option value="Monatlich">Monatlich</option>
+                                                    <option value="Regelmäßig / Team vorhanden">Regelmäßig / Team vorhanden</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <label className="profile-lead__field" htmlFor="profile-services">Welche Leistungen sollen Agenten für Sie suchen? *
+                                            <textarea id="profile-services" name="services" autoComplete="off" aria-invalid={invalidField === 'profile-services'} aria-describedby={invalidField === 'profile-services' ? 'profile-services-error' : undefined} value={profileData.services} onChange={(e) => setProfileData({ ...profileData, services: e.target.value })} required />
+                                            {invalidField === 'profile-services' && <span id="profile-services-error" className="field-error">Bitte beschreiben Sie die gesuchten Leistungen.</span>}
+                                        </label>
+                                        <button type="submit" className="btn btn--primary" disabled={profileSending}>
+                                            {profileSending ? 'Profil wird gesendet...' : 'Kostenfreien Pilotzugang anfragen'}
+                                        </button>
+                                        <p className="field-hint">0 € in der Pilotphase · unverbindlich · keine Zahlungsdaten nötig.</p>
+                                        {profileStatus === 'error' && (
+                                            <p className="form-status form-status--error" role="alert">
+                                                Das Profil konnte nicht gesendet werden. Bitte nutzen Sie das Kontaktformular unten.
+                                            </p>
+                                        )}
+                                    </form>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             </section>
