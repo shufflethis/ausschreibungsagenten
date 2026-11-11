@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import { formularLimitZuruecksetzen } from '../lib/eingaben.js'
 import handler from './contact.js'
 
 function responseMock() {
@@ -23,6 +24,7 @@ function responseMock() {
 
 describe('contact notification', () => {
     afterEach(() => {
+        formularLimitZuruecksetzen()
         vi.unstubAllGlobals()
         delete process.env.RESEND_API_KEY
         delete process.env.RESEND_FROM
@@ -95,5 +97,39 @@ describe('contact notification', () => {
         expect(fetchMock.mock.calls[0][1].body).toContain('&lt;!channel&gt;')
         expect(fetchMock.mock.calls[0][1].body).toContain('&amp; mehr')
         expect(fetchMock.mock.calls[1][1].body).toContain('&lt;!here&gt; GmbH')
+    })
+
+    it('weist fremde Origins mit 403 und Spam-Serien derselben IP mit 429 ab', async () => {
+        process.env.RESEND_API_KEY = 're_test'
+        const fetchMock = vi.fn().mockResolvedValue({ ok: true, text: vi.fn() })
+        vi.stubGlobal('fetch', fetchMock)
+
+        const fremd = responseMock()
+        await handler({
+            method: 'POST',
+            headers: { origin: 'https://fremd.example' },
+            body: { name: 'A', email: 'a@b.de', message: 'Hallo' },
+        }, fremd)
+        expect(fremd.statusCode).toBe(403)
+        expect(fetchMock).not.toHaveBeenCalled()
+
+        for (let i = 0; i < 5; i += 1) {
+            const ok = responseMock()
+            await handler({
+                method: 'POST',
+                headers: { origin: 'https://www.ausschreibungsagenten.de', 'x-real-ip': '198.51.100.7' },
+                body: { name: 'A', email: 'a@b.de', message: 'Hallo' },
+            }, ok)
+            expect(ok.statusCode).toBe(200)
+        }
+
+        const gesperrt = responseMock()
+        await handler({
+            method: 'POST',
+            headers: { origin: 'https://www.ausschreibungsagenten.de', 'x-real-ip': '198.51.100.7' },
+            body: { name: 'A', email: 'a@b.de', message: 'Spam' },
+        }, gesperrt)
+        expect(gesperrt.statusCode).toBe(429)
+        expect(gesperrt.setHeader).toHaveBeenCalledWith('Retry-After', expect.any(String))
     })
 })

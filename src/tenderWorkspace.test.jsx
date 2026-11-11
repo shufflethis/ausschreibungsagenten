@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor, within, cleanup } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
 import { afterEach, expect, it, vi } from 'vitest'
 import LandingPage from './pages/LandingPage'
 import { SUCHAUFTRAEGE_KEY } from './lib/suchauftraege'
@@ -9,7 +8,7 @@ afterEach(() => { cleanup(); localStorage.clear(); vi.restoreAllMocks() })
 
 it('beschreibt ein ungültiges Pflichtfeld und entfernt den Fehler nach Eingabe', () => {
     globalThis.fetch = vi.fn(async () => ({ ok: true, json: async () => [] }))
-    render(<HelmetProvider><BrowserRouter><LandingPage /></BrowserRouter></HelmetProvider>)
+    render(<BrowserRouter><LandingPage /></BrowserRouter>)
     const company = screen.getByLabelText('Unternehmen *')
     fireEvent.invalid(company)
     expect(company.getAttribute('aria-invalid')).toBe('true')
@@ -34,7 +33,7 @@ it('verbindet Einstieg, Blättern, belegte Nachweise und einen gespeicherten Än
         const offset = Number(parsed.searchParams.get('offset') || 0), limit = Number(parsed.searchParams.get('limit') || 25)
         return { ok: true, json: async () => parsed.searchParams.has('ids') ? values.map((row) => compatible ? row : { ...row, deadline_details: undefined }) : values.slice(offset, offset + limit) }
     })
-    render(<HelmetProvider><BrowserRouter><LandingPage /></BrowserRouter></HelmetProvider>)
+    render(<BrowserRouter><LandingPage /></BrowserRouter>)
     await screen.findAllByText('Fenster Berlin 0')
     fireEvent.change(screen.getByLabelText('Leistungsregion'), { target: { value: 'Berlin' } })
     fireEvent.change(screen.getByLabelText('Gewerk'), { target: { value: 'facade_construction' } })

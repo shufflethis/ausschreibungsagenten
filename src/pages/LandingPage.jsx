@@ -12,7 +12,14 @@ import { spracheErmitteln, STANDARDSPRACHE } from '../lib/sprache'
 import { tafelTexte } from '../lib/tafelTexte'
 import { FAQS, TENDER_PRESETS } from './landing/daten'
 import { useWebmcpWerkzeuge } from './landing/webmcpWerkzeuge'
-import { Branchen, Faq, Funktionen, Kontakt, Preise, Prozess, Vergleich, Wissen } from './landing/Abschnitte'
+import { Branchen, Faq, Funktionen, Kontakt, Preise, ProduktEinblick, Prozess, Vergleich, Wissen } from './landing/Abschnitte'
+
+function brancheAusGewerk(vertical) {
+    if (['facade_construction', 'haustechnik', 'ausbau', 'dach_spezialbau'].includes(vertical)) return 'Handwerk'
+    if (['bau', 'hochbau', 'tiefbau', 'planning'].includes(vertical)) return 'Bau'
+    if (vertical === 'marketing') return 'Marketing'
+    return ''
+}
 
 const formatDate = (value, sprache = 'de') => {
     if (!value || !Number.isFinite(Date.parse(value))) return sprache === 'en' ? 'No deadline stated' : 'Keine Frist genannt'
@@ -52,6 +59,7 @@ export default function LandingPage() {
     const [searchRetry, setSearchRetry] = useState(0)
     const savedCheckController = useRef(null)
     const [searchNotice, setSearchNotice] = useState('')
+    const [tafelHinweis, setTafelHinweis] = useState('')
     const [searchErrors, setSearchErrors] = useState({})
     const [watchCoverage, setWatchCoverage] = useState({})
     const dialogRef = useRef(null)
@@ -131,36 +139,36 @@ export default function LandingPage() {
         setCheckingSearches(true)
         const errors = {}
         const coverage = {}
-        const watchRequests = []
-        const checked = []
-        for (const saved of rows) {
-            if (signal?.aborted) return
-            try {
-                const res = await fetch(`/api/tenders-public?${suchparameter(saved.criteria)}`, { signal })
-                if (!res.ok) throw new Error('Suche nicht erreichbar')
-                const current = await res.json()
-                if (!Array.isArray(current)) throw new Error('Ungültige Antwort')
-                let watched = []
-                if (saved.snapshots.length) {
-                    const ids = saved.snapshots.map((row) => row.id).join(',')
-                    const previous = await fetch(`/api/tenders-public?${new URLSearchParams({ ids })}`, { signal })
-                    if (!previous.ok) throw new Error('Gespeicherte Treffer konnten nicht geprüft werden')
-                    watched = await previous.json()
-                    if (!Array.isArray(watched)) throw new Error('Ungültige Antwort')
-                    if (watched.some((row) => !saved.snapshots.some((old) => old.id === row.id) || !Array.isArray(row.deadline_details))) throw new Error('Der Änderungsvergleich ist derzeit nicht verfügbar')
+        // Gespeicherte Suchen parallel abgleichen statt nacheinander: sonst
+        // summieren sich bis zu acht Suchen beim Seitenstart zu einer Kette.
+        const checked = await Promise.all(
+            rows.map(async (saved) => {
+                if (signal?.aborted) return saved
+                try {
+                    const res = await fetch(`/api/tenders-public?${suchparameter(saved.criteria)}`, { signal })
+                    if (!res.ok) throw new Error('Suche nicht erreichbar')
+                    const current = await res.json()
+                    if (!Array.isArray(current)) throw new Error('Ungültige Antwort')
+                    let watched = []
+                    if (saved.snapshots.length) {
+                        const ids = saved.snapshots.map((row) => row.id).join(',')
+                        const previous = await fetch(`/api/tenders-public?${new URLSearchParams({ ids })}`, { signal })
+                        if (!previous.ok) throw new Error('Gespeicherte Treffer konnten nicht geprüft werden')
+                        watched = await previous.json()
+                        if (!Array.isArray(watched)) throw new Error('Ungültige Antwort')
+                        if (watched.some((row) => !saved.snapshots.some((old) => old.id === row.id) || !Array.isArray(row.deadline_details))) throw new Error('Der Änderungsvergleich ist derzeit nicht verfügbar')
+                    }
+                    const updated = suchauftragVergleichen(saved, current, watched)
+                    await registerDocumentWatches(updated.snapshots, signal)
+                        .then((result) => { coverage[saved.id] = result })
+                        .catch((error) => { coverage[saved.id] = { error: error.message } })
+                    return updated
+                } catch (error) {
+                    if (!signal?.aborted) errors[saved.id] = error.message
+                    return saved
                 }
-                const updated = suchauftragVergleichen(saved, current, watched)
-                checked.push(updated)
-                watchRequests.push(registerDocumentWatches(updated.snapshots, signal)
-                    .then((result) => { coverage[saved.id] = result })
-                    .catch((error) => { coverage[saved.id] = { error: error.message } }))
-            } catch (error) {
-                if (signal?.aborted) return
-                errors[saved.id] = error.message
-                checked.push(saved)
-            }
-        }
-        await Promise.all(watchRequests)
+            }),
+        )
         if (!signal?.aborted) {
             savedSearchesWrite((previous) => previous.map((row) => checked.find((item) => item.id === row.id) || row))
             setSearchErrors(errors)
@@ -230,13 +238,16 @@ export default function LandingPage() {
         finally { if (searchVersion.current === version) setMoreLoading(false) }
     }
 
-    // Die Inhaltsseiten verlinken das Kontaktformular mit "?thema=...".
-    // Damit steht im Nachrichtenfeld schon, worum es geht, und die Anfrage
-    // laesst sich zuordnen. Bewusst nur vorbelegen, wenn das Feld leer ist -
-    // sonst wuerde eine bereits getippte Nachricht ueberschrieben.
+    // Die Inhaltsseiten verlinken das Formular mit "?thema=...".
+    // Damit steht sowohl im Pilotprofil (#profil) als auch im Kontaktformular
+    // (#kontakt) schon, worum es geht, und die Anfrage laesst sich zuordnen.
+    // Bewusst nur vorbelegen, wenn das jeweilige Feld leer ist.
     useEffect(() => {
         const thema = new URLSearchParams(window.location.search).get('thema')
         if (!thema) return
+        setProfileData((bisher) =>
+            bisher.services ? bisher : { ...bisher, services: `Thema: ${thema}\n` },
+        )
         setFormData((bisher) =>
             bisher.message ? bisher : { ...bisher, message: `Ich interessiere mich für: ${thema}\n\n` },
         )
@@ -250,13 +261,12 @@ export default function LandingPage() {
     }, [])
 
     // Der Browser springt beim Laden zum Anker, danach laedt die
-    // Trefferliste nach und schiebt das Formular weiter nach unten - man
+    // Trefferliste nach und schiebt die Bereiche darunter nach unten - man
     // landet ueber tausend Pixel darueber. Deshalb nach dem Nachladen
-    // einmal nachfassen, aber nur solange der Anker noch gilt und niemand
-    // selbst gescrollt hat.
+    // einmal nachfassen, aber nur solange der Anker noch gilt.
     useEffect(() => {
-        if (tendersLoading || window.location.hash !== '#kontakt') return
-        const ziel = document.getElementById('kontakt')
+        if (tendersLoading || !['#kontakt', '#profil', '#tafel', '#gespeichert'].includes(window.location.hash)) return
+        const ziel = document.getElementById(window.location.hash.slice(1))
         if (!ziel) return
         const abstand = Math.abs(ziel.getBoundingClientRect().top)
         if (abstand > 100) ziel.scrollIntoView()
@@ -425,6 +435,58 @@ export default function LandingPage() {
             ? { ...row, evidence: { ...row.evidence, [type]: value } } : row))
     }
 
+    // Uebernimmt die bereits gewaehlten Suchfilter und gemerkte Verfahren in
+    // das Pilotprofil-Formular, damit der Besucher seine Eingaben nicht
+    // noch einmal abtippen muss.
+    function uebernehmeInPilotprofil(auswahl = criteria) {
+        const gewerkName = GEWERKE.find((g) => g.value === auswahl.vertical)?.label
+        const zeilen = []
+        if (auswahl.search) zeilen.push(`Suchbegriffe: ${auswahl.search}`)
+        if (gewerkName && auswahl.vertical) zeilen.push(`Gewerk: ${gewerkName}`)
+        if (auswahl.exclusions) zeilen.push(`Ausschlüsse: ${auswahl.exclusions}`)
+        if (auswahl.minimumDays > 0) zeilen.push(`Mindestvorlauf: ${auswahl.minimumDays} Tage`)
+
+        const relevanteMerkliste = merkliste.filter((eintrag) => eintrag.entscheidung !== 'no_go')
+        if (relevanteMerkliste.length > 0) {
+            zeilen.push(
+                'Gemerkte Verfahren:\n' +
+                    relevanteMerkliste
+                        .map((eintrag) => `- [${eintrag.entscheidung === 'go' ? 'GO' : 'OFFEN'}] ${eintrag.tender.title}`)
+                        .join('\n'),
+            )
+        }
+
+        const vorgeschlageneBranche = brancheAusGewerk(auswahl.vertical)
+        setProfileData((bisher) => ({
+            ...bisher,
+            industry: bisher.industry || vorgeschlageneBranche,
+            region: bisher.region || auswahl.region || (auswahl.country !== 'DEU' ? auswahl.country : ''),
+            services: zeilen.join('\n') || bisher.services,
+        }))
+        document.getElementById('profil')?.scrollIntoView({ behavior: 'smooth' })
+        document.getElementById('profile-company')?.focus({ preventScroll: true })
+    }
+
+    async function kurzlisteKopieren() {
+        if (!merkliste.length || !navigator.clipboard?.writeText) return
+        const text = merkliste
+            .map((eintrag) => {
+                const status = eintrag.entscheidung === 'go' ? 'GO' : eintrag.entscheidung === 'no_go' ? 'NO-GO' : 'OFFEN'
+                const url = quellenUrl(eintrag.tender.source_url) || ''
+                const notiz = eintrag.notiz ? `\n  Notiz: ${eintrag.notiz}` : ''
+                return `[${status}] ${eintrag.tender.title}\n  ${texte.auftraggeber}: ${eintrag.tender.buyer_name || texte.nichtAngegeben} · ${texte.frist}: ${formatDate(eintrag.tender.deadline_at, sprache)}${notiz}${url ? `\n  ${url}` : ''}`
+            })
+            .join('\n\n')
+        try {
+            await navigator.clipboard.writeText(text)
+            setTafelHinweis(texte.kopiert)
+        } catch {
+            // Zwischenablage nicht verfuegbar (z. B. unsicherer Kontext).
+        }
+    }
+
+    const hatAuswahlFuerPilot = Boolean(tenderQuery.trim() || tenderVertical || tenderRegion.trim() || exclusions.trim() || merkliste.length > 0)
+
     // ===== WebMCP =====
     //
     // Werkzeuge fuer Agenten, die *diese geoeffnete Seite* bedienen. Der
@@ -559,7 +621,7 @@ export default function LandingPage() {
                             </details>
                         </div>
                     </form>
-                    <div className="search-hero__footer"><span>Aktuell erfasst: Fenster & Fassade, Planung, Marketing & Digital.</span><Link to="/status">Quellen & Abdeckung ↗</Link></div>
+                    <div className="search-hero__footer"><span>Kuratiert: Fenster &amp; Fassade, Planung, Marketing &amp; Digital · Bau gesamt über CPV-Gewerke.</span><Link to="/status">Quellen &amp; Abdeckung ↗</Link></div>
                 </div>
             </section>
 
@@ -592,7 +654,7 @@ export default function LandingPage() {
                             <div className="workspace__heading"><div><span className="section__label">Dranbleiben</span><h3 id="saved-title">Ihre gespeicherten Suchen</h3><p>Auf diesem Gerät gespeichert. Beim Öffnen und Aktualisieren vergleichen wir neue Treffer, Fristen und bereits erfasste Unterlagen.</p></div><button type="button" className="source-trigger" disabled={checkingSearches || !savedSearches.length} onClick={() => checkSavedSearches(savedSearches)}>{checkingSearches ? 'Wird geprüft …' : 'Jetzt aktualisieren ↻'}</button></div>
                             {!savedSearches.length && <p className="saved-searches__empty">Eine gute Suche muss man nicht zweimal bauen. Speichern Sie Ihre Auswahl oben – Änderungen erscheinen hier.</p>}
                             {savedSearches.map((saved) => <article className="saved-search" key={saved.id}>
-                                <div className="saved-search__heading"><div><h4>{saved.criteria.search || GEWERKE.find((g) => g.value === saved.criteria.vertical)?.label || 'Alle Leistungen'}</h4><p>{saved.criteria.region || 'Alle Regionen'} · {saved.criteria.country} · {saved.checkedAt ? `Geprüft ${formatDate(saved.checkedAt)}` : 'Noch nicht geprüft'}</p></div><div className="saved-search__actions"><button type="button" className="source-trigger" onClick={() => openSavedSearch(saved)}>Suche öffnen</button><button type="button" className="source-trigger" disabled={checkingSearches} onClick={() => savedSearchesWrite(savedSearches.filter((row) => row.id !== saved.id))}>Entfernen</button></div></div>
+                                <div className="saved-search__heading"><div><h4>{saved.criteria.search || GEWERKE.find((g) => g.value === saved.criteria.vertical)?.label || 'Alle Leistungen'}</h4><p>{saved.criteria.region || 'Alle Regionen'} · {saved.criteria.country} · {saved.checkedAt ? `Geprüft ${formatDate(saved.checkedAt)}` : 'Noch nicht geprüft'}</p></div><div className="saved-search__actions"><button type="button" className="source-trigger" onClick={() => openSavedSearch(saved)}>Suche öffnen</button><button type="button" className="source-trigger" onClick={() => uebernehmeInPilotprofil(saved.criteria)}>Als E-Mail-Alert anfragen →</button><button type="button" className="source-trigger" disabled={checkingSearches} onClick={() => savedSearchesWrite(savedSearches.filter((row) => row.id !== saved.id))}>Entfernen</button></div></div>
                                 {searchErrors[saved.id] && <p role="alert">{searchErrors[saved.id]}. Der letzte geprüfte Stand bleibt erhalten.</p>}
                                 {watchCoverage[saved.id]?.error && <p role="status">{watchCoverage[saved.id].error}. Treffer und Fristen werden weiterhin verglichen.</p>}
                                 {watchCoverage[saved.id]?.enabled === false && <p role="status">Die automatische Unterlagenprüfung ist derzeit deaktiviert. Bitte prüfen Sie die Quelle direkt.</p>}
@@ -610,11 +672,20 @@ export default function LandingPage() {
                                     <p>{texte.einleitung}</p>
                                 </div>
                                 {merkliste.length > 0 && (
-                                    <button type="button" className="source-trigger" onClick={merklisteLeeren}>
-                                        {texte.leeren}
-                                    </button>
+                                    <div className="tafel__kopf-aktionen">
+                                        <button type="button" className="source-trigger" onClick={kurzlisteKopieren}>
+                                            {texte.kopieren}
+                                        </button>
+                                        <button type="button" className="source-trigger" onClick={() => uebernehmeInPilotprofil(criteria)}>
+                                            {texte.pilotUebernehmen}
+                                        </button>
+                                        <button type="button" className="source-trigger" onClick={merklisteLeeren}>
+                                            {texte.leeren}
+                                        </button>
+                                    </div>
                                 )}
                             </div>
+                            {tafelHinweis && <p className="workspace-notice" role="status">{tafelHinweis}</p>}
 
                             {merkliste.length === 0 ? (
                                 <div className="tender-state">{texte.leer}</div>
@@ -695,12 +766,17 @@ export default function LandingPage() {
 
                         <div className="profile-lead" id="profil">
                             <div>
-                                <span className="profile-lead__eyebrow">Nächster Schritt</span>
+                                <span className="profile-lead__eyebrow">Nächster Schritt · Kostenfrei im Pilot</span>
                                 <h3>Persönlichen Ausschreibungsagenten vorbereiten</h3>
                                 <p>
                                     Hinterlegen Sie Ihr Suchprofil. Wir prüfen passende Branchen, Regionen und
-                                    Auftragsgrößen und melden uns mit den nächsten konkreten Treffern.
+                                    Auftragsgrößen und schalten Ihren geschützten Zugang inklusive E-Mail-Digest per Magic Link frei.
                                 </p>
+                                {hatAuswahlFuerPilot && (
+                                    <button type="button" className="btn btn--outline profile-lead__prefill" onClick={() => uebernehmeInPilotprofil(criteria)}>
+                                        Aktuelle Suche &amp; Merkliste übernehmen
+                                    </button>
+                                )}
                             </div>
                             <form className="profile-lead__form" onSubmit={handleProfileSubmit} onInvalid={(e) => setInvalidField((current) => current ?? e.target.id)} onInput={(e) => { if (e.target.id === invalidField) setInvalidField(null) }}>
                                 <input className="form-honeypot" type="text" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" value={profileData.website} onChange={(e) => setProfileData({ ...profileData, website: e.target.value })} />
@@ -822,6 +898,9 @@ export default function LandingPage() {
                 </div>
             </dialog>}
             <Prozess />
+
+            {/* ===== BLICK IN DEN PILOTBETRIEB ===== */}
+            <ProduktEinblick />
 
             {/* ===== COMPARISON TABLE ===== */}
             <Vergleich />

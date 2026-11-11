@@ -1,7 +1,6 @@
 import { StrictMode, act } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
 import { afterEach, describe, expect, it } from 'vitest'
 import App from './App'
 // Hydriert wird mit der Browser-Fassung: nachgeladene Seiten gegen das
@@ -34,11 +33,9 @@ async function hydriere(pfad, ausgeliefertesHtml) {
         hydrateRoot(
             wurzel,
             <StrictMode>
-                <HelmetProvider>
-                    <BrowserRouter>
-                        <App seiten={pages} />
-                    </BrowserRouter>
-                </HelmetProvider>
+                <BrowserRouter>
+                    <App seiten={pages} />
+                </BrowserRouter>
             </StrictMode>,
             { onRecoverableError: (fehler) => beanstandungen.push(String(fehler?.message ?? fehler)) },
         )

@@ -1,13 +1,10 @@
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 import { appUrl } from '../config/appOrigin'
 
 export default function Login() {
     return (
         <section className="section account-entry">
-            <Helmet>
-                <title>Login | Ausschreibungsagenten.de</title>
-                <meta name="robots" content="noindex, nofollow" />
-            </Helmet>
+            <Seo path="/login" robots="noindex, nofollow" />
             <div className="container">
                 <div className="account-entry__card">
                     <span className="section__label">Kundenbereich</span>

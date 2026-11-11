@@ -1,7 +1,6 @@
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import LandingPage from './pages/LandingPage'
 
@@ -41,11 +40,9 @@ describe('Tender-Suche auf der Landingpage', () => {
         await act(async () => {
             wurzel = createRoot(behaelter)
             wurzel.render(
-                <HelmetProvider>
-                    <BrowserRouter>
-                        <LandingPage />
-                    </BrowserRouter>
-                </HelmetProvider>,
+                <BrowserRouter>
+                    <LandingPage />
+                </BrowserRouter>,
             )
         })
     }

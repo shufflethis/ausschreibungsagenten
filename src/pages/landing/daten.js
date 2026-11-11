@@ -3,6 +3,7 @@
 import { GEWERKE } from '../../lib/vergabe'
 
 export const TOOLS = [
+    { name: 'Ausschreibungsagenten.de (Pilot)', url: '#profil', own: true, price: '0 € im Pilot (später ab 149 €/Mon.)', ai: true, portals: '18 Live-Quellen (DE, EU, UK, US)', focus: 'Bau, Fassade, Planung & Digital', gaeb: true, alerts: true, free: true },
     { name: 'DTVP', url: 'https://www.dtvp.de', price: '€49/Mon. Professional', ai: false, portals: 'DTVP', focus: 'Offizielles Portal', gaeb: false, alerts: true, free: true },
     { name: 'aumass', url: 'https://www.aumass.de', price: 'Anbieterangabe', ai: false, portals: 'Herstellerangabe', focus: 'Breite Abdeckung', gaeb: false, alerts: true, free: true },
     { name: 'GAEB.ai', url: 'https://gaeb.ai', price: 'Anbieterangabe', ai: true, portals: 'Herstellerangabe', focus: 'Elektro/Bau', gaeb: true, alerts: true, free: true },

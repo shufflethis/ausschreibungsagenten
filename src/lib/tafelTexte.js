@@ -11,6 +11,9 @@ export const TAFEL_TEXTE = {
         einleitung:
             'Treffer landen hier per Klick — oder über einen Agenten, der die Werkzeuge dieser Seite nutzt. Die Gründe stammen aus den Feldern der Bekanntmachung: CPV, Leistungsort, Frist, Auftragswert gegen den EU-Schwellenwert, Zuschlagskriterien, Lose. Entschieden wird von Ihnen; die Argumente sind eine Vorarbeit, keine Empfehlung.',
         leeren: 'Tafel leeren',
+        kopieren: 'Kurzliste kopieren',
+        kopiert: '✓ Kurzliste in die Zwischenablage kopiert.',
+        pilotUebernehmen: 'Auswahl ins Pilotprofil übernehmen →',
         leer: 'Noch nichts auf der Tafel. Legen Sie einen Treffer darauf — oder bitten Sie in einem Browser mit WebMCP Ihren Agenten darum, etwa: „Suche Fassadenausschreibungen und leg die drei mit der längsten Frist auf die Tafel."',
         auftraggeber: 'Auftraggeber',
         frist: 'Frist',
@@ -32,6 +35,9 @@ export const TAFEL_TEXTE = {
         einleitung:
             'Tenders land here by click — or through an agent using this page’s tools. The reasons come from the fields of the notice: CPV, place of performance, deadline, contract value against the EU threshold, award criteria, lots. You decide; the arguments are groundwork, not a recommendation.',
         leeren: 'Clear board',
+        kopieren: 'Copy shortlist',
+        kopiert: '✓ Shortlist copied to clipboard.',
+        pilotUebernehmen: 'Send shortlist to pilot profile →',
         leer: 'Nothing on the board yet. Put a tender on it — or, in a browser with WebMCP, ask your agent: "Search facade tenders and put the three with the longest deadlines on the board."',
         auftraggeber: 'Buyer',
         frist: 'Deadline',

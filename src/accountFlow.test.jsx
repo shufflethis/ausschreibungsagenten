@@ -1,5 +1,4 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { HelmetProvider } from 'react-helmet-async'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 import AppRedirect from './pages/AppRedirect'
@@ -9,11 +8,7 @@ import Login from './pages/Login'
 import MagicHandoff from './pages/MagicHandoff'
 
 function renderPage(node) {
-    return render(
-        <HelmetProvider>
-            <MemoryRouter>{node}</MemoryRouter>
-        </HelmetProvider>,
-    )
+    return render(<MemoryRouter>{node}</MemoryRouter>)
 }
 
 describe('Kundenzugang', () => {

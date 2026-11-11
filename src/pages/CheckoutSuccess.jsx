@@ -1,12 +1,9 @@
-import { Helmet } from 'react-helmet-async'
+import Seo from '../components/Seo'
 
 export default function CheckoutSuccess() {
     return (
         <>
-            <Helmet>
-                <title>Checkout abgeschlossen | Ausschreibungsagenten.de</title>
-                <meta name="description" content="Sie sind von Stripe zurückgekehrt. Den verbindlichen Abostatus zeigt das Kundenkonto nach Verarbeitung der Zahlungsbestätigung." />
-            </Helmet>
+            <Seo path="/checkout-erfolg" />
 
             <section className="section checkout-success">
                 <div className="container checkout-success__inner">

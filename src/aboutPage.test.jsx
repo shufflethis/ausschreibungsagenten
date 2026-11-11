@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import { HelmetProvider } from 'react-helmet-async'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import UeberUns from './pages/UeberUns'
@@ -7,11 +6,9 @@ import UeberUns from './pages/UeberUns'
 describe('Über-uns-Seite', () => {
     it('stellt Ausschreibungsagenten und das vollständige Team vor', () => {
         render(
-            <HelmetProvider>
-                <MemoryRouter>
-                    <UeberUns />
-                </MemoryRouter>
-            </HelmetProvider>,
+            <MemoryRouter>
+                <UeberUns />
+            </MemoryRouter>,
         )
 
         expect(screen.getByRole('heading', { name: /Menschen für Entscheidungen/ })).toBeInTheDocument()

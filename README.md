@@ -142,26 +142,23 @@ Der Kundenlogin startet unter `/login`, navigiert dann aber per direktem Browser
 
 ## Privates AgentLeads-Backend
 
-Produktionsbetrieb:
+Produktionsbetrieb (Zugangsdaten, Host-Adresse und Pfade stehen ausschließlich im internen Backend-Runbook, nicht in diesem öffentlichen Repository):
 
 | Bestandteil | Wert |
 | --- | --- |
-| Host | `159.195.43.209` |
-| Projektpfad auf dem Host | `~/agentleads-account` |
+| Host | `<BACKEND_HOST>` (siehe internes Runbook) |
 | Docker-Container | `agentleads` |
 | Portbindung | `127.0.0.1:8767 -> 8000/tcp` |
-| Anwendung | FastAPI, SQLAlchemy, Jinja2/HTMX |
+| Anwendung | FastAPI, PostgreSQL, SQLAlchemy, Jinja2/HTMX |
 
 Die Bindung an `127.0.0.1` ist beabsichtigt: Port 8767 soll nicht direkt aus dem Internet erreichbar sein. Der öffentliche Zugriff erfolgt über den vorgeschalteten Reverse Proxy beziehungsweise die in `AGENTLEADS_API_BASE` konfigurierte HTTPS-Adresse.
 
-Das Backend aggregiert öffentliche Vergabe-Bekanntmachungen für zwei aktive Verticals: Digital/Marketing/Web sowie Fenster/Fassade/Glas/Metallbau. Der Quellen-Relevance-Score klassifiziert den Index; ein davon getrennter Firmen-Fit berücksichtigt CPV, Begriffe, Ausschlüsse, Leistungsort, Auftragswert und Frist und erklärt seine Einzelkomponenten.
+Das Backend aggregiert öffentliche Vergabe-Bekanntmachungen aus 18 Live-Quellen für drei kuratierte Verticals (Fenster/Fassade/Glas/Metallbau, Architektur/Planung sowie Marketing/Digital) und ergänzt Bauleistungen über CPV-Gruppen (Abteilung 45). Der Quellen-Relevance-Score klassifiziert den Index; ein davon getrennter Firmen-Fit berücksichtigt CPV, Begriffe, Ausschlüsse, Leistungsort, Auftragswert und Frist und erklärt seine Einzelkomponenten.
 
-Quellenstatus:
+Quellenstatus (Live-Abrufstand unter `/api/source-status` und `/status`):
 
-- TED über `api.ted.europa.eu`: aktiv
-- `service.bund.de` RSS: aktiv
-- Baden-Württemberg, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen und Rheinland-Pfalz: angebunden
-- Landesportale Bayern und Nordrhein-Westfalen: vorbereitet/Stubs; Details und Blocker stehen in `BLOCKERS.md` des privaten Backend-Repositories
+- Offizielle Schnittstellen (6): TED (`api.ted.europa.eu`), `service.bund.de`, Datenservice Öffentlicher Einkauf (`oeffentlichevergabe.de`), GB Find a Tender, GB Contracts Finder und US `SAM.gov`
+- Portal-Auslese (12): DTVP, RIB sowie die Landes- und Regionalportale Bayern, Nordrhein-Westfalen, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar
 
 Das private Backend enthält außerdem Stripe-Code, Volltextsuche, einen A2A-JSON-RPC-Agent-Endpunkt und Agent-Discovery-Metadaten. Öffentliche Profilerstellung, Signup, Checkout, MCP und schreibende A2A-Profilaktionen sind im Produktionsbetrieb deaktiviert. Pilotzugänge werden intern vorbereitet und ausschließlich per Magic Link freigegeben.
 
@@ -234,8 +231,9 @@ antwortet `api/[...path].js` mit `application/problem+json`, und diese Function
 würde der Auffang sonst überholen. Diese Function antwortet immer mit HTTP 404 und verhandelt
 den Rumpf: Markdown mit Linkliste für Agenten (`Accept: text/markdown`,
 `?mode=agent` oder bekannter Bot-User-Agent), sonst die gestaltete HTML-Seite.
-Die Erkennung teilt sie sich mit der `middleware.js` über
-`lib/agentenErkennung.js`.
+Die Erkennung liegt in `lib/agentenErkennung.js` (`middleware.js` liefert auf
+`/` Markdown nur auf ausdrückliches `Accept: text/markdown` oder `?mode=agent`,
+damit Such- und KI-Crawler die vollständige deutsche HTML-Startseite sehen).
 
 Zwei Folgen davon:
 

@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import { HelmetProvider } from 'react-helmet-async'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import Footer from './components/Footer'
@@ -8,11 +7,7 @@ import Datenschutz from './pages/Datenschutz'
 import Impressum from './pages/Impressum'
 
 function renderPage(node) {
-    return render(
-        <HelmetProvider>
-            <MemoryRouter>{node}</MemoryRouter>
-        </HelmetProvider>,
-    )
+    return render(<MemoryRouter>{node}</MemoryRouter>)
 }
 
 describe('Betreiberangaben', () => {

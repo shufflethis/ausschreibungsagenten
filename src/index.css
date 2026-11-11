@@ -1080,7 +1080,15 @@ img {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 1.5rem;
+}
+
+.tafel__kopf-aktionen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
 }
 
 .tafel__kopf h3 {
@@ -1254,6 +1262,10 @@ img {
 
 .profile-lead p {
     color: var(--text-secondary);
+}
+
+.profile-lead__prefill {
+    margin-top: 1.25rem;
 }
 
 .profile-lead__form {
@@ -1601,6 +1613,155 @@ img {
 
 .comparison-table tbody tr:hover {
     background: rgba(255, 255, 255, 0.03);
+}
+
+.comparison-table__own {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.comparison-table__own td {
+    color: var(--text-primary);
+    border-bottom-color: rgba(96, 165, 250, 0.25);
+}
+
+/* ---------- Blick in den Pilotbetrieb ---------- */
+.product-preview {
+    margin-top: 2.5rem;
+    border: 1px solid var(--glass-border-hover);
+    border-radius: var(--glass-radius-lg);
+    background: linear-gradient(145deg, #0d182d, #081020);
+    padding: 1.75rem;
+    box-shadow: var(--glass-shadow);
+}
+
+.product-preview__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 1.25rem;
+}
+
+.product-preview__tab {
+    font: inherit;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 0.55rem 1.1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.product-preview__tab:hover {
+    color: var(--text-heading);
+    border-color: var(--glass-border-hover);
+}
+
+.product-preview__tab.is-active {
+    color: #fff;
+    background: rgba(59, 130, 246, 0.22);
+    border-color: var(--accent-cyan-light);
+}
+
+.product-preview__panel {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 2rem;
+    align-items: center;
+    padding-top: 1.75rem;
+}
+
+.product-preview__copy h3 {
+    color: var(--text-heading);
+    font-size: var(--font-size-xl);
+    line-height: 1.35;
+    margin: 0.5rem 0 0.75rem;
+}
+
+.product-preview__copy p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: 1.25rem;
+}
+
+.preview-card {
+    background: #070e1d;
+    border: 1px solid #2b3e5b;
+    border-radius: 14px;
+    padding: 1.5rem;
+}
+
+.preview-card__top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin-bottom: 0.9rem;
+}
+
+.preview-card h4 {
+    color: var(--text-heading);
+    font-size: var(--font-size-base);
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+}
+
+.preview-card__meta {
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    margin-bottom: 1rem;
+}
+
+.preview-reasons {
+    list-style: none;
+    display: grid;
+    gap: 0.55rem;
+    font-size: var(--font-size-sm);
+}
+
+.preview-reasons li {
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+}
+
+.preview-reasons li.is-plus {
+    border-left: 3px solid var(--accent-green);
+}
+
+.preview-reasons li.is-neutral {
+    border-left: 3px solid var(--accent-cyan-light);
+}
+
+.preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-xs);
+}
+
+.preview-table th,
+.preview-table td {
+    text-align: left;
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.preview-table th {
+    color: var(--accent-cyan-light);
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .product-preview__panel {
+        grid-template-columns: 1fr;
+    }
 }
 
 .comparison-table .tool-name {
@@ -2408,8 +2569,22 @@ img {
     padding-top: 1.5rem;
 }
 
-.footer__readiness { display: inline-flex; flex: none; }
-.footer__readiness img { display: block; width: 208px; height: 40px; }
+.footer__readiness {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border-hover);
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--text-primary);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+.footer__readiness:hover {
+    border-color: var(--accent-cyan-light);
+    color: #fff;
+}
 
 .footer__rechtliches {
     display: flex;

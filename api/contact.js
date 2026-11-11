@@ -1,4 +1,4 @@
-import { clean, slackText, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
+import { clean, formularLimitPruefen, fremdeHerkunft, slackText, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
 
 function cleanHeader(value) {
     return String(value || '').replace(/[\r\n]+/g, ' ').trim().slice(0, 160)
@@ -119,6 +119,14 @@ export default async function handler(req, res) {
     }
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' })
+    }
+    if (fremdeHerkunft(req)) {
+        return res.status(403).json({ error: 'Forbidden origin' })
+    }
+    const limit = formularLimitPruefen(req)
+    if (!limit.erlaubt) {
+        res.setHeader('Retry-After', String(limit.retryAfter))
+        return res.status(429).json({ error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.' })
     }
 
     if (clean(req.body?.website, 100)) return res.status(200).json({ success: true })

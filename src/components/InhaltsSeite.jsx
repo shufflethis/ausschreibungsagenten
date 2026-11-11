@@ -25,10 +25,12 @@ export default function InhaltsSeite({ seite }) {
     pflichtfeld(seite.h1, 'Ueberschrift')
     pflichtfeld(seite.faq, 'FAQ')
 
-    // Query vor Fragment, nicht umgekehrt: "/#kontakt?thema=..." macht die
+    // Query vor Fragment, nicht umgekehrt: "/#profil?thema=..." macht die
     // gesamte Zeichenkette zum Ankernamen, der Browser findet kein Element
-    // mit dieser Id und bleibt oben auf der Startseite stehen.
-    const kontaktZiel = `/?thema=${encodeURIComponent(seite.ctaKontext ?? seite.h1)}#kontakt`
+    // mit dieser Id und bleibt oben auf der Startseite stehen. Ziel ist
+    // direkt das Pilotprofil-Formular (#profil) statt des allgemeinen
+    // Kontaktformulars am Seitenende.
+    const kontaktZiel = `/?thema=${encodeURIComponent(seite.ctaKontext ?? seite.h1)}#profil`
 
     return (
         <>

@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 import agentAnsicht from '../api/agent-view.js'
 import nichtGefunden from '../api/not-found.js'
+import startMiddleware from '../middleware.js'
 import { willAgentAnsicht } from '../lib/agentenErkennung.js'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
@@ -78,7 +79,25 @@ describe('Agent-Readiness machine contracts', () => {
         expect(willAgentAnsicht({ accept: 'text/markdown' })).toBe(true)
         expect(willAgentAnsicht({ modus: 'agent' })).toBe(true)
         expect(willAgentAnsicht({ userAgent: 'Mozilla/5.0 (compatible; ClaudeBot/1.0)' })).toBe(true)
+        expect(willAgentAnsicht({ userAgent: 'Google-Extended' })).toBe(false)
         expect(willAgentAnsicht({ accept: 'text/html', userAgent: 'Mozilla/5.0' })).toBe(false)
+
+        // Auf `/` duerfen KI-Suchcrawler mit normalem HTML-Accept nicht per
+        // User-Agent auf die englische Kurzfassung umgebogen werden; nur ein
+        // ausdrueckliches `Accept: text/markdown` oder `?mode=agent` schaltet um.
+        expect(
+            startMiddleware(
+                new Request('https://www.ausschreibungsagenten.de/', {
+                    headers: { 'user-agent': 'PerplexityBot/1.0', accept: 'text/html,*/*;q=0.8' },
+                }),
+            ),
+        ).toBeUndefined()
+        const umgeleitet = startMiddleware(
+            new Request('https://www.ausschreibungsagenten.de/', {
+                headers: { accept: 'text/markdown' },
+            }),
+        )
+        expect(umgeleitet?.headers.get('x-middleware-rewrite')).toContain('/api/agent-view')
     })
 
     it('liest den Accept-Kopf nach q-Werten statt nach Teilzeichenkette', () => {
@@ -164,7 +183,13 @@ describe('Agent-Readiness machine contracts', () => {
         expect(gesammelt.header.Vary).toContain('Accept')
         expect(gesammelt.body).toContain('# Ausschreibungsagenten.de')
         expect(gesammelt.body).toContain('Authorization: Bearer')
+        expect(gesammelt.body).toContain('149 EUR/Monat')
         expect(gesammelt.body).not.toContain('X-API-Key')
+
+        // Keine doppelten Schluessel im YAML-Vorspann (strikte YAML-Parser brechen ab).
+        const vorspann = gesammelt.body.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? ''
+        const schluessel = vorspann.split('\n').map((z) => z.split(':')[0].trim()).filter(Boolean)
+        expect(new Set(schluessel).size).toBe(schluessel.length)
     })
 
     it('faengt geratene Adressen mit echtem 404 und Markdown-Rumpf ab', async () => {
@@ -284,6 +309,8 @@ describe('Agent-Readiness machine contracts', () => {
         expect(footer).toMatch(/\/openapi\.json/)
         expect(footer).toMatch(/\/agents\.md/)
         expect(footer).toMatch(/\/\.well-known\/api-catalog/)
+        // Kein externes Tracking-Bild im Footer (DSGVO).
+        expect(footer).not.toMatch(/<img[^>]+https:\/\//)
     })
 
     // Der fruehere Inline-Stub in index.html registrierte sein Werkzeug

@@ -122,8 +122,11 @@ export default function Footer() {
                 </div>
 
                 <div className="footer__abschluss">
+                    {/* Textlink statt externem Badge-Bild: ein eingebettetes SVG
+                        von einer fremden Domain uebertraegt bei jedem Seitenaufruf
+                        IP-Adresse und Referrer ohne Einwilligung. */}
                     <a className="footer__readiness" href="https://webmcp-tool.com/check/www.ausschreibungsagenten.de" target="_blank" rel="noopener noreferrer">
-                        <img src="https://webmcp-tool.com/badge/www.ausschreibungsagenten.de.svg" alt="Aktueller Agent Readiness Score für Ausschreibungsagenten.de, gemessen von webmcp-tool.com" width="208" height="40" loading="lazy" decoding="async" />
+                        <span>Agent-Readiness prüfen · webmcp-tool.com <span aria-hidden="true">↗</span></span>
                     </a>
                     <nav className="footer__rechtliches" aria-label="Rechtliches">
                         {RECHTLICHES.map((eintrag) => (

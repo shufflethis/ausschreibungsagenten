@@ -1,7 +1,6 @@
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import LandingPage from './pages/LandingPage'
 
@@ -98,11 +97,9 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         await act(async () => {
             wurzel = createRoot(behaelter)
             wurzel.render(
-                <HelmetProvider>
-                    <BrowserRouter>
-                        <LandingPage />
-                    </BrowserRouter>
-                </HelmetProvider>,
+                <BrowserRouter>
+                    <LandingPage />
+                </BrowserRouter>,
             )
         })
         // Der Erstaufruf der Trefferliste laeuft ohne Entprellung los.
@@ -334,11 +331,9 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         await act(async () => {
             wurzel = createRoot(zweiter)
             wurzel.render(
-                <HelmetProvider>
-                    <BrowserRouter>
-                        <LandingPage />
-                    </BrowserRouter>
-                </HelmetProvider>,
+                <BrowserRouter>
+                    <LandingPage />
+                </BrowserRouter>,
             )
         })
         await act(async () => {
@@ -369,11 +364,9 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         await act(async () => {
             wurzel = createRoot(zweiter)
             wurzel.render(
-                <HelmetProvider>
-                    <BrowserRouter>
-                        <LandingPage />
-                    </BrowserRouter>
-                </HelmetProvider>,
+                <BrowserRouter>
+                    <LandingPage />
+                </BrowserRouter>,
             )
         })
         await act(async () => {
@@ -404,11 +397,9 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         await act(async () => {
             wurzel = createRoot(zweiter)
             wurzel.render(
-                <HelmetProvider>
-                    <BrowserRouter>
-                        <LandingPage />
-                    </BrowserRouter>
-                </HelmetProvider>,
+                <BrowserRouter>
+                    <LandingPage />
+                </BrowserRouter>,
             )
         })
         await act(async () => {
@@ -435,11 +426,9 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         await act(async () => {
             wurzel = createRoot(zweiter)
             wurzel.render(
-                <HelmetProvider>
-                    <BrowserRouter>
-                        <LandingPage />
-                    </BrowserRouter>
-                </HelmetProvider>,
+                <BrowserRouter>
+                    <LandingPage />
+                </BrowserRouter>,
             )
         })
         await act(async () => {

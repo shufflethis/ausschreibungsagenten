@@ -7,7 +7,159 @@ import { BRANCHEN, FAQS, FEATURES, TOOLS } from './daten'
 
 export function Prozess() {
     return (
-        <section className="section workflow" id="prozess"><div className="container"><h2>Vom ersten Treffer zur klaren Entscheidung.</h2><div className="workflow__steps"><p><strong>01 · Finden</strong>Leistung und Region wählen. Direkt in den erfassten Quellen suchen.</p><p><strong>02 · Prüfen</strong>Leistungen, Risiken und Nachweise anhand der Originalangaben abgleichen.</p><p><strong>03 · Dranbleiben</strong>Suche speichern, Änderungen prüfen und Ihre Entscheidung festhalten.</p></div></div></section>
+        <section className="section workflow" id="prozess"><div className="container"><h2>Vom ersten Treffer zur klaren Entscheidung.</h2><div className="workflow__steps"><p><strong>01 · Finden</strong>Leistung und Region wählen. Direkt in den erfassten Quellen suchen.</p><p><strong>02 · Prüfen</strong>Leistungen, Risiken und Nachweise anhand der Originalangaben abgleichen.</p><p><strong>03 · Dranbleiben</strong>Suche speichern, Änderungen prüfen oder als E-Mail-Alert im Pilot übergeben.</p></div></div></section>
+    )
+}
+
+const EINBLICK_TABS = [
+    {
+        id: 'digest',
+        label: '1 · E-Mail-Digest & Begründung',
+        eyebrow: 'Beispielansicht · Täglicher Pilot-Digest',
+        titel: 'Jeder Treffer kommt mit nachvollziehbarer Begründung statt nackter Prozentzahl',
+        hinweis: 'Der E-Mail-Digest wird im begleiteten Pilot gemeinsam mit Ihrem Suchprofil abgestimmt und danach täglich oder wöchentlich zugestellt.',
+    },
+    {
+        id: 'gaeb',
+        label: '2 · GAEB X83 / X84 Struktur',
+        eyebrow: 'Beispielansicht · Lesende GAEB-DA-XML-Analyse',
+        titel: 'Leistungsverzeichnisse in Sekunden überblicken, bevor die Kalkulation Zeit investiert',
+        hinweis: 'Nur lesende Strukturierung von GAEB DA XML (X83/X84) inklusive CSV-/XLSX-Export – keine automatische Bepreisung oder Angebotsabgabe.',
+    },
+    {
+        id: 'team',
+        label: '3 · Team-Entscheidung & Übergabe',
+        eyebrow: 'Beispielansicht · Pilot-Dashboard & Export',
+        titel: 'Go/No-Go-Status, interne Notizen und strukturierter Export an einer Stelle',
+        hinweis: 'Export als versioniertes JSON, CSV oder XLSX sowie optional signierter Webhook und direkter Zugriff über MCP/REST.',
+    },
+]
+
+export function ProduktEinblick() {
+    const [aktiv, setAktiv] = useState('digest')
+    const aktuellerTab = EINBLICK_TABS.find((tab) => tab.id === aktiv) || EINBLICK_TABS[0]
+
+    return (
+        <section className="section section--alt" id="einblick">
+            <div className="container">
+                <span className="section__label">
+                    <span className="pulse"></span> Blick in den Pilotbetrieb
+                </span>
+                <h2 className="section__title">
+                    So arbeitet Ihr <span className="gradient-text">Ausschreibungsagent</span> im Alltag
+                </h2>
+                <p className="section__subtitle">
+                    Keine Blackbox-Versprechen: Sehen Sie anhand realistischer Musterdaten, wie Treffer-Digest,
+                    lesende GAEB-Vorprüfung und Team-Übergabe im geschützten Pilotbereich aufgebaut sind.
+                </p>
+
+                <div className="product-preview">
+                    <div className="product-preview__tabs" role="tablist" aria-label="Einblicke in den Pilotbetrieb">
+                        {EINBLICK_TABS.map((tab) => (
+                            <button
+                                key={tab.id}
+                                type="button"
+                                role="tab"
+                                id={`tab-${tab.id}`}
+                                aria-selected={aktiv === tab.id}
+                                aria-controls={`panel-${tab.id}`}
+                                className={`product-preview__tab ${aktiv === tab.id ? 'is-active' : ''}`}
+                                onClick={() => setAktiv(tab.id)}
+                            >
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div
+                        className="product-preview__panel"
+                        role="tabpanel"
+                        id={`panel-${aktuellerTab.id}`}
+                        aria-labelledby={`tab-${aktuellerTab.id}`}
+                    >
+                        <div className="product-preview__copy">
+                            <span className="profile-lead__eyebrow">{aktuellerTab.eyebrow}</span>
+                            <h3>{aktuellerTab.titel}</h3>
+                            <p>{aktuellerTab.hinweis}</p>
+                            <a href="#profil" className="btn btn--primary">Für Ihr Gewerk im Pilot testen →</a>
+                        </div>
+
+                        <div className="product-preview__stage">
+                            {aktiv === 'digest' && (
+                                <div className="preview-card">
+                                    <div className="preview-card__top">
+                                        <span className="badge badge--yes">Firmen-Fit: 4 Gründe dafür · 0 Ausschlüsse</span>
+                                        <span>Quelle: OEFFENTLICHEVERGABE.DE</span>
+                                    </div>
+                                    <h4>Neubau Berufsschulzentrum – Los 14: Pfosten-Riegel-Fassade &amp; Sonnenschutz</h4>
+                                    <p className="preview-card__meta">Landkreis Esslingen · Angebotsfrist: 28 Tage · 2 Lose · Geschätzter Wert: 480.000 €</p>
+                                    <ul className="preview-reasons">
+                                        <li className="is-plus">+ Haupt-CPV 45443000 (Fassadenarbeiten) im Suchprofil enthalten</li>
+                                        <li className="is-plus">+ Leistungsbegriffe „Pfosten-Riegel" und „Aluminiumfenster" im Bekanntmachungstext</li>
+                                        <li className="is-plus">+ Leistungsort Baden-Württemberg liegt in Ihrer Zielregion</li>
+                                        <li className="is-neutral">· Geforderter Nachweis: 3 vergleichbare Referenzen der letzten 5 Jahre</li>
+                                    </ul>
+                                </div>
+                            )}
+
+                            {aktiv === 'gaeb' && (
+                                <div className="preview-card">
+                                    <div className="preview-card__top">
+                                        <span className="badge badge--partial">GAEB DA XML · Austauschphase X83</span>
+                                        <span>Export: CSV · XLSX</span>
+                                    </div>
+                                    <table className="preview-table">
+                                        <thead>
+                                            <tr>
+                                                <th>OZ</th>
+                                                <th>Kurztext</th>
+                                                <th>Menge</th>
+                                                <th>Einheit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>01.02.0010</td>
+                                                <td>Alu-Pfosten-Riegel-Fassade, thermisch getrennt, 3-fach-Isolierglas</td>
+                                                <td>340</td>
+                                                <td>m²</td>
+                                            </tr>
+                                            <tr>
+                                                <td>01.02.0040</td>
+                                                <td>Alu-Brandschutzfenster EI30 inkl. Beschlag und Montage</td>
+                                                <td>18</td>
+                                                <td>Stk</td>
+                                            </tr>
+                                            <tr>
+                                                <td>01.03.0020</td>
+                                                <td>Außenraffstoreanlage motorisch, Windwächter-Anbindung</td>
+                                                <td>210</td>
+                                                <td>m²</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+
+                            {aktiv === 'team' && (
+                                <div className="preview-card">
+                                    <div className="preview-card__top">
+                                        <span className="badge badge--yes">Entscheidung: GO</span>
+                                        <span>Übergabe: XLSX · Signierter Webhook · MCP</span>
+                                    </div>
+                                    <h4>Freigabeprotokoll im Mandanten-Dashboard</h4>
+                                    <ul className="preview-reasons">
+                                        <li className="is-plus">✓ Referenznachweise vorhanden (Projekt Realschule 2024 zugeordnet)</li>
+                                        <li className="is-plus">✓ Kalkulationsnotiz: „Montagefenster Sommerferien passt in Kapazitätsplanung – Bieterfrage zu Glasaufbau bis Freitag klären."</li>
+                                        <li className="is-neutral">→ Strukturierter Datensatz inkl. Original-URL als XLSX für die Kalkulation bereitgestellt</li>
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     )
 }
 
@@ -42,9 +194,13 @@ export function Vergleich() {
                         </thead>
                         <tbody>
                             {TOOLS.map((tool, i) => (
-                                <tr key={i}>
+                                <tr key={i} className={tool.own ? 'comparison-table__own' : ''}>
                                     <td className="tool-name">
-                                        <a href={tool.url} target="_blank" rel="nofollow noopener noreferrer">{tool.name}</a>
+                                        {tool.own ? (
+                                            <a href={tool.url}>{tool.name}</a>
+                                        ) : (
+                                            <a href={tool.url} target="_blank" rel="nofollow noopener noreferrer">{tool.name}</a>
+                                        )}
                                     </td>
                                     <td>{tool.price}</td>
                                     <td><span className={`badge ${tool.ai ? 'badge--yes' : 'badge--no'}`}>{tool.ai ? '✓ Ja' : '✗ Nein'}</span></td>

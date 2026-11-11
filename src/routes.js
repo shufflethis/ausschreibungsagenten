@@ -53,6 +53,7 @@ export const routes = [
             'So automatisieren Sie die Ausschreibungssuche: 18 Quellen von EU bis Landesportal, Abgleich über CPV, Ort, Wert und Frist – mit Begründung je Treffer.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-08-14',
     },
     {
@@ -63,6 +64,7 @@ export const routes = [
             'Wobei KI bei öffentlichen Ausschreibungen tatsächlich hilft: Anforderungen aus Vergabeunterlagen herauslesen, Nachweise zuordnen, Go/No-Go einschätzen. Und wo die Grenze liegt: Angebotstext und Kalkulation.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-08-14',
     },
     {
@@ -73,6 +75,7 @@ export const routes = [
             'Was semantische Suche bei Ausschreibungen bedeutet, warum Ähnlichkeit bei Vergabeunterlagen kein Nachweis ist und wie erklärbares Matching über CPV, Ausschlüsse und harte Regeln stattdessen arbeitet.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-08-14',
     },
     {
@@ -83,6 +86,7 @@ export const routes = [
             'Vergabepilot-Alternative gesucht? Ausschreibungsagenten matcht mit CPV-Codes, Regeln und Ausschlüssen statt Ähnlichkeitswert — jeder Treffer mit Begründung, 18 belegte Quellen, EU-Hosting.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-08-18',
     },
     {
@@ -93,6 +97,7 @@ export const routes = [
             'Vergabefix-Alternative mit erklärbarem Matching: 18 benannte Quellen mit belegtem Abrufstand statt einer unbestimmten Portanzahl, Begründung je Treffer, kostenfreie Pilotphase.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-08-18',
     },
     {
@@ -103,6 +108,7 @@ export const routes = [
             'Tenderflow-Alternative gesucht? Ausschreibungsagenten nennt 18 belegte Quellen und begründet jeden Treffer — ohne pauschale Aufwandsversprechen. EU-Hosting, kostenfreie Pilotphase.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-08-18',
     },
     {
@@ -113,6 +119,7 @@ export const routes = [
             'Der deutsche Vergabemarkt in belegten Zahlen: rund 500 Mrd. € öffentliche Beschaffung pro Jahr (OECD), 135,2 Mrd. € gemeldetes Auftragsvolumen 2024 (Destatis) und die Top-20-Branchen nach EU-weiten Ausschreibungen aus eigener TED-Auswertung.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-08-14',
     },
     {
@@ -133,6 +140,7 @@ export const routes = [
             'Welche Software für die automatische Ausschreibungssuche passt? Empfehlung nach Use Case: gemanagter Dienst, DTAD, Vergabepilot, TED, ibau und subreport im Vergleich.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-10-08',
     },
     {
@@ -143,6 +151,7 @@ export const routes = [
             'Öffentliche Bauaufträge nach Gewerk und Region finden: CPV-Gruppen von Hochbau bis Elektro/SHK, Leistungsort statt Behördensitz, Fachlose für Handwerk und Subunternehmer. 18 Live-Quellen.',
         prerender: true,
         index: true,
+        article: true,
         lastmod: '2026-11-05',
     },
     {
@@ -196,15 +205,16 @@ export const routes = [
     {
         path: '/checkout-erfolg',
         component: 'CheckoutSuccess',
-        title: 'Zahlung abgeschlossen',
-        description: 'Bestätigung nach abgeschlossener Zahlung.',
+        title: 'Checkout abgeschlossen | Ausschreibungsagenten.de',
+        description:
+            'Sie sind von Stripe zurückgekehrt. Den verbindlichen Abostatus zeigt das Kundenkonto nach Verarbeitung der Zahlungsbestätigung.',
         prerender: false,
         index: false,
     },
     {
         path: '/login',
         component: 'Login',
-        title: 'Anmelden',
+        title: 'Login | Ausschreibungsagenten.de',
         description: 'Anmeldung über einen Anmeldelink per E-Mail.',
         prerender: false,
         index: false,
@@ -212,7 +222,7 @@ export const routes = [
     {
         path: '/login/postfach',
         component: 'CheckEmail',
-        title: 'Postfach prüfen',
+        title: 'Postfach prüfen | Ausschreibungsagenten.de',
         description: 'Hinweis auf die versendete Anmelde-E-Mail.',
         prerender: false,
         index: false,
@@ -220,7 +230,7 @@ export const routes = [
     {
         path: '/login/abgelaufen',
         component: 'MagicHandoffExpired',
-        title: 'Link abgelaufen',
+        title: 'Link abgelaufen | Ausschreibungsagenten.de',
         description: 'Der Anmeldelink ist abgelaufen.',
         prerender: false,
         index: false,
@@ -228,7 +238,7 @@ export const routes = [
     {
         path: '/anmeldung-bestaetigen',
         component: 'MagicHandoff',
-        title: 'Anmeldung bestätigen',
+        title: 'Anmeldung bestätigen | Ausschreibungsagenten.de',
         description: 'Übergabe der Anmeldung an den geschützten Bereich.',
         prerender: false,
         index: false,
@@ -236,7 +246,7 @@ export const routes = [
     {
         path: '/konto',
         component: 'KontoRedirect',
-        title: 'Kundenkonto öffnen',
+        title: 'Kundenkonto öffnen | Ausschreibungsagenten.de',
         description: 'Weiterleitung in den geschützten Bereich.',
         prerender: false,
         index: false,
@@ -244,7 +254,7 @@ export const routes = [
     {
         path: '/abrechnung',
         component: 'AbrechnungRedirect',
-        title: 'Abrechnung öffnen',
+        title: 'Abrechnung öffnen | Ausschreibungsagenten.de',
         description: 'Weiterleitung zur Abrechnung im geschützten Bereich.',
         prerender: false,
         index: false,

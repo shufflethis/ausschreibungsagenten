@@ -1,16 +1,12 @@
 // Rendert eine Route ohne Browser. Aufgerufen vom Prerender-Skript nach
 // dem Vite-Build und von den Tests.
 //
-// Zum Zusammenspiel mit react-helmet-async: ab React 19 ist die Bibliothek
-// bewusst ein Durchreicher. HelmetProvider rendert nur noch ein Fragment
-// und fuellt den Server-Context nicht mehr (siehe isReact19 in
-// node_modules/react-helmet-async/lib/index.esm.js). Stattdessen zieht
-// React 19 title-, meta- und link-Elemente selbst nach vorne und gibt sie
-// am Anfang der gerenderten Zeichenkette aus. Genau dort holen wir sie ab
-// und setzen sie in den Kopfbereich der Seite.
+// Kopf-Elemente entstehen beim Server-Rendern in Seo, StrukturierteDaten
+// und VideoAbschnitt. React 19 zieht title-, meta- und link-Elemente an
+// den Anfang der gerenderten Zeichenkette; genau dort holen wir sie ab und
+// setzen sie in den Kopfbereich der Seite.
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
 import App from './App'
 import { pages } from './seiten'
 import { routeByPath, SITE_ORIGIN } from './routes'
@@ -25,11 +21,9 @@ const KOPF_TAGS =
 export async function render(url) {
     const markup = renderToString(
         <SsrKontext.Provider value={true}>
-            <HelmetProvider>
-                <StaticRouter location={url}>
-                    <App seiten={pages} />
-                </StaticRouter>
-            </HelmetProvider>
+            <StaticRouter location={url}>
+                <App seiten={pages} />
+            </StaticRouter>
         </SsrKontext.Provider>,
     )
 

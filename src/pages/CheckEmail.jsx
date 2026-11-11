@@ -1,10 +1,10 @@
-import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
+import Seo from '../components/Seo'
 
 export default function CheckEmail() {
     return (
         <section className="section account-entry">
-            <Helmet><title>Postfach prüfen | Ausschreibungsagenten.de</title></Helmet>
+            <Seo path="/login/postfach" />
             <div className="container">
                 <div className="account-entry__card">
                     <span className="section__label">Anmeldung angefordert</span>

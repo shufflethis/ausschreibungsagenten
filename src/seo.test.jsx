@@ -1,3 +1,4 @@
+import { render } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import Seo from './components/Seo'
@@ -42,5 +43,25 @@ describe('Seo-Komponente', () => {
             expect(canonical).not.toContain('?')
             expect(canonical).not.toContain('via=')
         }
+    })
+
+    it('aktualisiert Titel, Description und Canonical bei Client-Navigation in document.head', () => {
+        document.head.innerHTML =
+            '<meta name="description" content="alt" /><link rel="canonical" href="https://www.ausschreibungsagenten.de/" />'
+        const { container } = render(<Seo path="/entwickler" />)
+        expect(container.innerHTML).toBe('')
+        expect(document.title).toContain('API-Dokumentation')
+        expect(document.head.querySelector('meta[name="description"]').getAttribute('content')).toContain('A2A Agent Card')
+        expect(document.head.querySelector('link[rel="canonical"]').getAttribute('href')).toBe(
+            'https://www.ausschreibungsagenten.de/entwickler',
+        )
+    })
+
+    it('setzt und entfernt meta[name="robots"] bei Wechsel zwischen noindex- und Index-Routen', () => {
+        document.head.innerHTML = ''
+        const { rerender } = render(<Seo path="/login" />)
+        expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('noindex, follow')
+        rerender(<Seo path="/entwickler" />)
+        expect(document.head.querySelector('meta[name="robots"]')).toBeNull()
     })
 })

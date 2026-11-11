@@ -45,7 +45,7 @@ lösen, weil OpenAPI-Spec und MCP-Server aus dem privaten AgentLeads-Backend
 kommen. Der Plan trennt deshalb sauber:
 
 - **Bahn A** — dieses Repo, sofort umsetzbar
-- **Bahn B** — privates Backend (`~/agentleads-account`), Spec und MCP. **Der Website-Host ist zugleich der Backend-Host**: der Container `agentleads` läuft auf 159.195.43.209, der Klon liegt in `~/agentleads-account`, der Code steckt im Image (nur `./data` ist gemountet). Deploy nach `DEPLOYMENT.md`.
+- **Bahn B** — privates Backend (`~/agentleads-account`), Spec und MCP. **Der Website-Host ist zugleich der Backend-Host**: der Container `agentleads` läuft auf dem Produktions-VPS (`app.ausschreibungsagenten.de`), der Klon liegt in `~/agentleads-account`, der Code steckt im Image (nur `./data` ist gemountet). Deploy nach `DEPLOYMENT.md`.
 - **Bahn C** — Produktentscheidungen, nicht durch Doku heilbar
 
 ---

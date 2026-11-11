@@ -83,4 +83,12 @@ describe('Strukturierte Daten', () => {
         const organisation = daten['@graph'].find((k) => k['@type'] === 'Organization')
         expect(organisation.sameAs).toContain('https://www.youtube.com/@ausschreibungsagenten')
     })
+
+    it('zeichnet Fachartikel mit Autor und Aenderungsdatum als Article aus', () => {
+        const artikel = jsonLd('/bauauftraege-finden')['@graph'].find((k) => k['@type'] === 'Article')
+        expect(artikel.headline).toContain('Bauaufträge finden')
+        expect(artikel.author.name).toBe('Gorden Wübbe')
+        expect(artikel.dateModified).toBe('2026-11-05')
+        expect(jsonLd('/entwickler')['@graph'].some((k) => k['@type'] === 'Article')).toBe(false)
+    })
 })

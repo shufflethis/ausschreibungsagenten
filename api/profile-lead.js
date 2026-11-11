@@ -1,4 +1,4 @@
-import { clean, slackText, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
+import { clean, formularLimitPruefen, fremdeHerkunft, slackText, validEmail, ZEITLIMIT_MS } from '../lib/eingaben.js'
 
 async function notifyByEmail(lead) {
     const apiKey = process.env.RESEND_API_KEY
@@ -67,6 +67,12 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
     if (req.method === 'OPTIONS') return res.status(204).end()
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+    if (fremdeHerkunft(req)) return res.status(403).json({ error: 'Forbidden origin' })
+    const limit = formularLimitPruefen(req)
+    if (!limit.erlaubt) {
+        res.setHeader('Retry-After', String(limit.retryAfter))
+        return res.status(429).json({ error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.' })
+    }
 
     const honeypot = clean(req.body?.website, 100)
     if (honeypot) return res.status(200).json({ success: true })

@@ -21,7 +21,7 @@ const ORGANISATION = {
     // wofuer. Genau danach fragen Agenten bei der Entitaetsaufloesung.
     description:
         'Ausschreibungsagenten.de findet öffentliche Ausschreibungen aus 18 Vergabequellen in '
-        + 'Deutschland, der EU und dem Vereinigten Königreich und begründet jeden Treffer '
+        + 'Deutschland, der EU, dem Vereinigten Königreich und den USA (SAM.gov) und begründet jeden Treffer '
         + 'nachvollziehbar über CPV, Suchbegriffe, Ausschlüsse, Leistungsort, Auftragswert und Frist.',
     url: `${SITE_ORIGIN}/`,
     email: 'hi@ausschreibungsagenten.de',
@@ -79,6 +79,7 @@ const DIENST = {
         { '@type': 'Country', name: 'Deutschland' },
         { '@type': 'Country', name: 'Österreich' },
         { '@type': 'Country', name: 'Vereinigtes Königreich' },
+        { '@type': 'Country', name: 'Vereinigte Staaten' },
         { '@type': 'AdministrativeArea', name: 'Europäische Union' },
     ],
     audience: {
@@ -154,6 +155,25 @@ export default function StrukturierteDaten({ path, faq }) {
 
     if (route.path === '/ueber-uns') {
         graph.push(GORDEN_WUEBBE)
+    }
+
+    if (route.article) {
+        graph.push({
+            '@type': 'Article',
+            '@id': `${SITE_ORIGIN}${route.path}#artikel`,
+            headline: route.title.split('|')[0].trim(),
+            description: route.description,
+            url: `${SITE_ORIGIN}${route.path}`,
+            inLanguage: 'de-DE',
+            author: {
+                '@id': `${SITE_ORIGIN}/ueber-uns#gorden-wuebbe`,
+                name: 'Gorden Wübbe',
+                url: `${SITE_ORIGIN}/ueber-uns`,
+            },
+            publisher: { '@id': `${SITE_ORIGIN}/#organisation` },
+            mainEntityOfPage: { '@id': `${SITE_ORIGIN}${route.path}#seite` },
+            ...(route.lastmod ? { dateModified: route.lastmod } : {}),
+        })
     }
 
     if (faq?.length) {
