@@ -55,7 +55,7 @@ export const vergabepilotAlternative = {
         },
         {
             frage: 'Ist Vergabepilot günstiger oder teurer als Ausschreibungsagenten?',
-            antwort: 'Vergabepilot veröffentlicht keine öffentliche Preisliste auf der Startseite; die Kosten ergeben sich über Demo und Vertrieb. Ausschreibungsagenten nennt seine Preise offen: Der Pro-Tarif kostet 149 Euro im Monat, der Agent-Tarif mit höheren API-Limits 499 Euro. Beide sind erst nach einer persönlichen Pilotphase buchbar.',
+            antwort: 'Vergabepilot veröffentlicht keine öffentliche Preisliste auf der Startseite; die Kosten ergeben sich über Demo und Vertrieb. Ausschreibungsagenten startet mit einer kostenfreien Pilotphase und nennt die Preise für den Regelbetrieb offen: Der Pro-Tarif liegt bei 149 Euro im Monat, der Agent-Tarif mit höheren API-Limits bei 499 Euro. Beide werden erst nach der persönlichen Pilotphase freigeschaltet.',
         },
         {
             frage: 'Brauche ich KI-Zusammenfassungen, um Unterlagen zu verstehen?',

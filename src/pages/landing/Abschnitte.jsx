@@ -246,13 +246,13 @@ export function Preise() {
                         <strong>Pro</strong>
                         <span><s>149 EUR/Monat</s> Kostenfrei in der Pilotphase</span>
                         <p>Suchprofil, Alerts, Volltextsuche und wöchentliche Trefferliste.</p>
-                        <a href="#profil" className="btn btn--outline">Pilotzugang anfragen</a>
+                        <a href="#profil" className="btn btn--outline">Kostenfreien Pilotzugang anfragen</a>
                     </article>
                     <article>
                         <strong>Agent</strong>
                         <span><s>499 EUR/Monat</s> Kostenfrei in der Pilotphase</span>
                         <p>Höhere API-Limits, Volltextsuche, Agent API, A2A/MCP und Priorisierung.</p>
-                        <a href="#profil" className="btn btn--outline">Pilotzugang anfragen</a>
+                        <a href="#profil" className="btn btn--outline">Kostenfreien Pilotzugang anfragen</a>
                     </article>
                     <article>
                         <strong>Verfahren</strong>

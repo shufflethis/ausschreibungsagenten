@@ -297,11 +297,14 @@ describe('Agent-Readiness machine contracts', () => {
         expect(seite).toContain('API-Dokumentation')
     })
 
-    it('formatiert die llms.txt als Navigationsindex mit Markdown-Links', async () => {
+    it('formatiert die llms.txt als Navigationsindex mit Markdown-Links und nennt den kostenfreien Pilot', async () => {
         const llms = await text('public/llms.txt')
         expect(llms.startsWith('# ')).toBe(true)
         expect(llms.match(/\]\(https:\/\//g).length).toBeGreaterThanOrEqual(20)
         expect(llms.length).toBeLessThan(30000)
+        expect(llms).toMatch(/Pilotphase aktuell kostenfrei/i)
+        expect(await text('public/llms-full.txt')).toMatch(/Pilotphase:\s*\*\*0 EUR/i)
+        expect(await text('public/pricing.md')).toMatch(/0 EUR \(free during the pilot\)/i)
     })
 
     it('advertises machine endpoints from the footer', async () => {

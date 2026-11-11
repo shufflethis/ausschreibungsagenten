@@ -46,7 +46,7 @@ export default function Header() {
                     <a href="/#tafel" onClick={() => setMenuOpen(false)}>Merkliste</a>
                     <a href="/#preise" onClick={() => setMenuOpen(false)}>Pilotphase</a>
                     <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
-                    <a href="/#profil" className="btn btn--primary header__cta" onClick={() => setMenuOpen(false)}>Pilot starten</a>
+                    <a href="/#profil" className="btn btn--primary header__cta" onClick={() => setMenuOpen(false)}>Kostenfreier Pilot</a>
                 </nav>
             </div>
         </header>

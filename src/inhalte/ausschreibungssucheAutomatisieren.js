@@ -80,7 +80,7 @@ export const ausschreibungssucheAutomatisieren = {
         },
         {
             frage: 'Was kostet eine automatisierte Ausschreibungssuche?',
-            antwort: 'Bei uns kostet der Pro-Tarif 149 Euro im Monat und enthält Suchprofil, Alerts, Volltextsuche und wöchentliche Trefferlisten. Der Agent-Tarif mit höheren API-Limits liegt bei 499 Euro im Monat. Der Online-Checkout wird erst nach einer persönlichen Pilotphase freigeschaltet.',
+            antwort: 'Die Pilotphase bei uns ist kostenfrei und unverbindlich. Für den anschließenden Regelbetrieb liegt der Pro-Tarif bei 149 Euro im Monat (Suchprofil, Alerts, Volltextsuche und wöchentliche Trefferlisten) und der Agent-Tarif mit höheren API-Limits bei 499 Euro im Monat. Der Online-Checkout wird erst nach der persönlichen Pilotphase freigeschaltet.',
         },
     ],
     ctaKontext: 'Ausschreibungssuche automatisieren',

@@ -28,9 +28,10 @@ export default function InhaltsSeite({ seite }) {
     // Query vor Fragment, nicht umgekehrt: "/#profil?thema=..." macht die
     // gesamte Zeichenkette zum Ankernamen, der Browser findet kein Element
     // mit dieser Id und bleibt oben auf der Startseite stehen. Ziel ist
-    // direkt das Pilotprofil-Formular (#profil) statt des allgemeinen
-    // Kontaktformulars am Seitenende.
-    const kontaktZiel = `/?thema=${encodeURIComponent(seite.ctaKontext ?? seite.h1)}#profil`
+    // standardmaessig das kostenfreie Pilotprofil (#profil); Sonderseiten wie
+    // /partner koennen ueber ctaAnker auf #kontakt verweisen.
+    const anker = seite.ctaAnker ?? 'profil'
+    const kontaktZiel = `/?thema=${encodeURIComponent(seite.ctaKontext ?? seite.h1)}#${anker}`
 
     return (
         <>
@@ -126,14 +127,17 @@ export default function InhaltsSeite({ seite }) {
                     </section>
 
                     <section className="inhalt__cta">
-                        <h2>{seite.ctaTitel ?? 'Im Pilot ausprobieren'}</h2>
+                        <h2>{seite.ctaTitel ?? 'Kostenfrei im Pilot ausprobieren'}</h2>
                         <p>
                             {seite.ctaText ??
                                 'Wir richten ein Suchprofil für Ihre Gewerke, Regionen und Auftragsgrößen ein und zeigen Ihnen die ersten Treffer mit Begründung.'}
                         </p>
                         <a className="btn btn--primary" href={kontaktZiel}>
-                            Pilotzugang anfragen
+                            {seite.ctaKnopf ?? 'Kostenfreien Pilotzugang anfragen'}
                         </a>
+                        {anker === 'profil' && (
+                            <p className="field-hint">0 € in der Pilotphase · unverbindlich · keine Zahlungsdaten nötig.</p>
+                        )}
                     </section>
 
                     {seite.querverweise?.length ? (

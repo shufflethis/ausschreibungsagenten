@@ -339,7 +339,7 @@ npx ausschreibungsagenten laender --json`}</pre>
                                 eingerichtet; ein Online-Checkout ist noch nicht freigeschaltet.
                             </p>
                             <div style={{ marginTop: '1rem' }}>
-                                <a href="/#profil" className="btn btn--primary">Pilotzugang anfragen</a>
+                                <a href="/#profil" className="btn btn--primary">Kostenfreien Pilotzugang anfragen</a>
                             </div>
                         </div>
                     </div>

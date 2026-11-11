@@ -90,11 +90,12 @@ GET https://www.ausschreibungsagenten.de/api/countries
 Die Vorschau zeigt ausgewählte Ergebnisse; vollständiger Zugriff, Volltextsuche und
 Agent API sind Bestandteil der bezahlten Tarife nach Pilotfreigabe.
 
-## Preise (Orientierung; Checkout noch nicht freigeschaltet)
+## Preise (Pilotphase kostenfrei; Checkout noch nicht freigeschaltet)
 
-- Pro: 149 EUR/Monat — Suchprofil, Alerts, Volltextsuche, wöchentliche Trefferliste
-- Agent: 499 EUR/Monat — höhere API-Limits, Agent API, A2A/MCP, Priorisierung
-- Verfahren: 1.499 EUR einmalig — Prüfung einer konkreten Ausschreibung, Anforderungsstruktur, Angebotsfahrplan
+- Pilotphase: **0 EUR (kostenfrei & unverbindlich)** — persönliches Suchprofil, E-Mail-Digest und geschützter Zugang per Magic Link für Pilotpartner
+- Pro (späterer Regelbetrieb): 149 EUR/Monat — Suchprofil, Alerts, Volltextsuche, wöchentliche Trefferliste
+- Agent (späterer Regelbetrieb): 499 EUR/Monat — höhere API-Limits, Agent API, A2A/MCP, Priorisierung
+- Verfahren: 1.499 EUR einmalig (kostenfrei für ausgewählte Pilotpartner) — Prüfung einer konkreten Ausschreibung, Anforderungsstruktur, Angebotsfahrplan
 
 Pilotzugänge werden nach Prüfung ausschließlich per Magic Link freigegeben.
 

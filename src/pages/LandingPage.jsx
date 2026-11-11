@@ -610,7 +610,7 @@ export default function LandingPage() {
                             <button className="btn btn--primary" type="submit">Aufträge finden <span aria-hidden="true">↓</span></button>
                         </div>
                         <div className="entry-search__bottom">
-                            <span>Kostenlos suchen · Ohne Anmeldung</span>
+                            <span>Kostenlos suchen · Ohne Anmeldung · <a href="#profil">Pilot mit E-Mail-Digest: 0 € →</a></span>
                             <details className="search-options"><summary>Land & Entscheidungskriterien</summary>
                                 <div className="search-options__fields">
                                     <label htmlFor="tender-country">Land<select id="tender-country" name="country" autoComplete="on" value={tenderLand} onChange={(event) => setTenderLand(event.target.value)}><option value="DEU">Deutschland</option><option value="AUT">Österreich</option><option value="CHE">Schweiz</option><option value="GBR">Großbritannien</option></select></label>
@@ -828,8 +828,9 @@ export default function LandingPage() {
                                     {invalidField === 'profile-services' && <span id="profile-services-error" className="field-error">Bitte beschreiben Sie die gesuchten Leistungen.</span>}
                                 </label>
                                 <button type="submit" className="btn btn--primary" disabled={profileSending}>
-                                    {profileSending ? 'Profil wird gesendet...' : 'Agentenprofil anfragen'}
+                                    {profileSending ? 'Profil wird gesendet...' : 'Kostenfreien Pilotzugang anfragen'}
                                 </button>
+                                <p className="field-hint">0 € in der Pilotphase · unverbindlich · keine Zahlungsdaten nötig.</p>
                                 {profileStatus === 'success' && (
                                     <p className="form-status form-status--success">
                                         Anfrage angekommen. Ein Zugang wird nach Prüfung ausschließlich per Magic Link freigegeben.

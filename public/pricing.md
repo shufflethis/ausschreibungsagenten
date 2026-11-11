@@ -26,7 +26,7 @@ Features:
 
 ## Plan Pro
 
-Planned regular price: **149 EUR per month**. Current commercial availability is coordinated personally during the pilot.
+Current pilot price: **0 EUR (free during the pilot)** for approved pilot partners. Planned regular price after pilot: **149 EUR per month**.
 
 Features:
 

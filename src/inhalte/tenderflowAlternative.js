@@ -63,7 +63,7 @@ export const tenderflowAlternative = {
         },
         {
             frage: 'Was kostet Ausschreibungsagenten im Vergleich?',
-            antwort: 'Der Pro-Tarif kostet 149 Euro im Monat und enthält Suchprofil, Alerts, Volltextsuche und wöchentliche Trefferlisten. Der Agent-Tarif mit höheren API-Limits liegt bei 499 Euro im Monat. Die Buchung wird erst nach einer persönlichen Pilotphase freigeschaltet.',
+            antwort: 'Die Pilotphase ist kostenfrei. Im anschließenden Regelbetrieb liegt der Pro-Tarif bei 149 Euro im Monat (Suchprofil, Alerts, Volltextsuche und wöchentliche Trefferlisten) und der Agent-Tarif mit höheren API-Limits bei 499 Euro im Monat. Die Buchung wird erst nach der persönlichen Pilotphase freigeschaltet.',
         },
     ],
     ctaKontext: 'Tenderflow-Alternative',

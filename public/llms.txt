@@ -39,7 +39,7 @@ Kontakt: hi@ausschreibungsagenten.de
 - [Versionierungs-, Deprecation- und Sunset-Politik](https://www.ausschreibungsagenten.de/api-policy.md)
 - [OAuth 2.0 Token-Endpunkt (client_credentials, benannte Scopes)](https://api.ausschreibungsagenten.de/oauth/token)
 - [Authentifizierung](https://www.ausschreibungsagenten.de/auth.md) · [Preise](https://www.ausschreibungsagenten.de/pricing.md)
-- Preise: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet; Pilotzugang per Magic Link nach persönlicher Abstimmung.
+- Preise: Begleitete Pilotphase aktuell kostenfrei (0 EUR, Zugang per Magic Link ohne Zahlungsdaten nach Abstimmung). Orientierung für den späteren Regelbetrieb: Pro 149 EUR/Monat · Agent 499 EUR/Monat (höhere API-Limits, Agent API, A2A/MCP) · Verfahrensbegleitung 1.499 EUR einmalig. Online-Checkout noch nicht freigeschaltet.
 - Kuratierte Verticals: Fenster/Fassade/Glas/Metallbau, Architektur/Planung, Marketing/Digital. Bauleistungen nach Gewerk zusätzlich über CPV-Gruppen (Haupt-CPV 45, 4521, 4522/4523, 4526, 453, 454): https://www.ausschreibungsagenten.de/bauauftraege-finden
 - Alle 18 angebundenen Quellen sind produktiv. Über offizielle Schnittstellen: TED, service.bund.de, Datenservice Öffentlicher Einkauf, GB Find a Tender, GB Contracts Finder, SAM.gov. Per Portal-Auslese: DTVP, RIB, die Landes-/Regionalportale Bayern, NRW, Baden-Württemberg, Vergabeportal BW, Bremen, Sachsen, Mecklenburg-Vorpommern, Hessen, Rheinland-Pfalz und Metropolregion Rhein-Neckar. Das Feld `interface` im Quellenstatus nennt die Anbindungsart je Quelle. Deutsche eVergabe und evergabe.de sind als nächste Quellen geplant.
 

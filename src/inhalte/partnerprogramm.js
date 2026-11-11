@@ -77,6 +77,8 @@ export const partnerprogramm = {
         },
     ],
     ctaKontext: 'Partnerprogramm',
+    ctaAnker: 'kontakt',
+    ctaKnopf: 'Partneranfrage senden',
     ctaTitel: 'Partner werden',
     ctaText:
         'Schreiben Sie uns kurz, mit welchem Umfeld Sie arbeiten und wie Sie empfehlen möchten. Wir melden uns mit den Konditionen, den Teilnahmebedingungen und Ihrem persönlichen Empfehlungslink.',

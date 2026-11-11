@@ -79,6 +79,13 @@ describe('Schablone fuer Inhaltsseiten', () => {
         // sein, sonst springt der Browser nicht ans Formular.
         expect(ziel.hash).toBe('#profil')
         expect(ziel.searchParams.get('thema')).toBe('Automatisierte Ausschreibungssuche')
+        expect(screen.getByText(/0 € in der Pilotphase/)).toBeInTheDocument()
+    })
+
+    it('erlaubt Sonderseiten wie /partner ein eigenes CTA-Ziel und eigenen Button-Text', () => {
+        zeige({ ...SEITE, ctaKontext: 'Partnerprogramm', ctaAnker: 'kontakt', ctaKnopf: 'Partneranfrage senden' })
+        const link = screen.getByRole('link', { name: 'Partneranfrage senden' })
+        expect(link.getAttribute('href')).toBe('/?thema=Partnerprogramm#kontakt')
     })
 
     it('gibt die FAQ beim Server-Rendern als FAQPage-Schema aus', () => {
