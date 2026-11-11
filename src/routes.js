@@ -205,7 +205,7 @@ export const routes = [
         path: '/login',
         component: 'Login',
         title: 'Anmelden',
-        description: 'Anmeldung über einen geschützten Magic-Link.',
+        description: 'Anmeldung über einen Anmeldelink per E-Mail.',
         prerender: false,
         index: false,
     },

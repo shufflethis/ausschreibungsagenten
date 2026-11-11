@@ -19,11 +19,11 @@ function renderPage(node) {
 describe('Kundenzugang', () => {
     it('sendet den Login direkt an die eindeutige App-Origin und antwortet neutral', () => {
         const { container } = renderPage(<Login />)
-        expect(screen.getByRole('heading', { name: /Mit Magic Link anmelden/i })).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: /^Anmelden$/i })).toBeInTheDocument()
         const form = container.querySelector('form')
         expect(form).toHaveAttribute('method', 'post')
         expect(form).toHaveAttribute('action', 'https://app.ausschreibungsagenten.de/login')
-        expect(screen.getByText(/Antwort immer gleich/i)).toBeInTheDocument()
+        expect(screen.getByText(/immer dieselbe Bestätigung/i)).toBeInTheDocument()
     })
 
     it('zeigt die neutrale Postfach-Seite', () => {
@@ -41,7 +41,7 @@ describe('Kundenzugang', () => {
                 'https://app.ausschreibungsagenten.de/auth/magic#token=test-token&next=%2Fapp',
             )
         })
-        expect(screen.getByText(/ausdrücklichen Klick verbraucht/i)).toBeInTheDocument()
+        expect(screen.getByText(/mit einem Klick ab/i)).toBeInTheDocument()
     })
 
     it('leitet geschützte Konto- und Abrechnungsrouten zur App weiter', async () => {

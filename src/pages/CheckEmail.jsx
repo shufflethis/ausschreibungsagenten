@@ -11,11 +11,11 @@ export default function CheckEmail() {
                     <h1 className="section__title">Postfach prüfen</h1>
                     <p className="section__subtitle">
                         Falls ein aktiver Zugang besteht, wurde ein Anmeldelink versendet. Öffnen Sie die E-Mail
-                        und bestätigen Sie die Anmeldung bewusst im Browser.
+                        und klicken Sie auf den Link. Auf der folgenden Seite bestätigen Sie die Anmeldung.
                     </p>
                     <p className="account-entry__note">
-                        Keine E-Mail erhalten? Prüfen Sie Spam-Ordner und Adresse oder fordern Sie nach einigen
-                        Minuten einen neuen Link an. Frühere Links werden dabei ungültig.
+                        Keine E-Mail erhalten? Prüfen Sie den Spam-Ordner und ob die Adresse stimmt. Nach einigen
+                        Minuten können Sie einen neuen Link anfordern; frühere Links werden dabei ungültig.
                     </p>
                     <Link className="btn btn--secondary" to="/login">Zurück zum Login</Link>
                 </div>

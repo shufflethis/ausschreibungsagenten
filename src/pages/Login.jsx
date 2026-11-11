@@ -10,10 +10,11 @@ export default function Login() {
             </Helmet>
             <div className="container">
                 <div className="account-entry__card">
-                    <span className="section__label">Sicherer Kundenbereich</span>
-                    <h1 className="section__title">Mit Magic Link anmelden</h1>
+                    <span className="section__label">Kundenbereich</span>
+                    <h1 className="section__title">Anmelden</h1>
                     <p className="section__subtitle">
-                        Geben Sie die geschäftliche E-Mail-Adresse ein, für die Ihr Zugang eingerichtet wurde.
+                        Geben Sie die geschäftliche E-Mail-Adresse ein, für die Ihr Zugang eingerichtet wurde. Wir senden
+                        Ihnen einen Anmeldelink – ein Passwort brauchen Sie nicht.
                     </p>
                     <form className="account-entry__form" method="post" action={appUrl('/login')}>
                         <input type="hidden" name="next" value="/app" />
@@ -21,11 +22,11 @@ export default function Login() {
                             <label htmlFor="login-email">Geschäftliche E-Mail-Adresse</label>
                             <input id="login-email" name="email" type="email" autoComplete="email" required />
                         </div>
-                        <button className="btn btn--primary" type="submit">Magic Link anfordern</button>
+                        <button className="btn btn--primary" type="submit">Anmeldelink anfordern</button>
                     </form>
                     <p className="account-entry__note">
-                        Aus Sicherheitsgründen ist die Antwort immer gleich – unabhängig davon, ob bereits ein
-                        aktiver Zugang besteht. Der Link ist 15 Minuten gültig und nur einmal verwendbar.
+                        Der Link ist 15 Minuten gültig und nur einmal verwendbar. Aus Sicherheitsgründen sehen Sie
+                        nach dem Absenden immer dieselbe Bestätigung.
                     </p>
                 </div>
             </div>
