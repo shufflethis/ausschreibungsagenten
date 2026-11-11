@@ -1,5 +1,11 @@
 # AGENT-GOALS — Autonomes Arbeitsprogramm Richtung 100k MRR
 
+> **Nachtrag 2026-11-11:** Stand dieses Dokuments ist der 18./19.07.2026; es wurde seither nicht
+> fortgeschrieben. Korrigiert ist unten nur der Abschnitt „Systemzustand“, soweit prüfbar. Die Regeln 4
+> und 5 (Push auf master nach jedem Ziel) stehen im Widerspruch zur heutigen Freigaberegel in der
+> globalen CLAUDE.md (Commits, Pushes und Produktions-Deployments nur nach ausdrücklicher Freigabe);
+> es gilt die Freigaberegel.
+>
 > Stand: 2026-07-18 · Dieses Dokument ist der **Master-Prompt für autonome Sessions**.
 > Es ist selbsttragend: eine frische Claude-Code-Session ohne Chat-Historie kann hiermit
 > sofort produktiv arbeiten. Fortschritt wird HIER (Checkboxen) und in `PROGRESS.md`
@@ -21,11 +27,12 @@ eines davon einzahlen, sonst ist sie Spielerei.
 
 ## Systemzustand (2026-07-18 — bei Abweichung: dieses Dokument aktualisieren!)
 
-- **Site-Repo:** `/home/admin/ausschreibungsagenten-site` (React/Vite, Vercel, master → Auto-Deploy)
+- **Site-Repo:** `/home/admin/ausschreibungsagenten` (React/Vite, Vercel, master → Auto-Deploy).
+  *(Nachtrag 2026-11-11: unter `/home/admin/ausschreibungsagenten-site` liegt ein zweiter, älterer Klon desselben Repositorys.)*
 - **Backend-Repo:** `/home/admin/agentleads-account` (FastAPI, Branch `feat/account-platform-mvp`,
   Container `agentleads` via `docker compose build app && docker compose up -d app`,
   SQLite `/data/agentleads.db` im Container, Tests: `.venv/bin/python -m pytest -q`)
-- **Live:** 8 Quellen (TED DE+AT, bund, 6 Landesportale), ~5.700 Tender (5.165 DE + 516 AT),
+- **Live (Stand Juli, überholt — aktuelle Quellen und Bestände: `/api/source-status`):** 8 Quellen (TED DE+AT, bund, 6 Landesportale), ~5.700 Tender (5.165 DE + 516 AT),
   MCP + A2A + Agent Card + OpenAPI öffentlich, Self-Serve Free-Keys, Tier-Rate-Limits,
   Vercel-Proxys auf `www.` (`api/*.js`)
 - **Kunden/Keys:** famefact 2× agent-Tier, Rossmanith (Fassade-Pilot) 1× pro-Tier
@@ -38,7 +45,7 @@ eines davon einzahlen, sonst ist sie Spielerei.
    in Texten, in llms.txt, überall. Das ist Markenkern.
 2. **Verifikation vor Abhaken:** Jedes Ziel hat Abnahmekriterien. Erst grüne Tests + Live-Check
    (curl gegen Prod), dann Checkbox + `PROGRESS.md`-Eintrag (Datum, was, Beweis/Commit).
-3. **Tests immer:** Backend `pytest` (aktuell 162), Site `npm test && npm run build` (aktuell 16).
+3. **Tests immer:** Backend `pytest` (aktuell 162), Site `npm test && npm run build` (Zahl der Tests nicht hier pflegen).
    Neue Features bekommen neue Tests.
 4. **Deploy-Disziplin:** Backend = Container-Rebuild + Health-Check + Smoke-Test. Site = push
    auf master + Live-Verifikation des neuen Bundles. Bei rotem Zustand: zurückrollen, loggen.

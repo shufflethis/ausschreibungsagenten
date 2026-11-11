@@ -1,5 +1,10 @@
 # GOALS — ausschreibungsagenten.de
 
+> **Nachtrag 2026-11-11:** Dieses Dokument beschreibt den Stand vom 18.07.2026. Nachgetragen sind nur
+> Punkte, die sich am Repository oder an der Live-Seite prüfen lassen. Alles andere (Checkout, Piloten,
+> Social Proof, Moat, Scorecard) ist seit Juli nicht aktualisiert und gilt als ungeprüft. Aktuelle Zahlen
+> zu Quellen und Tests stehen bewusst nicht hier: Quellen unter `/api/source-status`, Tests über `npm test`.
+>
 > Stand: 2026-07-18 · Basis: vollständiger Produkt-/Tech-/Markt-Review (Code, Live-API, Wettbewerb).
 > Dieses Dokument ist als **Goal-Prompt** nutzbar: Abschnitt „Agent-Prompt" unten direkt an eine
 > Claude-Code-Session geben, um die Ziele der Reihe nach abzuarbeiten.
@@ -50,7 +55,7 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
       Konkurrenzlinks in der Vergleichstabelle auf `rel="nofollow noopener noreferrer"`.
 - [x] **Hero-Stats gestärkt** *(2026-07-18)*: dynamisch „N+ Indexierte Ausschreibungen · Datenstand X"
       aus der source-status-API (Summe `stored`, jüngstes `last_success_at`), Fallback „5.000+".
-- [ ] **„i.G." entfernen**, sobald die UG eingetragen ist (Landingpage, Impressum, AGB, Footer).
+- [x] **„i.G." entfernen** *(Nachtrag 2026-11-11: erledigt, am Repository bzw. an der Live-Seite geprüft)*, sobald die UG eingetragen ist (Landingpage, Impressum, AGB, Footer).
 
 ### P1 — Agent-Readiness (Wochen; Uniqueness-Hebel Nr. 1)
 
@@ -72,7 +77,7 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
 - [x] **Suchtreffer-Dedup** *(2026-07-18)*: syndizierte/berichtigte Bekanntmachungen werden über
       kanonischen (Titel, Auftraggeber)-Schlüssel kollabiert; jüngste Notice gewinnt.
       Nebenbefund aus P0 damit erledigt („Leadagentur Thüringen" erschien doppelt).
-- [ ] **JSON-LD ausbauen:** `Dataset` (Tender-Index), `Offer`/`PriceSpecification` (3 Tarife),
+- [ ] **JSON-LD ausbauen:** *(Nachtrag 2026-11-11: `FAQPage` ist vorhanden, `Dataset` und `Offer` fehlen weiter)* `Dataset` (Tender-Index), `Offer`/`PriceSpecification` (3 Tarife),
       `FAQPage` (FAQ-Sektion).
 - [ ] **Claim:** „Die erste deutsche Ausschreibungsplattform, die Ihr KI-Agent direkt anbinden kann
       (MCP & A2A)." — derzeit von niemandem im DACH-Markt besetzt.
@@ -83,12 +88,12 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
       Zwischenschritt: 14-Tage-Trial mit manueller Aktivierung binnen 24 h.
 - [ ] **Social Proof:** 1–2 anonymisierte Pilot-Ergebnisse als Zahlen
       („Pilot Fassadenbau: 14 relevante Treffer in 30 Tagen, 2 Angebote abgegeben").
-- [ ] **Öffentliche `/status`-Seite** aus der source-status-API — Transparenz als Marke,
+- [x] **Öffentliche `/status`-Seite** *(Nachtrag 2026-11-11: erledigt, am Repository bzw. an der Live-Seite geprüft)* aus der source-status-API — Transparenz als Marke,
       verlinkbar, Backlink-Magnet.
 
 ### P3 — SEO & vertikale Tiefe
 
-- [ ] **Prerender/SSG** für Wissens- & FAQ-Content (aktuell SPA-only; SEO-Asset wird
+- [x] **Prerender/SSG** *(Nachtrag 2026-11-11: erledigt, am Repository bzw. an der Live-Seite geprüft)* für Wissens- & FAQ-Content (aktuell SPA-only; SEO-Asset wird
       client-seitig gerendert). `vite-plugin-prerender` oder SSG-Migration.
 - [ ] **Programmatic SEO:** Landingpages je Bundesland („Ausschreibungen Hessen") und je
       Gewerk/CPV („Fassadenbau-Ausschreibungen") aus dem Index generieren. Setzt SSG voraus.
@@ -102,10 +107,10 @@ Arbeitsteilung: `.de` = deutsche Vertikal-Marke mit Vertrauen/GAEB, `.com` = age
       erster Poll: 516 AT-Ausschreibungen, Verticals greifen sprachneutral über CPV.
       Backend-Commit `21fec1b`. API/MCP liefern AT über `country=AUT`.
 - [ ] **CH prüfen** (simap.ch — eigener Connector, nicht auf TED).
-- [ ] **EU-weit auf TED** für tender-agents.com: `COUNTRIES` erweitern; vorher Volumen-Check
+- [x] **EU-weit auf TED** *(Nachtrag 2026-11-11: erledigt, am Repository bzw. an der Live-Seite geprüft)* — siehe AGENT-GOALS A2/A3 für tender-agents.com: `COUNTRIES` erweitern; vorher Volumen-Check
       (~8–10× Daten), Poll-Dauer und SQLite-Last beobachten; Verticals je Sprache um
       Keywords ergänzen (CPV trägt sprachneutral).
-- [ ] **GB**: Find a Tender Service (OCDS-API) als neuer Connector.
+- [x] **GB**: Find a Tender Service *(Nachtrag 2026-11-11: erledigt, am Repository bzw. an der Live-Seite geprüft)* — siehe AGENT-GOALS A7 (OCDS-API) als neuer Connector.
 
 ### P4 — Moat aufbauen (laufend)
 

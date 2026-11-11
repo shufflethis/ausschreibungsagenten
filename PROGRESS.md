@@ -419,3 +419,36 @@ Infrastruktur: `request_bytes` in AbstractSource (ZIP-Downloads mit Retry),
 Scheduler-Jobs poll-doe (12 h)/poll-cf (6 h), Registry+/status+llms auf
 **11 Live-Quellen**. Tests 202→213. Backend deployt & verifiziert (beide
 Polls grün in Prod-Postgres). Katalog-Annotationen auf LIVE gestellt.
+
+## 2026-11-11 · Review, Angleichung der ausgelieferten Fläche, Zerlegung der Startseite
+
+Zwischen dem 19.07. und heute wurde dieses Protokoll nicht geführt; der Verlauf
+steht in der Git-Historie.
+
+**Review (Repository + Live-Seite, nur lesend).** Tests und Build grün,
+Lighthouse-Labor 99–100. Hauptbefund: Fakten standen an über zwanzig Stellen
+fest eingetippt und liefen auseinander (Quellenzahl, Testzahl, feste
+Rate-Limit-Köpfe, OpenAPI-Pfade auf www).
+
+**Umgesetzt und deployt (`81e0b9e`).** Quellenzahl überall gleich und per Test
+`src/quellenAnzahl.test.js` gesichert; feste `RateLimit-*`-Köpfe entfernt, die
+Proxys reichen `x-ratelimit-*` des Backends durch; Rewrites für
+`/api/standard`, `/mcp/open-data`, `/oauth/token`; gemeinsamer Proxy mit
+Zeitlimit (`lib/backendProxy.js`), Backend-Fehler werden nicht mehr gecacht;
+`@vercel/functions` aktualisiert. Live nachgemessen.
+
+**Umgesetzt, lokal geprüft.** `LandingPage.jsx` in vier Dateien zerlegt
+(`src/pages/landing/`: Daten, Abschnitte, WebMCP-Werkzeuge), vorgerendertes
+Markup aller Seiten unverändert. Jede Seite ist ein eigener, nachgeladener
+Baustein (`src/seitenDateien.js`, `seiten.jsx`, `seitenLazy.jsx`); das
+Prerender-Skript kündigt ihn per `modulepreload` an. Geprüft in Headless-Chrome:
+keine Hydration-Meldung, Seitenwechsel ohne leeren Zwischenzustand.
+
+**Offen, Entscheidung beim Menschen.**
+- Formularschutz: Kontakt und Pilotanfrage haben nur einen Honeypot; Eingaben
+  gehen unmaskiert in Slack-Nachrichten.
+- Geteiltes Rate-Limit: die Proxys reichen keine Client-IP weiter, das Backend
+  zählt deshalb je Vercel-Ausgangsadresse statt je Besucher (gemessen). Betrifft
+  auch das Signup-Limit. Die Behebung braucht eine Backend-Änderung.
+- Welche Agenten-Oberflächen sich lohnen — zurückgestellt, braucht Felddaten.
+
