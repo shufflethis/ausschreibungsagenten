@@ -299,12 +299,19 @@ describe('Agent-Readiness machine contracts', () => {
 
     it('formatiert die llms.txt als Navigationsindex mit Markdown-Links und nennt den kostenfreien Pilot', async () => {
         const llms = await text('public/llms.txt')
+        const llmsFull = await text('public/llms-full.txt')
         expect(llms.startsWith('# ')).toBe(true)
         expect(llms.match(/\]\(https:\/\//g).length).toBeGreaterThanOrEqual(20)
         expect(llms.length).toBeLessThan(30000)
         expect(llms).toMatch(/Pilotphase aktuell kostenfrei/i)
-        expect(await text('public/llms-full.txt')).toMatch(/Pilotphase:\s*\*\*0 EUR/i)
+        expect(llmsFull).toMatch(/Pilotphase:\s*\*\*0 EUR/i)
+        expect(llmsFull).not.toMatch(/agentleads\./)
         expect(await text('public/pricing.md')).toMatch(/0 EUR \(free during the pilot\)/i)
+        // /mcp/open-data liefert live 6 Quellen inkl. SAM.gov; Doku darf nicht bei 5 haengenbleiben.
+        for (const pfad of ['public/llms.txt', 'public/agents.md', 'public/entwickler.md']) {
+            const doku = await text(pfad)
+            expect(doku, pfad).toMatch(/mcp\/open-data[\s\S]{0,300}SAM\.gov/)
+        }
     })
 
     it('advertises machine endpoints from the footer', async () => {
@@ -328,9 +335,15 @@ describe('Agent-Readiness machine contracts', () => {
         expect(webmcp).toMatch(/signal: abbruch\.signal/)
 
         const landing = await text('src/pages/landing/webmcpWerkzeuge.js')
-        expect(await text('src/pages/LandingPage.jsx')).toMatch(/useWebmcpWerkzeuge\(zustand, /)
+        const startseite = await text('src/pages/LandingPage.jsx')
+        const manifest = JSON.parse(await text('public/.well-known/webmcp'))
+        expect(startseite).toMatch(/useWebmcpWerkzeuge\(zustand, /)
+        // Die Schweiz (simap.ch) ist nicht angebunden; das Dropdown darf keine
+        // garantierten Null-Treffer anbieten.
+        expect(startseite).not.toContain('<option value="CHE">')
+        expect(startseite).toContain('<option value="USA">')
         expect(landing).toMatch(/return stelleWerkzeugeBereit\(werkzeuge, /)
-        for (const werkzeug of [
+        const erwarteteWerkzeuge = [
             'search_tenders',
             'list_visible_tenders',
             'open_tender',
@@ -342,9 +355,11 @@ describe('Agent-Readiness machine contracts', () => {
             'remove_from_shortlist',
             'list_shortlist',
             'check_eu_threshold',
-        ]) {
+        ]
+        for (const werkzeug of erwarteteWerkzeuge) {
             expect(landing, werkzeug).toContain(`name: '${werkzeug}'`)
         }
+        expect(manifest.tools.map((t) => t.name)).toEqual(erwarteteWerkzeuge)
         // Kontakt- und Profilformular loesen echte E-Mails aus. Agenten
         // duerfen ausfuellen, abschicken bleibt der Klick des Menschen.
         expect(landing).toMatch(/submitted: false/)

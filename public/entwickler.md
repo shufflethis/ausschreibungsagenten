@@ -58,8 +58,8 @@ Metadaten: `/.well-known/oauth-protected-resource` (RFC 9728) und
 `https://api.ausschreibungsagenten.de/mcp` — alle 18 Quellen.
 
 `https://api.ausschreibungsagenten.de/mcp/open-data` — dieselben Werkzeuge,
-aber nur die fünf Quellen mit einer vom Betreiber dafür bereitgestellten
+aber nur die sechs Quellen mit einer vom Betreiber dafür bereitgestellten
 Schnittstelle: TED, service.bund.de, Datenservice Öffentlicher Einkauf, GB Find
-a Tender, GB Contracts Finder. Gedacht für Umgebungen, die sich fremden
+a Tender, GB Contracts Finder, US SAM.gov. Gedacht für Umgebungen, die sich fremden
 Nutzungsbedingungen stellen müssen. Der Quellenstatus meldet dort nur diese
-fünf — die Fläche behauptet keine Abdeckung, die sie nicht hat.
+sechs — die Fläche behauptet keine Abdeckung, die sie nicht hat.

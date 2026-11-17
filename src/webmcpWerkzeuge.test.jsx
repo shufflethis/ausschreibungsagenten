@@ -1,3 +1,4 @@
+import { setMaxListeners } from 'node:events'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
@@ -77,9 +78,11 @@ describe('WebMCP-Werkzeuge der Landingpage', () => {
         // jsdom kennt scrollIntoView nicht; jeder Browser tut es.
         Element.prototype.scrollIntoView = vi.fn()
         // Nachbau der Spec-API: registerTool liefert ein Promise, und
-        // abgemeldet wird ueber das AbortSignal aus den Optionen.
+        // abgemeldet wird ueber das AbortSignal aus den Optionen. Im Browser
+        // hat EventTarget kein Listener-Limit; Node warnt ab 11 Listenern.
         document.modelContext = {
             registerTool: (eintrag, { signal } = {}) => {
+                if (signal) setMaxListeners(0, signal)
                 registriert.push(eintrag)
                 signal?.addEventListener('abort', () => {
                     registriert = registriert.filter((vorhanden) => vorhanden !== eintrag)

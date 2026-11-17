@@ -73,9 +73,9 @@ export default function Brandkit() {
                     <span className="section__label">
                         <span className="pulse"></span> Brandkit
                     </span>
-                    <h2 className="section__title">
+                    <h1 className="section__title">
                         Logo, Farben und <span className="gradient-text">Schreibweise</span>
-                    </h2>
+                    </h1>
                     <p className="section__subtitle">
                         Materialien für Berichterstattung, Partnerseiten und Integrationen. Die Dateien
                         dürfen unverändert verwendet werden, um auf Ausschreibungsagenten.de zu verweisen —

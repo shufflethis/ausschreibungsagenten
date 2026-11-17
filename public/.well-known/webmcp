@@ -4,15 +4,47 @@
   "tools": [
     {
       "name": "search_tenders",
-      "description": "Sucht öffentliche Ausschreibungen nach Leistung, Land und Region und zeigt die Treffer auf der Startseite."
+      "description": "Sucht öffentliche Ausschreibungen nach Leistung, Land, Gewerk und Region und zeigt die Treffer auf der Startseite."
     },
     {
       "name": "list_visible_tenders",
       "description": "Gibt die aktuell angezeigten Ausschreibungen mit Originalquelle und Frist zurück."
     },
     {
+      "name": "open_tender",
+      "description": "Öffnet die Detailansicht eines angezeigten Treffers auf der Seite inklusive Originalquelle."
+    },
+    {
       "name": "source_status",
-      "description": "Gibt den aktuellen Datenstand der angebundenen Ausschreibungsquellen zurück."
+      "description": "Gibt den aktuellen Datenstand der 18 angebundenen Ausschreibungsquellen zurück."
+    },
+    {
+      "name": "prefill_pilot_profile",
+      "description": "Füllt das Formular für die kostenfreie Pilotanfrage vor, ohne es abzusenden."
+    },
+    {
+      "name": "shortlist_tender",
+      "description": "Legt einen Treffer mit berechneten Fit-Gründen auf die gemeinsame Go/No-Go-Tafel."
+    },
+    {
+      "name": "explain_fit",
+      "description": "Berechnet nachvollziehbare Pro- und Contra-Gründe für einen Treffer, ohne die Tafel zu ändern."
+    },
+    {
+      "name": "set_decision",
+      "description": "Hält die vom Nutzer getroffene Go/No-Go-Entscheidung samt Begründung auf der Tafel fest."
+    },
+    {
+      "name": "remove_from_shortlist",
+      "description": "Entfernt einen Treffer von der gemeinsamen Go/No-Go-Tafel."
+    },
+    {
+      "name": "list_shortlist",
+      "description": "Liest die gemeinsame Go/No-Go-Tafel einschließlich manuell getroffener Entscheidungen aus."
+    },
+    {
+      "name": "check_eu_threshold",
+      "description": "Prüft einen Auftragswert gegen die EU-Schwellenwerte 2026/2027."
     }
   ],
   "pages": ["https://www.ausschreibungsagenten.de/"]

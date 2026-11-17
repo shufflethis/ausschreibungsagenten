@@ -49,6 +49,10 @@ for (const route of prerenderRoutes) {
         fehler.push(`${route.path}: keine Description`)
     }
 
+    if (!/<h1\b/.test(inhalt)) {
+        fehler.push(`${route.path}: keine <h1>-Ueberschrift`)
+    }
+
     // Google meldet ein uploadDate ohne Uhrzeit und Zeitzone als ungueltig
     // (Search Console, 18.08.2026).
     for (const [, wert] of inhalt.matchAll(/"uploadDate":"([^"]*)"/g)) {

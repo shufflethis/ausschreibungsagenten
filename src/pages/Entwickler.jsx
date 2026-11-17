@@ -17,7 +17,7 @@ const ENDPOINTS = [
     {
         method: 'GET',
         path: 'www.ausschreibungsagenten.de/api/countries',
-        desc: 'Tatsächlich indexierte Länder (ISO-3) mit Tender-Zahl — alle 27 EU-Länder.',
+        desc: 'Tatsächlich indexierte Länder (ISO-3) mit Tender-Zahl — alle 27 EU-Länder sowie u. a. GBR, USA und NOR.',
         auth: 'Keine · 600 Anfragen/Stunde',
     },
     {
@@ -216,7 +216,7 @@ npx ausschreibungsagenten laender --json`}</pre>
                                 Liefert ein JSON-Array mit Titel, Auftraggeber, CPV, Frist, geschätztem Wert,
                                 Notice-Sprachen (ISO-639-3), Losen, Zuschlagskriterien, Rahmenvereinbarungs-
                                 und GPA-Kennzeichen, Vertical, Relevanz-Score und der Originalquelle.
-                                <code> country</code> akzeptiert alle 27 EU-Länder (ISO-3, z. B. FRA, ITA, POL).
+                                <code> country</code> akzeptiert alle indexierten ISO-3-Ländercodes (alle 27 EU-Länder sowie u. a. GBR, USA, NOR — siehe <code>/api/countries</code>).
                             </p>
                         </div>
 

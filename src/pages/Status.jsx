@@ -28,7 +28,7 @@ const COUNTRY_NAMES = {
     LUX: 'Luxemburg', FIN: 'Finnland', IRL: 'Irland', HRV: 'Kroatien', EST: 'Estland',
     DNK: 'Dänemark', GRC: 'Griechenland', BGR: 'Bulgarien', HUN: 'Ungarn', LTU: 'Litauen',
     MLT: 'Malta', ROU: 'Rumänien', SVN: 'Slowenien', SVK: 'Slowakei', LVA: 'Lettland',
-    PRT: 'Portugal', CYP: 'Zypern', GBR: 'Vereinigtes Königreich', USA: 'USA',
+    PRT: 'Portugal', CYP: 'Zypern', GBR: 'Vereinigtes Königreich', USA: 'USA', NOR: 'Norwegen',
 }
 
 const formatDateTime = (value) => {

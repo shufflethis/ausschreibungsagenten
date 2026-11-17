@@ -1,7 +1,7 @@
 ---
 name: tender-search
-description: Find public procurement notices in Germany, the EU and UK with explainable filters.
-version: 1.0.0
+description: Find public procurement notices in Germany, the EU, the UK and US federal agencies (SAM.gov) with explainable filters.
+version: 1.0.1
 license: proprietary
 ---
 
@@ -9,7 +9,7 @@ license: proprietary
 
 ## When to use this skill (when-to-use)
 
-Use this skill when a user needs to find current public procurement notices by keyword, CPV code, country, location, deadline, estimated value or company profile. It is suitable for Germany, all EU countries and the United Kingdom, including above- and below-threshold sources where connected.
+Use this skill when a user needs to find current public procurement notices by keyword, CPV code, country, location, deadline, estimated value or company profile. It is suitable for Germany, all EU countries, the United Kingdom and US federal agencies (SAM.gov), including above- and below-threshold sources where connected.
 
 Do not use it to submit a bid, calculate bid prices, provide procurement-law advice or treat the platform summary as legally authoritative. The linked original notice always prevails.
 

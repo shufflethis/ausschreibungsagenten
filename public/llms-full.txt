@@ -1,6 +1,6 @@
 # Ausschreibungsagenten.de — Vollständige Referenz für KI-Assistenten
 
-Stand: 12. August 2026. Diese Datei beschreibt den tatsächlichen, produktiven Funktionsumfang.
+Stand: 17. November 2026. Diese Datei beschreibt den tatsächlichen, produktiven Funktionsumfang.
 Nicht Produktives ist ausdrücklich als „im Ausbau" oder „geplant" gekennzeichnet.
 
 ## Was die Plattform ist
@@ -10,7 +10,7 @@ Ausschreibungsagenten.de ist eine deutsche Pilotplattform der Yawusa UG
 Filtern öffentlicher Ausschreibungen (Vergabeverfahren) für Unternehmen — insbesondere
 Handwerk, Bau, IT, Marketing und Beratung.
 
-## Datenquellen (produktiv, live gepollt)
+## Datenquellen (18 Live-Quellen, produktiv gepollt)
 
 1. TED / Tenders Electronic Daily (api.ted.europa.eu) — indexiert alle 27 EU-Länder
    (ISO-3-Codes über Parameter `country`, z. B. DEU, AUT, FRA, ESP, ITA, NLD, POL)
@@ -31,6 +31,7 @@ Handwerk, Bau, IT, Marketing und Beratung.
 15. Metropolregion Rhein-Neckar
 16. GB Find a Tender Service (OCDS 1.1, buyer_country=GBR, Werte GBP→EUR umgerechnet)
 17. GB Contracts Finder (OCDS 1.1, unterschwellige GB-Vergaben ab £12k, buyer_country=GBR)
+18. US SAM.gov Contract Opportunities (JSON-API, US-Bundesbehörden, buyer_country=USA)
 
 Im Ausbau (nicht produktiv): Deutsche eVergabe und evergabe.de.
 Der Live-Status inkl. letztem erfolgreichem Abruf je Quelle ist öffentlich:
@@ -61,8 +62,10 @@ Semantisches KI-Matching wird NICHT als produktiv behauptet; es kann später erg
 - OpenAPI-Spezifikation: https://api.ausschreibungsagenten.de/openapi.json
 - Interaktive API-Dokumentation: https://api.ausschreibungsagenten.de/docs
 - MCP-Server (Streamable HTTP, JSON-RPC): https://api.ausschreibungsagenten.de/mcp
-  Tools: agentleads.search_tenders (frei, mit Rate-Limit) und agentleads.fulltext_search
-  (erfordert API-Key mit Pro- oder Agent-Tarif).
+  Tools: search_tenders, get_tender, summarize_tender, source_status, countries (frei, mit
+  Rate-Limit) und fulltext_search (erfordert API-Key mit Pro- oder Agent-Tarif). Zusätzlich
+  https://api.ausschreibungsagenten.de/mcp/open-data (dieselben freien Werkzeuge, beschränkt
+  auf die sechs Quellen mit offizieller Schnittstelle inkl. SAM.gov).
 - Free API-Key: Selbstregistrierung unter https://www.ausschreibungsagenten.de/entwickler
   (Free-Tier: 60 Anfragen/Stunde; Pro: 600/h; Agent: 3.600/h).
 
@@ -85,7 +88,7 @@ GET https://www.ausschreibungsagenten.de/api/source-status
 
 GET https://www.ausschreibungsagenten.de/api/countries
   Antwort: JSON-Array [{country: ISO-3, count}] — tatsächlich indexierte Länder mit
-  Tender-Zahl (alle 27 EU-Länder; Stand live abrufbar)
+  Tender-Zahl (alle 27 EU-Länder sowie u. a. GBR, USA, NOR; Stand live abrufbar)
 
 Die Vorschau zeigt ausgewählte Ergebnisse; vollständiger Zugriff, Volltextsuche und
 Agent API sind Bestandteil der bezahlten Tarife nach Pilotfreigabe.

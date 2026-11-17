@@ -10,13 +10,13 @@ const QUELLEN_ANZAHL = 18
 
 // Bewusst ausgenommen: das Transkript muss zum aufgenommenen Video passen,
 // docs/ und die Protokolle halten historische Staende fest.
-const AUSGENOMMEN = /^(docs\/|PROGRESS\.md|GOALS\.md|AGENT-GOALS\.md|TENDER-AGENTS-PLAN\.md|src\/data\/videoTranskript\.js|package-lock\.json|public\/feeds\/|.*\.test\.jsx?$)/
+const AUSGENOMMEN = /^(docs\/|PROGRESS\.md|GOALS\.md|AGENT-GOALS\.md|TENDER-AGENTS-PLAN\.md|src\/data\/videoTranskript\.js|package-lock\.json|.*\.test\.jsx?$)/
 
 const MUSTER = /\b(\d{1,2})\s+(?:(?:Live-|Vergabe)[Qq]uellen|Quellen\b|öffentliche Quellen|angebundenen? Quellen|connected sources|sources\b)/g
 
 it(`nennt ueberall ${QUELLEN_ANZAHL} Quellen`, () => {
     const dateien = execSync('git ls-files', { encoding: 'utf8' }).split('\n')
-        .filter((pfad) => /\.(jsx?|mjs|md|txt|json|html)$|webmcp$/.test(pfad) && !AUSGENOMMEN.test(pfad))
+        .filter((pfad) => /\.(jsx?|mjs|md|txt|json|jsonl|html)$|webmcp$/.test(pfad) && !AUSGENOMMEN.test(pfad))
     const abweichungen = []
     for (const pfad of dateien) {
         const inhalt = readFileSync(pfad, 'utf8')
@@ -25,4 +25,6 @@ it(`nennt ueberall ${QUELLEN_ANZAHL} Quellen`, () => {
         }
     }
     expect(abweichungen).toEqual([])
+    const nummerierteQuellen = [...readFileSync('public/llms-full.txt', 'utf8').matchAll(/^\d+\.\s+/gm)]
+    expect(nummerierteQuellen).toHaveLength(QUELLEN_ANZAHL)
 })
