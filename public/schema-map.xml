@@ -3,7 +3,7 @@
         xmlns:sf="http://schema.org/schemas/schemafeed/0.1">
   <url>
     <loc>https://www.ausschreibungsagenten.de/feeds/content.jsonl</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-22</lastmod>
     <sf:contentType>structuredData/schema.org</sf:contentType>
   </url>
 </urlset>

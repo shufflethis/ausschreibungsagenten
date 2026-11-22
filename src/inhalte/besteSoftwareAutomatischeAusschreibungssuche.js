@@ -1,118 +1,117 @@
 export const besteSoftwareAutomatischeAusschreibungssuche = {
-    "path": "/beste-software-automatische-ausschreibungssuche",
-    "h1": "Beste Software für die automatische Ausschreibungssuche: Empfehlung nach Use Case",
-    "direktantwort": "Es gibt nicht die eine beste Software für die automatische Ausschreibungssuche - die richtige Wahl hängt vom gewünschten Automatisierungsgrad, der branchenspezifischen Abdeckung und dem Budget ab. Wer einen vollständig automatisierten Service ohne eigene Software-Administration möchte, ist mit einem gemanagten Ausschreibungsdienst am besten bedient.",
-    "fakten": {
-        "datenstand": "8. Oktober 2026",
-        "kopf": [
-            "Kriterium",
-            "Empfehlung",
-            "Beleg"
+    path: '/beste-software-automatische-ausschreibungssuche',
+    h1: 'Beste Software für die automatische Ausschreibungssuche: Empfehlung nach Use Case',
+    direktantwort:
+        'Es gibt nicht die eine beste Software für die automatische Ausschreibungssuche – die passende Wahl hängt von Abdeckung, Nachvollziehbarkeit und Betriebsaufwand ab. Wer maximale Breite sucht, landet bei DTAD oder Vergabepilot; wer jeden Treffer nachvollziehbar begründet haben möchte oder Daten per API und MCP anbindet, findet mit Ausschreibungsagenten.de eine transparente Alternative.',
+    fakten: {
+        datenstand: '22. November 2026',
+        kopf: ['Kriterium / Use Case', 'Empfehlung', 'Beleg'],
+        zeilen: [
+            [
+                'Erklärbares Matching, offener Quellenstatus & API/MCP',
+                'Ausschreibungsagenten.de',
+                '18 benannte Live-Quellen mit Abrufstand, CPV- und Regel-Begründung je Treffer, GAEB X83/X84 lesend, REST/MCP/A2A; Pilotphase 0 €, Regelbetrieb ab 149 €/Monat.',
+            ],
+            [
+                'Maximale Datenabdeckung in Deutschland',
+                'DTAD',
+                'Nach eigenen Angaben 99,99 % aller öffentlich publizierten Ausschreibungen aus Deutschland, über 12.000 Quellen, europaweite Ergänzung; Preise auf Anfrage.',
+            ],
+            [
+                'Günstiger Einstieg mit semantischer KI-Suche',
+                'Vergabepilot',
+                'Dauerhaft kostenloser BASIC-Tarif, semantische KI-Suche laut Anbieter über 300+ Portale, KI-Assistent für Vergabeunterlagen.',
+            ],
+            [
+                'Kostenlose Basisquelle für EU-Oberschwellenbereich',
+                'TED',
+                'Amtliche EU-Datenbank, rund 3.000 Ausschreibungen täglich, Suchprofile und E-Mail-Benachrichtigungen ohne Kosten.',
+            ],
+            [
+                'Schwerpunkt Bau und Handwerk (klassische Redaktion)',
+                'ibau oder subreport',
+                'ibau seit 1957 mit über 450.000 Bekanntmachungen pro Jahr und 50.000+ Vergabestellen; subreport ELViS seit 2001 mit täglicher Aktualisierung.',
+            ],
         ],
-        "zeilen": [
-            [
-                "Betriebsaufwand im Alltag",
-                "Gemanagter Ausschreibungsdienst",
-                "Keine Suchprofil-Pflege, keine Plattform-Einarbeitung; der Anbieter übernimmt die gesamte Suchlogik und liefert vorqualifizierte Treffer."
-            ],
-            [
-                "Maximale Datenabdeckung in Deutschland",
-                "DTAD",
-                "Nach eigenen Angaben 99,99 % aller öffentlich publizierten Ausschreibungen aus Deutschland, über 12.000 Quellen, europaweite Ergänzung."
-            ],
-            [
-                "Günstiger Einstieg mit KI-Suche",
-                "Vergabepilot",
-                "Dauerhaft kostenloser BASIC-Tarif, semantische KI-Suche über 300+ Portale, KI-Assistent für Vergabeunterlagen."
-            ],
-            [
-                "Kostenlose Basisquelle für EU-Oberschwellenbereich",
-                "TED",
-                "Amtliche EU-Datenbank, rund 3.000 Ausschreibungen täglich, Suchprofile und E-Mail-Benachrichtigungen ohne Kosten."
-            ],
-            [
-                "Schwerpunkt Bau und Handwerk",
-                "ibau oder subreport",
-                "ibau seit 1957 mit über 450.000 Bekanntmachungen pro Jahr und 50.000+ Vergabestellen; subreport ELViS seit 2001 mit täglicher Aktualisierung von über 900 neuen Ausschreibungen."
-            ]
-        ]
     },
-    "abschnitte": [
+    abschnitte: [
         {
-            "titel": "Die beste Lösung im Überblick - eine Kategorisierung nach Einsatzszenario",
-            "absaetze": [
-                "Wer eine eigenständige Software-Plattform mit KI-gestützter Suche und Dokumentenanalyse betreiben will, findet im Markt mehrere etablierte Anbieter - von DTAD über Vergabepilot bis hin zu TED als kostenlose Basisquelle.",
-                "Der Markt für die automatische Ausschreibungssuche hat sich 2026 in zwei klare Kategorien aufgeteilt: gemanagte Dienste, die die Suche vollständig übernehmen, und Software-Plattformen, die das Unternehmen selbst bedient. Beide Ansätze lösen dasselbe Grundproblem - die Zersplitterung von Ausschreibungen auf hunderte Portale - aber auf unterschiedliche Weise.",
-                "Gemanagter Ausschreibungsdienst: Passt zu: Unternehmen ohne eigene Vergabeabteilung, die einen verlässlichen, vollständig automatisierten Posteingang mit relevanten Ausschreibungen erhalten wollen. Vorteil: Keine Software-Administration, keine Suchprofil-Pflege, keine Plattform-Einarbeitung. Der Anbieter übernimmt die gesamte Suchlogik und liefert vorqualifizierte Treffer, die zum Leistungsprofil des Unternehmens passen. Typischer Use Case: Mittelständler im B2G-Vertrieb, die regelmäßig Ausschreibungen prüfen, aber keinen eigenen Tool-Stack pflegen möchten.",
-                "KI-gestützte Software-Plattformen: DTAD bündelt nach eigenen Angaben über 12.000 Quellen und erfasst 99,99 % aller öffentlich publizierten Ausschreibungen aus Deutschland (Quelle: dtad.com). Der KI-Assistent „Frank\" liest Dokumente und extrahiert Eignungs- und Zuschlagskriterien. Preise auf Anfrage, Einstieg über kostenlosen Test. Vergabepilot bietet eine semantische KI-Suche über 300+ Portale, einen KI-Assistenten für Vergabeunterlagen und einen dauerhaft kostenlosen BASIC-Tarif (Quelle: vergabepilot.ai). Patterno durchsucht über 4.500 Vergabeplattformen europaweit inklusive TED, bewertet jede Ausschreibung einzeln gegen das Unternehmensprofil und analysiert Vergabeunterlagen; öffentliche Preise ab 99 €/Monat (Quelle: patterno.de).",
-                "Klassische Ausschreibungsdienste: Vergabe24 bündelt nach eigenen Angaben über 570.000 Ausschreibungen pro Jahr aus Deutschland und Europa, bietet CPV-Codes und E-Mail-Benachrichtigungen für gespeicherte Suchprofile (Quelle: vergabe24.de). DTVP stellt den KI-Assistenten Argos bereit, der Suchprofile aus dem Leistungsportfolio erstellt, und führt 1,8 Mio. strukturierte Bieterprofile (Quelle: dtvp.de). ibau ist seit 1957 ein Informationsdienst mit über 450.000 Bekanntmachungen pro Jahr und einem Schwerpunkt im Bausektor; die Daten werden mit 145 Rechercheuren und künstlicher Intelligenz aufbereitet (Quelle: patterno.de).",
-                "Kostenlose Basisquelle: TED ist die amtliche EU-Ausschreibungsdatenbank. Rund 3.000 öffentliche Ausschreibungen werden dort täglich bekannt gegeben (Quelle: ted.europa.eu). Suchprofile und E-Mail-Benachrichtigungen sind kostenlos. TED deckt allerdings nur den Oberschwellenbereich ab; nationale Ausschreibungen unterhalb der Schwellenwerte erscheinen dort nicht."
-            ]
+            titel: 'Die beste Lösung im Überblick – Kategorisierung nach Einsatzszenario',
+            absaetze: [
+                'Der Markt für die automatische Ausschreibungssuche teilt sich 2026 in vier klar unterscheidbare Ansätze: erklärbare Ausschreibungsagenten mit begleiteter Einrichtung und offenen Schnittstellen, breit aufgestellte KI-Plattformen, klassische Informationsdienste und amtliche Datenbanken.',
+                'Erklärbares Matching und begleitete Einrichtung (Ausschreibungsagenten.de): Passt zu Betrieben aus Bau, Handwerk, Architektur/Planung, IT und Marketing, die keine Blackbox-Trefferliste wollen, sondern zu jeder Bekanntmachung die konkreten Gründe nach CPV-Code, Ausschlusswörtern, Leistungsort, Auftragswert und Frist. Alle 18 angebundenen Quellen stehen öffentlich mit Zeitstempel im [Quellenstatus](/status); für Entwickler und eigene KI-Workflows stehen [REST-API, MCP und A2A](/entwickler) bereit. Die Pilotphase ist kostenfrei ([Preise & Limits](/preise)).',
+                'Breite KI-gestützte Software-Plattformen: DTAD bündelt nach eigenen Angaben über 12.000 Quellen in Deutschland (Quelle: dtad.com) und ergänzt die Suche mit dem KI-Assistenten „Frank“ für Unterlagen; Preise nennt der Anbieter auf Anfrage (Detailvergleich: [DTAD Alternative](/dtad-alternative)). Vergabepilot bietet eine semantische KI-Suche über laut Anbieter 300+ Portale und einen kostenlosen BASIC-Tarif (Quelle: vergabepilot.ai; Detailvergleich: [Vergabepilot Alternative](/vergabepilot-alternative)). Patterno durchsucht laut Anbieter 4.500+ europäische Vergabeplattformen ab 99 €/Monat (Quelle: patterno.de). Weitere DACH-Anbieter mit Fokus auf Monitoring oder Beratung vergleichen wir unter [Vergabefix Alternative](/vergabefix-alternative) und [Tenderflow Alternative](/tenderflow-alternative).',
+                'Klassische Ausschreibungsdienste: Vergabe24 bündelt nach eigenen Angaben über 570.000 Ausschreibungen pro Jahr (Quelle: vergabe24.de). DTVP ergänzt sein Vergabeportal mit dem Assistenten Argos (Quelle: dtvp.de). Im Bausektor zählen ibau (redaktionelle Aufbereitung mit Schwerpunkt Bau) und subreport ELViS zu den etablierten Informationsdiensten. Wie sich Bauleistungen nach Gewerk und CPV-Gruppe strukturieren lassen, zeigt [Bauaufträge finden](/bauauftraege-finden).',
+                'Kostenlose Basisquelle: TED (ted.europa.eu) ist die amtliche EU-Ausschreibungsdatenbank mit rund 3.000 neuen Bekanntmachungen täglich. Sie ist kostenlos, deckt aber ausschließlich Verfahren oberhalb der EU-Schwellenwerte ab; laut unserer [Auswertung des deutschen Vergabemarkts](/zahlen) liegen rund 88 Prozent der gemeldeten Verfahren jedoch darunter.',
+            ],
         },
         {
-            "titel": "Warum ein gemanagter Dienst für viele Unternehmen die bessere Wahl ist",
-            "absaetze": [
-                "Die automatische Ausschreibungssuche als gemanagter Service unterscheidet sich von einer Software-Plattform in einem entscheidenden Punkt: Die Verantwortung für die Qualität der Ergebnisse liegt beim Anbieter, nicht beim Nutzer. Bei einer Software muss das eigene Team Suchprofile pflegen, Filter anpassen und die Relevanz der Treffer selbst bewerten. Ein gemanagter Ausschreibungsdienst übernimmt diese Arbeit vollständig - das Unternehmen erhält nur noch die Ausschreibungen, die tatsächlich zum Leistungsprofil passen.",
-                "In der Praxis bedeutet das: Statt dass mehrere Vertriebsmitarbeiter täglich Dutzende neue Ausschreibungen sichten und einzeln auf Relevanz prüfen, erhalten sie einen kuratierten Posteingang mit vorqualifizierten Treffern. Die Einarbeitungszeit auf eine neue Plattform entfällt, und die Suchlogik wird vom Anbieter kontinuierlich verbessert, ohne dass das eigene Team eingreifen muss. Für Unternehmen mit kleinerem Vertriebsteam oder ohne dedizierte Vergabeabteilung ist dieser Vorteil besonders relevant, da der Betriebsaufwand einer Software-Plattform mit der Zeit steigt, je breiter das Leistungsportfolio wird."
-            ]
+            titel: 'Warum Nachvollziehbarkeit im Alltag oft wichtiger ist als Portalzahlen',
+            absaetze: [
+                'Viele Vergleiche reduzieren die Tool-Auswahl auf die höchste Zahl an Quellen („300+ Portale“ oder „12.000 Quellen“). In der Praxis scheitert die automatische Ausschreibungssuche jedoch selten an fehlenden Portalen, sondern an zu vielen unpassenden Treffern, die Vertrieb oder Kalkulation täglich von Hand aussortieren müssen.',
+                'Ein System, das nur einen Ähnlichkeitswert oder einen pauschalen Score anzeigt, lässt sich schwer korrigieren: Niemand sieht, warum eine Fensterreinigung im Suchprofil eines Fensterbauers gelandet ist. Ausschreibungsagenten.de setzt deshalb bewusst auf sichtbare Einzelgründe (CPV, Leistungsbegriffe, Ausschlüsse, Region, Frist, Wert) und eine begleitete Einrichtung im Pilot, statt die Pflege der Filter vollständig beim Kunden abzuladen.',
+            ],
         },
         {
-            "titel": "Entscheidungskriterien und Trust-Signale für die Kaufentscheidung",
-            "absaetze": [
-                "Bei der Wahl zwischen den verschiedenen Lösungen für die automatische Ausschreibungssuche sollten Unternehmen folgende Kriterien systematisch prüfen:",
-                "Abdeckung und Quellen: Welche Vergabeportale werden erfasst? Reicht die Abdeckung für die eigene Region und Branche? DTAD nennt über 12.000 Quellen, Vergabepilot 300+ Portale, Patterno 4.500+ Vergabeplattformen. Die Einheiten unterscheiden sich und sind nicht direkt vergleichbar - entscheidend ist, ob die für das eigene Unternehmen relevanten Portale abgedeckt sind. TED liefert als kostenlose Quelle den EU-Oberschwellenbereich und eignet sich als Ergänzung oder als alleinige Quelle für Unternehmen, die ausschließlich große europäische Verfahren verfolgen.",
-                "Suchtechnologie: Semantische KI-Suche erkennt Synonyme und Kontext, während klassische Schlagwortsuche nur exakte Treffer liefert. Für Unternehmen mit breitem Leistungsportfolio ist semantische Suche vorteilhaft, weil sie auch Ausschreibungen findet, die mit anderen Formulierungen beschrieben sind. DTAD, Vergabepilot und Patterno setzen hier auf KI-gestützte Verfahren; DTVP bietet mit Argos einen Assistenten, der Suchprofile aus dem Leistungsportfolio ableitet.",
-                "Dokumentenanalyse: Manche Lösungen liefern nur Treffer, andere analysieren zusätzlich die Vergabeunterlagen und extrahieren Eignungskriterien. Wer die Vorqualifizierung automatisieren will, sollte auf diese Funktion achten. DTAD-Assistent „Frank\" und der KI-Assistent von Vergabepilot beantworten Fragen zu Vergabeunterlagen mit Quellenangabe.",
-                "Testmöglichkeit und Kündigungsbedingungen: Ein kostenloser Einstieg oder eine Testphase reduziert das Kauf-Risiko erheblich. Vergabepilot bietet einen dauerhaft kostenlosen BASIC-Tarif, DTAD einen kostenlosen Testzugang, TED ist vollständig kostenlos. Bei gemanagten Ausschreibungsdiensten lässt sich die Qualität der vorqualifizierten Treffer in einer unverbindlichen Erstberatung prüfen.",
-                "DSGVO-Konformität: Alle genannten Anbieter arbeiten mit deutschen oder EU-Servern. DTAD betont ausdrücklich die 100-prozentige DSGVO-Konformität und die Datenverarbeitung ausschließlich in Deutschland (Quelle: dtad.com). Vergabepilot weist auf Hosting in Deutschland und keine Nutzung von Trainingsdaten aus Kundendokumenten hin (Quelle: vergabepilot.ai).",
-                "Konkreter Validierungsschritt: Unternehmen sollten vor einer endgültigen Entscheidung mindestens zwei bis drei Anbieter in einer Testphase mit dem eigenen Leistungsprofil durchlaufen lassen und die Relevanz der Treffer über mindestens eine Woche beobachten. So lässt sich objektiv beurteilen, welche Lösung die höchste Trefferquote für das eigene Segment liefert."
-            ]
+            titel: 'Entscheidungskriterien für die Kaufentscheidung',
+            absaetze: [
+                'Bei der Wahl zwischen den Anbietern sollten Unternehmen sechs Kriterien anhand realer Bekanntmachungen prüfen:',
+                'Abdeckung und Prüfbarkeit: Werden die für Ihre Branche und Region relevanten Vergabeportale tatsächlich abgerufen? Pauschale Portalzahlen verschiedener Anbieter nutzen unterschiedliche Zählweisen und sind kaum direkt vergleichbar. Prüfen Sie, ob ein Anbieter einen öffentlichen [Quellenstatus](/status) mit Abrufzeitpunkten nennt.',
+                'Suchtechnologie (semantisch vs. regelbasiert): Semantische KI-Suche erkennt sprachliche Varianten, liefert aber einen Ähnlichkeitswert ohne harten Beleg. Regelbasiertes Matching über CPV-Codes und Ausschlusswörter verpasst eher exotische Formulierungen, begründet aber jeden Treffer transparent und lässt sich gezielt nachschärfen. Mehr zu den Unterschieden steht unter [Semantische Suche bei Ausschreibungen](/semantische-suche-ausschreibungen).',
+                'Dokumentenprüfung und GAEB: Manche Plattformen bieten freie KI-Chats über PDFs, andere extrahieren strukturierte Eignungsanforderungen oder lesen GAEB-DA-XML-Dateien (X83/X84) tabellarisch aus. Worauf Sie bei KI in der Angebotsphase achten sollten, fasst [KI und Ausschreibungen](/ki-angebot-ausschreibung) zusammen.',
+                'Preistransparenz und Testphase: Ein kostenloser Einstieg oder eine unverbindliche Testphase mit dem eigenen Leistungsprofil senkt das Kaufrisiko erheblich. Prüfen Sie vorab, ob Preise, API-Limits und Kündigungsbedingungen offen einsehbar sind – wie auf unserer [Preisseite](/preise).',
+                'Datenschutz und EU-Hosting: Suchprofile verraten, welche Aufträge ein Betrieb anstrebt und welche er ausschließt. Alle relevanten DACH-Anbieter werben mit DSGVO-Konformität; prüfen Sie zusätzlich, wo die eingesetzten KI-Modelle laufen (bei Ausschreibungsagenten.de ausschließlich in der EU über Mistral AI, Hosting in Deutschland).',
+                'Konkreter Praxistest: Lassen Sie vor einer Entscheidung zwei bis drei Anbieter mindestens eine Woche parallel auf demselben Leistungsprofil laufen und zählen Sie am Ende echte, bearbeitbare Treffer gegen unpassendes Rauschen.',
+            ],
         },
         {
-            "titel": "Nächste Schritte",
-            "absaetze": [],
-            "liste": [
-                "Leistungsprofil zusammenstellen: Kernleistungen, Zielregionen und relevante CPV-Codes dokumentieren.",
-                "Zwei bis drei Anbieter in einer Testphase mit dem eigenen Profil durchlaufen lassen - mindestens eine Woche beobachten.",
-                "Relevanz der Treffer bewerten: Anteil umsetzbarer Ausschreibungen vs. irrelevante Streuung dokumentieren.",
-                "Kündigungsbedingungen und Laufzeiten der in Betracht gezogenen Anbieter vergleichen.",
-                "Bei Interesse an einem gemanagten Service: unverbindliche Erstberatung vereinbaren, um die vorqualifizierte Trefferqualität am eigenen Profil zu prüfen."
-            ]
-        }
+            titel: 'Nächste Schritte für Ihren Vergleich',
+            absaetze: [],
+            liste: [
+                'Leistungsprofil festlegen: Kernleistungen, relevante CPV-Codes, Ausschlusswörter und Zielregionen notieren.',
+                'Zwei bis drei Lösungen (z. B. DTAD oder Vergabepilot neben dem kostenfreien Pilot von Ausschreibungsagenten.de) eine Woche mit identischem Profil testen.',
+                'Trefferqualität messen: Anteil tatsächlich prüfenswerter Ausschreibungen, Fristenvorlauf und Belegbarkeit der Gründe vergleichen.',
+                'Preise, Vertragslaufzeiten und Export- bzw. API-Möglichkeiten ([Preise & Limits](/preise)) gegenüberstellen.',
+            ],
+        },
     ],
-    "abgrenzung": {
-        "titel": "Wann eine Software-Plattform die bessere Wahl ist",
-        "absaetze": [
-            "Für Unternehmen, die zusätzlich Dokumentenanalyse, Fristenmanagement und Angebotsvorbereitung in einem Tool abbilden wollen, bleibt eine Software-Plattform die sinnvollere Wahl. Die Entscheidung fällt also nicht zwischen „gut\" und „schlecht\", sondern zwischen „gemanagter Service\" und „eigenes Tool\". Wer beides kombinieren möchte - also einen gemanagten Service für die Suche und eine Software für die Angebotsvorbereitung - kann beide Ansätze parallel nutzen, da sie sich nicht ausschließen."
-        ]
+    abgrenzung: {
+        titel: 'Wann ein anderer Anbieter besser passt als Ausschreibungsagenten.de',
+        absaetze: [
+            'Ausschreibungsagenten.de ist nicht die richtige Wahl, wenn Sie eine maximale, redaktionell gepflegte Abdeckung privater Bauprojekte oder tausender kommunaler Einzelquellen suchen – hier sind etablierte Großanbieter wie DTAD oder ibau breiter aufgestellt. Ebenso bieten wir bewusst keine semantische Vektorsuche, keine KI-geschriebenen Angebotstexte und keine Angebotsabgabe über Vergabeportale an.',
+            'Unsere Abdeckung umfasst aktuell 18 benannte, öffentlich geprüfte Quellen (von TED und Datenservice Öffentlicher Einkauf bis zu zehn Landesportalen, UK und US-Bund). Wer Transparenz, erklärbare Treffergründe, GAEB X83/X84 (lesend) oder direkte Agenten-Anbindung über REST/MCP sucht, findet genau dafür unseren kostenfreien Pilot.',
+        ],
     },
-    "faq": [
+    faq: [
         {
-            "frage": "Welche Entscheidungskriterien sind bei der Wahl der besten Software für die automatische Ausschreibungssuche wichtig?",
-            "antwort": "Vier Kriterien entscheiden maßgeblich: Erstens die Abdeckung - werden die für die eigene Branche und Region relevanten Vergabeportale erfasst? Zweitens die Suchtechnologie - semantische KI-Suche findet mehr relevante Treffer als reine Schlagwortsuche, weil sie Synonyme und Kontext versteht. Drittens der Funktionsumfang - reicht die reine Suche aus, oder sollen auch Vergabeunterlagen analysiert und Eignungskriterien automatisch extrahiert werden? Viertens der Betriebsaufwand - bei einer Software-Plattform liegt die Pflege der Suchprofile und Filter beim eigenen Team, bei einem gemanagten Ausschreibungsdienst übernimmt der Anbieter diese Aufgabe vollständig. Unternehmen ohne eigene Vergabeabteilung sollten den Betriebsaufwand besonders stark gewichten, da er sich über die gesamte Nutzungsdauer kumuliert."
+            frage: 'Welche Entscheidungskriterien sind bei der Wahl der besten Ausschreibungssoftware am wichtigsten?',
+            antwort:
+                'Vier Kriterien entscheiden im Alltag: Erstens die relevante Abdeckung in Ihrer Branche und Region (belegt statt nur als Portalzahl behauptet). Zweitens die Nachvollziehbarkeit der Treffer – ob eine semantische Suche oder ein erklärbares [CPV- und Regel-Matching](/semantische-suche-ausschreibungen) besser zu Ihrer Prüfroutine passt. Drittens die Unterstützung bei Unterlagen, Eignungsnachweisen oder GAEB-Dateien. Viertens der laufende Pflegeaufwand samt offenen [Preisen und Konditionen](/preise).',
         },
         {
-            "frage": "Welche Proof Points reduzieren das Kauf-Risiko bei der automatischen Ausschreibungssuche?",
-            "antwort": "Drei Maßnahmen senken das Risiko konkret: Erstens eine Testphase mit dem eigenen Leistungsprofil über mindestens eine Woche - so lässt sich die Relevanz der Treffer an echten Ausschreibungen messen, nicht an Marketingversprechen. Zweitens Referenzen aus der eigenen Branche anfordern, ob Software-Plattform oder gemanagter Dienst; konkrete Anwendungsbeispiele aus einem vergleichbaren Unternehmen geben die zuverlässigste Orientierung. Drittens die Kündigungsbedingungen prüfen: Einige Anbieter verlangen Mindestlaufzeiten von zwölf Monaten, andere ermöglichen eine monatliche Kündigung. Ein Anbieter, der eine kostenfreie Testphase ohne Kreditkarte bietet und eine kurze Kündigungsfrist erlaubt, signalisiert Vertrauen in die eigene Leistung und bindet das Unternehmen nicht übermäßig."
+            frage: 'Wie unterscheidet sich Ausschreibungsagenten.de von DTAD und Vergabepilot?',
+            antwort:
+                'DTAD und Vergabepilot setzen auf möglichst hohe Portalzahlen und semantische bzw. KI-gestützte Assistenten. Ausschreibungsagenten.de setzt auf 18 namentlich belegte Quellen im offenen [Quellenstatus](/status), nachvollziehbare Einzelgründe je Treffer (CPV, Begriffe, Ausschlüsse, Ort, Wert, Frist), lesende GAEB-X83/X84-Strukturierung sowie direkte Schnittstellen per REST, MCP und A2A.',
         },
         {
-            "frage": "Welche nächste Aktion sollte ich nach der Lektüre dieses Vergleichs ausführen?",
-            "antwort": "Der konkreteste nächste Schritt ist eine Testphase mit dem eigenen Leistungsprofil. Unternehmen sollten ihre Kernleistungen, Zielregionen und relevante CPV-Codes zusammenstellen und diese bei zwei bis drei potenziellen Anbietern als Suchprofil hinterlegen - entweder in einer Software-Plattform wie Vergabepilot oder DTAD oder als Briefing für einen gemanagten Ausschreibungsdienst. Nach einer Woche mit echten Treffern lässt sich die Relevanz der Ergebnisse objektiv bewerten: Wie viele der gelieferten Ausschreibungen sind tatsächlich umsetzbar? Wie viele irrelevante Treffer müssen aussortiert werden? Wer einen gemanagten Service in Betracht zieht, kann diese Phase als unverbindliche Erstberatung nutzen, um zu prüfen, ob die vorqualifizierten Ausschreibungen zum eigenen Angebot passen, bevor ein Vertrag geschlossen wird."
-        }
+            frage: 'Wie teste ich mehrere Anbieter fair gegeneinander?',
+            antwort:
+                'Definieren Sie ein einheitliches Testprofil mit Ihren Kernleistungen, CPV-Codes, Ausschlusswörtern und Zielregionen und lassen Sie zwei bis drei Anbieter eine Woche parallel laufen. Zählen Sie am Ende nicht die schiere Treffermenge, sondern wie viele Verfahren tatsächlich fristgerecht prüfbar und fachlich relevant waren.',
+        },
+        {
+            frage: 'Lohnt sich eine bezahlte Software überhaupt neben dem kostenlosen TED-Portal?',
+            antwort:
+                'TED deckt ausschließlich EU-weite Verfahren oberhalb der Schwellenwerte ab. Rund 88 Prozent der gemeldeten öffentlichen Vergaben in Deutschland liegen jedoch darunter und erscheinen auf Bundes-, Landes- und E-Vergabe-Portalen. Nur wer ausschließlich Großprojekte oberhalb der EU-Schwellen sucht, kommt mit TED allein aus.',
+        },
     ],
-    "ctaKontext": "Beste Software für die automatische Ausschreibungssuche",
-    "querverweise": [
-        {
-            "path": "/ausschreibungssuche-automatisieren",
-            "text": "Wie die automatisierte Suche insgesamt funktioniert"
-        },
-        {
-            "path": "/vergabepilot-alternative",
-            "text": "Vergabepilot im Vergleich"
-        },
-        {
-            "path": "/status",
-            "text": "Quellenstatus aller angebundenen Portale"
-        }
-    ]
+    ctaKontext: 'Beste Software für die automatische Ausschreibungssuche',
+    ctaTitel: 'Ausschreibungsagenten.de im Paralleltest prüfen',
+    ctaText:
+        'Testen Sie Ausschreibungsagenten.de kostenfrei im Pilot mit Ihrem eigenen Leistungsprofil – gern parallel zu Ihrer bestehenden Lösung, mit Begründung je Treffer.',
+    querverweise: [
+        { path: '/preise', text: 'Preise, API-Limits und kostenfreie Pilotphase im Detail' },
+        { path: '/vergabepilot-alternative', text: 'Vergabepilot Alternative im Detailvergleich' },
+        { path: '/ausschreibungssuche-automatisieren', text: 'Leitfaden: Ausschreibungssuche automatisieren' },
+        { path: '/status', text: 'Quellenstatus aller 18 angebundenen Portale' },
+    ],
 }

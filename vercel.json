@@ -90,18 +90,13 @@
             "permanent": true
         },
         {
-            "source": "/preise",
-            "destination": "/#preise",
-            "permanent": true
-        },
-        {
             "source": "/pricing",
-            "destination": "/#preise",
+            "destination": "/preise",
             "permanent": true
         },
         {
             "source": "/tarife",
-            "destination": "/#preise",
+            "destination": "/preise",
             "permanent": true
         },
         {

@@ -29,15 +29,15 @@ export const vergabepilotAlternative = {
         {
             titel: 'Der Kernunterschied: Ähnlichkeitswert oder Begründung',
             absaetze: [
-                'Semantische Suche liefert als Ergebnis einen Ähnlichkeitswert. Der sagt, wie nah ein Text einer Anfrage liegt — aber nicht, welches Kriterium erfüllt ist. Eine Ausschreibung für Fensterreinigung liegt sprachlich nah an einer für Fenstermontage, inhaltlich trennen sie Welten. Mit nur einem Ähnlichkeitswert lässt sich dieser Unterschied weder erkennen noch korrigieren.',
+                'Semantische Suche liefert als Ergebnis einen Ähnlichkeitswert. Der sagt, wie nah ein Text einer Anfrage liegt — aber nicht, welches Kriterium erfüllt ist. Eine Ausschreibung für Fensterreinigung liegt sprachlich nah an einer für Fenstermontage, inhaltlich trennen sie Welten. Mit nur einem Ähnlichkeitswert lässt sich dieser Unterschied weder erkennen noch korrigieren (Hintergrund: [Semantische Suche bei Ausschreibungen](/semantische-suche-ausschreibungen)).',
                 'Ausschreibungsagenten arbeitet deshalb anders: Jeder Treffer wird über CPV-Codes, Leistungsbegriffe, Ausschlusswörter und harte Regeln für Ort, Wert und Frist geprüft. Das Ergebnis ist keine Punktzahl, sondern eine Liste von Gründen. Fehlt ein Treffer, sehen Sie, ob es am Code, an einem Begriff oder an einer Regel lag — und können das Profil nachschärfen.',
             ],
         },
         {
             titel: 'Quellen: benannt und belegt statt „alle“',
             absaetze: [
-                'Vergabepilot wirbt damit, alle öffentlichen Vergabeportale an einem Ort zu bündeln. Ausschreibungsagenten geht hier einen nüchternen Weg: Wir nennen die 18 Quellen beim Namen — TED, Bund, den Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale und die britischen Bekanntmachungswege — und zeigen im Quellenstatus zu jeder Quelle den letzten erfolgreichen Abruf.',
-                'Der Unterschied ist praktisch: Eine unbestimmte Zahl lässt sich nicht prüfen. Ein Quellenstatus mit Zeitstempel schon. Wenn eine Quelle klemmt, sehen Sie es, statt sich auf eine Zahl zu verlassen, die niemand nachvollziehen kann.',
+                'Vergabepilot wirbt damit, alle öffentlichen Vergabeportale an einem Ort zu bündeln. Ausschreibungsagenten geht hier einen nüchternen Weg: Wir nennen die 18 Quellen beim Namen — TED, Bund, den Datenservice Öffentlicher Einkauf, DTVP, RIB, die Landesportale und die britischen Bekanntmachungswege — und zeigen im [Quellenstatus](/status) zu jeder Quelle den letzten erfolgreichen Abruf.',
+                'Der Unterschied ist praktisch: Eine unbestimmte Zahl lässt sich nicht prüfen. Ein Quellenstatus mit Zeitstempel schon. Wenn eine Quelle klemmt, sehen Sie es, statt sich auf eine Zahl zu verlassen, die niemand nachvollziehen kann. Einen breiteren Marktüberblick bietet der [Software-Vergleich nach Use Case](/beste-software-automatische-ausschreibungssuche), alle Konditionen stehen auf der [Preisseite](/preise).',
             ],
         },
     ],
@@ -71,8 +71,10 @@ export const vergabepilotAlternative = {
     ctaText:
         'Wir übersetzen Ihre Gewerke in CPV-Codes und Begriffe der Vergabesprache, richten das Profil ein und zeigen Ihnen die ersten Treffer — jeweils mit den Gründen, aus denen sie passen.',
     querverweise: [
+        { path: '/beste-software-automatische-ausschreibungssuche', text: 'Beste Software für die automatische Ausschreibungssuche nach Use Case' },
         { path: '/semantische-suche-ausschreibungen', text: 'Warum wir bewusst nicht auf semantische Vektorsuche setzen' },
-        { path: '/ausschreibungssuche-automatisieren', text: 'Wie die automatisierte Ausschreibungssuche funktioniert' },
-        { path: '/status', text: 'Quellenstatus: welche Portale wann zuletzt abgefragt wurden' },
+        { path: '/vergabefix-alternative', text: 'Vergabefix Alternative im Vergleich' },
+        { path: '/tenderflow-alternative', text: 'Tenderflow Alternative im Vergleich' },
+        { path: '/preise', text: 'Preise, Limits und kostenfreie Pilotphase' },
     ],
 }

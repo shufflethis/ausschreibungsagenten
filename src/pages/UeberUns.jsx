@@ -3,6 +3,7 @@ import Seo from '../components/Seo'
 
 const team = [
     {
+        id: 'gorden-wuebbe',
         name: 'Gorden Wübbe',
         role: 'Geschäftsführer · Technologie & KI',
         description: 'Gorden verantwortet die technische Plattform hinter Ausschreibungsagenten.de: Datenquellen, Matching, sichere Infrastruktur und die Automatisierung vom Fund bis zur nächsten Aktion.',
@@ -10,26 +11,34 @@ const team = [
             'Er baut und betreibt die Anbindung der 18 öffentlichen Quellen – von TED über service.bund.de und den Datenservice Öffentlicher Einkauf bis zu den Landesportalen – und legt dabei Wert auf nachvollziehbare Datenpfade: Jede Bekanntmachung bleibt mit Originalquelle, Abrufzeitpunkt und Match-Begründung rekonstruierbar. Datenverarbeitung und KI-Modelle laufen bewusst in der Europäischen Union.',
         bio: 'Als Mitgründer der Berliner Agentur famefact baut er seit 2011 Marketing-Tools. Mit geo-tool.com hat er eines der ersten GEO-Tools im deutschsprachigen Raum gegründet: Es misst, ob KI-Systeme wie ChatGPT, Perplexity, Gemini und Google AI Mode ein Unternehmen empfehlen. Ehemann. Vater von drei Kindern. Slowmad.',
         image: '/team/gorden-wuebbe.webp',
+        width: 1024,
+        height: 1536,
         accent: 'cyan',
         focus: ['Quellenanbindung & Datenpipeline', 'Matching-Logik & Firmen-Fit', 'Infrastruktur in der EU'],
     },
     {
+        id: 'tobias-sander',
         name: 'Tobias Sander',
         role: 'Geschäftsführer · Strategie & Produkt',
         description: 'Tobias verbindet Kundenbedarf, Produktentwicklung und digitale Strategie. Er sorgt dafür, dass aus komplexen Vergabeinformationen ein verständliches und praktisch nutzbares Werkzeug wird.',
         longDescription:
             'Er führt die Pilotgespräche mit Unternehmen aus Handwerk, Bau, IT und Marketing und übersetzt deren Vergabealltag in Produktentscheidungen: Welche Angaben braucht eine Go/No-Go-Karte? Welche Exporte landen wirklich im Angebotsprozess? Aus diesen Antworten entstehen Funktionen wie der E-Mail-Digest, das Pilot-Dashboard und der ERP-Export.',
         image: '/team/tobias-sander.webp',
+        width: 1054,
+        height: 1492,
         accent: 'violet',
         focus: ['Pilotprogramm & Kundenarbeit', 'Produktstrategie', 'Vergabeprozesse im Mittelstand'],
     },
     {
+        id: 'thilo-jansen',
         name: 'Thilo Jansen',
         role: 'Geschäftsführer · Qualität & Prozesse',
         description: 'Thilo bringt die Perspektive aus regulierten und verantwortungsvollen Arbeitsfeldern ein. Sein Fokus liegt auf klaren Abläufen, nachvollziehbaren Ergebnissen und einer Einführung, die zum Team passt.',
         longDescription:
             'Er prüft jeden Ablauf auf Nachvollziehbarkeit: Woher stammt ein Treffer, warum wurde er bewertet, wie wird ein Profil eingeführt, ohne den laufenden Betrieb zu stören? Diese Perspektive aus regulierten Arbeitsfeldern sorgt dafür, dass das Werkzeug auch in Unternehmen mit dokumentationspflichtigen Prozessen Vertrauen findet.',
         image: '/team/thilo-jansen.webp',
+        width: 1054,
+        height: 1492,
         accent: 'amber',
         focus: ['Qualitätssicherung & Nachvollziehbarkeit', 'Einführung in bestehende Teams', 'Prozesse in regulierten Umgebungen'],
     },
@@ -82,6 +91,8 @@ export default function UeberUns() {
                     className="hero-foto"
                     src="/hero/team-ausschreibungsagenten-im-austausch.webp"
                     alt="Das Team hinter Ausschreibungsagenten.de im persönlichen Austausch"
+                    width={1920}
+                    height={1280}
                     fetchPriority="high"
                 />
                 <div className="hero-foto__schleier" aria-hidden="true"></div>
@@ -142,9 +153,15 @@ export default function UeberUns() {
 
                     <div className="about-team__grid">
                         {team.map((member) => (
-                            <article className={`team-card team-card--${member.accent}`} key={member.name}>
+                            <article id={member.id} className={`team-card team-card--${member.accent}`} key={member.name}>
                                 <div className="team-card__image">
-                                    <img src={member.image} alt={`${member.name}, ${member.role}`} loading="lazy" />
+                                    <img
+                                        src={member.image}
+                                        alt={`${member.name}, ${member.role}`}
+                                        width={member.width}
+                                        height={member.height}
+                                        loading="lazy"
+                                    />
                                 </div>
                                 <div className="team-card__content">
                                     <span className="team-card__role">{member.role}</span>
@@ -175,7 +192,10 @@ export default function UeberUns() {
                             <p>
                                 Agentifizierung baut produktive KI-Agenten für bestehende Geschäftsprozesse.
                                 Ausschreibungsagenten.de überträgt diesen Ansatz auf die Recherche, Bewertung und
-                                Bearbeitung öffentlicher Ausschreibungen.
+                                Bearbeitung öffentlicher Ausschreibungen. Alle Tarife stehen unter{' '}
+                                <Link to="/preise">Preise &amp; Pilotphase</Link>, Presse- und Partnermaterial im{' '}
+                                <Link to="/brandkit">Brandkit</Link> sowie im{' '}
+                                <Link to="/partner">Partnerprogramm</Link>.
                             </p>
                         </div>
                         <a

@@ -31,7 +31,7 @@ export const kiAngebotAusschreibung = {
             titel: 'Wo maschinelle Unterstützung tatsächlich Zeit spart',
             absaetze: [
                 'Die zeitraubende Arbeit steckt vor dem Schreiben. Vergabeunterlagen umfassen oft mehrere hundert Seiten, verteilt auf Bewerbungsbedingungen, Leistungsbeschreibung, Eignungsnachweise und Formblätter. Daraus die eigentlichen Anforderungen herauszuziehen, ist mühsam, aber gut strukturierbar — und damit maschinell sinnvoll.',
-                'Der zweite Hebel ist der Abgleich mit dem, was Sie ohnehin haben. Wer Referenzen, Umsatzangaben, Versicherungsnachweise und Zertifikate einmal geordnet ablegt, kann jede neue Ausschreibung dagegen halten: Was ist vorhanden, was fehlt, was ist abgelaufen. Aus diesem Vergleich entsteht eine Nachweismatrix mit Belegstellen statt einer Behauptung — zu jedem Punkt steht, aus welchem Dokument er stammt.',
+                'Der zweite Hebel ist der Abgleich mit dem, was Sie ohnehin haben. Wer Referenzen, Umsatzangaben, Versicherungsnachweise und Zertifikate einmal geordnet ablegt, kann jede neue Ausschreibung dagegen halten: Was ist vorhanden, was fehlt, was ist abgelaufen. Wie häufig diese Nachweise in EU-Verfahren tatsächlich gefordert werden, zeigt unsere [Korpus-Auswertung unter Zahlen & Statistik](/zahlen).',
             ],
         },
         {

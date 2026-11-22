@@ -11,11 +11,12 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const wurzel = join(dirname(fileURLToPath(import.meta.url)), '..')
-const { prerenderRoutes, routes } = await import(join(wurzel, 'src', 'routes.js'))
+const { indexableRoutes, prerenderRoutes, routes } = await import(join(wurzel, 'src', 'routes.js'))
 
 const MINDEST_TEXTLAENGE = 500
 const fehler = []
 const gesehenerTitel = new Map()
+const eingehendeLinks = new Map(indexableRoutes.map((r) => [r.path, 0]))
 
 function sichtbarerText(html) {
     const rumpf = html.split('<body')[1] ?? ''
@@ -66,6 +67,23 @@ for (const route of prerenderRoutes) {
         fehler.push(
             `${route.path}: nur ${text.length} Zeichen sichtbarer Text (mindestens ${MINDEST_TEXTLAENGE})`,
         )
+    }
+
+    // Interne Verlinkung aus dem Hauptinhalt (<main>) zaehlen, damit keine
+    // indexierbare Seite als verwaiste Orphan Page ausgeliefert wird.
+    const haupt = inhalt.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? ''
+    const gesehenAufSeite = new Set()
+    for (const [, ziel] of haupt.matchAll(/href="(\/[^"#?]*)"/g)) {
+        if (ziel !== route.path && eingehendeLinks.has(ziel) && !gesehenAufSeite.has(ziel)) {
+            gesehenAufSeite.add(ziel)
+            eingehendeLinks.set(ziel, eingehendeLinks.get(ziel) + 1)
+        }
+    }
+}
+
+for (const [pfad, anzahl] of eingehendeLinks) {
+    if (anzahl === 0) {
+        fehler.push(`${pfad}: keine eingehenden internen Links aus <main> anderer Seiten (Orphan Page)`)
     }
 }
 

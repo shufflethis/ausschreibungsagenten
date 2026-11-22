@@ -38,6 +38,12 @@ describe('Thema und Suchkriterien in den Formularen', () => {
         expect(screen.getByPlaceholderText(/Beschreiben Sie Ihre aktuelle Situation/).value).toBe('')
     })
 
+    it('uebernimmt ?suche= und ?region= aus der URL in die Suchfelder', () => {
+        zeigeStartseite('suche=Fassade&region=Bayern')
+        expect(screen.getByLabelText('Welche Leistung bieten Sie an?').value).toBe('Fassade')
+        expect(screen.getByLabelText('Leistungsregion').value).toBe('Bayern')
+    })
+
     it('uebernimmt gewaehlte Suchfilter mit einem Klick in das Pilotprofil', () => {
         zeigeStartseite()
         fireEvent.change(screen.getByLabelText('Welche Leistung bieten Sie an?'), { target: { value: 'Brandschutzfenster' } })

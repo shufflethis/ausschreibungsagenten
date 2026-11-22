@@ -16,13 +16,16 @@ const SPALTEN = [
             { href: '/#funktionen', text: 'Funktionen' },
             { href: '/#branchen', text: 'Branchen' },
             { href: '/#vergleich', text: 'Vergleich' },
-            { href: '/#preise', text: 'Preise' },
+            { zu: '/preise', text: 'Preise & Pilotphase' },
             { href: '/#faq', text: 'FAQ' },
         ],
     },
     {
-        titel: 'Wissen',
+        titel: 'Wissen & Tools',
         eintraege: [
+            { zu: '/gaeb-viewer', text: 'GAEB-Viewer (X83/X84)' },
+            { zu: '/cpv-code-suche', text: 'CPV-Code-Suche' },
+            { zu: '/eu-schwellenwerte', text: 'EU-Schwellenwerte 2026/27' },
             { zu: '/ausschreibungssuche-automatisieren', text: 'Suche automatisieren' },
             { zu: '/bauauftraege-finden', text: 'Bauaufträge nach Gewerk' },
             { zu: '/ki-angebot-ausschreibung', text: 'KI und Angebot' },
@@ -32,6 +35,10 @@ const SPALTEN = [
     {
         titel: 'Alternativen',
         eintraege: [
+            { zu: '/beste-software-automatische-ausschreibungssuche', text: 'Software-Vergleich nach Use Case' },
+            { zu: '/dtad-alternative', text: 'DTAD Alternative' },
+            { zu: '/vergabe24-alternative', text: 'Vergabe24 Alternative' },
+            { zu: '/ibau-alternative', text: 'ibau Alternative' },
             { zu: '/vergabepilot-alternative', text: 'Vergabepilot Alternative' },
             { zu: '/vergabefix-alternative', text: 'Vergabefix Alternative' },
             { zu: '/tenderflow-alternative', text: 'Tenderflow Alternative' },

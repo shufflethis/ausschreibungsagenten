@@ -53,8 +53,8 @@ export const ausschreibungssucheAutomatisieren = {
         {
             titel: 'Woran Sie eine brauchbare Lösung erkennen',
             absaetze: [
-                'Der entscheidende Prüfstein ist die Begründung. Ein Dienst, der einen Treffer meldet, ohne zu sagen warum, lässt sich nicht korrigieren: Sie können weder das Profil nachschärfen noch beurteilen, ob die Lücke am Werkzeug oder an Ihren Angaben liegt.',
-                'Zweiter Prüfstein ist der Quellennachweis. Zu jedem Treffer gehört ein Link auf die Originalbekanntmachung und die Angabe, wann diese Quelle zuletzt erfolgreich abgefragt wurde. Ohne diesen Datenstand wissen Sie nicht, ob eine Quelle seit Tagen klemmt.',
+                'Der entscheidende Prüfstein ist die Begründung. Ein Dienst, der einen Treffer meldet, ohne zu sagen warum, lässt sich nicht korrigieren: Sie können weder das Profil nachschärfen noch beurteilen, ob die Lücke am Werkzeug oder an Ihren Angaben liegt. Konkrete Kriterien für die Auswahl stellt der [Software-Vergleich nach Use Case](/beste-software-automatische-ausschreibungssuche) gegenüber.',
+                'Zweiter Prüfstein ist der Quellennachweis. Zu jedem Treffer gehört ein Link auf die Originalbekanntmachung und die Angabe, wann diese Quelle zuletzt erfolgreich abgefragt wurde – bei uns jederzeit prüfbar im [Quellenstatus](/status). Für Baubetriebe lohnt zusätzlich der Blick auf [Bauaufträge nach Gewerk und Region](/bauauftraege-finden); alle Konditionen stehen auf der [Preisseite](/preise).',
             ],
         },
     ],

@@ -78,17 +78,29 @@ describe('Strukturierte Daten', () => {
         expect(jsonLd('/')['@graph'].some((k) => k['@type'] === 'Person')).toBe(false)
     })
 
-    it('nennt den eigenen YouTube-Kanal als Profil derselben Entitaet', () => {
+    it('nennt die eigenen Profile (YouTube, GitHub, npm, Smithery) als sameAs', () => {
         const daten = jsonLd('/')
         const organisation = daten['@graph'].find((k) => k['@type'] === 'Organization')
         expect(organisation.sameAs).toContain('https://www.youtube.com/@ausschreibungsagenten')
+        expect(organisation.sameAs).toContain('https://github.com/shufflethis/ausschreibungsagenten')
+        expect(organisation.sameAs).toContain('https://www.npmjs.com/package/ausschreibungsagenten')
+        expect(organisation.sameAs).toContain('https://smithery.ai/servers/@agentifizierung/ausschreibungsagenten')
     })
 
-    it('zeichnet Fachartikel mit Autor und Aenderungsdatum als Article aus', () => {
+    it('zeichnet Fachartikel mit Autor, Bild, Erscheinungs- und Aenderungsdatum als Article aus', () => {
         const artikel = jsonLd('/bauauftraege-finden')['@graph'].find((k) => k['@type'] === 'Article')
         expect(artikel.headline).toContain('Bauaufträge finden')
         expect(artikel.author.name).toBe('Gorden Wübbe')
-        expect(artikel.dateModified).toBe('2026-11-05')
+        expect(artikel.datePublished).toBe('2026-11-05')
+        expect(artikel.dateModified).toBe('2026-11-22')
+        expect(artikel.image).toContain('https://www.ausschreibungsagenten.de/')
         expect(jsonLd('/entwickler')['@graph'].some((k) => k['@type'] === 'Article')).toBe(false)
+    })
+
+    it('gibt fuer die Zahlen-Seite ein Dataset-Schema aus', () => {
+        const datensatz = jsonLd('/zahlen')['@graph'].find((k) => k['@type'] === 'Dataset')
+        expect(datensatz).toBeDefined()
+        expect(datensatz.isAccessibleForFree).toBe(true)
+        expect(datensatz.description).toContain('88.817')
     })
 })

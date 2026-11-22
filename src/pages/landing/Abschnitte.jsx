@@ -217,6 +217,14 @@ export function Vergleich() {
 
                 <p style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--text-tertiary)', fontSize: 'var(--font-size-sm)' }}>
                     Stand: 16. Juli 2026. Anbieterangaben wurden nicht in allen Fällen vertraglich verifiziert.
+                    <br />Vertiefung:{' '}
+                    <Link to="/beste-software-automatische-ausschreibungssuche">Software-Vergleich nach Use Case</Link> ·{' '}
+                    <Link to="/dtad-alternative">DTAD Alternative</Link> ·{' '}
+                    <Link to="/vergabe24-alternative">Vergabe24 Alternative</Link> ·{' '}
+                    <Link to="/ibau-alternative">ibau Alternative</Link> ·{' '}
+                    <Link to="/vergabepilot-alternative">Vergabepilot Alternative</Link> ·{' '}
+                    <Link to="/vergabefix-alternative">Vergabefix Alternative</Link> ·{' '}
+                    <Link to="/tenderflow-alternative">Tenderflow Alternative</Link>
                     <br />Haben wir ein Tool vergessen? <a href="#kontakt">Schreiben Sie uns</a> – wir ergänzen es gerne.
                 </p>
             </div>
@@ -261,6 +269,10 @@ export function Preise() {
                         <a href="#kontakt" className="btn btn--outline">Beratung anfragen</a>
                     </article>
                 </div>
+
+                <p style={{ marginTop: '1.25rem', color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+                    <Link to="/preise">Alle Tarife, API-Limits (Free, Pro, Agent) und Pilot-Konditionen im Detail →</Link>
+                </p>
             </div>
         </section>
     )
@@ -306,9 +318,12 @@ export function Branchen({ tenderVertical, setTenderVertical }) {
                     Aktive <span className="gradient-text">Pilot-Verticals</span>
                 </h2>
                 <p className="section__subtitle">
-                    Kuratiert mit eigenen Regeln: Fenster/Fassade, Architektur/Planung und Marketing/Digital.
-                    Bauleistungen insgesamt durchsuchen Sie nach CPV-Gruppe – breiter, aber ohne
-                    zusätzliche Schlagwortregeln. Mehr dazu: <Link to="/bauauftraege-finden">Bauaufträge nach Gewerk und Region finden</Link>.
+                    Kuratiert mit eigenen Regeln: Fenster/Fassade,{' '}
+                    <Link to="/ausschreibungen-architektur">Architektur &amp; Planung</Link> und{' '}
+                    <Link to="/ausschreibungen-marketing">Marketing &amp; Digital</Link>.
+                    Bauleistungen, <Link to="/ausschreibungen-elektro-shk">Elektro &amp; SHK</Link> sowie{' '}
+                    <Link to="/ausschreibungen-it">IT &amp; Software</Link> durchsuchen Sie nach CPV-Gruppe –
+                    mehr dazu unter <Link to="/bauauftraege-finden">Bauaufträge nach Gewerk und Region</Link>.
                 </p>
 
                 <div className="branchen-grid">
@@ -350,7 +365,7 @@ export function Wissen() {
                         Öffentliche Beschaffung in Deutschland: großer, dezentraler Markt
                     </h3>
                     <p>
-                        Eine häufig zitierte <a href="https://www.oecd.org/de/publications/offentliche-vergabe-in-deutschland_48df1474-de.html" target="_blank" rel="noopener noreferrer">OECD-Schätzung</a> beziffert die öffentliche Beschaffung in Deutschland auf rund 15 Prozent des Bruttoinlandsprodukts. Die <a href="https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Vergabestatistik/_inhalt.html" target="_blank" rel="noopener noreferrer">amtliche Vergabestatistik von Destatis</a> weist für 2024 199.334 gemeldete Zuschläge mit einem Volumen von 135,2 Milliarden Euro aus. Diese Statistik hat Erfassungs- und Meldegrenzen und ist nicht mit der Zahl aller veröffentlichten Bekanntmachungen gleichzusetzen.
+                        Eine häufig zitierte <a href="https://www.oecd.org/de/publications/offentliche-vergabe-in-deutschland_48df1474-de.html" target="_blank" rel="noopener noreferrer">OECD-Schätzung</a> beziffert die öffentliche Beschaffung in Deutschland auf rund 15 Prozent des Bruttoinlandsprodukts. Die <a href="https://www.destatis.de/DE/Themen/Staat/Oeffentliche-Finanzen/Vergabestatistik/_inhalt.html" target="_blank" rel="noopener noreferrer">amtliche Vergabestatistik von Destatis</a> weist für 2024 199.334 gemeldete Zuschläge mit einem Volumen von 135,2 Milliarden Euro aus. Alle aufbereiteten Marktzahlen, Top-20-Branchen und Eignungskriterien-Quoten stehen auf <Link to="/zahlen">Vergabemarkt Deutschland in Zahlen</Link>.
                     </p>
                     <p>
                         Genau hier liegt die Chance für Unternehmen, die Ausschreibungssuche systematisch zu unterstützen: Unser Pilot bündelt aktuell 18 Live-Quellen – von TED und service.bund.de über den Datenservice Öffentlicher Einkauf, DTVP und RIB bis zu den Landes- und Regionalportalen –, gleicht Bekanntmachungen mit einem strukturierten Firmenprofil ab und verlinkt immer auf die Originalquelle. Deutsche eVergabe und evergabe.de sind dokumentierte Ausbaupunkte.
@@ -428,12 +443,38 @@ export function Wissen() {
                             – welche Portalebenen es gibt, was beim Profil zählt und woran sich eine brauchbare Lösung erkennen lässt.
                         </li>
                         <li>
+                            <Link to="/beste-software-automatische-ausschreibungssuche">Beste Software für automatische Ausschreibungssuche</Link>{' '}
+                            – Einordnung nach Use Case: DTAD, Vergabepilot, Patterno, TED, ibau, subreport und Ausschreibungsagenten.de.
+                        </li>
+                        <li>
+                            <Link to="/bauauftraege-finden">Bauaufträge nach Gewerk und Region finden</Link>{' '}
+                            – CPV-Gruppen von Hochbau bis Elektro/SHK, Leistungsort und Fachlose.
+                        </li>
+                        <li>
                             <Link to="/ki-angebot-ausschreibung">KI und Angebot</Link>{' '}
                             – wobei maschinelle Unterstützung beim Angebot tatsächlich hilft und wo die Grenze liegt.
                         </li>
                         <li>
                             <Link to="/semantische-suche-ausschreibungen">Semantische Suche bei Ausschreibungen</Link>{' '}
                             – was der Begriff meint und warum wir stattdessen mit begründbaren Regeln arbeiten.
+                        </li>
+                        <li>
+                            <Link to="/zahlen">Vergabemarkt Deutschland in Zahlen</Link>{' '}
+                            – 88.817 EU-Verfahren nach CPV-Division und Eignungskriterien-Auswertung mit Methodik.
+                        </li>
+                        <li>
+                            Kostenlose Werkzeuge:{' '}
+                            <Link to="/gaeb-viewer">GAEB-Viewer (X83/X84)</Link> ·{' '}
+                            <Link to="/cpv-code-suche">CPV-Code-Suche</Link> ·{' '}
+                            <Link to="/eu-schwellenwerte">EU-Schwellenwerte-Rechner 2026/2027</Link>.
+                        </li>
+                        <li>
+                            Nach Bundesland:{' '}
+                            <Link to="/ausschreibungen-nrw">NRW</Link> ·{' '}
+                            <Link to="/ausschreibungen-bayern">Bayern</Link> ·{' '}
+                            <Link to="/ausschreibungen-baden-wuerttemberg">Baden-Württemberg</Link> ·{' '}
+                            <Link to="/ausschreibungen-hessen">Hessen</Link> ·{' '}
+                            <Link to="/ausschreibungen-berlin">Berlin</Link>.
                         </li>
                     </ul>
                 </div>

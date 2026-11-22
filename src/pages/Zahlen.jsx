@@ -8,6 +8,31 @@ import Seo from '../components/Seo'
 const DATENSTAND_TED = '14. August 2026'
 const TED_ZEITRAUM = '1. August 2025 bis 31. Juli 2026'
 const TED_GESAMT = 88817
+const EIGNUNG_STICHPROBE = 7179
+const EIGNUNG_STAND = '18. Juli 2026'
+
+const eignungskriterienQuoten = [
+    {
+        typ: 'Referenzen (vergleichbare Leistungen)',
+        anteil: 56,
+        satz: 'In 56 Prozent der 7.179 ausgewerteten EU-Ausschreibungen mit Eignungstext verlangen Auftraggeber nachweisbare Referenzen.',
+    },
+    {
+        typ: 'Mindestumsatz / wirtschaftliche Leistungsfähigkeit',
+        anteil: 49,
+        satz: 'In 49 Prozent der Verfahren werden konkrete Umsatz- oder Finanzkennzahlen als Eignungskriterium abgefragt.',
+    },
+    {
+        typ: 'Versicherungsnachweis (Betriebs-/Berufshaftpflicht)',
+        anteil: 41,
+        satz: 'In 41 Prozent der Bekanntmachungen fordern Vergabestellen einen Haftpflicht- oder Versicherungsnachweis.',
+    },
+    {
+        typ: 'Zertifikate, Zulassungen und Qualitätsnachweise',
+        anteil: 33,
+        satz: 'In 33 Prozent der Verfahren sind spezifische Zertifikate, Normen oder behördliche Nachweise Teil der Eignungsprüfung.',
+    },
+]
 
 const topKategorien = [
     { cpv: '45', name: 'Bauarbeiten', n: 34117 },
@@ -71,6 +96,10 @@ export default function Zahlen() {
                     <h1 className="section__title">
                         Der deutsche <span className="gradient-text">Vergabemarkt</span> in Zahlen
                     </h1>
+                    <p className="inhalt__byline">
+                        Von <Link to="/ueber-uns#gorden-wuebbe">Gorden Wübbe</Link> · Aktualisiert am{' '}
+                        <time dateTime="2026-11-22">22. November 2026</time>
+                    </p>
                     <p className="section__subtitle">
                         Die öffentliche Hand in Deutschland beschafft pro Jahr Waren und Leistungen für rund
                         500 Milliarden Euro — etwa 15 Prozent des Bruttoinlandsprodukts (OECD-Schätzung).
@@ -206,6 +235,49 @@ export default function Zahlen() {
                 </div>
             </section>
 
+            <section className="section section--alt">
+                <div className="container">
+                    <span className="section__label">
+                        <span className="pulse"></span> Eigene Korpus-Auswertung
+                    </span>
+                    <h2 className="section__title">
+                        Welche <span className="gradient-text">Eignungsnachweise</span> EU-Auftraggeber fordern
+                    </h2>
+                    <p className="section__subtitle">
+                        Auswertung von {nf.format(EIGNUNG_STICHPROBE)} eForms-Bekanntmachungen mit Klartext-Eignungskriterien
+                        (<code>selection_criteria</code>) aus unserer eigenen TED-Datenbank (Stand: {EIGNUNG_STAND}).
+                        Mehrfachnennungen je Verfahren sind möglich, weil Auftraggeber häufig mehrere Nachweise kombinieren.
+                    </p>
+
+                    <div className="table-scroll">
+                        <table className="zahlen-tabelle">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nachweistyp</th>
+                                    <th scope="col" className="zahlen-tabelle__zahl">Anteil</th>
+                                    <th scope="col">Kernaussage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {eignungskriterienQuoten.map((eintrag) => (
+                                    <tr key={eintrag.typ}>
+                                        <td><strong>{eintrag.typ}</strong></td>
+                                        <td className="zahlen-tabelle__zahl">{eintrag.anteil} %</td>
+                                        <td>{eintrag.satz}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p className="muted zahlen-fussnote">
+                        Methodik: deterministische mehrsprachige Musterprüfung auf den im Feld{' '}
+                        <code>selection_criteria</code> veröffentlichten Klartexten (n = {nf.format(EIGNUNG_STICHPROBE)}, ohne KI-Schätzung).
+                        Warum fehlende Nachweise der häufigste formale Ausschlussgrund sind:{' '}
+                        <Link to="/ki-angebot-ausschreibung">KI und Angebot bei Ausschreibungen</Link>.
+                    </p>
+                </div>
+            </section>
+
             <section className="section">
                 <div className="container">
                     <span className="section__label">
@@ -257,12 +329,21 @@ export default function Zahlen() {
                                 (Standard- und Sozialregime), Käuferland Deutschland, veröffentlicht
                                 {' '}{TED_ZEITRAUM}, gezählt je CPV-Division. Abfragedatum: {DATENSTAND_TED}.
                             </li>
+                            <li>
+                                <strong>Eigene eForms-Eignungskriterien-Auswertung (Ausschreibungsagenten.de)</strong> —
+                                deterministische Extraktion über {nf.format(EIGNUNG_STICHPROBE)} gespeicherte TED-Verfahren
+                                mit Klartext-<code>selection_criteria</code> (Stand: {EIGNUNG_STAND}): 56 % Referenzen,
+                                49 % Umsatz, 41 % Versicherung, 33 % Zertifikate.
+                            </li>
                         </ul>
                     </div>
                     <div className="zahlen-cta">
                         <p>
                             Diese Verfahren sind keine abstrakte Statistik — unser Agent findet die, die zu Ihrem
-                            Firmenprofil passen, mit Begründung je Treffer.
+                            Firmenprofil passen, mit Begründung je Treffer. Passend dazu:{' '}
+                            <Link to="/bauauftraege-finden">Bauaufträge nach Gewerk und Region</Link>,{' '}
+                            <Link to="/beste-software-automatische-ausschreibungssuche">Software-Vergleich nach Use Case</Link>{' '}
+                            und <Link to="/preise">Preise &amp; Pilotphase</Link>.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                             <Link to="/?thema=Zahlen%20%26%20Statistik#profil" className="btn btn--primary">Kostenfreien Pilotzugang anfragen</Link>

@@ -48,7 +48,7 @@ export const semantischeSucheAusschreibungen = {
             titel: 'Wie wir es mit semantischen Verfahren künftig halten',
             absaetze: [
                 'Semantische Modelle sind kein Irrweg, sie sind an dieser Stelle nur nachrangig. Denkbar ist ein Einsatz dort, wo Ähnlichkeit tatsächlich die Frage ist: etwa beim Vorschlagen zusätzlicher Begriffe für ein Profil oder beim Auffinden vergleichbarer Referenzprojekte im eigenen Bestand.',
-                'Was wir nicht tun werden, ist einen Ähnlichkeitswert an die Stelle einer Begründung zu setzen. Wenn wir semantische Verfahren ergänzen, dann als zusätzliche Spur neben den Regeln — und erkennbar als solche.',
+                'Was wir nicht tun werden, ist einen Ähnlichkeitswert an die Stelle einer Begründung zu setzen. Wenn wir semantische Verfahren ergänzen, dann als zusätzliche Spur neben den Regeln — und erkennbar als solche. Den direkten Praxisvergleich mit einem semantischen Anbieter lesen Sie unter [Vergabepilot Alternative](/vergabepilot-alternative) und im [Software-Vergleich nach Use Case](/beste-software-automatische-ausschreibungssuche).',
             ],
         },
     ],

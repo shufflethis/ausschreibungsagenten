@@ -10,6 +10,7 @@ import { fitGruende, fristText, GEWERKE, gewerkParameter, gruendeBilanz, quellen
 import { neuerSuchauftrag, SUCHAUFTRAEGE_LIMIT, suchauftragLesen, suchauftragSchreiben, suchauftragVergleichen, suchkriterien, suchparameter } from '../lib/suchauftraege'
 import { spracheErmitteln, STANDARDSPRACHE } from '../lib/sprache'
 import { tafelTexte } from '../lib/tafelTexte'
+import { trackEvent } from '../lib/tracking'
 import { FAQS, TENDER_PRESETS } from './landing/daten'
 import { useWebmcpWerkzeuge } from './landing/webmcpWerkzeuge'
 import { Branchen, Faq, Funktionen, Kontakt, Preise, ProduktEinblick, Prozess, Vergleich, Wissen } from './landing/Abschnitte'
@@ -253,11 +254,17 @@ export default function LandingPage() {
         )
     }, [])
 
-    // Die Inhaltsseiten verlinken die Suche mit "?gewerk=hochbau#ergebnisse".
-    // Erst nach dem Mounten setzen, damit das vorgerenderte HTML passt.
+    // Die Inhalts- und Werkzeugseiten verlinken die Suche mit "?gewerk=hochbau#ergebnisse",
+    // "?suche=Fassade#ergebnisse" oder "?region=Bayern#ergebnisse". Erst nach dem Mounten
+    // setzen, damit das vorgerenderte HTML passt.
     useEffect(() => {
-        const gewerk = new URLSearchParams(window.location.search).get('gewerk')
+        const params = new URLSearchParams(window.location.search)
+        const gewerk = params.get('gewerk')
         if (gewerk && GEWERKE.some((g) => g.value === gewerk)) setTenderVertical(gewerk)
+        const suche = params.get('suche')?.trim()
+        if (suche) setTenderQuery(suche.slice(0, 160))
+        const region = params.get('region')?.trim()
+        if (region) setTenderRegion(region.slice(0, 160))
     }, [])
 
     // Der Browser springt beim Laden zum Anker, danach laedt die
@@ -538,6 +545,7 @@ export default function LandingPage() {
                 body: JSON.stringify(formData),
             })
             if (res.ok) {
+                trackEvent('Kontakt-Anfrage', { branche: formData.branche || 'unbekannt' })
                 setFormStatus('success')
                 setFormData({ name: '', email: '', company: '', branche: '', message: '', website: '' })
             } else {
@@ -569,6 +577,8 @@ export default function LandingPage() {
             })
             if (res.ok) {
                 const data = await res.json()
+                const thema = new URLSearchParams(window.location.search).get('thema') || 'direkt'
+                trackEvent('Pilot-Anfrage', { branche: eingereicht.industry || 'unbekannt', thema })
                 setProfileStatus('success')
                 setProfileResult({ ...eingereicht, ...data })
                 setProfileData({
@@ -595,13 +605,13 @@ export default function LandingPage() {
             <Seo path="/" faq={FAQS.map((eintrag) => ({ frage: eintrag.q, antwort: eintrag.a }))} />
 
             <section className="search-hero" id="start">
-                <img className="hero-foto" src="/hero/oeffentliche-ausschreibungen-team-recherche.webp" alt="Team bespricht öffentliche Ausschreibungen gemeinsam am Laptop im Büro" fetchPriority="high" />
+                <img className="hero-foto" src="/hero/oeffentliche-ausschreibungen-team-recherche.webp" alt="Team bespricht öffentliche Ausschreibungen gemeinsam am Laptop im Büro" width={1920} height={1280} fetchPriority="high" />
                 <div className="hero-foto__schleier" aria-hidden="true"></div>
                 <div className="container">
                     <span className="search-hero__eyebrow">Öffentliche Aufträge. Eine klare Vorauswahl.</span>
-                    <h1>Den passenden Auftrag finden.<br /><span className="gradient-text">Die richtige Entscheidung treffen.</span></h1>
+                    <h1>Öffentliche Ausschreibungen finden.<br /><span className="gradient-text">Die richtige Entscheidung treffen.</span></h1>
                     <p>Leistung und Region eingeben. Treffer mit Originalquelle prüfen. Interessante Verfahren im Blick behalten.</p>
-                    <form className="entry-search" id="suche" toolname="search_tenders_form" tooldescription="Set search terms and filters for public tenders; show matching notices on this page." onSubmit={(event) => { event.preventDefault(); document.getElementById('ergebnisse')?.scrollIntoView({ behavior: 'smooth' }) }}>
+                    <form className="entry-search" id="suche" toolname="search_tenders_form" tooldescription="Set search terms and filters for public tenders; show matching notices on this page." onSubmit={(event) => { event.preventDefault(); trackEvent('Suche-Ausgefuehrt', { gewerk: tenderVertical || 'alle', land: tenderLand }); document.getElementById('ergebnisse')?.scrollIntoView({ behavior: 'smooth' }) }}>
                         <div className="entry-search__fields">
                             <label htmlFor="tender-query">Welche Leistung bieten Sie an?
                                 <input id="tender-query" name="query" type="search" autoComplete="on" placeholder="z. B. Fenster, Fassaden, Marketing …" value={tenderQuery} onChange={(event) => setTenderQuery(event.target.value)} maxLength={160} />
@@ -650,8 +660,8 @@ export default function LandingPage() {
                                 <p className="opportunity__buyer">{tender.buyer_name || 'Auftraggeber nicht angegeben'}</p>
                                 <p className="opportunity__description">{tender.description ? `${tender.description.slice(0, 220)}${tender.description.length > 220 ? ' …' : ''}` : 'Leistungsumfang in der Originalbekanntmachung prüfen.'}</p>
                                 <dl><div><dt>Leistungsort</dt><dd>{tender.performance_location || (tender.performance_nuts?.length ? `NUTS ${tender.performance_nuts.join(', ')}` : 'Noch ungeklärt')}</dd></div><div><dt>Frist</dt><dd className={!tender.deadline_at ? 'is-uncertain' : ''}>{fristText(tender)}</dd></div><div><dt>Auftragswert</dt><dd>{formatCurrency(tender.estimated_value_eur) || 'Nicht veröffentlicht'}</dd></div></dl>
-                                <div className="tender-card__aktionen"><button type="button" className="btn btn--primary" onClick={() => setSelectedTender(tender)}>Entscheidung prüfen</button><button type="button" className="source-trigger" disabled={!aufTafel(tender.id) && merkliste.length >= MERKLISTE_GRENZE} onClick={() => merklisteAufnehmen(tender, { suchbegriff: tenderQuery })}>{aufTafel(tender.id) ? '✓ Gemerkt' : 'Merken'}</button></div>
-                                {quellenUrl(tender.source_url) && <a className="opportunity__source" href={quellenUrl(tender.source_url)} target="_blank" rel="noopener noreferrer">Originalquelle direkt öffnen ↗</a>}
+                                <div className="tender-card__aktionen"><button type="button" className="btn btn--primary" onClick={() => { trackEvent('Entscheidungskarte-Geoeffnet', { quelle: tender.source || 'unbekannt' }); setSelectedTender(tender) }}>Entscheidung prüfen</button><button type="button" className="source-trigger" disabled={!aufTafel(tender.id) && merkliste.length >= MERKLISTE_GRENZE} onClick={() => merklisteAufnehmen(tender, { suchbegriff: tenderQuery })}>{aufTafel(tender.id) ? '✓ Gemerkt' : 'Merken'}</button></div>
+                                {quellenUrl(tender.source_url) && <a className="opportunity__source" href={quellenUrl(tender.source_url)} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('Originalquelle-Geklickt', { quelle: tender.source || 'unbekannt' })}>Originalquelle direkt öffnen ↗</a>}
                             </article>)}
                         </div>}
                         {!tendersLoading && !tendersError && <div className="workspace__pagination">{hasMore ? <button type="button" className="btn btn--outline" disabled={moreLoading} onClick={loadMore}>{moreLoading ? 'Weitere Aufträge werden geladen …' : 'Weitere Aufträge laden ↓'}</button> : tenders.length > 0 && <p>Alle Treffer dieser Suche geladen.</p>}{moreError && <p role="alert">{moreError}</p>}</div>}

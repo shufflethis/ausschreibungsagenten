@@ -38,4 +38,36 @@ describe('Server-Renderer', () => {
         expect(html).not.toMatch(/<meta\b/)
         expect(html).not.toMatch(/<link\b/)
     })
+
+    it('rendert auf /status schon serverseitig alle 18 Quellen statt einer leeren Ladeanzeige', async () => {
+        const { html } = await render('/status')
+        expect(html).toContain('Datenservice Öffentlicher Einkauf')
+        expect(html).toContain('US SAM.gov Contract Opportunities')
+        expect(html).toContain('Metropolregion Rhein-Neckar')
+    })
+
+    it('rendert /preise als eigenstaendige Tarifseite mit Limits', async () => {
+        const { html, head } = await render('/preise')
+        expect(head).toContain('https://www.ausschreibungsagenten.de/preise')
+        expect(html).toContain('3.600/h')
+        expect(html).toContain('149 €/Monat')
+    })
+
+    it('rendert die drei kostenlosen Werkzeuge und die DTAD-Alternative vorgerendert', async () => {
+        const gaeb = await render('/gaeb-viewer')
+        expect(gaeb.html).toContain('GAEB-Viewer')
+        expect(gaeb.head).toContain('"WebApplication"')
+
+        const cpv = await render('/cpv-code-suche')
+        expect(cpv.html).toContain('45443000')
+        expect(cpv.html).toContain('Fassadenarbeiten')
+
+        const schwellen = await render('/eu-schwellenwerte')
+        expect(schwellen.html).toContain('5.404.000')
+        expect(schwellen.html).toContain('432.000')
+
+        const dtad = await render('/dtad-alternative')
+        expect(dtad.html).toContain('DTAD Alternative')
+        expect(dtad.html).toContain('Gorden Wübbe')
+    })
 })

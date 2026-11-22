@@ -108,4 +108,22 @@ describe('Schablone fuer Inhaltsseiten', () => {
     it('wirft, wenn die Direktantwort fehlt', () => {
         expect(() => zeige({ ...SEITE, direktantwort: '' })).toThrow(/Direktantwort/)
     })
+
+    it('verwandelt interne Inline-Links im Fliesstext in echte Links', () => {
+        zeige({
+            ...SEITE,
+            abschnitte: [
+                { titel: 'Quellen', absaetze: ['Alle Details stehen im [Quellenstatus](/status) und unter [Preise](/preise).'] },
+            ],
+        })
+        expect(screen.getByRole('link', { name: 'Quellenstatus' })).toHaveAttribute('href', '/status')
+        expect(screen.getByRole('link', { name: 'Preise' })).toHaveAttribute('href', '/preise')
+    })
+
+    it('zeigt auf Artikel-Routen eine sichtbare Autoren-Byline mit Aktualisierungsdatum', () => {
+        zeige({ ...SEITE, path: '/bauauftraege-finden' })
+        const autorLink = screen.getByRole('link', { name: 'Gorden Wübbe' })
+        expect(autorLink).toHaveAttribute('href', '/ueber-uns#gorden-wuebbe')
+        expect(document.querySelector('time[datetime="2026-11-22"]')).not.toBeNull()
+    })
 })

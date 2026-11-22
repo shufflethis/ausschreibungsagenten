@@ -26,6 +26,13 @@ describe('Routen-Manifest', () => {
         }
     })
 
+    it('haelt Titel und Beschreibungen aller indexierbaren Seiten in SERP-Grenzen', () => {
+        for (const route of routes.filter((r) => r.index)) {
+            expect(route.title.length, `Title zu lang auf ${route.path}: ${route.title}`).toBeLessThanOrEqual(65)
+            expect(route.description.length, `Description zu lang auf ${route.path}`).toBeLessThanOrEqual(160)
+        }
+    })
+
     it('rendert keine Konto- oder Login-Route vor und indexiert sie nicht', () => {
         const geschuetzt = [
             '/login',

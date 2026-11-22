@@ -47,10 +47,21 @@ describe('Inhaltsseiten', () => {
                 expect(seite.fakten.zeilen.length).toBeGreaterThan(1)
             })
 
-            it('verweist auf mindestens zwei andere Seiten', () => {
+            it('verweist auf mindestens zwei andere Seiten und nutzt nur gueltige Inline-Links', () => {
                 expect(seite.querverweise.length).toBeGreaterThanOrEqual(2)
                 for (const verweis of seite.querverweise) {
                     expect(routeByPath(verweis.path), `Ziel ${verweis.path} fehlt im Manifest`).toBeDefined()
+                }
+                const texte = [
+                    ...seite.abschnitte.flatMap((a) => [...a.absaetze, ...(a.liste ?? [])]),
+                    ...(seite.abgrenzung?.absaetze ?? []),
+                    ...seite.faq.map((f) => f.antwort),
+                ]
+                for (const zeile of texte) {
+                    for (const [, , ziel] of zeile.matchAll(/\[([^\]]+)\]\((\/[^)\s]+)\)/g)) {
+                        const pfad = ziel.split('#')[0].split('?')[0]
+                        expect(routeByPath(pfad), `Inline-Link ${ziel} fehlt im Manifest`).toBeDefined()
+                    }
                 }
             })
 

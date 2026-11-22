@@ -44,7 +44,7 @@ export default function Header() {
                     <a href="/#suche" onClick={() => setMenuOpen(false)}>Live-Suche</a>
                     <a href="/#gespeichert" onClick={() => setMenuOpen(false)}>Gespeicherte Suchen</a>
                     <a href="/#tafel" onClick={() => setMenuOpen(false)}>Merkliste</a>
-                    <a href="/#preise" onClick={() => setMenuOpen(false)}>Pilotphase</a>
+                    <Link to="/preise" onClick={() => setMenuOpen(false)}>Preise</Link>
                     <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
                     <a href="/#profil" className="btn btn--primary header__cta" onClick={() => setMenuOpen(false)}>Kostenfreier Pilot</a>
                 </nav>

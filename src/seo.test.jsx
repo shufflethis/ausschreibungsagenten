@@ -64,4 +64,11 @@ describe('Seo-Komponente', () => {
         rerender(<Seo path="/entwickler" />)
         expect(document.head.querySelector('meta[name="robots"]')).toBeNull()
     })
+
+    it('setzt je Route das passende og:image statt ueberall dasselbe Bild', () => {
+        const start = renderToString(imServer(<Seo path="/" />))
+        const entwickler = renderToString(imServer(<Seo path="/entwickler" />))
+        expect(start).toContain('https://www.ausschreibungsagenten.de/og-image.png')
+        expect(entwickler).toContain('https://www.ausschreibungsagenten.de/hero/entwickler-arbeitet-an-ausschreibungs-api.webp')
+    })
 })

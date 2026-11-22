@@ -1,26 +1,34 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
 
-const SOURCE_LABELS = {
-    ted: 'TED (EU-Amtsblatt, api.ted.europa.eu)',
-    bund: 'service.bund.de',
-    bw: 'Landesportal Baden-Württemberg',
-    bremen: 'Landesportal Bremen',
-    sachsen: 'Landesportal Sachsen',
-    mv: 'Landesportal Mecklenburg-Vorpommern',
-    hessen: 'Landesportal Hessen',
-    rlp: 'Landesportal Rheinland-Pfalz',
-    fts: 'GB Find a Tender (OCDS)',
-    cf: 'GB Contracts Finder (unterschwellig, OCDS)',
-    doe: 'Datenservice Öffentlicher Einkauf (eForms-DE, Ober- + Unterschwelle)',
-    bayern: 'Landesportal Bayern',
-    nrw: 'Landesportal Nordrhein-Westfalen',
-    mrn: 'Metropolregion Rhein-Neckar',
-    vpbw: 'Vergabeportal Baden-Württemberg',
-    dtvp: 'DTVP Deutsches Vergabeportal',
-    rib: 'RIB / iTWO tender',
-    sam: 'US SAM.gov Contract Opportunities (Bund, JSON-API)',
-}
+// Feste Stammdaten aller 18 produktiv angebundenen Quellen, damit auch
+// Crawler ohne JavaScript-Ausfuehrung (Such- und KI-Bots) die vollstaendige
+// Quellenliste samt Anbindungsart und Abdeckung sehen statt einer leeren
+// Ladeanzeige. Live-Abrufzeitpunkte und Trefferzahlen laedt der Browser
+// anschliessend ueber /api/source-status und /api/countries nach.
+const ANGEBUNDENE_QUELLEN = [
+    { source: 'ted', label: 'TED (EU-Amtsblatt, api.ted.europa.eu)', iface: 'official_api', ebene: 'EU (alle 27 Mitgliedstaaten, Oberschwelle)' },
+    { source: 'doe', label: 'Datenservice Öffentlicher Einkauf (eForms-DE, Ober- + Unterschwelle)', iface: 'official_api', ebene: 'Deutschland (Bund, Länder, Kommunen)' },
+    { source: 'bund', label: 'service.bund.de', iface: 'official_api', ebene: 'Deutschland (Bundesbehörden)' },
+    { source: 'fts', label: 'GB Find a Tender (OCDS)', iface: 'official_api', ebene: 'Vereinigtes Königreich (Oberschwelle)' },
+    { source: 'cf', label: 'GB Contracts Finder (unterschwellig, OCDS)', iface: 'official_api', ebene: 'Vereinigtes Königreich (ab £12k)' },
+    { source: 'sam', label: 'US SAM.gov Contract Opportunities (Bund, JSON-API)', iface: 'official_api', ebene: 'USA (US-Bundesbehörden)' },
+    { source: 'dtvp', label: 'DTVP Deutsches Vergabeportal', iface: 'portal', ebene: 'Deutschland (E-Vergabe-Plattform)' },
+    { source: 'rib', label: 'RIB / iTWO tender', iface: 'portal', ebene: 'Deutschland (E-Vergabe-Plattform)' },
+    { source: 'bayern', label: 'Landesportal Bayern', iface: 'portal', ebene: 'Bayern' },
+    { source: 'nrw', label: 'Landesportal Nordrhein-Westfalen', iface: 'portal', ebene: 'Nordrhein-Westfalen' },
+    { source: 'bw', label: 'Landesportal Baden-Württemberg', iface: 'portal', ebene: 'Baden-Württemberg' },
+    { source: 'vpbw', label: 'Vergabeportal Baden-Württemberg', iface: 'portal', ebene: 'Baden-Württemberg' },
+    { source: 'bremen', label: 'Landesportal Bremen', iface: 'portal', ebene: 'Bremen' },
+    { source: 'sachsen', label: 'Landesportal Sachsen', iface: 'portal', ebene: 'Sachsen' },
+    { source: 'mv', label: 'Landesportal Mecklenburg-Vorpommern', iface: 'portal', ebene: 'Mecklenburg-Vorpommern' },
+    { source: 'hessen', label: 'Landesportal Hessen', iface: 'portal', ebene: 'Hessen' },
+    { source: 'rlp', label: 'Landesportal Rheinland-Pfalz', iface: 'portal', ebene: 'Rheinland-Pfalz' },
+    { source: 'mrn', label: 'Metropolregion Rhein-Neckar', iface: 'portal', ebene: 'Metropolregion Rhein-Neckar' },
+]
+
+const SOURCE_LABELS = Object.fromEntries(ANGEBUNDENE_QUELLEN.map((q) => [q.source, q.label]))
 
 const COUNTRY_NAMES = {
     DEU: 'Deutschland', FRA: 'Frankreich', POL: 'Polen', SWE: 'Schweden', AUT: 'Österreich',
@@ -73,8 +81,9 @@ export default function Status() {
                             Quellenstatus — <span className="gradient-text">volle Transparenz</span>
                         </h1>
                         <p className="hero__description">
-                            Wir behaupten keine Abdeckung, wir zeigen sie: jede Quelle mit letztem
-                            erfolgreichem Abruf und jedes Land mit tatsächlicher Tender-Zahl im Index.
+                            Wir behaupten keine pauschale Portalzahl, wir zeigen sie: alle 18 produktiv
+                            angebundenen Quellen – sechs über offizielle Schnittstellen und zwölf per
+                            Portal-Auslese – mit letztem erfolgreichem Abruf und Länderabdeckung im Index.
                         </p>
                     </div>
                 </div>
@@ -86,13 +95,9 @@ export default function Status() {
                         <span className="pulse"></span> Datenquellen
                     </span>
                     <h2 className="section__title">
-                        Portale und ihr <span className="gradient-text">letzter Abruf</span>
+                        18 angebundene Portale und ihr <span className="gradient-text">letzter Abruf</span>
                     </h2>
-                    {loading && <p className="section__subtitle">Status wird geladen...</p>}
-                    {!loading && sources.length === 0 && (
-                        <p className="section__subtitle">Der Status konnte gerade nicht geladen werden — bitte später erneut versuchen.</p>
-                    )}
-                    {sources.length > 0 && (
+                    {sources.length > 0 ? (
                         <div className="comparison-wrapper">
                             <table className="comparison-table">
                                 <thead>
@@ -125,7 +130,38 @@ export default function Status() {
                                 </tbody>
                             </table>
                         </div>
+                    ) : (
+                        <>
+                            <p className="section__subtitle">
+                                {loading
+                                    ? 'Aktuelle Live-Abrufzeitpunkte werden geladen — die vollständige Liste der 18 angebundenen Quellen steht direkt darunter (maschinenlesbar als JSON unter /api/source-status).'
+                                    : 'Die Live-Zeitpunkte konnten gerade nicht geladen werden. Die 18 produktiv angebundenen Quellen im Überblick:'}
+                            </p>
+                            <div className="comparison-wrapper">
+                                <table className="comparison-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Quelle</th>
+                                            <th>Anbindung</th>
+                                            <th>Abdeckung</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {ANGEBUNDENE_QUELLEN.map((q) => (
+                                            <tr key={q.source}>
+                                                <td>{q.label}</td>
+                                                <td>{q.iface === 'official_api' ? 'Offizielle Schnittstelle' : 'Portal-Auslese'}</td>
+                                                <td>{q.ebene}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </>
                     )}
+                    <p style={{ marginTop: '1.25rem', color: 'var(--text-tertiary)', fontSize: 'var(--font-size-sm)' }}>
+                        Geplante Erweiterungen (noch nicht produktiv): Deutsche eVergabe und evergabe.de.
+                    </p>
                 </div>
             </section>
 
@@ -140,13 +176,14 @@ export default function Status() {
                             : <>Ausschreibungen je <span className="gradient-text">Land</span></>}
                     </h2>
                     <p className="section__subtitle">
-                        Oberhalb der EU-Schwellenwerte über TED; deutsche Unterschwellen-Verfahren
-                        zusätzlich über Bund, den Datenservice Öffentlicher Einkauf, DTVP, RIB und
-                        zehn Landes- und Regionalportale. Die Zahlen zählen gespeicherte
-                        Bekanntmachungen unserer Verticals, einschließlich abgelaufener Verfahren
-                        und möglicher Mehrfachveröffentlichungen. Sie sind keine Zahl aktuell offener Aufträge.
+                        Oberhalb der EU-Schwellenwerte über TED (alle 27 EU-Mitgliedstaaten); deutsche
+                        Unterschwellen-Verfahren zusätzlich über Bund, den Datenservice Öffentlicher Einkauf,
+                        DTVP, RIB und zehn Landes- und Regionalportale, ergänzt um Großbritannien und
+                        US-Bundesbehörden (SAM.gov). Die Zahlen zählen gespeicherte Bekanntmachungen unserer
+                        Verticals, einschließlich abgelaufener Verfahren und möglicher Mehrfachveröffentlichungen.
+                        Sie sind keine Zahl aktuell offener Aufträge.
                     </p>
-                    {countries.length > 0 && (
+                    {countries.length > 0 ? (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
                             {countries.map((c) => (
                                 <span className="badge badge--yes" key={c.country} title={COUNTRY_NAMES[c.country] || c.country}>
@@ -154,9 +191,27 @@ export default function Status() {
                                 </span>
                             ))}
                         </div>
+                    ) : (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
+                            {Object.entries(COUNTRY_NAMES).map(([code, name]) => (
+                                <span className="badge badge--yes" key={code} title={code}>
+                                    {name} ({code})
+                                </span>
+                            ))}
+                        </div>
                     )}
                     <p style={{ marginTop: '2rem', color: 'var(--text-tertiary)', fontSize: 'var(--font-size-sm)' }}>
-                        Maschinenlesbar: <a href="/api/source-status">/api/source-status</a> · <a href="/api/countries">/api/countries</a> · Für Agenten: <a href="/entwickler">API & MCP</a>
+                        Maschinenlesbar: <a href="/api/source-status">/api/source-status</a> ·{' '}
+                        <a href="/api/countries">/api/countries</a> · Für Agenten:{' '}
+                        <Link to="/entwickler">API &amp; MCP</Link> · Marktzahlen:{' '}
+                        <Link to="/zahlen">Vergabemarkt in Zahlen</Link> ·{' '}
+                        <Link to="/preise">Preise &amp; Pilotphase</Link>
+                        <br />Bundesländer:{' '}
+                        <Link to="/ausschreibungen-nrw">NRW</Link> ·{' '}
+                        <Link to="/ausschreibungen-bayern">Bayern</Link> ·{' '}
+                        <Link to="/ausschreibungen-baden-wuerttemberg">Baden-Württemberg</Link> ·{' '}
+                        <Link to="/ausschreibungen-hessen">Hessen</Link> ·{' '}
+                        <Link to="/ausschreibungen-berlin">Berlin</Link>
                     </p>
                 </div>
             </section>

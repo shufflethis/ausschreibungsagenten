@@ -150,6 +150,8 @@ export default function Brandkit() {
                                     <img
                                         src={variante.datei}
                                         alt={`Wortmarke Ausschreibungsagenten.de – ${variante.titel}`}
+                                        width={2000}
+                                        height={296}
                                         style={{ maxWidth: '100%', height: 'auto' }}
                                         loading="lazy"
                                     />

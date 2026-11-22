@@ -1,4 +1,7 @@
+import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import { routeByPath } from '../routes'
+import { trackEvent } from '../lib/tracking'
 import Seo from './Seo'
 
 // Gemeinsame Schablone aller Inhaltsseiten. Die Reihenfolge ist bewusst
@@ -13,6 +16,45 @@ import Seo from './Seo'
 // 6. Handlungsaufforderung auf das Pilot-Formular, mit Seitenkontext.
 // 7. Querverweise auf verwandte Seiten.
 
+const INLINE_LINK = /\[([^\]]+)\]\((\/[^)\s]+)\)/g
+
+function formatDatum(iso) {
+    if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null
+    const [jahr, monat, tag] = iso.split('-').map(Number)
+    return new Intl.DateTimeFormat('de-DE', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    }).format(new Date(Date.UTC(jahr, monat - 1, tag)))
+}
+
+// Verwandelt interne Inline-Links der Form "[Linktext](/pfad)" in React-Router-
+// Links ohne HTML-Injection. Externe URLs werden bewusst nicht geparst.
+export function renderTextMitLinks(text) {
+    if (!text || !text.includes('](')) return text
+    const teile = []
+    let letzterIndex = 0
+    for (const treffer of text.matchAll(INLINE_LINK)) {
+        const [voll, label, ziel] = treffer
+        if (treffer.index > letzterIndex) {
+            teile.push(text.slice(letzterIndex, treffer.index))
+        }
+        teile.push(
+            <Link
+                key={`${treffer.index}-${ziel}`}
+                to={ziel}
+                onClick={() => trackEvent('Querverweis-Geklickt', { ziel, ort: 'inline' })}
+            >
+                {label}
+            </Link>,
+        )
+        letzterIndex = treffer.index + voll.length
+    }
+    if (letzterIndex === 0) return text
+    if (letzterIndex < text.length) teile.push(text.slice(letzterIndex))
+    return teile.map((teil, i) => <Fragment key={i}>{teil}</Fragment>)
+}
+
 function pflichtfeld(wert, name) {
     if (!wert || (Array.isArray(wert) && wert.length === 0)) {
         throw new Error(`Inhaltsseite ohne ${name}`)
@@ -24,6 +66,9 @@ export default function InhaltsSeite({ seite }) {
     pflichtfeld(seite.direktantwort, 'Direktantwort')
     pflichtfeld(seite.h1, 'Ueberschrift')
     pflichtfeld(seite.faq, 'FAQ')
+
+    const route = routeByPath(seite.path)
+    const aktualisiertText = formatDatum(route?.lastmod)
 
     // Query vor Fragment, nicht umgekehrt: "/#profil?thema=..." macht die
     // gesamte Zeichenkette zum Ankernamen, der Browser findet kein Element
@@ -45,6 +90,8 @@ export default function InhaltsSeite({ seite }) {
                                 className="hero-foto"
                                 src={seite.heroBild.src}
                                 alt={seite.heroBild.alt}
+                                width={1920}
+                                height={1280}
                                 fetchPriority="high"
                             />
                             <div className="hero-foto__schleier" aria-hidden="true"></div>
@@ -53,6 +100,18 @@ export default function InhaltsSeite({ seite }) {
                     ) : (
                         <h1 className="section__title">{seite.h1}</h1>
                     )}
+
+                    {route?.article ? (
+                        <p className="inhalt__byline">
+                            Von <Link to="/ueber-uns#gorden-wuebbe">Gorden Wübbe</Link>
+                            {aktualisiertText ? (
+                                <>
+                                    {' '}· Aktualisiert am{' '}
+                                    <time dateTime={route.lastmod}>{aktualisiertText}</time>
+                                </>
+                            ) : null}
+                        </p>
+                    ) : null}
 
                     <p className="inhalt__direktantwort">{seite.direktantwort}</p>
 
@@ -86,12 +145,12 @@ export default function InhaltsSeite({ seite }) {
                         <section key={abschnitt.titel} className="inhalt__abschnitt">
                             <h2>{abschnitt.titel}</h2>
                             {abschnitt.absaetze.map((absatz) => (
-                                <p key={absatz.slice(0, 40)}>{absatz}</p>
+                                <p key={absatz.slice(0, 40)}>{renderTextMitLinks(absatz)}</p>
                             ))}
                             {abschnitt.liste ? (
                                 <ul className="inhalt__liste">
                                     {abschnitt.liste.map((punkt) => (
-                                        <li key={punkt.slice(0, 40)}>{punkt}</li>
+                                        <li key={punkt.slice(0, 40)}>{renderTextMitLinks(punkt)}</li>
                                     ))}
                                 </ul>
                             ) : null}
@@ -111,7 +170,7 @@ export default function InhaltsSeite({ seite }) {
                         <section className="inhalt__abgrenzung">
                             <h2>{seite.abgrenzung.titel}</h2>
                             {seite.abgrenzung.absaetze.map((absatz) => (
-                                <p key={absatz.slice(0, 40)}>{absatz}</p>
+                                <p key={absatz.slice(0, 40)}>{renderTextMitLinks(absatz)}</p>
                             ))}
                         </section>
                     ) : null}
@@ -121,7 +180,7 @@ export default function InhaltsSeite({ seite }) {
                         {seite.faq.map((eintrag) => (
                             <details key={eintrag.frage}>
                                 <summary>{eintrag.frage}</summary>
-                                <p>{eintrag.antwort}</p>
+                                <p>{renderTextMitLinks(eintrag.antwort)}</p>
                             </details>
                         ))}
                     </section>
@@ -132,7 +191,11 @@ export default function InhaltsSeite({ seite }) {
                             {seite.ctaText ??
                                 'Wir richten ein Suchprofil für Ihre Gewerke, Regionen und Auftragsgrößen ein und zeigen Ihnen die ersten Treffer mit Begründung.'}
                         </p>
-                        <a className="btn btn--primary" href={kontaktZiel}>
+                        <a
+                            className="btn btn--primary"
+                            href={kontaktZiel}
+                            onClick={() => trackEvent('Pilot-CTA-Geklickt', { ziel: kontaktZiel })}
+                        >
                             {seite.ctaKnopf ?? 'Kostenfreien Pilotzugang anfragen'}
                         </a>
                         {anker === 'profil' && (
@@ -146,7 +209,12 @@ export default function InhaltsSeite({ seite }) {
                             <ul>
                                 {seite.querverweise.map((verweis) => (
                                     <li key={verweis.path}>
-                                        <Link to={verweis.path}>{verweis.text}</Link>
+                                        <Link
+                                            to={verweis.path}
+                                            onClick={() => trackEvent('Querverweis-Geklickt', { ziel: verweis.path, ort: 'verweise' })}
+                                        >
+                                            {verweis.text}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>

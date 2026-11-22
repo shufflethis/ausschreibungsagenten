@@ -229,13 +229,13 @@ describe('Agent-Readiness machine contracts', () => {
         expect(csp).toMatch(/connect-src [^;]*https:\/\/analytics\.polymarkt\.de/)
     })
 
-    it('fuehrt geratene Navigationspfade auf vorhandene Anker', async () => {
+    it('fuehrt geratene Navigationspfade auf vorhandene Anker oder eigene Seiten', async () => {
         const config = JSON.parse(await text('vercel.json'))
         // Die Abschnitte unterhalb der Suche liegen seit der Zerlegung in
         // einer eigenen Datei; die Anker verteilen sich auf beide.
         const landingpage = (await text('src/pages/LandingPage.jsx')) + (await text('src/pages/landing/Abschnitte.jsx'))
 
-        for (const quelle of ['/preise', '/funktionen', '/wie-es-funktioniert', '/faq', '/api']) {
+        for (const quelle of ['/funktionen', '/wie-es-funktioniert', '/faq', '/api']) {
             const regel = config.redirects.find((r) => r.source === quelle)
             expect(regel, quelle).toBeTruthy()
             const anker = regel.destination.split('#')[1]
@@ -243,6 +243,14 @@ describe('Agent-Readiness machine contracts', () => {
             // eine Loesung aus und ist keine: der Aufrufer landet oben
             // auf der Startseite und sucht weiter.
             if (anker) expect(landingpage, `${quelle} -> #${anker}`).toContain(`id="${anker}"`)
+        }
+
+        // /preise ist eine eigenstaendige vorgerenderte Route; /pricing und /tarife
+        // leiten dauerhaft dorthin weiter statt auf ein Startseiten-Fragment.
+        expect(config.redirects.find((r) => r.source === '/preise')).toBeUndefined()
+        for (const quelle of ['/pricing', '/tarife']) {
+            const regel = config.redirects.find((r) => r.source === quelle)
+            expect(regel?.destination, quelle).toBe('/preise')
         }
     })
 

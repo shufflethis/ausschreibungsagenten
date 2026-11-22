@@ -47,9 +47,17 @@ const ORGANISATION = {
         areaServed: 'DE',
         availableLanguage: ['de', 'en'],
     },
-    // Offizielle Profile derselben Entitaet. Verbindet Domain und Kanal
-    // fuer Suchmaschinen zu einem Absender.
-    sameAs: ['https://www.youtube.com/@ausschreibungsagenten'],
+    // Offizielle Profile derselben Entitaet. Verbindet Domain, Code, Pakete
+    // und Kanaele fuer Suchmaschinen und KI-Auswerter zu einem Absender.
+    sameAs: [
+        'https://www.youtube.com/@ausschreibungsagenten',
+        'https://github.com/shufflethis/ausschreibungsagenten',
+        'https://github.com/shufflethis/ausschreibungsagenten-mcp',
+        'https://www.npmjs.com/package/ausschreibungsagenten',
+        'https://smithery.ai/servers/@agentifizierung/ausschreibungsagenten',
+        'https://www.tender-agents.com',
+        'https://www.agentifizierung.de',
+    ],
     address: {
         '@type': 'PostalAddress',
         streetAddress: 'Schliemannstraße 23',
@@ -164,15 +172,52 @@ export default function StrukturierteDaten({ path, faq }) {
             headline: route.title.split('|')[0].trim(),
             description: route.description,
             url: `${SITE_ORIGIN}${route.path}`,
+            image: `${SITE_ORIGIN}${route.ogImage ?? '/og-image.png'}`,
             inLanguage: 'de-DE',
             author: {
                 '@id': `${SITE_ORIGIN}/ueber-uns#gorden-wuebbe`,
                 name: 'Gorden Wübbe',
-                url: `${SITE_ORIGIN}/ueber-uns`,
+                url: `${SITE_ORIGIN}/ueber-uns#gorden-wuebbe`,
             },
             publisher: { '@id': `${SITE_ORIGIN}/#organisation` },
             mainEntityOfPage: { '@id': `${SITE_ORIGIN}${route.path}#seite` },
+            ...(route.published || route.lastmod ? { datePublished: route.published ?? route.lastmod } : {}),
             ...(route.lastmod ? { dateModified: route.lastmod } : {}),
+        })
+    }
+
+    if (route.tool) {
+        graph.push({
+            '@type': 'WebApplication',
+            '@id': `${SITE_ORIGIN}${route.path}#werkzeug`,
+            name: route.title.split(':')[0].trim(),
+            description: route.description,
+            url: `${SITE_ORIGIN}${route.path}`,
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Web',
+            inLanguage: 'de-DE',
+            isAccessibleForFree: true,
+            provider: { '@id': `${SITE_ORIGIN}/#organisation` },
+        })
+    }
+
+    if (route.path === '/zahlen') {
+        graph.push({
+            '@type': 'Dataset',
+            '@id': `${SITE_ORIGIN}/zahlen#datensatz`,
+            name: 'EU-weite öffentliche Ausschreibungen deutscher Auftraggeber nach CPV-Division und Eignungskriterien (2025/2026)',
+            description:
+                'Reproduzierbare TED-API-v3-Auswertung von 88.817 EU-weiten Bekanntmachungen deutscher Auftraggeber '
+                + '(August 2025 bis Juli 2026) nach CPV-Division sowie Korpus-Analyse von 7.179 eForms-Eignungskriterien '
+                + '(Referenzen, Mindestumsatz, Versicherung, Zertifikate).',
+            url: `${SITE_ORIGIN}/zahlen`,
+            creator: { '@id': `${SITE_ORIGIN}/#organisation` },
+            inLanguage: 'de-DE',
+            temporalCoverage: '2025-08-01/2026-07-31',
+            spatialCoverage: { '@type': 'Place', name: 'Deutschland' },
+            measurementTechnique:
+                'Abfrage der offiziellen EU-TED-API v3 je CPV-Division sowie deterministische Musterprüfung auf eForms-selection_criteria',
+            isAccessibleForFree: true,
         })
     }
 

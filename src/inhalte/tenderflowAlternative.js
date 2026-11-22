@@ -36,8 +36,8 @@ export const tenderflowAlternative = {
         {
             titel: 'Warum wir keine Prozentzahl versprechen',
             absaetze: [
-                '„80 Prozent weniger Aufwand“ ist ein Marketingversprechen, das sich nicht belegen lässt, weil der Aufwand von Betrieb zu Betrieb verschieden ist. Ausschreibungsagenten verzichtet auf solche Zahlen und verspricht stattdessen nur, was prüfbar ist: benannte Quellen, belegte Abrufzeitpunkte und Treffer mit Begründung.',
-                'Das ist konservativer, aber ehrlicher. Wer eine solche Prozentzahl liest, sollte fragen, worauf sie sich bezieht — auf die Suchzeit, die Gesamtzeit bis zur Abgabe oder etwas Drittes. Eine Antwort darauf liefert keine der veröffentlichten Angaben.',
+                '„80 Prozent weniger Aufwand“ ist ein Marketingversprechen, das sich nicht belegen lässt, weil der Aufwand von Betrieb zu Betrieb verschieden ist. Ausschreibungsagenten verzichtet auf solche Zahlen und verspricht stattdessen nur, was prüfbar ist: benannte Quellen im [Quellenstatus](/status), offene [Preise und Limits](/preise) und Treffer mit Begründung.',
+                'Das ist konservativer, aber ehrlicher. Wer eine solche Prozentzahl liest, sollte fragen, worauf sie sich bezieht — auf die Suchzeit, die Gesamtzeit bis zur Abgabe oder etwas Drittes. Wo KI bei der Angebotsvorbereitung tatsächlich Zeit spart, erklärt [KI und Ausschreibungen](/ki-angebot-ausschreibung); die Einordnung weiterer Anbieter steht im [Software-Vergleich nach Use Case](/beste-software-automatische-ausschreibungssuche).',
             ],
         },
     ],
@@ -71,8 +71,10 @@ export const tenderflowAlternative = {
     ctaText:
         'Wir richten ein Suchprofil für Ihre Gewerke und Regionen ein und zeigen Ihnen die ersten Treffer — jeweils mit den Gründen, aus denen sie zu Ihnen passen, und mit belegtem Quellenstatus.',
     querverweise: [
-        { path: '/ausschreibungssuche-automatisieren', text: 'Wie die automatisierte Ausschreibungssuche funktioniert' },
-        { path: '/status', text: 'Quellenstatus: welche Portale wann zuletzt abgefragt wurden' },
+        { path: '/beste-software-automatische-ausschreibungssuche', text: 'Software-Vergleich nach Use Case' },
+        { path: '/preise', text: 'Preise, Limits und kostenfreie Pilotphase' },
         { path: '/vergabepilot-alternative', text: 'Vergleich mit Vergabepilot' },
+        { path: '/vergabefix-alternative', text: 'Vergleich mit Vergabefix' },
+        { path: '/status', text: 'Quellenstatus: welche Portale wann zuletzt abgefragt wurden' },
     ],
 }

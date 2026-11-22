@@ -49,7 +49,7 @@ export const bauauftraegeFinden = {
             titel: 'Wo öffentliche Bauaufträge in Deutschland veröffentlicht werden',
             absaetze: [
                 'Bauaufträge ab 5.404.000 Euro geschätztem Netto-Auftragswert müssen EU-weit ausgeschrieben werden und erscheinen auf TED, der amtlichen Ausschreibungsdatenbank der EU. Der weitaus größere Teil der Bauaufträge liegt darunter und wird national nach VOB/A Abschnitt 1 vergeben: auf dem Bundesportal, auf Landesportalen und auf Vergabemarktplätzen wie DTVP.',
-                'Wer nur eine Quelle beobachtet, sieht deshalb nur einen Ausschnitt. Welche Quellen angebunden sind und wann sie zuletzt erfolgreich abgefragt wurden, steht öffentlich auf der Statusseite.',
+                'Wer nur eine Quelle beobachtet, sieht deshalb nur einen Ausschnitt. Welche Quellen angebunden sind und wann sie zuletzt erfolgreich abgefragt wurden, steht öffentlich im [Quellenstatus](/status); die Branchenanteile deutscher EU-Ausschreibungen zeigen unsere [Zahlen zum Vergabemarkt](/zahlen).',
             ],
         },
         {

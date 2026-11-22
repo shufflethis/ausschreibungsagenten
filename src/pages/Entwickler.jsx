@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
+import { trackEvent } from '../lib/tracking'
 
 const ENDPOINTS = [
     {
@@ -95,6 +97,7 @@ export default function Entwickler() {
             })
             const data = await res.json().catch(() => ({}))
             if (res.ok && data.api_key) {
+                trackEvent('API-Key-Signup')
                 setSignupStatus('success')
                 setSignupKey(data.api_key)
                 setSignupEmail('')
@@ -120,6 +123,8 @@ export default function Entwickler() {
                     className="hero-foto"
                     src="/hero/entwickler-arbeitet-an-ausschreibungs-api.webp"
                     alt="Entwickler bindet die Ausschreibungs-API am Laptop an"
+                    width={1920}
+                    height={1280}
                     fetchPriority="high"
                 />
                 <div className="hero-foto__schleier" aria-hidden="true"></div>
@@ -338,8 +343,9 @@ npx ausschreibungsagenten laender --json`}</pre>
                                 (später geplant: <s>499 EUR/Monat</s>). Der Zugang wird persönlich
                                 eingerichtet; ein Online-Checkout ist noch nicht freigeschaltet.
                             </p>
-                            <div style={{ marginTop: '1rem' }}>
+                            <div style={{ marginTop: '1rem', display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}>
                                 <a href="/#profil" className="btn btn--primary">Kostenfreien Pilotzugang anfragen</a>
+                                <Link to="/preise" className="btn btn--outline">Alle Tarife &amp; Limits vergleichen</Link>
                             </div>
                         </div>
                     </div>

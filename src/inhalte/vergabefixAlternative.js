@@ -29,8 +29,8 @@ export const vergabefixAlternative = {
         {
             titel: 'Der Unterschied: belegbare Quellen statt Gesamtzahlen',
             absaetze: [
-                'Eine Zahl wie „über 100 Portale“ sagt wenig darüber, ob Ihre Gewerke und Regionen darin abgedeckt sind — und ob die Quellen gerade tatsächlich abgefragt werden. Ausschreibungsagenten nennt seine 18 Quellen beim Namen und zeigt zu jeder den letzten erfolgreichen Abruf.',
-                'Diese Transparenz ist kein Selbstzweck. Wenn eine Landesquelle klemmt, erkennen Sie es im Quellenstatus und wissen, dass dort Treffer fehlen könnten. Bei einer unbestimmten Gesamtzahl bleibt eine solche Lücke unsichtbar.',
+                'Eine Zahl wie „über 100 Portale“ sagt wenig darüber, ob Ihre Gewerke und Regionen darin abgedeckt sind — und ob die Quellen gerade tatsächlich abgefragt werden. Ausschreibungsagenten nennt seine 18 Quellen beim Namen und zeigt zu jeder im [Quellenstatus](/status) den letzten erfolgreichen Abruf.',
+                'Diese Transparenz ist kein Selbstzweck. Wenn eine Landesquelle klemmt, erkennen Sie es im Quellenstatus und wissen, dass dort Treffer fehlen könnten. Bei einer unbestimmten Gesamtzahl bleibt eine solche Lücke unsichtbar. Wie andere Anbieter im Vergleich einzuordnen sind, zeigt der [Software-Vergleich nach Use Case](/beste-software-automatische-ausschreibungssuche); alle Tarife und Limits stehen auf der [Preisseite](/preise).',
             ],
         },
         {
@@ -67,8 +67,10 @@ export const vergabefixAlternative = {
     ctaText:
         'Im Pilot legen wir Gewerke, Regionen und Ausschlusswörter fest und zeigen Ihnen zu jedem Treffer die Gründe — und im Quellenstatus, welche Portale wann zuletzt abgefragt wurden.',
     querverweise: [
-        { path: '/ausschreibungssuche-automatisieren', text: 'Wie die automatisierte Ausschreibungssuche funktioniert' },
-        { path: '/status', text: 'Quellenstatus aller 18 angebundenen Portale' },
+        { path: '/beste-software-automatische-ausschreibungssuche', text: 'Software-Vergleich nach Use Case' },
+        { path: '/preise', text: 'Preise, Limits und kostenfreie Pilotphase' },
         { path: '/vergabepilot-alternative', text: 'Vergleich mit Vergabepilot' },
+        { path: '/tenderflow-alternative', text: 'Vergleich mit Tenderflow' },
+        { path: '/status', text: 'Quellenstatus aller 18 angebundenen Portale' },
     ],
 }
