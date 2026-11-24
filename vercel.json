@@ -197,6 +197,10 @@
             "destination": "https://api.ausschreibungsagenten.de/.well-known/oauth-protected-resource"
         },
         {
+            "source": "/.well-known/agent.json",
+            "destination": "https://api.ausschreibungsagenten.de/.well-known/agent-card.json"
+        },
+        {
             "source": "/.well-known/agent-card.json",
             "destination": "https://api.ausschreibungsagenten.de/.well-known/agent-card.json"
         },

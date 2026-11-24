@@ -23,13 +23,14 @@ const SPALTEN = [
     {
         titel: 'Wissen & Tools',
         eintraege: [
+            { zu: '/foerder-und-auftrags-planer', text: 'Auftrags- & Förder-Planer 2027' },
+            { zu: '/ki-foerderung-unternehmen', text: 'KI-Förderung 2026/2027' },
+            { zu: '/foerdermittel-kalender-2027', text: 'Fördermittel-Kalender 2027' },
             { zu: '/gaeb-viewer', text: 'GAEB-Viewer (X83/X84)' },
             { zu: '/cpv-code-suche', text: 'CPV-Code-Suche' },
             { zu: '/eu-schwellenwerte', text: 'EU-Schwellenwerte 2026/27' },
             { zu: '/ausschreibungssuche-automatisieren', text: 'Suche automatisieren' },
             { zu: '/bauauftraege-finden', text: 'Bauaufträge nach Gewerk' },
-            { zu: '/ki-angebot-ausschreibung', text: 'KI und Angebot' },
-            { zu: '/semantische-suche-ausschreibungen', text: 'Semantische Suche' },
         ],
     },
     {
@@ -120,7 +121,7 @@ export default function Footer() {
 
                     {SPALTEN.map((spalte) => (
                         <nav className="footer__spalte" key={spalte.titel} aria-label={spalte.titel}>
-                            <h2>{spalte.titel}</h2>
+                            <p className="footer__spalten-titel">{spalte.titel}</p>
                             {spalte.eintraege.map((eintrag) => (
                                 <Eintrag eintrag={eintrag} key={eintrag.text} />
                             ))}

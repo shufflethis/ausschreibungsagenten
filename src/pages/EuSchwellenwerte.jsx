@@ -238,6 +238,7 @@ export default function EuSchwellenwerte() {
                         Wie sich Ober- und Unterschwelle auf das deutsche Auftragsvolumen verteilen (88 % der
                         Verfahren unterschwellig, rund drei Viertel des Volumens oberschwellig), zeigt{' '}
                         <Link to="/zahlen">Vergabemarkt Deutschland in Zahlen</Link>. Weitere kostenlose Tools:{' '}
+                        <Link to="/foerder-und-auftrags-planer">Auftrags- &amp; Förder-Planer 2027</Link>,{' '}
                         <Link to="/cpv-code-suche">CPV-Code-Suche</Link> und{' '}
                         <Link to="/gaeb-viewer">GAEB-Viewer (X83/X84)</Link>.
                     </p>
